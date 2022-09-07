@@ -11,6 +11,13 @@
             "program": "${workspaceFolder}/build/SysYC", //指定C/C++程序位置
             "args": [], //指定运行参数
             "cwd": "${workspaceFolder}/build", //指定工作目录
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
             "preLaunchTask": "debug", //在调试前会先调用build_debug这个task编译构建程序
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb"
@@ -22,8 +29,37 @@
             "program": "${workspaceFolder}/build/SysYC", //指定C/C++程序位置
             "args": [], //指定运行参数
             "cwd": "${workspaceFolder}/build", //指定工作目录
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "type": "cppdbg",
+            "name": "Launch Debug Active",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build", //指定工作目录
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerArgs": "-q -ex quit; wait() { fg >/dev/null; }; /bin/gdb -q --interpreter=mi",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++.exe 生成活动文件"
         }
     ]
 }
