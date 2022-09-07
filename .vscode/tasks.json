@@ -1,0 +1,104 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cmake debug",
+            "group": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-B",
+                "build",
+                "-G",
+                "Ninja",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DCMAKE_BUILD_TYPE=Debug",
+            ],
+            "detail": "cmake debug configuration",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "cmake release",
+            "group": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-B",
+                "dist",
+                "-G",
+                "Ninja",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DCMAKE_BUILD_TYPE=Release",
+            ],
+            "detail": "cmake release configuration",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "build",
+            "group": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "dist",
+                "-j6"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "detail": "build project",
+            "dependsOn": [
+                "cmake release"
+            ]
+        },
+        {
+            "label": "debug",
+            "group": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "-j6"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "detail": "debug build project",
+            "dependsOn": [
+                "cmake debug"
+            ]
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "${workspaceFolder}/dist/SysYC",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/dist"
+            },
+            "detail": "run project",
+        },
+        {
+            "label": "debug run",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/SysYC",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "detail": "debug run project",
+        },
+        {
+            "type": "cmake",
+            "label": "clean",
+            "command": "clean",
+            "problemMatcher": [],
+            "detail": "cmake clean task"
+        }
+    ]
+}
