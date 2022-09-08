@@ -1,10 +1,3 @@
-#include <stdio.h>
-int getint() {
-    int a;
-    scanf("%d", &a);
-    return a;
-}
-
 const int c1 = 1;
 const int cc1 = 1, cc2 = 1;
 const int ccc1 = 1, ccc2 = 1, ccc3 = 1;

@@ -4,7 +4,6 @@ int getint() {
     scanf("%d", &a);
     return a;
 }
-
 const int c1 = 1;
 const int cc1 = 1, cc2 = 1;
 const int ccc1 = 1, ccc2 = 1, ccc3 = 1;
@@ -74,7 +73,17 @@ void with_double_array_para_1_void(int a[][10]) {
 
 void with_double_array_para_2_void(int a[][2], int b[][2]) {
     int p = a[0][0] * b[0][0];
-    return;
+}
+
+int count_odd(int a[], int n) {
+    int cnt = 0, i = 0;
+    while (i < n) {
+        if (a[i] % 2 == 1) {
+            cnt = cnt + 1;
+        }
+        i = i + 1;
+    }
+    return cnt;
 }
 
 int main() {
@@ -82,7 +91,7 @@ int main() {
     int i = 0;
     int a = 1, b = 2;
     int value = 5;
-    int array[2] = {0, 0};
+    int array[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     n = getint();
     m = getint();
     printf("19373700\n");
@@ -136,9 +145,6 @@ int main() {
     value = without_para();
     value = with_para_1(value);
     value = with_para_2(a, b);
-
-    array[2 * 2 - 3] = 1;
-    array[a + a - b] = 0;
     with_array_para_1_void(vcaa1[0]);
     with_array_para_2_void(vcaa1[0], vcaa2[0]);
     array[0] = with_array_para_1(va1);
@@ -148,6 +154,6 @@ int main() {
     vaa1[0][0] = with_double_array_para_2(vcaa1, vcaa2);
     value = (value + array[0]) * (array[1] - vaa1[0][0]) / 2;
     printf("value = %d\n", value % 2);
-
+    printf("odds = %d\n", count_odd(array, 10));
     return 0;
 }

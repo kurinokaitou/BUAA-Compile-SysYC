@@ -5,5 +5,5 @@ true
 a<b
 a<=b
 a!=b
-g = 6
 value = 0
+odds = 6
