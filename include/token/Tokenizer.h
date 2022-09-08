@@ -38,6 +38,8 @@ private:
 private:
     TokenIter makeToken(int lineNum, const SymbolEnum& symbolNum, const std::string& literal, int value = 0);
     SymbolEnum getReservedWordSymbol(std::string& word) const;
+    void extractChar();
+    void unextractChar();
 
 private:
     std::istream m_istream;

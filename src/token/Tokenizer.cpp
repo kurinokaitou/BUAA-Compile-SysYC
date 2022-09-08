@@ -23,13 +23,13 @@ std::vector<Token>& Tokenizer::tokenize() {
             if (isNewline(m_currChar)) {
                 m_currLine++;
             }
-            m_istream.get(m_currChar);
+            extractChar();
         }
         // 进入标识符
         if (isalpha(m_currChar)) {
             while (isIdentChar(m_currChar)) {
                 tokenStr += m_currChar;
-                m_istream.get(m_currChar);
+                extractChar();
             }
             m_istream.unget();
             symbol = getReservedWordSymbol(tokenStr);
@@ -39,13 +39,13 @@ std::vector<Token>& Tokenizer::tokenize() {
             if (m_currChar != '0') {
                 while (isdigit(m_currChar)) {
                     tokenStr += m_currChar;
-                    m_istream.get(m_currChar);
+                    extractChar();
                 }
                 m_istream.unget();
                 symbol = SymbolEnum::INTCON;
             } else {
                 tokenStr += m_currChar;
-                m_istream.get(m_currChar);
+                extractChar();
                 if (!isdigit(m_currChar)) {
                     m_istream.unget();
                     symbol = SymbolEnum::INTCON;
@@ -54,7 +54,38 @@ std::vector<Token>& Tokenizer::tokenize() {
                 }
             }
         }
-        // 进入双分界符
+        // 进入注释
+        else if (m_currChar == '/') {
+            tokenStr += m_currChar;
+            extractChar();
+            if (m_currChar == '/') { // 单行注释
+                while (!isNewline(m_currChar)) {
+                    extractChar();
+                }
+                m_currLine++;
+                symbol = SymbolEnum::COMMENT;
+            } else if (m_currChar == '*') { // 多行注释
+                extractChar();
+                while (true) {
+                    while (m_currChar != '*') {
+                        if (isNewline(m_currChar)) {
+                            m_currLine++;
+                        }
+                        extractChar();
+                    }
+                    extractChar();
+                    if (m_currChar == '/') {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                symbol = SymbolEnum::COMMENT;
+            } else { // 除法
+                unextractChar();
+                symbol = SymbolEnum::DIV;
+            }
+        }
 
         if (symbol != SymbolEnum::COMMENT) {
             m_currToken = makeToken(m_currLine, symbol, tokenStr, tokenValue);
@@ -83,4 +114,12 @@ SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) const {
     toUpper(copy);
     auto symbol = getSymbolEnumByText(copy + "RW");
     return reservedWordSet.count(word) != 0 ? symbol : SymbolEnum::IDENT;
+}
+
+void Tokenizer::extractChar() {
+    m_istream.get(m_currChar);
+}
+
+void Tokenizer::unextractChar() {
+    m_istream.unget();
 }
