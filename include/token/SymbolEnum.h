@@ -1,6 +1,8 @@
 #ifndef SYMBOL_ENUM_H
 #define SYMBOL_ENUM_H
+#include <vector>
 #include <string>
+#include <algorithm>
 enum class SymbolEnum : int {
     UNKNOWN = 0,
     IDENT,  // 标识符
@@ -46,7 +48,7 @@ enum class SymbolEnum : int {
     PRINTFRW,   // printf
 };
 
-static const std::string s_symbolText[] = {
+static const std::vector<std::string> s_symbolText{
     "UNKNOWN",
     "IDENT",
     "INTCON",
@@ -91,5 +93,14 @@ static const std::string s_symbolText[] = {
 
 static const std::string& getSymbolText(SymbolEnum symbol) {
     return s_symbolText[static_cast<std::underlying_type<SymbolEnum>::type>(symbol)];
+}
+
+static const SymbolEnum getSymbolEnumByText(const std::string& text) {
+    auto target = std::find(s_symbolText.begin(), s_symbolText.end(), text);
+    if (target != s_symbolText.end()) {
+        return SymbolEnum(std::distance(s_symbolText.begin(), target));
+    } else {
+        return SymbolEnum::UNKNOWN;
+    }
 }
 #endif

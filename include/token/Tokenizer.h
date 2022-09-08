@@ -37,14 +37,14 @@ private:
 
 private:
     TokenIter makeToken(int lineNum, const SymbolEnum& symbolNum, const std::string& literal, int value = 0);
+    SymbolEnum getReservedWordSymbol(std::string& word) const;
 
 private:
     std::istream m_istream;
     std::vector<Token> m_tokenList;
     TokenIter m_currToken{nullptr};
-    std::string m_tokenStr;
     char m_currChar;
-    unsigned int m_currLine;
+    unsigned int m_currLine{1};
 };
 
 #endif
