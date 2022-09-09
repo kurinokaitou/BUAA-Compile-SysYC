@@ -129,7 +129,7 @@ std::vector<Token>& Tokenizer::tokenize() {
             m_tokenStr += m_currChar;
             extractChar();
             if (m_currChar == '/' || m_currChar == '*') {
-                skipComment();
+                m_symbol = skipComment();
             } else {
                 unextractChar();
                 m_symbol = SymbolEnum::DIV;
