@@ -9,7 +9,9 @@
             "name": "Launch Debug", //名称/调试类型，除使用msvc进行调试外，均为该类型
             "request": "launch",
             "program": "${workspaceFolder}/build/SysYC", //指定C/C++程序位置
-            "args": [], //指定运行参数
+            "args": [
+                "-c"
+            ], //指定运行参数
             "cwd": "${workspaceFolder}", //指定工作目录
             "setupCommands": [
                 {
@@ -28,7 +30,9 @@
             "name": "Launch Debug Directly",
             "request": "launch",
             "program": "${workspaceFolder}/build/SysYC", //指定C/C++程序位置
-            "args": [], //指定运行参数
+            "args": [
+                "-c"
+            ], //指定运行参数
             "cwd": "${workspaceFolder}", //指定工作目录
             "setupCommands": [
                 {

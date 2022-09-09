@@ -1,6 +1,5 @@
 #include <token/Tokenizer.h>
 #include <Utils.h>
-#include <set>
 
 Tokenizer::Tokenizer(std::filebuf& fileBuf) :
     m_istream(&fileBuf) {
