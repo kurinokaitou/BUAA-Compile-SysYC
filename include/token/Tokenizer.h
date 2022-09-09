@@ -12,10 +12,15 @@ struct Token {
     const int value;
     const int lineNum;
     explicit Token(int line, SymbolEnum sym, const std::string& lit, int val) :
-        lineNum(line), symbol(sym), value(val), literal(lit) {}
+        lineNum(line), symbol(sym), literal(lit), value(val) {}
 
     friend std::ostream& operator<<(std::ostream& os, const Token& token) {
-        os << token.lineNum << " " << getSymbolText(token.symbol) << " " << token.literal << "\n";
+        os << token.lineNum << " " << getSymbolText(token.symbol) << " ";
+        if (token.symbol == SymbolEnum::INTCON) {
+            os << token.value << "\n";
+        } else {
+            os << token.literal << "\n";
+        }
         return os;
     }
 };
@@ -56,7 +61,7 @@ private:
     unsigned int m_currLine{1};
     SymbolEnum m_symbol{SymbolEnum::UNKNOWN};
     std::string m_tokenStr;
-    int m_tokenValue = 0;
+    int m_tokenValue{0};
 };
 
 #endif
