@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <map>
 enum class SymbolEnum : int {
     UNKNOWN = 0,
     IDENT,  // 标识符
@@ -91,6 +92,33 @@ static const std::vector<std::string> s_symbolText{
     "PRINTFRW",
 };
 
+static const std::map<std::string, SymbolEnum> s_punctSymbolMap = {
+
+    {";", SymbolEnum::SEMICO},
+    {",", SymbolEnum::COMMA},
+    {"(", SymbolEnum::LPARENT},
+    {")", SymbolEnum::RPARENT},
+    {"[", SymbolEnum::LBRACK},
+    {"]", SymbolEnum::RBRACK},
+    {"{", SymbolEnum::LBRACE},
+    {"}", SymbolEnum::RBRACE},
+    {"+", SymbolEnum::PLUS},
+    {"-", SymbolEnum::MINUS},
+    {"*", SymbolEnum::MULT},
+    {"/", SymbolEnum::DIV},
+    {"%", SymbolEnum::MOD},
+    {"=", SymbolEnum::ASSIGN},
+    {"<", SymbolEnum::LES},
+    {">", SymbolEnum::GREAT},
+    {"<=", SymbolEnum::LEQ},
+    {">=", SymbolEnum::GEQ},
+    {"==", SymbolEnum::EQ},
+    {"!=", SymbolEnum::NEQ},
+    {"!", SymbolEnum::NOT},
+    {"&&", SymbolEnum::AND},
+    {"||", SymbolEnum::OR},
+};
+
 static const std::string& getSymbolText(SymbolEnum symbol) {
     return s_symbolText[static_cast<std::underlying_type<SymbolEnum>::type>(symbol)];
 }
@@ -99,6 +127,14 @@ static const SymbolEnum getSymbolEnumByText(const std::string& text) {
     auto target = std::find(s_symbolText.begin(), s_symbolText.end(), text);
     if (target != s_symbolText.end()) {
         return SymbolEnum(std::distance(s_symbolText.begin(), target));
+    } else {
+        return SymbolEnum::UNKNOWN;
+    }
+}
+
+static const SymbolEnum getSymbolEnumByPunct(const std::string& punct) {
+    if (s_punctSymbolMap.count(punct)) {
+        return s_punctSymbolMap.at(punct);
     } else {
         return SymbolEnum::UNKNOWN;
     }

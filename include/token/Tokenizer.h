@@ -38,8 +38,15 @@ private:
 private:
     TokenIter makeToken(int lineNum, const SymbolEnum& symbolNum, const std::string& literal, int value = 0);
     SymbolEnum getReservedWordSymbol(std::string& word) const;
+    void skipVacant();
+    SymbolEnum skipComment();
+    SymbolEnum readIdent();
+    SymbolEnum readInteger();
+    SymbolEnum readPunct();
+    SymbolEnum readString();
     void extractChar();
     void unextractChar();
+    void expect(const char c);
 
 private:
     std::istream m_istream;
@@ -47,6 +54,9 @@ private:
     TokenIter m_currToken{nullptr};
     char m_currChar;
     unsigned int m_currLine{1};
+    SymbolEnum m_symbol{SymbolEnum::UNKNOWN};
+    std::string m_tokenStr;
+    int m_tokenValue = 0;
 };
 
 #endif
