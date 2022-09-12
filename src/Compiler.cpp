@@ -2,8 +2,9 @@
 #include <token/Tokenizer.h>
 #include <grammar/Parser.h>
 
-static std::string s_sourcePath = "test/grammar/testfile1.txt";
-static std::string s_outputPath = "intermediate/token.txt";
+static std::string s_sourcePath = "test/grammar/test.txt";
+static std::string s_dumpTokenPath = "intermediate/token.txt";
+static std::string s_dumpASTPath = "intermediate/ast.txt";
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o"};
@@ -24,8 +25,12 @@ void parseArgs(int argc, char** argv) {
         }
     }
     for (int i = 1; i < argc; i++) {
-        if (argv[i] == std::string("-o")) {
-            s_outputPath = argv[++i];
+        if (argv[i] == std::string("--dump-token")) {
+            s_dumpTokenPath = argv[++i];
+            continue;
+        }
+        if (argv[i] == std::string("--dump-ast")) {
+            s_dumpASTPath = argv[++i];
             continue;
         }
         if (argv[i] == std::string("-c")) {
@@ -39,22 +44,30 @@ int main(int argc, char** argv) {
     parseArgs(argc, argv);
     try {
         std::filebuf in;
-        std::filebuf out;
+        std::filebuf token;
+        std::filebuf ast;
         if (!in.open(s_sourcePath, std::ios::in)) {
             throw std::runtime_error("Fail to open the source file!");
         }
-        if (!out.open(s_outputPath, std::ios::out)) {
-            throw std::runtime_error("Fail to open the output file!");
+        if (!token.open(s_dumpTokenPath, std::ios::out)) {
+            throw std::runtime_error("Fail to open the dump token file!");
+        }
+        if (!ast.open(s_dumpASTPath, std::ios::out)) {
+            throw std::runtime_error("Fail to open the dump ast file!");
         }
         Tokenizer tokenizer(in);
         auto tokenLists = tokenizer.tokenize();
         // dump token
-        std::ostream os(&out);
+        std::ostream tos(&token);
         for (auto& token : tokenLists) {
-            os << token;
+            tos << token;
         }
+
         Parser grammarParser(tokenLists);
-        auto ast = grammarParser.parse();
+        auto astNode = grammarParser.parse();
+        // dump ast
+        std::ostream aos(&ast);
+        astNode->dumpToFile(aos);
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         exit(1);

@@ -13,7 +13,8 @@ public:
     explicit VNodeBase(bool isCorrect) :
         m_isCorrect(isCorrect) {}
     virtual VType getType() const = 0;
-    virtual void addChild(std::shared_ptr<VNodeBase> child) = 0;
+    virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
+    virtual void dumpToFile(std::ostream& os) = 0;
 
 public:
     int getLevel() const { return m_level; }
@@ -22,8 +23,8 @@ public:
         m_parent = std::weak_ptr<VNodeBase>(parent);
         m_level = parent->getLevel() + 1;
     }
-    void setCorrect() { m_isCorrect = true; }
-    void setError() { m_isCorrect = false; }
+    void setCorrect(bool correct) { m_isCorrect = correct; }
+    bool getCorrect() const { return m_isCorrect; }
 
 protected:
     std::weak_ptr<VNodeBase> m_parent;
@@ -37,8 +38,11 @@ public:
         VNodeBase(isCorrect),
         m_symbol(symbol), m_token(token) {}
     virtual VType getType() const override { return VType::VT; }
-    virtual void addChild(std::shared_ptr<VNodeBase> child) override {
+    virtual void addChild(std::shared_ptr<VNodeBase>&& child) override {
         PARSER_LOG_ERROR("Leaf node add child error");
+    }
+    virtual void dumpToFile(std::ostream& os) override {
+        os << "Vt " << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
 
 private:
@@ -52,9 +56,19 @@ public:
         VNodeBase(isCorrect),
         m_nodeEnum(nodeEnum) {}
     virtual VType getType() const override { return VType::VN; }
-    virtual void addChild(std::shared_ptr<VNodeBase> child) override {
+    virtual void addChild(std::shared_ptr<VNodeBase>&& child) override {
         child->setParent(shared_from_this());
+        if (!child->getCorrect()) {
+            setCorrect(false);
+        }
         m_childrenNodes.push_back(std::move(child));
+    }
+    virtual void dumpToFile(std::ostream& os) override {
+        os << "Vn " << getVNodeEnumText(m_nodeEnum) << "\n";
+        for (auto& child : m_childrenNodes) {
+            os << "  ";
+            child->dumpToFile(os);
+        }
     }
 
 public:
