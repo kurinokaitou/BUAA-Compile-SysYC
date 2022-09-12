@@ -8,12 +8,36 @@ Parser::Parser(std::vector<Token>& tokenList) {
 }
 
 std::shared_ptr<VNodeBase> Parser::parse() {
-    compUnit(0);
+    auto compUnitNode = compUnit(0);
     if (m_currToken != m_tokenList.end()) {
-        PARSER_LOG_ERROR("Token未解析完成");
+        PARSER_LOG_INFO("Token解析未完成");
     }
-    return m_astRoot;
+    return compUnitNode;
 }
+
+// 期望获取symbol对应的内容，并返回生成的叶节点
+std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol) {
+    if ((m_currToken + 1)->symbol == symbol) {
+        m_currToken++;
+        return std::make_shared<VNodeLeaf>(symbol, *m_currToken);
+    } else {
+        PARSER_LOG_ERROR(getSymbolText(symbol) + " error");
+        return std::make_shared<VNodeLeaf>(symbol, *(m_currToken - 1), false);
+    }
+}
+
+// 期望获取symbolList包含的内容，并返回生成的叶节点
+std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symbolList) {
+    std::set<SymbolEnum> symset(symbolList);
+    if (symset.count((m_currToken + 1)->symbol)) {
+        m_currToken++;
+        return std::make_shared<VNodeLeaf>(m_currToken->symbol, *m_currToken);
+    } else {
+        PARSER_LOG_ERROR(getSymbolText(m_currToken->symbol) + " error");
+        return std::make_shared<VNodeLeaf>(*symbolList.begin(), *(m_currToken - 1), false);
+    }
+}
+
 // 编译单元compUnit -> {decl} {funcDef} mainFuncDef
 std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
@@ -40,49 +64,88 @@ std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
 std::shared_ptr<VNodeBase> Parser::decl(int level) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
     std::shared_ptr<VNodeBase> child;
-    if (m_currToken->symbol == SymbolEnum::CONSTRW) {
+    if ((m_currToken + 1)->symbol == SymbolEnum::CONSTRW) {
         child = constDecl(level + 1);
     } else {
         child = varDecl(level + 1);
     }
-    declNode->addChild(child);
+    declNode->addChild(std::move(child));
     return declNode;
 }
 // TODO: 完成所有的编译项
-// 常量声明constDecl -> 'const' bType constDef {',' constDef}'{}'
+// 常量声明constDecl -> 'const' bType constDef {',' constDef}';'
 std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
+    std::vector<std::shared_ptr<VNodeBase>> children;
     auto constDeclNode = std::make_shared<VNodeBranch>(VNodeEnum::CONSTDECL);
-    m_currToken++;
+    children.push_back(expect(SymbolEnum::CONSTRW));
+    children.push_back(bType(level + 1));
+    children.push_back(constDef(level + 1));
+    while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {
+        children.push_back(expect(SymbolEnum::COMMA));
+        children.push_back(constDef(level + 1));
+    }
+    children.push_back(expect(SymbolEnum::SEMICO));
+    for (auto& child : children) {
+        constDeclNode->addChild(std::move(child));
+    }
     return constDeclNode;
 }
+
 // 基本类型bType -> 'int'
 std::shared_ptr<VNodeBase> Parser::bType(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    auto btypeNode = std::make_shared<VNodeBranch>(VNodeEnum::BTYPE);
+    btypeNode->addChild(expect(SymbolEnum::INTRW));
+    return btypeNode;
 }
-// 常量定义constDef -> Ident {'[' constExp ']'} '=' constInitVal{}
+
+// 常量定义constDef -> Ident {'[' constExp ']'} '=' constInitVal;
 std::shared_ptr<VNodeBase> Parser::constDef(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto constDefNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    children.push_back(expect(SymbolEnum::IDENT));
+    while ((m_currToken + 1)->symbol == SymbolEnum::LBRACK) {
+        children.push_back(expect(SymbolEnum::LBRACK));
+        children.push_back(constExp(level + 1));
+        children.push_back(expect(SymbolEnum::RBRACK));
+    }
+    children.push_back(expect(SymbolEnum::ASSIGN));
+    children.push_back(constInitVal(level + 1));
+    for (auto& child : children) {
+        constDefNode->addChild(std::move(child));
+    }
+    return constDefNode;
 }
-// 常量初值
+// 常量初值 constInitVal -> constExp | '{' [ constInitVal { ',' constInitVal } ] '}'
 std::shared_ptr<VNodeBase> Parser::constInitVal(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    auto constInitValNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    if ((m_currToken + 1)->symbol == SymbolEnum::LBRACE) {
+        std::vector<std::shared_ptr<VNodeBase>> children;
+        children.push_back(expect(SymbolEnum::LBRACE));
+        if ((m_currToken + 1)->symbol != SymbolEnum::RBRACE) {
+            children.push_back(constInitVal(level + 1));
+            while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {
+                children.push_back(expect(SymbolEnum::COMMA));
+                children.push_back(constInitVal(level + 1));
+            }
+        }
+        children.push_back(expect(SymbolEnum::RBRACE));
+        for (auto& child : children) {
+            constInitValNode->addChild(std::move(child));
+        }
+    } else {
+        constInitValNode->addChild(constExp(level + 1));
+    }
+    return constInitValNode;
 }
 // 常量表达式
 std::shared_ptr<VNodeBase> Parser::constExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    auto constExpNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
     m_currToken++;
-    return declNode;
+    return constExpNode;
 }
 // 变量声明
 std::shared_ptr<VNodeBase> Parser::varDecl(int level) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
     m_currToken++;
     return declNode;
 }

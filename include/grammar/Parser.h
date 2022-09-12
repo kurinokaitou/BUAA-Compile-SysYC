@@ -6,6 +6,8 @@ class Parser {
 public:
     explicit Parser(std::vector<Token>& tokenList);
     std::shared_ptr<VNodeBase> parse();
+    std::shared_ptr<VNodeBase> expect(SymbolEnum symbol);
+    std::shared_ptr<VNodeBase> expect(std::initializer_list<SymbolEnum> symbolList);
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元
