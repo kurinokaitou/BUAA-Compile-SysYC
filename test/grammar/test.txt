@@ -1,8 +1,11 @@
+// TODO: fix lVal assign
+// TODO: finish funcFParams
 const int a = 1;
 int n = 2;
-int func(){
-    n = 1;
+void func(){
+    n = a;
 }
 int main(){
-    a = n;
+    n = 3;
 }
+
