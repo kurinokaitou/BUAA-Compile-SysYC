@@ -61,6 +61,13 @@ bool Parser::expectPureExp() {
     }
 }
 
+bool Parser::expectUnaryOp() {
+    auto nextIter = m_currToken + 1;
+    return nextIter->symbol == SymbolEnum::PLUS
+           || nextIter->symbol == SymbolEnum::MINUS
+           || nextIter->symbol == SymbolEnum::NOT;
+}
+
 // 编译单元compUnit -> {decl} {funcDef} mainFuncDef
 std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
@@ -389,7 +396,14 @@ std::shared_ptr<VNodeBase> Parser::cond(int level) {
     return condNode;
 }
 
-// 基本表达式 primaryExp → '(' exp ')' | lVal | number
+std::shared_ptr<VNodeBase> Parser::number(int level) {
+    auto numberNode = std::make_shared<VNodeBranch>(VNodeEnum::NUM);
+    numberNode->setLevel(level);
+    numberNode->addChild(expect(SymbolEnum::INTCON));
+    return numberNode;
+}
+
+// 基本表达式 primaryExp -> '(' exp ')' | lVal | number
 std::shared_ptr<VNodeBase> Parser::primaryExp(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto primaryExpNode = std::make_shared<VNodeBranch>(VNodeEnum::PRIMARYEXP);
@@ -399,7 +413,7 @@ std::shared_ptr<VNodeBase> Parser::primaryExp(int level) {
         children.push_back(exp(level));
         children.push_back(expect(SymbolEnum::RPARENT));
     } else if ((m_currToken + 1)->symbol == SymbolEnum::INTCON) {
-        children.push_back(expect(SymbolEnum::INTCON));
+        children.push_back(number(level));
     } else {
         children.push_back(lVal(level));
     }
@@ -409,54 +423,148 @@ std::shared_ptr<VNodeBase> Parser::primaryExp(int level) {
     return primaryExpNode;
 }
 
-// 一元表达式
+// 一元表达式 unaryExp -> primaryExp | ident '(' [funcRParams] ')' | | unaryOp unaryExp
 std::shared_ptr<VNodeBase> Parser::unaryExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto unaryExpNode = std::make_shared<VNodeBranch>(VNodeEnum::UNARYEXP);
+    unaryExpNode->setLevel(level);
+    if ((m_currToken + 1)->symbol == SymbolEnum::IDENT) {
+        children.push_back(expect(SymbolEnum::IDENT));
+        children.push_back(expect(SymbolEnum::LPARENT));
+        if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT) {
+            children.push_back(funcRParams(level));
+        }
+        children.push_back(expect(SymbolEnum::RPARENT));
+
+    } else if (expectUnaryOp()) {
+        children.push_back(unaryExp(level));
+        children.push_back(unaryExp(level));
+    } else {
+        children.push_back(primaryExp(level));
+    }
+
+    for (auto& child : children) {
+        unaryExpNode->addChild(std::move(child));
+    }
+    return unaryExpNode;
 }
-// 单目运算符
+
+// 单目运算符 unaryOp -> '+' | '−' | '!'
 std::shared_ptr<VNodeBase> Parser::unaryOp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    auto unaryOpNode = std::make_shared<VNodeBranch>(VNodeEnum::UNARYOP);
+    unaryOpNode->setLevel(level);
+    auto op = expect({SymbolEnum::PLUS, SymbolEnum::MINUS, SymbolEnum::NOT});
+    unaryOpNode->addChild(std::move(op));
+    return unaryOpNode;
 }
-// 加减模运算
+
+// 加减模运算 addExp -> mulExp {('+' | '−') mulExp}
 std::shared_ptr<VNodeBase> Parser::addExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto addExpNode = std::make_shared<VNodeBranch>(VNodeEnum::ADDEXP);
+    addExpNode->setLevel(level);
+    children.push_back(mulExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::PLUS || (m_currToken + 1)->symbol == SymbolEnum::MINUS) {
+        children.push_back(expect({SymbolEnum::PLUS, SymbolEnum::MINUS}));
+        children.push_back(mulExp(level));
+    }
+
+    for (auto& child : children) {
+        addExpNode->addChild(std::move(child));
+    }
+    return addExpNode;
 }
-// 乘除模运算
+
+// 乘除模运算 mulExp -> unaryExp { ('*' | '/' | '%') unaryExp}
 std::shared_ptr<VNodeBase> Parser::mulExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto mulExpNode = std::make_shared<VNodeBranch>(VNodeEnum::MULEXP);
+    mulExpNode->setLevel(level);
+    children.push_back(unaryExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::MULT
+           || (m_currToken + 1)->symbol == SymbolEnum::DIV
+           || (m_currToken + 1)->symbol == SymbolEnum::MOD) {
+        children.push_back(expect({SymbolEnum::MULT, SymbolEnum::DIV, SymbolEnum::MOD}));
+        children.push_back(unaryExp(level));
+    }
+
+    for (auto& child : children) {
+        mulExpNode->addChild(std::move(child));
+    }
+    return mulExpNode;
 }
-// 关系表达式
+
+// 关系表达式 relExp -> addExp {('<' | '>' | '<=' | '>=') addExp}
 std::shared_ptr<VNodeBase> Parser::relExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto relExpNode = std::make_shared<VNodeBranch>(VNodeEnum::RELEXP);
+    relExpNode->setLevel(level);
+    children.push_back(addExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::LES
+           || (m_currToken + 1)->symbol == SymbolEnum::LEQ
+           || (m_currToken + 1)->symbol == SymbolEnum::GREAT
+           || (m_currToken + 1)->symbol == SymbolEnum::GEQ) {
+        children.push_back(expect({SymbolEnum::LES, SymbolEnum::LEQ, SymbolEnum::GREAT, SymbolEnum::GEQ}));
+        children.push_back(addExp(level));
+    }
+
+    for (auto& child : children) {
+        relExpNode->addChild(std::move(child));
+    }
+    return relExpNode;
 }
-// 相等性表达式
+
+// 相等性表达式 eqExp -> relExp { ('==' | '!=') relExp}
 std::shared_ptr<VNodeBase> Parser::eqExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto eqExpNode = std::make_shared<VNodeBranch>(VNodeEnum::EQEXP);
+    eqExpNode->setLevel(level);
+    children.push_back(relExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::EQ || (m_currToken + 1)->symbol == SymbolEnum::NEQ) {
+        children.push_back(expect({SymbolEnum::EQ, SymbolEnum::NEQ}));
+        children.push_back(relExp(level));
+    }
+
+    for (auto& child : children) {
+        eqExpNode->addChild(std::move(child));
+    }
+    return eqExpNode;
 }
-// 逻辑与表达式
+
+// 逻辑与表达式 lAndExp -> eqExp { '&&' eqExp }
 std::shared_ptr<VNodeBase> Parser::lAndExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto lAndExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LANDEXP);
+    lAndExpNode->setLevel(level);
+    children.push_back(eqExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::AND) {
+        children.push_back(expect(SymbolEnum::AND));
+        children.push_back(eqExp(level));
+    }
+
+    for (auto& child : children) {
+        lAndExpNode->addChild(std::move(child));
+    }
+    return lAndExpNode;
 }
-// 逻辑或表达式
+
+// 逻辑或表达式 LOrExp ->  LAndExp { '||' LAndExp }
 std::shared_ptr<VNodeBase> Parser::lOrExp(int level) {
-    auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
-    return declNode;
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto lOrExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LOREXP);
+    lOrExpNode->setLevel(level);
+    children.push_back(lAndExp(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::OR) {
+        children.push_back(expect(SymbolEnum::OR));
+        children.push_back(lAndExp(level));
+    }
+
+    for (auto& child : children) {
+        lOrExpNode->addChild(std::move(child));
+    }
+    return lOrExpNode;
 }
+
 // 函数定义
 std::shared_ptr<VNodeBase> Parser::funcDef(int level) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);

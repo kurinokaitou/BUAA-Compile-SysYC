@@ -12,6 +12,7 @@ private:
     std::shared_ptr<VNodeBase> expect(std::initializer_list<SymbolEnum> symbolList);
     bool expectAssignment();
     bool expectPureExp();
+    bool expectUnaryOp();
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元
@@ -30,6 +31,7 @@ private:
     std::shared_ptr<VNodeBase> lVal(int level);         // 左值
     std::shared_ptr<VNodeBase> exp(int level);          // 表达式
     std::shared_ptr<VNodeBase> cond(int level);         // 条件表达式
+    std::shared_ptr<VNodeBase> number(int level);       // 数字
     std::shared_ptr<VNodeBase> primaryExp(int level);   // 基本表达式
     std::shared_ptr<VNodeBase> unaryExp(int level);     // 一元表达式
     std::shared_ptr<VNodeBase> unaryOp(int level);      // 单目运算符
