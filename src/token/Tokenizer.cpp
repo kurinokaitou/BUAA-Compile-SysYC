@@ -10,13 +10,14 @@ Tokenizer::TokenIter Tokenizer::makeToken(int lineNum, const SymbolEnum& symbolN
     return m_tokenList.end() - 1;
 }
 
-void Tokenizer::skipVacant() {
-    while (isspace(m_currChar) || isNewline(m_currChar) || isTab(m_currChar)) {
+bool Tokenizer::skipVacant() {
+    while ((isspace(m_currChar) || isNewline(m_currChar) || isTab(m_currChar)) && !m_istream.eof()) {
         if (isNewline(m_currChar)) {
             m_currLine++;
         }
         extractChar();
     }
+    return m_istream.eof();
 }
 
 SymbolEnum Tokenizer::readIdent() {
@@ -116,7 +117,7 @@ std::vector<Token>& Tokenizer::tokenize() {
         m_tokenStr.clear();
         m_symbol = SymbolEnum::UNKNOWN;
         m_tokenValue = 0;
-        skipVacant();
+        if (skipVacant()) break;
         // 处理标识符
         if (isalpha(m_currChar)) {
             m_symbol = readIdent();
