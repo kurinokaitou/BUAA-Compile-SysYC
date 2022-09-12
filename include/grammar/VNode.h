@@ -22,10 +22,9 @@ public:
     std::weak_ptr<VNodeBase> getParent() { return m_parent; }
     void setParent(const std::shared_ptr<VNodeBase> parent) {
         m_parent = std::weak_ptr<VNodeBase>(parent);
-        m_level = parent->getLevel() + 1;
     }
     void setCorrect(bool correct) { m_isCorrect = correct; }
-    bool getCorrect() const { return m_isCorrect; }
+    bool isCorrect() const { return m_isCorrect; }
 
 protected:
     std::weak_ptr<VNodeBase> m_parent;
@@ -59,7 +58,7 @@ public:
     virtual VType getType() const override { return VType::VN; }
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) override {
         child->setParent(shared_from_this());
-        if (!child->getCorrect()) {
+        if (!child->isCorrect()) {
             setCorrect(false);
         }
         m_childrenNodes.push_back(std::move(child));

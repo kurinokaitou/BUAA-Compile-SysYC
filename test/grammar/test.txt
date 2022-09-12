@@ -1,3 +1,8 @@
 const int a = 1;
-int func(){}
-int main(){}
+int n = 2;
+int func(){
+    n = 1;
+}
+int main(){
+    a = n;
+}
