@@ -18,6 +18,7 @@ public:
 
 public:
     int getLevel() const { return m_level; }
+    void setLevel(int level) { m_level = level; }
     std::weak_ptr<VNodeBase> getParent() { return m_parent; }
     void setParent(const std::shared_ptr<VNodeBase> parent) {
         m_parent = std::weak_ptr<VNodeBase>(parent);
@@ -66,7 +67,7 @@ public:
     virtual void dumpToFile(std::ostream& os) override {
         os << "Vn " << getVNodeEnumText(m_nodeEnum) << "\n";
         for (auto& child : m_childrenNodes) {
-            os << "  ";
+            for (int i = 0; i < m_level + 1; i++) os << "  ";
             child->dumpToFile(os);
         }
     }

@@ -42,6 +42,7 @@ std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symb
 std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto compUnitNode = std::make_shared<VNodeBranch>(VNodeEnum::COMPUNIT);
+    compUnitNode->setLevel(level);
     // 获取 decl, 只要不是 void|int func()的形式就可以按照decl去读取
     while ((m_currToken + 3)->symbol != SymbolEnum::LPARENT) {
         auto child = decl(level + 1);
@@ -63,6 +64,7 @@ std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
 // 声明decl -> constDef | varDef
 std::shared_ptr<VNodeBase> Parser::decl(int level) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    declNode->setLevel(level);
     std::shared_ptr<VNodeBase> child;
     if ((m_currToken + 1)->symbol == SymbolEnum::CONSTRW) {
         child = constDecl(level + 1);
@@ -77,6 +79,7 @@ std::shared_ptr<VNodeBase> Parser::decl(int level) {
 std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto constDeclNode = std::make_shared<VNodeBranch>(VNodeEnum::CONSTDECL);
+    constDeclNode->setLevel(level);
     children.push_back(expect(SymbolEnum::CONSTRW));
     children.push_back(bType(level + 1));
     children.push_back(constDef(level + 1));
@@ -94,6 +97,7 @@ std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
 // 基本类型bType -> 'int'
 std::shared_ptr<VNodeBase> Parser::bType(int level) {
     auto btypeNode = std::make_shared<VNodeBranch>(VNodeEnum::BTYPE);
+    btypeNode->setLevel(level);
     btypeNode->addChild(expect(SymbolEnum::INTRW));
     return btypeNode;
 }
@@ -102,6 +106,7 @@ std::shared_ptr<VNodeBase> Parser::bType(int level) {
 std::shared_ptr<VNodeBase> Parser::constDef(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto constDefNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    constDefNode->setLevel(level);
     children.push_back(expect(SymbolEnum::IDENT));
     while ((m_currToken + 1)->symbol == SymbolEnum::LBRACK) {
         children.push_back(expect(SymbolEnum::LBRACK));
@@ -118,6 +123,7 @@ std::shared_ptr<VNodeBase> Parser::constDef(int level) {
 // 常量初值 constInitVal -> constExp | '{' [ constInitVal { ',' constInitVal } ] '}'
 std::shared_ptr<VNodeBase> Parser::constInitVal(int level) {
     auto constInitValNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
+    constInitValNode->setLevel(level);
     if ((m_currToken + 1)->symbol == SymbolEnum::LBRACE) {
         std::vector<std::shared_ptr<VNodeBase>> children;
         children.push_back(expect(SymbolEnum::LBRACE));
@@ -137,12 +143,14 @@ std::shared_ptr<VNodeBase> Parser::constInitVal(int level) {
     }
     return constInitValNode;
 }
-// 常量表达式
+// 常量表达式 constExp -> addExp
 std::shared_ptr<VNodeBase> Parser::constExp(int level) {
     auto constExpNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
-    m_currToken++;
+    constExpNode->setLevel(level);
+    constExpNode->addChild(addExp(level + 1));
     return constExpNode;
 }
+
 // 变量声明
 std::shared_ptr<VNodeBase> Parser::varDecl(int level) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);

@@ -1,19 +1,20 @@
-Vn COMPUNIT
-  Vn DECL
-  Vn CONSTDECL
-  Vt CONSTRW const
-  Vn BTYPE
-  Vt INTRW int
-  Vn DECL
-  Vt IDENT a
-  Vt ASSIGN =
-  Vn DECL
-  Vn DECL
-  Vt SEMICO ;
-  Vn DECL
-  Vn DECL
-  Vn DECL
-  Vn DECL
-  Vn DECL
-  Vn DECL
-  Vn DECL
+Vn 0 COMPUNIT
+  Vn 1 DECL
+    Vn 2 CONSTDECL
+      Vt 3 CONSTRW const
+      Vn 3 BTYPE
+        Vt 4 INTRW int
+      Vn 3 DECL
+        Vt 4 IDENT a
+        Vt 4 ASSIGN =
+        Vn 4 DECL
+          Vn 5 DECL
+            Vn 6 DECL
+      Vt 3 SEMICO ;
+  Vn 1 DECL
+  Vn 1 DECL
+  Vn 1 DECL
+  Vn 1 DECL
+  Vn 1 DECL
+  Vn 1 DECL
+  Vn 1 DECL
