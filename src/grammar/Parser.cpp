@@ -428,7 +428,7 @@ std::shared_ptr<VNodeBase> Parser::unaryExp(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto unaryExpNode = std::make_shared<VNodeBranch>(VNodeEnum::UNARYEXP);
     unaryExpNode->setLevel(level);
-    if ((m_currToken + 1)->symbol == SymbolEnum::IDENT) {
+    if ((m_currToken + 1)->symbol == SymbolEnum::IDENT && (m_currToken + 2)->symbol == SymbolEnum::LPARENT) {
         children.push_back(expect(SymbolEnum::IDENT));
         children.push_back(expect(SymbolEnum::LPARENT));
         // TODO: 修复'('错误

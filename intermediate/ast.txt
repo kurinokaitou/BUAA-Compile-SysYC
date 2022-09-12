@@ -1,0 +1,83 @@
+Vn COMPUNIT
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT a
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT n
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt SEMICO ;
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT func
+    Vt LPARENT (
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT n
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt PLUS +
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn MAINFUNCDEF
+    Vt INTRW int
+    Vt MAINRW main
+    Vt LPARENT (
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT n
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 3
+        Vt SEMICO ;
+      Vt RBRACE }

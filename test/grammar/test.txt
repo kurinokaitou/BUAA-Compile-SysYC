@@ -1,9 +1,10 @@
 // TODO: fix lVal assign
 // TODO: finish funcFParams
+// TODO: fix bottom comment 
 const int a = 1;
 int n = 2;
 void func(){
-    n = a;
+    n = a + 1;
 }
 int main(){
     n = 3;
