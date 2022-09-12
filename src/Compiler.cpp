@@ -1,5 +1,6 @@
 #include <exception>
 #include <token/Tokenizer.h>
+#include <grammar/Parser.h>
 
 static std::string s_sourcePath = "test/grammar/testfile1.txt";
 static std::string s_outputPath = "intermediate/token.txt";
@@ -15,7 +16,7 @@ static void usage(int status) {
 }
 
 void parseArgs(int argc, char** argv) {
-    // TODO: args with input file or config file
+    // TODO: 参数加入配置文件
     for (int i = 0; i < argc; i++) {
         if (takeArg(argv[i])) {
             if (!argv[++i])
@@ -47,12 +48,16 @@ int main(int argc, char** argv) {
         }
         Tokenizer tokenizer(in);
         auto tokenLists = tokenizer.tokenize();
-        // tokenizer debug
+        // dump token
         std::ostream os(&out);
         for (auto& token : tokenLists) {
             os << token;
         }
+        Parser grammarParser(tokenLists);
+        auto ast = grammarParser.parse();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
+        exit(1);
     }
+    return 0;
 }

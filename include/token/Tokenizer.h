@@ -8,13 +8,14 @@
 #include "SymbolEnum.h"
 
 struct Token {
-    const SymbolEnum symbol;
-    const std::string literal;
-    const int value;
-    const int lineNum;
+    SymbolEnum symbol;
+    std::string literal;
+    int value;
+    int lineNum;
     explicit Token(int line, SymbolEnum sym, const std::string& lit, int val) :
         lineNum(line), symbol(sym), literal(lit), value(val) {}
-
+    Token() :
+        symbol(SymbolEnum::UNKNOWN), literal(""), value(0), lineNum(0){};
     friend std::ostream& operator<<(std::ostream& os, const Token& token) {
         os << token.lineNum << " " << getSymbolText(token.symbol) << " ";
         if (token.symbol == SymbolEnum::INTCON) {

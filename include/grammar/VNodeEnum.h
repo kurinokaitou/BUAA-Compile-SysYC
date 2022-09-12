@@ -4,7 +4,7 @@ enum class VType : bool {
     VN = false,
     VT = true
 };
-enum class VNodeType : int {
+enum class VNodeEnum : int {
     COMPUNIT = 0,
     DECL,
     CONSTDECL,
