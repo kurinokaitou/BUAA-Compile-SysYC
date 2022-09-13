@@ -23,7 +23,7 @@ std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol) {
     } else {
         PARSER_LOG_INFO("error occurred!");
         if (!m_probingMode) {
-            PARSER_LOG_ERROR(std::to_string(m_currToken->lineNum) + " " + m_currToken->literal + " " + getSymbolText(symbol) + " error");
+            PARSER_LOG_ERROR("[Error] line " + std::to_string(m_currToken->lineNum) + ": expected " + getSymbolText(symbol) + ", but " + m_currToken->literal + " provided.");
         }
         return std::make_shared<VNodeLeaf>(symbol, *(m_currToken - 1), false);
     }
