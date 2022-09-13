@@ -6,11 +6,11 @@
 #include <map>
 enum class SymbolEnum : int {
     UNKNOWN = 0,
-    IDENT,  // 标识符
+    IDENFR, // 标识符
     INTCON, // 无符号整数
     STRCON, // 常量字符串
     // 分界符
-    SEMICO,  // ;
+    SEMICN,  // ;
     COMMA,   // ,
     LPARENT, // (
     RPARENT, // )
@@ -19,42 +19,42 @@ enum class SymbolEnum : int {
     LBRACE,  // {
     RBRACE,  // }
     PLUS,    // +
-    MINUS,   // -
+    MINU,    // -
     MULT,    // *
     DIV,     // /
     MOD,     // %
     ASSIGN,  // =
-    LES,     // <
+    LSS,     // <
     LEQ,     // <=
-    GREAT,   // >
+    GRE,     // >
     GEQ,     // >=
-    EQ,      // ==
+    EQL,     // ==
     NEQ,     // !=
     NOT,     // !
     AND,     // &&
     OR,      // ||
     COMMENT, // // /*
     // 保留字
-    CONSTRW,    // const
-    MAINRW,     // main
-    INTRW,      // int
-    VOIDRW,     // void
-    RETURNRW,   // return
-    IFRW,       // if
-    ELSERW,     // else
-    BREAKRW,    // break
-    CONTINUERW, // continue
-    WHILERW,    // while
-    GETINTRW,   // getint
-    PRINTFRW,   // printf
+    CONSTTK,    // const
+    MAINTK,     // main
+    INTTK,      // int
+    VOIDTK,     // void
+    RETURNTK,   // return
+    IFTK,       // if
+    ELSETK,     // else
+    BREAKTK,    // break
+    CONTINUETK, // continue
+    WHILETK,    // while
+    GETINTTK,   // getint
+    PRINTFTK,   // printf
 };
 
 static const std::vector<std::string> s_symbolText{
     "UNKNOWN",
-    "IDENT",
+    "IDENFR",
     "INTCON",
     "STRCON",
-    "SEMICO",
+    "SEMICN",
     "COMMA",
     "LPARENT",
     "RPARENT",
@@ -63,38 +63,38 @@ static const std::vector<std::string> s_symbolText{
     "LBRACE",
     "RBRACE",
     "PLUS",
-    "MINUS",
+    "MINU",
     "MULT",
     "DIV",
     "MOD",
     "ASSIGN",
-    "LES",
+    "LSS",
     "LEQ",
-    "GREAT",
+    "GRE",
     "GEQ",
-    "EQ",
+    "EQL",
     "NEQ",
     "NOT",
     "AND",
     "OR",
     "COMMENT",
-    "CONSTRW",
-    "MAINRW",
-    "INTRW",
-    "VOIDRW",
-    "RETURNRW",
-    "IFRW",
-    "ELSERW",
-    "BREAKRW",
-    "CONTINUERW",
-    "WHILERW",
-    "GETINTRW",
-    "PRINTFRW",
+    "CONSTTK",
+    "MAINTK",
+    "INTTK",
+    "VOIDTK",
+    "RETURNTK",
+    "IFTK",
+    "ELSETK",
+    "BREAKTK",
+    "CONTINUETK",
+    "WHILETK",
+    "GETINTTK",
+    "PRINTFTK",
 };
 
 static const std::map<std::string, SymbolEnum> s_punctSymbolMap = {
 
-    {";", SymbolEnum::SEMICO},
+    {";", SymbolEnum::SEMICN},
     {",", SymbolEnum::COMMA},
     {"(", SymbolEnum::LPARENT},
     {")", SymbolEnum::RPARENT},
@@ -103,16 +103,16 @@ static const std::map<std::string, SymbolEnum> s_punctSymbolMap = {
     {"{", SymbolEnum::LBRACE},
     {"}", SymbolEnum::RBRACE},
     {"+", SymbolEnum::PLUS},
-    {"-", SymbolEnum::MINUS},
+    {"-", SymbolEnum::MINU},
     {"*", SymbolEnum::MULT},
     {"/", SymbolEnum::DIV},
     {"%", SymbolEnum::MOD},
     {"=", SymbolEnum::ASSIGN},
-    {"<", SymbolEnum::LES},
-    {">", SymbolEnum::GREAT},
+    {"<", SymbolEnum::LSS},
+    {">", SymbolEnum::GRE},
     {"<=", SymbolEnum::LEQ},
     {">=", SymbolEnum::GEQ},
-    {"==", SymbolEnum::EQ},
+    {"==", SymbolEnum::EQL},
     {"!=", SymbolEnum::NEQ},
     {"!", SymbolEnum::NOT},
     {"&&", SymbolEnum::AND},

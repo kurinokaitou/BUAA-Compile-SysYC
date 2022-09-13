@@ -12,7 +12,7 @@ static bool isNewline(const char c) {
 static bool isTab(const char c) {
     return c == '\t';
 }
-static bool isIdentChar(const char c) {
+static bool isIDENFRChar(const char c) {
     return isalnum(c) || c == '_';
 }
 static bool isPunct(const char c) {

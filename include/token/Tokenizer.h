@@ -17,7 +17,7 @@ struct Token {
     Token() :
         symbol(SymbolEnum::UNKNOWN), literal(""), value(0), lineNum(0){};
     friend std::ostream& operator<<(std::ostream& os, const Token& token) {
-        os << token.lineNum << " " << getSymbolText(token.symbol) << " ";
+        os << getSymbolText(token.symbol) << " ";
         if (token.symbol == SymbolEnum::INTCON) {
             os << token.value << "\n";
         } else {
@@ -47,7 +47,7 @@ private:
     SymbolEnum getReservedWordSymbol(std::string& word) const;
     bool skipVacant();
     SymbolEnum skipComment();
-    SymbolEnum readIdent();
+    SymbolEnum readIDENFR();
     SymbolEnum readInteger();
     SymbolEnum readPunct();
     SymbolEnum readString();

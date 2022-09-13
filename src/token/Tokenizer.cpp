@@ -20,8 +20,8 @@ bool Tokenizer::skipVacant() {
     return m_istream.eof();
 }
 
-SymbolEnum Tokenizer::readIdent() {
-    while (isIdentChar(m_currChar)) {
+SymbolEnum Tokenizer::readIDENFR() {
+    while (isIDENFRChar(m_currChar)) {
         m_tokenStr += m_currChar;
         extractChar();
     }
@@ -120,7 +120,7 @@ std::vector<Token>& Tokenizer::tokenize() {
         if (skipVacant()) break;
         // 处理标识符
         if (isalpha(m_currChar)) {
-            m_symbol = readIdent();
+            m_symbol = readIDENFR();
         }
         // 处理非零数字
         else if (isdigit(m_currChar)) {
@@ -170,8 +170,8 @@ SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) const {
     };
     std::string copy(word);
     toUpper(copy);
-    auto m_symbol = getSymbolEnumByText(copy + "RW");
-    return reservedWordSet.count(word) != 0 ? m_symbol : SymbolEnum::IDENT;
+    auto m_symbol = getSymbolEnumByText(copy + "TK");
+    return reservedWordSet.count(word) != 0 ? m_symbol : SymbolEnum::IDENFR;
 }
 
 void Tokenizer::extractChar() {

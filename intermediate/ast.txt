@@ -1,11 +1,11 @@
 Vn COMPUNIT
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT c1
+    Vt IDENFR c1
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -15,14 +15,14 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT cc1
+    Vt IDENFR cc1
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -34,7 +34,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn CONSTDEF
-    Vt IDENT cc2
+    Vt IDENFR cc2
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -44,14 +44,14 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT ccc1
+    Vt IDENFR ccc1
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -63,7 +63,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn CONSTDEF
-    Vt IDENT ccc2
+    Vt IDENFR ccc2
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -75,7 +75,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn CONSTDEF
-    Vt IDENT ccc3
+    Vt IDENFR ccc3
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
@@ -85,14 +85,14 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT ca1
+    Vt IDENFR ca1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -123,14 +123,14 @@ Vn COMPUNIT
     Vn NUM
     Vt INTCON 2
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT cca1
+    Vt IDENFR cca1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -163,7 +163,7 @@ Vn COMPUNIT
     Vt RBRACE }
     Vt COMMA ,
     Vn CONSTDEF
-    Vt IDENT cca2
+    Vt IDENFR cca2
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -194,14 +194,14 @@ Vn COMPUNIT
     Vn NUM
     Vt INTCON 2
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT caa1
+    Vt IDENFR caa1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -265,14 +265,14 @@ Vn COMPUNIT
     Vt INTCON 4
     Vt RBRACE }
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn CONSTDECL
-    Vt CONSTRW const
+    Vt CONSTTK const
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn CONSTDEF
-    Vt IDENT ccaa1
+    Vt IDENFR ccaa1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -338,7 +338,7 @@ Vn COMPUNIT
     Vt RBRACE }
     Vt COMMA ,
     Vn CONSTDEF
-    Vt IDENT ccaa2
+    Vt IDENFR ccaa2
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -402,13 +402,13 @@ Vn COMPUNIT
     Vt INTCON 4
     Vt RBRACE }
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT v1
+    Vt IDENFR v1
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -418,13 +418,13 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT vc1
+    Vt IDENFR vc1
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -436,7 +436,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn VARDEF
-    Vt IDENT vc2
+    Vt IDENFR vc2
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -446,13 +446,13 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT vcc1
+    Vt IDENFR vcc1
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -464,7 +464,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn VARDEF
-    Vt IDENT vcc2
+    Vt IDENFR vcc2
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -476,7 +476,7 @@ Vn COMPUNIT
     Vt INTCON 1
     Vt COMMA ,
     Vn VARDEF
-    Vt IDENT vcc3
+    Vt IDENFR vcc3
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -486,13 +486,13 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 1
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT va1
+    Vt IDENFR va1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -523,13 +523,13 @@ Vn COMPUNIT
     Vn NUM
     Vt INTCON 2
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT vca1
+    Vt IDENFR vca1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -562,7 +562,7 @@ Vn COMPUNIT
     Vt RBRACE }
     Vt COMMA ,
     Vn VARDEF
-    Vt IDENT vca2
+    Vt IDENFR vca2
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -593,13 +593,13 @@ Vn COMPUNIT
     Vn NUM
     Vt INTCON 2
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT vaa1
+    Vt IDENFR vaa1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -663,13 +663,13 @@ Vn COMPUNIT
     Vt INTCON 4
     Vt RBRACE }
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT vcaa1
+    Vt IDENFR vcaa1
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -735,7 +735,7 @@ Vn COMPUNIT
     Vt RBRACE }
     Vt COMMA ,
     Vn VARDEF
-    Vt IDENT vcaa2
+    Vt IDENFR vcaa2
     Vt LBRACK [
     Vn CONSTEXP
     Vn ADDEXP
@@ -799,13 +799,13 @@ Vn COMPUNIT
     Vt INTCON 4
     Vt RBRACE }
     Vt RBRACE }
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn DECL
     Vn VARDECL
     Vn BTYPE
-    Vt INTRW int
+    Vt INTTK int
     Vn VARDEF
-    Vt IDENT g
+    Vt IDENFR g
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -815,18 +815,18 @@ Vn COMPUNIT
     Vn PRIMARYEXP
     Vn NUM
     Vt INTCON 0
-    Vt SEMICO ;
+    Vt SEMICN ;
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT without_para
+    Vt INTTK int
+    Vt IDENFR without_para
     Vt LPARENT (
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
@@ -834,83 +834,83 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 5
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_para_1
+    Vt INTTK int
+    Vt IDENFR with_para_1
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p
+    Vt INTTK int
+    Vt IDENFR p
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p
+        Vt IDENFR p
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p
-        Vt SEMICO ;
+        Vt IDENFR p
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_para_2
+    Vt INTTK int
+    Vt IDENFR with_para_2
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p1
+    Vt INTTK int
+    Vt IDENFR p1
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p2
+    Vt INTTK int
+    Vt IDENFR p2
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p1
+        Vt IDENFR p1
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p2
-        Vt SEMICO ;
+        Vt IDENFR p2
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_array_para_1
+    Vt INTTK int
+    Vt IDENFR with_array_para_1
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt RPARENT )
@@ -918,14 +918,14 @@ Vn COMPUNIT
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -939,7 +939,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -949,25 +949,25 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_array_para_2
+    Vt INTTK int
+    Vt IDENFR with_array_para_2
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT b
+    Vt INTTK int
+    Vt IDENFR b
     Vt LBRACK [
     Vt RBRACK ]
     Vt RPARENT )
@@ -975,14 +975,14 @@ Vn COMPUNIT
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -996,7 +996,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1006,18 +1006,18 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_double_array_para_1
+    Vt INTTK int
+    Vt IDENFR with_double_array_para_1
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1034,14 +1034,14 @@ Vn COMPUNIT
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1064,7 +1064,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1083,18 +1083,18 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT with_double_array_para_2
+    Vt INTTK int
+    Vt IDENFR with_double_array_para_2
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1109,8 +1109,8 @@ Vn COMPUNIT
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT b
+    Vt INTTK int
+    Vt IDENFR b
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1127,14 +1127,14 @@ Vn COMPUNIT
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1157,7 +1157,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1176,19 +1176,19 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT without_para_void
+    Vt INTTK int
+    Vt IDENFR without_para_void
     Vt LPARENT (
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
@@ -1196,18 +1196,18 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 1
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_para_1_void
+    Vt VOIDTK void
+    Vt IDENFR with_para_1_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p
+    Vt INTTK int
+    Vt IDENFR p
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
@@ -1215,9 +1215,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p1
+        Vt IDENFR p1
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1226,29 +1226,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p
+        Vt IDENFR p
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p
-        Vt SEMICO ;
+        Vt IDENFR p
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_para_2_void
+    Vt VOIDTK void
+    Vt IDENFR with_para_2_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p1
+    Vt INTTK int
+    Vt IDENFR p1
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT p2
+    Vt INTTK int
+    Vt IDENFR p2
     Vt RPARENT )
     Vn BLOCK
       Vt LBRACE {
@@ -1256,9 +1256,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p
+        Vt IDENFR p
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1267,24 +1267,24 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p1
+        Vt IDENFR p1
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT p2
-        Vt SEMICO ;
+        Vt IDENFR p2
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_array_para_1_void
+    Vt VOIDTK void
+    Vt IDENFR with_array_para_1_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt RPARENT )
@@ -1294,9 +1294,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p
+        Vt IDENFR p
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1305,7 +1305,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1319,7 +1319,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1329,25 +1329,25 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_array_para_2_void
+    Vt VOIDTK void
+    Vt IDENFR with_array_para_2_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT b
+    Vt INTTK int
+    Vt IDENFR b
     Vt LBRACK [
     Vt RBRACK ]
     Vt RPARENT )
@@ -1357,9 +1357,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p
+        Vt IDENFR p
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1368,7 +1368,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1382,7 +1382,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1392,18 +1392,18 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_double_array_para_1_void
+    Vt VOIDTK void
+    Vt IDENFR with_double_array_para_1_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1422,9 +1422,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p
+        Vt IDENFR p
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1433,7 +1433,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1456,7 +1456,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1475,18 +1475,18 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt VOIDRW void
-    Vt IDENT with_double_array_para_2_void
+    Vt VOIDTK void
+    Vt IDENFR with_double_array_para_2_void
     Vt LPARENT (
     Vn FUNCFPARAMS
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT a
+    Vt INTTK int
+    Vt IDENFR a
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1501,8 +1501,8 @@ Vn COMPUNIT
     Vt COMMA ,
     Vn FUNCFPARAM
     Vn BTYPE
-    Vt INTRW int
-    Vt IDENT b
+    Vt INTTK int
+    Vt IDENFR b
     Vt LBRACK [
     Vt RBRACK ]
     Vt LBRACK [
@@ -1521,9 +1521,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT p
+        Vt IDENFR p
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1532,7 +1532,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1555,7 +1555,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -1574,16 +1574,16 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACK ]
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
-        Vt SEMICO ;
+        Vt RETURNTK return
+        Vt SEMICN ;
       Vt RBRACE }
   Vn FUNCDEF
     Vn FUNCTYPE
-    Vt INTRW int
-    Vt IDENT add_g
+    Vt INTTK int
+    Vt IDENFR add_g
     Vt LPARENT (
     Vt RPARENT )
     Vn BLOCK
@@ -1591,7 +1591,7 @@ Vn COMPUNIT
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT g
+        Vt IDENFR g
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -1599,29 +1599,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT g
+        Vt IDENFR g
         Vt PLUS +
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 1
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT g
-        Vt SEMICO ;
+        Vt IDENFR g
+        Vt SEMICN ;
       Vt RBRACE }
   Vn MAINFUNCDEF
-    Vt INTRW int
-    Vt MAINRW main
+    Vt INTTK int
+    Vt MAINTK main
     Vt LPARENT (
     Vt RPARENT )
     Vn BLOCK
@@ -1630,9 +1630,9 @@ Vn COMPUNIT
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT n
+        Vt IDENFR n
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1644,7 +1644,7 @@ Vn COMPUNIT
         Vt INTCON 0
         Vt COMMA ,
         Vn VARDEF
-        Vt IDENT m
+        Vt IDENFR m
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1654,14 +1654,14 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 0
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT i
+        Vt IDENFR i
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1671,14 +1671,14 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 0
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT a
+        Vt IDENFR a
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1690,7 +1690,7 @@ Vn COMPUNIT
         Vt INTCON 1
         Vt COMMA ,
         Vn VARDEF
-        Vt IDENT b
+        Vt IDENFR b
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1700,14 +1700,14 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 2
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn INITVAL
         Vn EXP
@@ -1717,14 +1717,14 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 5
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn DECL
         Vn VARDECL
         Vn BTYPE
-        Vt INTRW int
+        Vt INTTK int
         Vn VARDEF
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn CONSTEXP
         Vn ADDEXP
@@ -1755,35 +1755,35 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 0
         Vt RBRACE }
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT n
+        Vt IDENFR n
         Vt ASSIGN =
-        Vt GETINTRW getint
+        Vt GETINTTK getint
         Vt LPARENT (
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT m
+        Vt IDENFR m
         Vt ASSIGN =
-        Vt GETINTRW getint
+        Vt GETINTTK getint
         Vt LPARENT (
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt PRINTFRW printf
+        Vt PRINTFTK printf
         Vt LPARENT (
         Vt STRCON "19373700\n"
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt PRINTFRW printf
+        Vt PRINTFTK printf
         Vt LPARENT (
         Vt STRCON "%d\n"
         Vt COMMA ,
@@ -1793,13 +1793,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT n
+        Vt IDENFR n
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT n
+        Vt IDENFR n
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -1807,17 +1807,17 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT n
+        Vt IDENFR n
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT m
-        Vt SEMICO ;
+        Vt IDENFR m
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT m
+        Vt IDENFR m
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -1831,20 +1831,20 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT n
+        Vt IDENFR n
         Vt PLUS +
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT m
+        Vt IDENFR m
         Vt RPARENT )
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT n
-        Vt SEMICO ;
+        Vt IDENFR n
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn BLOCK
@@ -1852,7 +1852,7 @@ Vn COMPUNIT
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -1871,27 +1871,27 @@ Vn COMPUNIT
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "false\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
-        Vt ELSERW else
+        Vt ELSETK else
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "true\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -1913,27 +1913,27 @@ Vn COMPUNIT
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "true\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
-        Vt ELSERW else
+        Vt ELSETK else
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "false\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -1945,29 +1945,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
-        Vt LES <
+        Vt IDENFR a
+        Vt LSS <
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a<b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -1979,29 +1979,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
-        Vt GREAT >
+        Vt IDENFR a
+        Vt GRE >
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a>b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2013,29 +2013,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt LEQ <=
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a<=b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2047,29 +2047,29 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt GEQ >=
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a>=b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2081,30 +2081,30 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
-        Vt EQ ==
+        Vt IDENFR a
+        Vt EQL ==
         Vn RELEXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a==b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2116,7 +2116,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt NEQ !=
         Vn RELEXP
         Vn ADDEXP
@@ -2124,22 +2124,22 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
         Vn STMT
         Vn BLOCK
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt PRINTFRW printf
+            Vt PRINTFTK printf
             Vt LPARENT (
             Vt STRCON "a!=b\n"
             Vt RPARENT )
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt WHILERW while
+        Vt WHILETK while
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2159,7 +2159,7 @@ Vn COMPUNIT
           Vn BLOCKITEM
             Vn STMT
             Vn LVAL
-            Vt IDENT value
+            Vt IDENFR value
             Vt ASSIGN =
             Vn EXP
             Vn ADDEXP
@@ -2167,17 +2167,17 @@ Vn COMPUNIT
             Vn UNARYEXP
             Vn PRIMARYEXP
             Vn LVAL
-            Vt IDENT value
-            Vt MINUS -
+            Vt IDENFR value
+            Vt MINU -
             Vn MULEXP
             Vn UNARYEXP
             Vn PRIMARYEXP
             Vn NUM
             Vt INTCON 1
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vn BLOCKITEM
             Vn STMT
-            Vt IFRW if
+            Vt IFTK if
             Vt LPARENT (
             Vn COND
             Vn LOREXP
@@ -2189,8 +2189,8 @@ Vn COMPUNIT
             Vn UNARYEXP
             Vn PRIMARYEXP
             Vn LVAL
-            Vt IDENT value
-            Vt LES <
+            Vt IDENFR value
+            Vt LSS <
             Vn ADDEXP
             Vn MULEXP
             Vn UNARYEXP
@@ -2203,7 +2203,7 @@ Vn COMPUNIT
             Vn ADDEXP
             Vn MULEXP
             Vn UNARYEXP
-            Vt IDENT add_g
+            Vt IDENFR add_g
             Vt LPARENT (
             Vt RPARENT )
             Vt RPARENT )
@@ -2212,11 +2212,11 @@ Vn COMPUNIT
               Vt LBRACE {
               Vn BLOCKITEM
                 Vn STMT
-                Vt SEMICO ;
+                Vt SEMICN ;
               Vt RBRACE }
           Vn BLOCKITEM
             Vn STMT
-            Vt IFRW if
+            Vt IFTK if
             Vt LPARENT (
             Vn COND
             Vn LOREXP
@@ -2228,8 +2228,8 @@ Vn COMPUNIT
             Vn UNARYEXP
             Vn PRIMARYEXP
             Vn LVAL
-            Vt IDENT value
-            Vt LES <
+            Vt IDENFR value
+            Vt LSS <
             Vn ADDEXP
             Vn MULEXP
             Vn UNARYEXP
@@ -2242,22 +2242,22 @@ Vn COMPUNIT
               Vt LBRACE {
               Vn BLOCKITEM
                 Vn STMT
-                Vt BREAKRW break
-                Vt SEMICO ;
+                Vt BREAKTK break
+                Vt SEMICN ;
               Vt RBRACE }
-            Vt ELSERW else
+            Vt ELSETK else
             Vn STMT
             Vn BLOCK
               Vt LBRACE {
               Vn BLOCKITEM
                 Vn STMT
-                Vt CONTINUERW continue
-                Vt SEMICO ;
+                Vt CONTINUETK continue
+                Vt SEMICN ;
               Vt RBRACE }
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt IFRW if
+        Vt IFTK if
         Vt LPARENT (
         Vn COND
         Vn LOREXP
@@ -2277,7 +2277,7 @@ Vn COMPUNIT
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT add_g
+        Vt IDENFR add_g
         Vt LPARENT (
         Vt RPARENT )
         Vt RPARENT )
@@ -2286,11 +2286,11 @@ Vn COMPUNIT
           Vt LBRACE {
           Vn BLOCKITEM
             Vn STMT
-            Vt SEMICO ;
+            Vt SEMICN ;
           Vt RBRACE }
       Vn BLOCKITEM
         Vn STMT
-        Vt PRINTFRW printf
+        Vt PRINTFTK printf
         Vt LPARENT (
         Vt STRCON "g = %d\n"
         Vt COMMA ,
@@ -2300,13 +2300,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT g
+        Vt IDENFR g
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -2315,33 +2315,33 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 5
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn UNARYOP
-        Vt MINUS -
+        Vt MINU -
         Vn UNARYEXP
         Vn UNARYOP
         Vt PLUS +
         Vn UNARYEXP
         Vn UNARYOP
-        Vt MINUS -
+        Vt MINU -
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 5
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -2355,59 +2355,59 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt PLUS +
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt RPARENT )
         Vt MULT *
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
-        Vt SEMICO ;
+        Vt IDENFR b
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
         Vn UNARYOP
-        Vt MINUS -
+        Vt MINU -
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT value
-        Vt SEMICO ;
+        Vt IDENFR value
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT without_para
+        Vt IDENFR without_para
         Vt LPARENT (
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_para_1
+        Vt IDENFR with_para_1
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2416,19 +2416,19 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_para_2
+        Vt IDENFR with_para_2
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2437,7 +2437,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt COMMA ,
         Vn EXP
         Vn ADDEXP
@@ -2445,13 +2445,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2465,7 +2465,7 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 2
-        Vt MINUS -
+        Vt MINU -
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
@@ -2480,11 +2480,11 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 1
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2492,19 +2492,19 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
+        Vt IDENFR a
         Vt PLUS +
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT a
-        Vt MINUS -
+        Vt IDENFR a
+        Vt MINU -
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT b
+        Vt IDENFR b
         Vt RBRACK ]
         Vt ASSIGN =
         Vn EXP
@@ -2514,14 +2514,14 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 0
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_array_para_1_void
+        Vt IDENFR with_array_para_1_void
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2530,7 +2530,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa1
+        Vt IDENFR vcaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2541,14 +2541,14 @@ Vn COMPUNIT
         Vt INTCON 0
         Vt RBRACK ]
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_array_para_2_void
+        Vt IDENFR with_array_para_2_void
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2557,7 +2557,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa1
+        Vt IDENFR vcaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2574,7 +2574,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa2
+        Vt IDENFR vcaa2
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2585,11 +2585,11 @@ Vn COMPUNIT
         Vt INTCON 0
         Vt RBRACK ]
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2604,7 +2604,7 @@ Vn COMPUNIT
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_array_para_1
+        Vt IDENFR with_array_para_1
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2613,13 +2613,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT va1
+        Vt IDENFR va1
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2634,7 +2634,7 @@ Vn COMPUNIT
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_array_para_2
+        Vt IDENFR with_array_para_2
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2643,7 +2643,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vca1
+        Vt IDENFR vca1
         Vt COMMA ,
         Vn EXP
         Vn ADDEXP
@@ -2651,13 +2651,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vca2
+        Vt IDENFR vca2
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT vaa1
+        Vt IDENFR vaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2684,11 +2684,11 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 1
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT vaa1
+        Vt IDENFR vaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2712,7 +2712,7 @@ Vn COMPUNIT
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_double_array_para_1
+        Vt IDENFR with_double_array_para_1
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2721,13 +2721,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa1
+        Vt IDENFR vcaa1
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT vaa1
+        Vt IDENFR vaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2751,7 +2751,7 @@ Vn COMPUNIT
         Vn ADDEXP
         Vn MULEXP
         Vn UNARYEXP
-        Vt IDENT with_double_array_para_2
+        Vt IDENFR with_double_array_para_2
         Vt LPARENT (
         Vn FUNCRPARAMS
         Vn EXP
@@ -2760,7 +2760,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa1
+        Vt IDENFR vcaa1
         Vt COMMA ,
         Vn EXP
         Vn ADDEXP
@@ -2768,13 +2768,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vcaa2
+        Vt IDENFR vcaa2
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -2788,13 +2788,13 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt PLUS +
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2815,7 +2815,7 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT array
+        Vt IDENFR array
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2825,12 +2825,12 @@ Vn COMPUNIT
         Vn NUM
         Vt INTCON 1
         Vt RBRACK ]
-        Vt MINUS -
+        Vt MINU -
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT vaa1
+        Vt IDENFR vaa1
         Vt LBRACK [
         Vn EXP
         Vn ADDEXP
@@ -2855,10 +2855,10 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 2
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt PRINTFRW printf
+        Vt PRINTFTK printf
         Vt LPARENT (
         Vt STRCON "value = %d\n"
         Vt COMMA ,
@@ -2868,17 +2868,17 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn LVAL
-        Vt IDENT value
+        Vt IDENFR value
         Vt MOD %
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 2
         Vt RPARENT )
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vn BLOCKITEM
         Vn STMT
-        Vt RETURNRW return
+        Vt RETURNTK return
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
@@ -2886,5 +2886,5 @@ Vn COMPUNIT
         Vn PRIMARYEXP
         Vn NUM
         Vt INTCON 0
-        Vt SEMICO ;
+        Vt SEMICN ;
       Vt RBRACE }
