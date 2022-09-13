@@ -5,7 +5,8 @@
 class Parser {
 public:
     explicit Parser(std::vector<Token>& tokenList);
-    std::shared_ptr<VNodeBase> parse();
+    void parse();
+    void traversalAST(std::filebuf& file);
 
 private:
     std::shared_ptr<VNodeBase> expect(SymbolEnum symbol);
@@ -14,6 +15,7 @@ private:
     bool expectPureExp();
     bool expectUnaryOp();
     bool expectFuncRParams();
+    void postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os);
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元

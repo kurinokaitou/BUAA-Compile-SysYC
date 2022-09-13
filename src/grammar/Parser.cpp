@@ -7,12 +7,33 @@ Parser::Parser(std::vector<Token>& tokenList) {
     m_currToken = m_tokenList.begin();
 }
 
-std::shared_ptr<VNodeBase> Parser::parse() {
-    auto compUnitNode = compUnit(0);
+void Parser::parse() {
+    m_astRoot = compUnit(0);
     if (m_currToken != m_tokenList.end()) {
         PARSER_LOG_INFO("Token解析未完成");
     }
-    return compUnitNode;
+}
+
+void Parser::traversalAST(std::filebuf& file) {
+    std::ostream os(&file);
+    postTraversal(m_astRoot, os);
+}
+
+void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
+    if (node->getType() == VType::VN) {
+        auto branch = std::static_pointer_cast<VNodeBranch>(node);
+        for (auto& child : branch->getChildren()) {
+            postTraversal(child, os);
+        }
+        if (!(branch->getNodeEnum() == VNodeEnum::DECL
+              || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
+              || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
+            branch->dumpToFile(os);
+        }
+    } else {
+        auto leaf = std::static_pointer_cast<VNodeLeaf>(node);
+        leaf->dumpToFile(os);
+    }
 }
 
 // 期望获取symbol对应的内容，并返回生成的叶节点
@@ -478,107 +499,95 @@ std::shared_ptr<VNodeBase> Parser::unaryOp(int level) {
 
 // 加减模运算 addExp -> mulExp {('+' | '−') mulExp}
 std::shared_ptr<VNodeBase> Parser::addExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto addExpNode = std::make_shared<VNodeBranch>(VNodeEnum::ADDEXP);
     addExpNode->setLevel(level);
-    children.push_back(mulExp(level));
+    addExpNode->addChild(mulExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::PLUS || (m_currToken + 1)->symbol == SymbolEnum::MINU) {
-        children.push_back(expect({SymbolEnum::PLUS, SymbolEnum::MINU}));
-        children.push_back(mulExp(level));
-    }
-
-    for (auto& child : children) {
-        addExpNode->addChild(std::move(child));
+        auto newAddExpNode = std::make_shared<VNodeBranch>(VNodeEnum::ADDEXP);
+        newAddExpNode->addChild(addExpNode);
+        addExpNode = newAddExpNode;
+        addExpNode->addChild(expect({SymbolEnum::PLUS, SymbolEnum::MINU}));
+        addExpNode->addChild(mulExp(level));
     }
     return addExpNode;
 }
 
 // 乘除模运算 mulExp -> unaryExp { ('*' | '/' | '%') unaryExp}
 std::shared_ptr<VNodeBase> Parser::mulExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto mulExpNode = std::make_shared<VNodeBranch>(VNodeEnum::MULEXP);
     mulExpNode->setLevel(level);
-    children.push_back(unaryExp(level));
+    mulExpNode->addChild(unaryExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::MULT
            || (m_currToken + 1)->symbol == SymbolEnum::DIV
            || (m_currToken + 1)->symbol == SymbolEnum::MOD) {
-        children.push_back(expect({SymbolEnum::MULT, SymbolEnum::DIV, SymbolEnum::MOD}));
-        children.push_back(unaryExp(level));
-    }
-
-    for (auto& child : children) {
-        mulExpNode->addChild(std::move(child));
+        auto newMulExpNode = std::make_shared<VNodeBranch>(VNodeEnum::MULEXP);
+        newMulExpNode->addChild(mulExpNode);
+        mulExpNode = newMulExpNode;
+        mulExpNode->addChild(expect({SymbolEnum::MULT, SymbolEnum::DIV, SymbolEnum::MOD}));
+        mulExpNode->addChild(unaryExp(level));
     }
     return mulExpNode;
 }
 
 // 关系表达式 relExp -> addExp {('<' | '>' | '<=' | '>=') addExp}
 std::shared_ptr<VNodeBase> Parser::relExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto relExpNode = std::make_shared<VNodeBranch>(VNodeEnum::RELEXP);
     relExpNode->setLevel(level);
-    children.push_back(addExp(level));
+    relExpNode->addChild(addExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::LSS
            || (m_currToken + 1)->symbol == SymbolEnum::LEQ
            || (m_currToken + 1)->symbol == SymbolEnum::GRE
            || (m_currToken + 1)->symbol == SymbolEnum::GEQ) {
-        children.push_back(expect({SymbolEnum::LSS, SymbolEnum::LEQ, SymbolEnum::GRE, SymbolEnum::GEQ}));
-        children.push_back(addExp(level));
-    }
-
-    for (auto& child : children) {
-        relExpNode->addChild(std::move(child));
+        auto newRelExpNode = std::make_shared<VNodeBranch>(VNodeEnum::RELEXP);
+        newRelExpNode->addChild(relExpNode);
+        relExpNode = newRelExpNode;
+        relExpNode->addChild(expect({SymbolEnum::LSS, SymbolEnum::LEQ, SymbolEnum::GRE, SymbolEnum::GEQ}));
+        relExpNode->addChild(addExp(level));
     }
     return relExpNode;
 }
 
 // 相等性表达式 eqExp -> relExp { ('==' | '!=') relExp}
 std::shared_ptr<VNodeBase> Parser::eqExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto eqExpNode = std::make_shared<VNodeBranch>(VNodeEnum::EQEXP);
     eqExpNode->setLevel(level);
-    children.push_back(relExp(level));
+    eqExpNode->addChild(relExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::EQL || (m_currToken + 1)->symbol == SymbolEnum::NEQ) {
-        children.push_back(expect({SymbolEnum::EQL, SymbolEnum::NEQ}));
-        children.push_back(relExp(level));
-    }
-
-    for (auto& child : children) {
-        eqExpNode->addChild(std::move(child));
+        auto newEqExpNode = std::make_shared<VNodeBranch>(VNodeEnum::EQEXP);
+        newEqExpNode->addChild(eqExpNode);
+        eqExpNode = newEqExpNode;
+        eqExpNode->addChild(expect({SymbolEnum::EQL, SymbolEnum::NEQ}));
+        eqExpNode->addChild(relExp(level));
     }
     return eqExpNode;
 }
 
 // 逻辑与表达式 lAndExp -> eqExp { '&&' eqExp }
 std::shared_ptr<VNodeBase> Parser::lAndExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto lAndExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LANDEXP);
     lAndExpNode->setLevel(level);
-    children.push_back(eqExp(level));
+    lAndExpNode->addChild(eqExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::AND) {
-        children.push_back(expect(SymbolEnum::AND));
-        children.push_back(eqExp(level));
-    }
-
-    for (auto& child : children) {
-        lAndExpNode->addChild(std::move(child));
+        auto newLAndExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LANDEXP);
+        newLAndExpNode->addChild(lAndExpNode);
+        lAndExpNode = newLAndExpNode;
+        lAndExpNode->addChild(expect(SymbolEnum::AND));
+        lAndExpNode->addChild(eqExp(level));
     }
     return lAndExpNode;
 }
 
 // 逻辑或表达式 lOrExp ->  lAndExp { '||' lAndExp }
 std::shared_ptr<VNodeBase> Parser::lOrExp(int level) {
-    std::vector<std::shared_ptr<VNodeBase>> children;
     auto lOrExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LOREXP);
     lOrExpNode->setLevel(level);
-    children.push_back(lAndExp(level));
+    lOrExpNode->addChild(lAndExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::OR) {
-        children.push_back(expect(SymbolEnum::OR));
-        children.push_back(lAndExp(level));
-    }
-
-    for (auto& child : children) {
-        lOrExpNode->addChild(std::move(child));
+        auto newLOrExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LOREXP);
+        newLOrExpNode->addChild(lOrExpNode);
+        lOrExpNode = newLOrExpNode;
+        lOrExpNode->addChild(expect(SymbolEnum::OR));
+        lOrExpNode->addChild(lAndExp(level));
     }
     return lOrExpNode;
 }

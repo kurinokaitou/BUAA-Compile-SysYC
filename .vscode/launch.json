@@ -29,7 +29,7 @@
             "type": "cppdbg",
             "name": "Launch Debug Directly",
             "request": "launch",
-            "program": "${workspaceFolder}/build/systc", //指定C/C++程序位置
+            "program": "${workspaceFolder}/build/sysyc", //指定C/C++程序位置
             "args": [
                 "--test"
             ], //指定运行参数

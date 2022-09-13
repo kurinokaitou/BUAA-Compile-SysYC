@@ -42,7 +42,7 @@ public:
         PARSER_LOG_ERROR("Leaf node add child error");
     }
     virtual void dumpToFile(std::ostream& os) override {
-        os << "Vt " << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
+        os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
 
 private:
@@ -64,11 +64,7 @@ public:
         m_childrenNodes.push_back(std::move(child));
     }
     virtual void dumpToFile(std::ostream& os) override {
-        os << "Vn " << getVNodeEnumText(m_nodeEnum) << "\n";
-        for (auto& child : m_childrenNodes) {
-            for (int i = 0; i < m_level + 1; i++) os << "  ";
-            child->dumpToFile(os);
-        }
+        os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
 
 public:

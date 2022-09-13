@@ -1,6 +1,4 @@
-#include <exception>
-#include <token/Tokenizer.h>
-#include <grammar/Parser.h>
+#include <Compiler.h>
 
 static std::string s_sourcePath = "test/grammar/test.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
@@ -47,49 +45,52 @@ void parseArgs(int argc, char** argv) {
     }
 }
 
+bool Compiler::firstPass(std::filebuf& file) {
+    try {
+        m_tokenizer = std::unique_ptr<Tokenizer>(new Tokenizer(file));
+        m_tokenList = m_tokenizer->tokenize();
+        m_parser = std::unique_ptr<Parser>(new Parser(m_tokenList));
+        m_parser->parse();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
+
+void Compiler::dumpToken(std::filebuf& file) {
+    if (!file.open(s_dumpTokenPath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the dump token file!");
+    }
+    std::ostream tos(&file);
+    for (auto& token : m_tokenList) {
+        tos << token;
+    }
+}
+
+void Compiler::dumpAST(std::filebuf& file) {
+    if (!file.open(s_dumpASTPath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the dump ast file!");
+    }
+    m_parser->traversalAST(file);
+}
+
 int main(int argc, char** argv) {
-    parseArgs(argc, argv);
-    bool error = false;
-    std::vector<Token> tokenList;
-    std::shared_ptr<VNodeBase> astNode;
+    Compiler compiler;
     std::filebuf token;
     std::filebuf ast;
-    try {
-        std::filebuf in;
+    std::filebuf in;
 
-        if (!in.open(s_sourcePath, std::ios::in)) {
-            throw std::runtime_error("Fail to open the source file!");
-        }
-
-        Tokenizer tokenizer(in);
-        tokenList = tokenizer.tokenize();
-        Parser grammarParser(tokenList);
-        astNode = grammarParser.parse();
-    } catch (std::exception& e) {
-        error = true;
-        std::cerr << e.what() << std::endl;
+    parseArgs(argc, argv);
+    if (!in.open(s_sourcePath, std::ios::in)) {
+        throw std::runtime_error("Fail to open the source file!");
     }
-    // dump token
-    if (s_dumpToken) {
-        if (!token.open(s_dumpTokenPath, std::ios::out)) {
-            throw std::runtime_error("Fail to open the dump token file!");
+    if (compiler.firstPass(in)) {
+        if (s_dumpToken) {
+            compiler.dumpToken(token);
         }
-        std::ostream tos(&token);
-        for (auto& token : tokenList) {
-            tos << token;
-        }
-    }
-    // dump ast
-    if (s_dumpAST) {
-        if (!ast.open(s_dumpASTPath, std::ios::out)) {
-            throw std::runtime_error("Fail to open the dump ast file!");
-        }
-        if (!error) {
-            std::ostream aos(&ast);
-            astNode->dumpToFile(aos);
-            return 0;
-        } else {
-            return 1;
+        if (s_dumpAST) {
+            compiler.dumpAST(ast);
         }
     }
 }
