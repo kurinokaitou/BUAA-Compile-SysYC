@@ -13,6 +13,7 @@ private:
     bool expectAssignment();
     bool expectPureExp();
     bool expectUnaryOp();
+    bool expectFuncRParams();
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元
@@ -45,11 +46,13 @@ private:
     std::shared_ptr<VNodeBase> mainFuncDef(int level);  // 主函数定义
     std::shared_ptr<VNodeBase> funcType(int level);     // 函数类型
     std::shared_ptr<VNodeBase> funcFParams(int level);  // 函数形参表
+    std::shared_ptr<VNodeBase> funcFParam(int level);   // 函数形参
     std::shared_ptr<VNodeBase> funcRParams(int level);  // 函数实参表
 
 private:
     std::vector<Token> m_tokenList;
     std::shared_ptr<VNodeBase> m_astRoot;
     Tokenizer::TokenIter m_currToken;
+    bool m_probingMode{false};
 };
 #endif

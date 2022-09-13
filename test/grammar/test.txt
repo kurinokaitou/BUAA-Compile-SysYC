@@ -3,8 +3,8 @@
 // TODO: fix bottom comment 
 const int a = 1;
 int n = 2;
-void func(){
-    n = a + 1;
+void func(int b){
+    n = a + 1 - b;
 }
 int main(){
     n = 3;

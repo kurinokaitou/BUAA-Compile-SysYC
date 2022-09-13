@@ -21,7 +21,10 @@ std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol) {
         m_currToken++;
         return std::make_shared<VNodeLeaf>(symbol, *m_currToken);
     } else {
-        PARSER_LOG_ERROR(m_currToken->literal + " " + getSymbolText(symbol) + " error");
+        PARSER_LOG_INFO("error occurred!");
+        if (!m_probingMode) {
+            PARSER_LOG_ERROR(std::to_string(m_currToken->lineNum) + " " + m_currToken->literal + " " + getSymbolText(symbol) + " error");
+        }
         return std::make_shared<VNodeLeaf>(symbol, *(m_currToken - 1), false);
     }
 }
@@ -40,23 +43,31 @@ std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symb
 
 bool Parser::expectAssignment() {
     auto iterBefore = m_currToken;
+    m_probingMode = true;
     auto temp = lVal(-1);
     if (temp->isCorrect()) {
         auto assign = expect(SymbolEnum::ASSIGN);
         m_currToken = iterBefore;
+        m_probingMode = false;
         return assign->isCorrect();
     } else {
+        m_currToken = iterBefore;
+        m_probingMode = false;
         return false;
     }
 }
 bool Parser::expectPureExp() {
     auto iterBefore = m_currToken;
+    m_probingMode = true;
     auto temp = exp(-1);
     if (temp->isCorrect() && m_currToken != iterBefore) {
         auto semi = expect(SymbolEnum::SEMICO);
         m_currToken = iterBefore;
+        m_probingMode = false;
         return semi->isCorrect();
     } else {
+        m_currToken = iterBefore;
+        m_probingMode = false;
         return false;
     }
 }
@@ -66,6 +77,15 @@ bool Parser::expectUnaryOp() {
     return nextIter->symbol == SymbolEnum::PLUS
            || nextIter->symbol == SymbolEnum::MINUS
            || nextIter->symbol == SymbolEnum::NOT;
+}
+
+bool Parser::expectFuncRParams() {
+    auto iterBefore = m_currToken;
+    m_probingMode = true;
+    auto params = funcRParams(-1);
+    m_currToken = iterBefore;
+    m_probingMode = false;
+    return params->isCorrect();
 }
 
 // 编译单元compUnit -> {decl} {funcDef} mainFuncDef
@@ -228,7 +248,7 @@ std::shared_ptr<VNodeBase> Parser::initVal(int level) {
         children.push_back(expect(SymbolEnum::LBRACE));
         if ((m_currToken + 1)->symbol != SymbolEnum::RBRACE) {
             children.push_back(initVal(level));
-            while ((m_currToken + 1)->symbol != SymbolEnum::COMMA) {
+            while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {
                 children.push_back(expect(SymbolEnum::COMMA));
                 children.push_back(initVal(level));
             }
@@ -317,7 +337,7 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
         children.push_back(expect(SymbolEnum::PRINTFRW));
         children.push_back(expect(SymbolEnum::LPARENT));
         children.push_back(expect(SymbolEnum::STRCON));
-        while ((m_currToken + 1)->symbol != SymbolEnum::COMMA) {
+        while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {
             children.push_back(expect(SymbolEnum::COMMA));
             children.push_back(exp(level));
         }
@@ -326,9 +346,7 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
     }
     // block 的首符 '{'
     else if ((m_currToken + 1)->symbol == SymbolEnum::LBRACE) {
-        children.push_back(expect(SymbolEnum::LBRACE));
         children.push_back(block(level + 1));
-        children.push_back(expect(SymbolEnum::RBRACE));
     }
     // 处理赋值给左值的情况，包括 lVal '=' exp ';'| lVal '=' 'getint''('')'';'
     else if (expectAssignment()) {
@@ -438,7 +456,7 @@ std::shared_ptr<VNodeBase> Parser::unaryExp(int level) {
         children.push_back(expect(SymbolEnum::RPARENT));
 
     } else if (expectUnaryOp()) {
-        children.push_back(unaryExp(level));
+        children.push_back(unaryOp(level));
         children.push_back(unaryExp(level));
     } else {
         children.push_back(primaryExp(level));
@@ -566,7 +584,7 @@ std::shared_ptr<VNodeBase> Parser::lOrExp(int level) {
     return lOrExpNode;
 }
 
-// 函数定义 funcDef -> funcType ident '(' [funcRParams] ')' block
+// 函数定义 funcDef -> funcType ident '(' [funcFParams] ')' block
 std::shared_ptr<VNodeBase> Parser::funcDef(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto funcDefNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCDEF);
@@ -575,7 +593,7 @@ std::shared_ptr<VNodeBase> Parser::funcDef(int level) {
     children.push_back(expect(SymbolEnum::IDENT));
     children.push_back(expect(SymbolEnum::LPARENT));
     if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT) {
-        children.push_back(funcRParams(level));
+        children.push_back(funcFParams(level));
     }
     children.push_back(expect(SymbolEnum::RPARENT));
     children.push_back(block(level + 1));
@@ -610,14 +628,47 @@ std::shared_ptr<VNodeBase> Parser::funcType(int level) {
     return funcTypeNode;
 }
 
-// 函数实参表
+// 函数形参表 funcFParams -> funcFParam {',' funcFParam}
 std::shared_ptr<VNodeBase> Parser::funcFParams(int level) {
-    // TODO: finish funcFParams;
+    std::vector<std::shared_ptr<VNodeBase>> children;
     auto funcFParamsNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCFPARAMS);
+    funcFParamsNode->setLevel(level);
+    children.push_back(funcFParam(level));
+    while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {
+        children.push_back(expect(SymbolEnum::COMMA));
+        children.push_back(funcFParam(level));
+    }
+
+    for (auto& child : children) {
+        funcFParamsNode->addChild(std::move(child));
+    }
     return funcFParamsNode;
 }
 
-// 函数形参表 funcRParams -> exp { ',' exp }
+// 函数形参 funcFParam -> bType ident ['[' ']' { '[' constExp ']' }]
+std::shared_ptr<VNodeBase> Parser::funcFParam(int level) {
+    std::vector<std::shared_ptr<VNodeBase>> children;
+    auto funcFParamNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCFPARAM);
+    funcFParamNode->setLevel(level);
+    children.push_back(bType(level));
+    children.push_back(expect(SymbolEnum::IDENT));
+    if ((m_currToken + 1)->symbol == SymbolEnum::LBRACK) {
+        children.push_back(expect(SymbolEnum::LBRACK));
+        children.push_back(expect(SymbolEnum::RBRACK));
+        while ((m_currToken + 1)->symbol == SymbolEnum::LBRACK) {
+            children.push_back(expect(SymbolEnum::LBRACK));
+            children.push_back(constExp(level));
+            children.push_back(expect(SymbolEnum::RBRACK));
+        }
+    }
+
+    for (auto& child : children) {
+        funcFParamNode->addChild(std::move(child));
+    }
+    return funcFParamNode;
+}
+
+// 函数实参表 funcRParams -> exp { ',' exp }
 std::shared_ptr<VNodeBase> Parser::funcRParams(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto funcRParamsNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCRPARAMS);

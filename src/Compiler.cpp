@@ -2,7 +2,7 @@
 #include <token/Tokenizer.h>
 #include <grammar/Parser.h>
 
-static std::string s_sourcePath = "test/grammar/test.txt";
+static std::string s_sourcePath = "test/grammar/testfile1.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 
@@ -42,10 +42,14 @@ void parseArgs(int argc, char** argv) {
 
 int main(int argc, char** argv) {
     parseArgs(argc, argv);
+    bool error = false;
+    std::vector<Token> tokenList;
+    std::shared_ptr<VNodeBase> astNode;
+    std::filebuf token;
+    std::filebuf ast;
     try {
         std::filebuf in;
-        std::filebuf token;
-        std::filebuf ast;
+
         if (!in.open(s_sourcePath, std::ios::in)) {
             throw std::runtime_error("Fail to open the source file!");
         }
@@ -56,21 +60,24 @@ int main(int argc, char** argv) {
             throw std::runtime_error("Fail to open the dump ast file!");
         }
         Tokenizer tokenizer(in);
-        auto tokenLists = tokenizer.tokenize();
-        // dump token
-        std::ostream tos(&token);
-        for (auto& token : tokenLists) {
-            tos << token;
-        }
-
-        Parser grammarParser(tokenLists);
-        auto astNode = grammarParser.parse();
+        tokenList = tokenizer.tokenize();
+        Parser grammarParser(tokenList);
+        astNode = grammarParser.parse();
+    } catch (std::exception& e) {
+        error = true;
+        std::cerr << e.what() << std::endl;
+    }
+    // dump token
+    std::ostream tos(&token);
+    for (auto& token : tokenList) {
+        tos << token;
+    }
+    if (!error) {
         // dump ast
         std::ostream aos(&ast);
         astNode->dumpToFile(aos);
-    } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        exit(1);
+        return 0;
+    } else {
+        return 1;
     }
-    return 0;
 }

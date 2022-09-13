@@ -5,10 +5,413 @@ Vn COMPUNIT
     Vn BTYPE
     Vt INTRW int
     Vn CONSTDEF
-    Vt IDENT a
+    Vt IDENT c1
     Vt ASSIGN =
     Vn CONSTINITVAL
     Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT cc1
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTDEF
+    Vt IDENT cc2
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT ccc1
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTDEF
+    Vt IDENT ccc2
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTDEF
+    Vt IDENT ccc3
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT ca1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT cca1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn CONSTDEF
+    Vt IDENT cca2
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT caa1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn CONSTDECL
+    Vt CONSTRW const
+    Vn BTYPE
+    Vt INTRW int
+    Vn CONSTDEF
+    Vt IDENT ccaa1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn CONSTDEF
+    Vt IDENT ccaa2
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vt LBRACE {
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn CONSTINITVAL
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT v1
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
     Vn ADDEXP
     Vn MULEXP
     Vn UNARYEXP
@@ -21,7 +424,7 @@ Vn COMPUNIT
     Vn BTYPE
     Vt INTRW int
     Vn VARDEF
-    Vt IDENT n
+    Vt IDENT vc1
     Vt ASSIGN =
     Vn INITVAL
     Vn EXP
@@ -30,12 +433,1157 @@ Vn COMPUNIT
     Vn UNARYEXP
     Vn PRIMARYEXP
     Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn VARDEF
+    Vt IDENT vc2
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT vcc1
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn VARDEF
+    Vt IDENT vcc2
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn VARDEF
+    Vt IDENT vcc3
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT va1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
     Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT vca1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn VARDEF
+    Vt IDENT vca2
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT vaa1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT vcaa1
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn VARDEF
+    Vt IDENT vcaa2
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt ASSIGN =
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 1
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACE }
+    Vt COMMA ,
+    Vn INITVAL
+    Vt LBRACE {
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 3
+    Vt COMMA ,
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 4
+    Vt RBRACE }
+    Vt RBRACE }
+    Vt SEMICO ;
+  Vn DECL
+    Vn VARDECL
+    Vn BTYPE
+    Vt INTRW int
+    Vn VARDEF
+    Vt IDENT g
+    Vt ASSIGN =
+    Vn INITVAL
+    Vn EXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 0
     Vt SEMICO ;
   Vn FUNCDEF
     Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT without_para
+    Vt LPARENT (
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 5
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_para_1
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_para_2
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p1
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p2
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p1
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p2
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_array_para_1
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_array_para_2
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT b
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_double_array_para_1
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT with_double_array_para_2
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT b
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT without_para_void
+    Vt LPARENT (
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
     Vt VOIDRW void
-    Vt IDENT func
+    Vt IDENT with_para_1_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p1
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT with_para_2_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p1
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT p2
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p1
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT p2
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT with_array_para_1_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT with_array_para_2_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT b
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT with_double_array_para_1_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 10
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt VOIDRW void
+    Vt IDENT with_double_array_para_2_void
+    Vt LPARENT (
+    Vn FUNCFPARAMS
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT a
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt COMMA ,
+    Vn FUNCFPARAM
+    Vn BTYPE
+    Vt INTRW int
+    Vt IDENT b
+    Vt LBRACK [
+    Vt RBRACK ]
+    Vt LBRACK [
+    Vn CONSTEXP
+    Vn ADDEXP
+    Vn MULEXP
+    Vn UNARYEXP
+    Vn PRIMARYEXP
+    Vn NUM
+    Vt INTCON 2
+    Vt RBRACK ]
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT p
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn FUNCDEF
+    Vn FUNCTYPE
+    Vt INTRW int
+    Vt IDENT add_g
     Vt LPARENT (
     Vt RPARENT )
     Vn BLOCK
@@ -43,8 +1591,901 @@ Vn COMPUNIT
       Vn BLOCKITEM
         Vn STMT
         Vn LVAL
+        Vt IDENT g
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT g
+        Vt PLUS +
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT g
+        Vt SEMICO ;
+      Vt RBRACE }
+  Vn MAINFUNCDEF
+    Vt INTRW int
+    Vt MAINRW main
+    Vt LPARENT (
+    Vt RPARENT )
+    Vn BLOCK
+      Vt LBRACE {
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
         Vt IDENT n
         Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt COMMA ,
+        Vn VARDEF
+        Vt IDENT m
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT i
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT a
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt COMMA ,
+        Vn VARDEF
+        Vt IDENT b
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 5
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn DECL
+        Vn VARDECL
+        Vn BTYPE
+        Vt INTRW int
+        Vn VARDEF
+        Vt IDENT array
+        Vt LBRACK [
+        Vn CONSTEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn INITVAL
+        Vt LBRACE {
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt COMMA ,
+        Vn INITVAL
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACE }
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT n
+        Vt ASSIGN =
+        Vt GETINTRW getint
+        Vt LPARENT (
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT m
+        Vt ASSIGN =
+        Vt GETINTRW getint
+        Vt LPARENT (
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt PRINTFRW printf
+        Vt LPARENT (
+        Vt STRCON "19373700\n"
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt PRINTFRW printf
+        Vt LPARENT (
+        Vt STRCON "%d\n"
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT n
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT n
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT n
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT m
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT m
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vt LPARENT (
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT n
+        Vt PLUS +
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT m
+        Vt RPARENT )
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT n
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "false\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+        Vt ELSERW else
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "true\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn UNARYOP
+        Vt NOT !
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "true\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+        Vt ELSERW else
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "false\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LES <
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a<b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt GREAT >
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a>b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt LEQ <=
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a<=b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt GEQ >=
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a>=b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt EQ ==
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a==b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt NEQ !=
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt PRINTFRW printf
+            Vt LPARENT (
+            Vt STRCON "a!=b\n"
+            Vt RPARENT )
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt WHILERW while
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vn LVAL
+            Vt IDENT value
+            Vt ASSIGN =
+            Vn EXP
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn LVAL
+            Vt IDENT value
+            Vt MINUS -
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn NUM
+            Vt INTCON 1
+            Vt SEMICO ;
+          Vn BLOCKITEM
+            Vn STMT
+            Vt IFRW if
+            Vt LPARENT (
+            Vn COND
+            Vn LOREXP
+            Vn LANDEXP
+            Vn EQEXP
+            Vn RELEXP
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn LVAL
+            Vt IDENT value
+            Vt LES <
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn NUM
+            Vt INTCON 10
+            Vt AND &&
+            Vn EQEXP
+            Vn RELEXP
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vt IDENT add_g
+            Vt LPARENT (
+            Vt RPARENT )
+            Vt RPARENT )
+            Vn STMT
+            Vn BLOCK
+              Vt LBRACE {
+              Vn BLOCKITEM
+                Vn STMT
+                Vt SEMICO ;
+              Vt RBRACE }
+          Vn BLOCKITEM
+            Vn STMT
+            Vt IFRW if
+            Vt LPARENT (
+            Vn COND
+            Vn LOREXP
+            Vn LANDEXP
+            Vn EQEXP
+            Vn RELEXP
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn LVAL
+            Vt IDENT value
+            Vt LES <
+            Vn ADDEXP
+            Vn MULEXP
+            Vn UNARYEXP
+            Vn PRIMARYEXP
+            Vn NUM
+            Vt INTCON 0
+            Vt RPARENT )
+            Vn STMT
+            Vn BLOCK
+              Vt LBRACE {
+              Vn BLOCKITEM
+                Vn STMT
+                Vt BREAKRW break
+                Vt SEMICO ;
+              Vt RBRACE }
+            Vt ELSERW else
+            Vn STMT
+            Vn BLOCK
+              Vt LBRACE {
+              Vn BLOCKITEM
+                Vn STMT
+                Vt CONTINUERW continue
+                Vt SEMICO ;
+              Vt RBRACE }
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt IFRW if
+        Vt LPARENT (
+        Vn COND
+        Vn LOREXP
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt OR ||
+        Vn LANDEXP
+        Vn EQEXP
+        Vn RELEXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT add_g
+        Vt LPARENT (
+        Vt RPARENT )
+        Vt RPARENT )
+        Vn STMT
+        Vn BLOCK
+          Vt LBRACE {
+          Vn BLOCKITEM
+            Vn STMT
+            Vt SEMICO ;
+          Vt RBRACE }
+      Vn BLOCKITEM
+        Vn STMT
+        Vt PRINTFRW printf
+        Vt LPARENT (
+        Vt STRCON "g = %d\n"
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT g
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 5
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn UNARYOP
+        Vt MINUS -
+        Vn UNARYEXP
+        Vn UNARYOP
+        Vt PLUS +
+        Vn UNARYEXP
+        Vn UNARYOP
+        Vt MINUS -
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 5
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vt LPARENT (
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT value
+        Vt PLUS +
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt RPARENT )
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn UNARYOP
+        Vt MINUS -
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT value
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT without_para
+        Vt LPARENT (
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_para_1
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT value
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_para_2
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT a
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt MINUS -
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 3
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
         Vn EXP
         Vn ADDEXP
         Vn MULEXP
@@ -56,21 +2497,15 @@ Vn COMPUNIT
         Vn MULEXP
         Vn UNARYEXP
         Vn PRIMARYEXP
-        Vn NUM
-        Vt INTCON 1
-        Vt SEMICO ;
-      Vt RBRACE }
-  Vn MAINFUNCDEF
-    Vt INTRW int
-    Vt MAINRW main
-    Vt LPARENT (
-    Vt RPARENT )
-    Vn BLOCK
-      Vt LBRACE {
-      Vn BLOCKITEM
-        Vn STMT
         Vn LVAL
-        Vt IDENT n
+        Vt IDENT a
+        Vt MINUS -
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT b
+        Vt RBRACK ]
         Vt ASSIGN =
         Vn EXP
         Vn ADDEXP
@@ -78,6 +2513,378 @@ Vn COMPUNIT
         Vn UNARYEXP
         Vn PRIMARYEXP
         Vn NUM
-        Vt INTCON 3
+        Vt INTCON 0
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_array_para_1_void
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_array_para_2_void
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa2
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_array_para_1
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT va1
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_array_para_2
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vca1
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vca2
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT vaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT vaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_double_array_para_1
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa1
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT vaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vt IDENT with_double_array_para_2
+        Vt LPARENT (
+        Vn FUNCRPARAMS
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa1
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vcaa2
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vn LVAL
+        Vt IDENT value
+        Vt ASSIGN =
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vt LPARENT (
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT value
+        Vt PLUS +
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt RPARENT )
+        Vt MULT *
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vt LPARENT (
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT array
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 1
+        Vt RBRACK ]
+        Vt MINUS -
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT vaa1
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt LBRACK [
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
+        Vt RBRACK ]
+        Vt RPARENT )
+        Vt DIV /
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt PRINTFRW printf
+        Vt LPARENT (
+        Vt STRCON "value = %d\n"
+        Vt COMMA ,
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn LVAL
+        Vt IDENT value
+        Vt MOD %
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 2
+        Vt RPARENT )
+        Vt SEMICO ;
+      Vn BLOCKITEM
+        Vn STMT
+        Vt RETURNRW return
+        Vn EXP
+        Vn ADDEXP
+        Vn MULEXP
+        Vn UNARYEXP
+        Vn PRIMARYEXP
+        Vn NUM
+        Vt INTCON 0
         Vt SEMICO ;
       Vt RBRACE }

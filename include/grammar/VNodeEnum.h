@@ -37,6 +37,7 @@ enum class VNodeEnum : int {
     MAINFUNCDEF,
     FUNCTYPE,
     FUNCFPARAMS,
+    FUNCFPARAM,
     FUNCRPARAMS,
 };
 static const std::vector<std::string> s_vnodeEnumText{
@@ -70,6 +71,7 @@ static const std::vector<std::string> s_vnodeEnumText{
     "MAINFUNCDEF",
     "FUNCTYPE",
     "FUNCFPARAMS",
+    "FUNCFPARAM",
     "FUNCRPARAMS",
 };
 
