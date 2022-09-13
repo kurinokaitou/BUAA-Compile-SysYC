@@ -47,7 +47,7 @@ private:
     SymbolEnum getReservedWordSymbol(std::string& word) const;
     bool skipVacant();
     SymbolEnum skipComment();
-    SymbolEnum readIDENFR();
+    SymbolEnum readIdent();
     SymbolEnum readInteger();
     SymbolEnum readPunct();
     SymbolEnum readString();

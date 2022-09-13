@@ -20,8 +20,8 @@ bool Tokenizer::skipVacant() {
     return m_istream.eof();
 }
 
-SymbolEnum Tokenizer::readIDENFR() {
-    while (isIDENFRChar(m_currChar)) {
+SymbolEnum Tokenizer::readIdent() {
+    while (isIdentChar(m_currChar)) {
         m_tokenStr += m_currChar;
         extractChar();
     }
@@ -119,8 +119,8 @@ std::vector<Token>& Tokenizer::tokenize() {
         m_tokenValue = 0;
         if (skipVacant()) break;
         // 处理标识符
-        if (isalpha(m_currChar)) {
-            m_symbol = readIDENFR();
+        if (isalpha(m_currChar) || m_currChar == '_') {
+            m_symbol = readIdent();
         }
         // 处理非零数字
         else if (isdigit(m_currChar)) {

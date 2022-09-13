@@ -12,8 +12,8 @@ static bool isNewline(const char c) {
 static bool isTab(const char c) {
     return c == '\t';
 }
-static bool isIDENFRChar(const char c) {
-    return isalnum(c) || c == '_';
+static bool isIdentChar(const char c) {
+    return c == '_' || isalnum(c);
 }
 static bool isPunct(const char c) {
     static const std::set<char> punctSet = {';', ',', '(', ')', '[', ']', '{', '}', '+', '-', '*', '/',
