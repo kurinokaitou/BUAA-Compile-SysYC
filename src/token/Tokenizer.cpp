@@ -36,14 +36,14 @@ SymbolEnum Tokenizer::readInteger() {
             extractChar();
         }
         unextractChar();
-        m_tokenValue = stringToInt(m_tokenStr);
+        m_tokenValue = std::stoi(m_tokenStr);
         return SymbolEnum::INTCON;
     } else {
         m_tokenStr += m_currChar;
         extractChar();
         if (!isdigit(m_currChar)) {
             unextractChar();
-            m_tokenValue = stringToInt(m_tokenStr);
+            m_tokenValue = std::stoi(m_tokenStr);
             return SymbolEnum::INTCON;
         } else {
             throw std::runtime_error("compile error!");

@@ -21,14 +21,6 @@ static bool isPunct(const char c) {
     return punctSet.count(c);
 };
 
-static int stringToInt(const std::string& str) {
-    std::stringstream ss;
-    int i;
-    ss << str;
-    ss >> i;
-    return i;
-}
-
 static void toUpper(std::string& str) {
     std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 }

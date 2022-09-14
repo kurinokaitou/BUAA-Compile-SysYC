@@ -53,7 +53,6 @@ private:
     SymbolEnum readString();
     void extractChar();
     void unextractChar();
-    void expect(const char c);
 
 private:
     std::istream m_istream;
