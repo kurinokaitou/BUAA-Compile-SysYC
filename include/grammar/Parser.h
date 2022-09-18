@@ -9,8 +9,8 @@ public:
     void traversalAST(std::filebuf& file);
 
 private:
-    std::shared_ptr<VNodeBase> expect(SymbolEnum symbol);
-    std::shared_ptr<VNodeBase> expect(std::initializer_list<SymbolEnum> symbolList);
+    std::shared_ptr<VNodeBase> expect(SymbolEnum symbol, int level);
+    std::shared_ptr<VNodeBase> expect(std::initializer_list<SymbolEnum> symbolList, int level);
     bool expectAssignment();
     bool expectPureExp();
     bool expectUnaryOp();
