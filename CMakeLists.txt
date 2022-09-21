@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 set(PROJECT_NAME "sysyc")
 project(${PROJECT_NAME})
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 将源代码添加到此项目的可执行文件
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR} "include/*.h")

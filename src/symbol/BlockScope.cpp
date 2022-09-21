@@ -1,17 +1,37 @@
 #include <symbol/BlockScope.h>
-#include <algorithm>
+#include <symbol/SymbolTable.h>
+
+BlockScope::BlockScope(SymbolTable& table, BlockScopeType type, int level, BlockScopeHandle parent) :
+    m_symbolTable(table), m_type(type), m_parentHandle(parent) {
+}
+
+void BlockScope::addChildScope(BlockScopeHandle handle) {
+    m_childrenHandle.push_back(handle);
+}
 
 SymbolTableItem* BlockScope::findItem(const std::string& name) {
-    auto iter = std::find_if(m_symbols.begin(), m_symbols.end(), [&](std::unique_ptr<SymbolTableItem> item) {
-        if (item->getName() == name) {
-            return true;
+    auto item = m_symbols.find(name);
+    if (item != m_symbols.end()) {
+        return item->second.get();
+    } else {
+        if (m_type != BlockScopeType::GLOBAL) {
+            return m_symbolTable.getBlockScope(m_parentHandle).findItem(name);
         } else {
-            return false;
+            return nullptr;
         }
-    });
-
-    return iter->get();
+    }
 }
 
 void BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
+    m_symbols.insert(std::make_pair(item->getName(), std::move(item)));
+}
+
+std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {
+    m_paramItems.clear();
+    for (auto& item : m_symbols) {
+        if (item.second->isParam()) {
+            m_paramItems.push_back(item.second.get());
+        }
+    }
+    return m_paramItems;
 }
