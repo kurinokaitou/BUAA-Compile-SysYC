@@ -77,14 +77,14 @@ RPARENT )
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
-<AddExp>
+    <AddExp>
     PLUS +
     INTCON 1
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
-<AddExp>
+    <AddExp>
     PLUS +
     INTCON 1
     <Number>
@@ -96,8 +96,8 @@ RPARENT )
     <Number>
     <PrimaryExp>
     <UnaryExp>
-<MulExp>
-<AddExp>
+    <MulExp>
+    <AddExp>
     <Exp>
     RBRACK ]
     LBRACK [
@@ -120,7 +120,7 @@ RPARENT )
     <Number>
     <PrimaryExp>
     <UnaryExp>
-<MulExp>
+    <MulExp>
     <AddExp>
     <Exp>
     RBRACK ]
@@ -143,7 +143,7 @@ RPARENT )
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
-<AddExp>
+    <AddExp>
     <Exp>
     COMMA ,
     IDENFR _
@@ -156,7 +156,7 @@ RPARENT )
     <LVal>
     <PrimaryExp>
     <UnaryExp>
-<MulExp>
+    <MulExp>
     <AddExp>
     <Exp>
     <FuncRParams>
@@ -183,7 +183,7 @@ RPARENT )
     <UnaryExp>
     <MulExp>
     <AddExp>
-<RelExp>
+    <RelExp>
     <EqExp>
     <LAndExp>
     <LOrExp>
@@ -200,7 +200,7 @@ RPARENT )
     <RelExp>
     <EqExp>
     <LAndExp>
-<LOrExp>
+    <LOrExp>
     <Cond>
     RPARENT )
     SEMICN ;

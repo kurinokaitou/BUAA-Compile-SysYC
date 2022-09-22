@@ -13,13 +13,6 @@ protected:
     virtual void TearDown() {
         table.clearSymbolTable();
     };
-    static void SetUpTestSuite() {
-        std::cout << "Start testing symbol table" << std::endl;
-    }
-
-    static void TearDownTestSuite() {
-        std::cout << "End testing symbol table" << std::endl;
-    }
     SymbolTable table;
 };
 #endif

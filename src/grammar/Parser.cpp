@@ -508,6 +508,7 @@ std::shared_ptr<VNodeBase> Parser::addExp(int level) {
     addExpNode->addChild(mulExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::PLUS || (m_currToken + 1)->symbol == SymbolEnum::MINU) {
         auto newAddExpNode = std::make_shared<VNodeBranch>(VNodeEnum::ADDEXP);
+        newAddExpNode->setLevel(level);
         newAddExpNode->addChild(addExpNode);
         addExpNode = newAddExpNode;
         addExpNode->addChild(expect({SymbolEnum::PLUS, SymbolEnum::MINU}, level));
@@ -525,6 +526,7 @@ std::shared_ptr<VNodeBase> Parser::mulExp(int level) {
            || (m_currToken + 1)->symbol == SymbolEnum::DIV
            || (m_currToken + 1)->symbol == SymbolEnum::MOD) {
         auto newMulExpNode = std::make_shared<VNodeBranch>(VNodeEnum::MULEXP);
+        newMulExpNode->setLevel(level);
         newMulExpNode->addChild(mulExpNode);
         mulExpNode = newMulExpNode;
         mulExpNode->addChild(expect({SymbolEnum::MULT, SymbolEnum::DIV, SymbolEnum::MOD}, level));
@@ -543,6 +545,7 @@ std::shared_ptr<VNodeBase> Parser::relExp(int level) {
            || (m_currToken + 1)->symbol == SymbolEnum::GRE
            || (m_currToken + 1)->symbol == SymbolEnum::GEQ) {
         auto newRelExpNode = std::make_shared<VNodeBranch>(VNodeEnum::RELEXP);
+        newRelExpNode->setLevel(level);
         newRelExpNode->addChild(relExpNode);
         relExpNode = newRelExpNode;
         relExpNode->addChild(expect({SymbolEnum::LSS, SymbolEnum::LEQ, SymbolEnum::GRE, SymbolEnum::GEQ}, level));
@@ -559,6 +562,7 @@ std::shared_ptr<VNodeBase> Parser::eqExp(int level) {
     while ((m_currToken + 1)->symbol == SymbolEnum::EQL || (m_currToken + 1)->symbol == SymbolEnum::NEQ) {
         auto newEqExpNode = std::make_shared<VNodeBranch>(VNodeEnum::EQEXP);
         newEqExpNode->addChild(eqExpNode);
+        newEqExpNode->setLevel(level);
         eqExpNode = newEqExpNode;
         eqExpNode->addChild(expect({SymbolEnum::EQL, SymbolEnum::NEQ}, level));
         eqExpNode->addChild(relExp(level));
@@ -573,6 +577,7 @@ std::shared_ptr<VNodeBase> Parser::lAndExp(int level) {
     lAndExpNode->addChild(eqExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::AND) {
         auto newLAndExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LANDEXP);
+        newLAndExpNode->setLevel(level);
         newLAndExpNode->addChild(lAndExpNode);
         lAndExpNode = newLAndExpNode;
         lAndExpNode->addChild(expect(SymbolEnum::AND, level));
@@ -588,6 +593,7 @@ std::shared_ptr<VNodeBase> Parser::lOrExp(int level) {
     lOrExpNode->addChild(lAndExp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::OR) {
         auto newLOrExpNode = std::make_shared<VNodeBranch>(VNodeEnum::LOREXP);
+        newLOrExpNode->setLevel(level);
         newLOrExpNode->addChild(lOrExpNode);
         lOrExpNode = newLOrExpNode;
         lOrExpNode->addChild(expect(SymbolEnum::OR, level));
