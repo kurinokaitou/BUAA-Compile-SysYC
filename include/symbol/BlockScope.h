@@ -18,7 +18,7 @@ class BlockScope {
 public:
     explicit BlockScope(SymbolTable& table, BlockScopeType type, int level, BlockScopeHandle parent);
     SymbolTableItem* findItem(const std::string& name);
-    void insertItem(std::unique_ptr<SymbolTableItem>&& item);
+    std::pair<SymbolTableItem*, bool> insertItem(std::unique_ptr<SymbolTableItem>&& item);
     std::vector<SymbolTableItem*>& getParamItems() const;
     int getLevel() const { return m_level; }
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }

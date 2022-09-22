@@ -8,7 +8,9 @@ protected:
     SymbolTableTest() = default;
     virtual ~SymbolTableTest() = default;
     virtual void SetUp(){};
-    virtual void TearDown(){};
+    virtual void TearDown() {
+        table.clearSymbolTable();
+    };
     static void SetUpTestSuite() {
         std::cout << "Start testing symbol table" << std::endl;
     }

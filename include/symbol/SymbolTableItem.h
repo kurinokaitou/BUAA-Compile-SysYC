@@ -13,6 +13,7 @@ class SymbolTableItem {
 public:
     SymbolTableItem(const std::string& name, BlockScopeHandle handle) :
         m_name(name), m_scopeHandle(handle){};
+    virtual ~SymbolTableItem() {}
     std::string getName() const { return m_name; }
     bool isParam() const { return m_isParam; }
     void setParam() { m_isParam = true; }
@@ -32,6 +33,7 @@ class TypedItem : public SymbolTableItem {
 public:
     explicit TypedItem(const std::string& name, BlockScopeHandle handle) :
         SymbolTableItem(name, handle) {}
+    virtual ~TypedItem() {}
     Type& getType() { return m_dataType; }
 
 protected:
@@ -46,10 +48,12 @@ public:
         std::vector<SymbolTableItem*> params;
     };
     explicit FuncItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_params(data.params){};
+        TypedItem<Type>(name, data.parentHandle), m_data(data){};
+    std::vector<SymbolTableItem*>& getParams() { return m_data.params; }
+    virtual ~FuncItem() {}
 
 private:
-    std::vector<SymbolTableItem*> m_params;
+    Data m_data;
 };
 
 template <typename Type>
@@ -60,8 +64,11 @@ public:
         typename Type::InternalType var;
     };
     explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_variable(data.var){};
-    typename Type::InternalType m_variable;
+        TypedItem<Type>(name, data.parentHandle), m_data(data){};
+    virtual ~VarItem() {}
+
+private:
+    Data m_data;
 };
 
 template <typename Type>
@@ -72,8 +79,11 @@ public:
         typename Type::InternalType constVar;
     };
     explicit ConstVarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_constVariable(data.constVar){};
-    typename Type::InternalType m_constVariable;
+        TypedItem<Type>(name, data.parentHandle), m_data(data){};
+    virtual ~ConstVarItem() {}
+
+private:
+    Data m_data;
 };
 
 #endif

@@ -7,11 +7,12 @@ public:
     SymbolTable();
     BlockScope& getBlockScope(BlockScopeHandle handle);
     BlockScope& getCurrentScope();
+    BlockScopeHandle getCurrentScopeHandle();
     void pushScope(BlockScopeType type);
     void popScope();
 
-    template <typename ItemType, typename DataType>
-    void insertItem(const std::string& name, DataType data);
+    template <typename ItemType>
+    std::pair<SymbolTableItem*, bool> insertItem(const std::string& name, typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);
     void clearSymbolTable();
 
@@ -20,10 +21,12 @@ private:
     BlockScopeHandle m_currScopeHandle;
 };
 
-template <typename ItemType, typename Data>
-void SymbolTable::insertItem(const std::string& name, Data data) {
+template <typename ItemType>
+std::pair<SymbolTableItem*, bool> SymbolTable::insertItem(const std::string& name, typename ItemType::Data data) {
     if (std::is_base_of<SymbolTableItem, ItemType>::value) {
-        getCurrentScope().insertItem(std::unique_ptr<ItemType>(new ItemType(name, data)));
+        return getCurrentScope().insertItem(std::unique_ptr<ItemType>(new ItemType(name, data)));
+    } else {
+        return std::make_pair(nullptr, false);
     }
 }
 #endif

@@ -21,9 +21,10 @@ SymbolTableItem* BlockScope::findItem(const std::string& name) {
     }
 }
 
-void BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
+std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
     item->setLevel(m_level);
-    m_symbols.insert(std::make_pair(item->getName(), std::move(item)));
+    auto res = m_symbols.insert(std::make_pair(item->getName(), std::move(item)));
+    return std::make_pair(res.first->second.get(), res.second);
 }
 
 std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {

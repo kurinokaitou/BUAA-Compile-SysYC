@@ -12,6 +12,10 @@ BlockScope& SymbolTable::getCurrentScope() {
     return m_blockScopes.at(m_currScopeHandle.index);
 }
 
+BlockScopeHandle SymbolTable::getCurrentScopeHandle() {
+    return m_currScopeHandle;
+}
+
 void SymbolTable::pushScope(BlockScopeType type) {
     auto& currentScope = getCurrentScope();
     m_blockScopes.emplace_back(*this, type, currentScope.getLevel() + 1, m_currScopeHandle);
@@ -27,4 +31,8 @@ void SymbolTable::popScope() {
 
 SymbolTableItem* SymbolTable::findItem(const std::string& name) {
     return getCurrentScope().findItem(name);
+}
+
+void SymbolTable::clearSymbolTable() {
+    m_blockScopes.clear();
 }
