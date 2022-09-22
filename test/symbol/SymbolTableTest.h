@@ -7,7 +7,9 @@ class SymbolTableTest : public ::testing::Test {
 protected:
     SymbolTableTest() = default;
     virtual ~SymbolTableTest() = default;
-    virtual void SetUp(){};
+    virtual void SetUp() {
+        table.initSymbolTable();
+    };
     virtual void TearDown() {
         table.clearSymbolTable();
     };

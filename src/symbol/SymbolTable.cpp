@@ -4,6 +4,11 @@ SymbolTable::SymbolTable() :
     m_blockScopes.emplace_back(*this, BlockScopeType::GLOBAL, 0, BlockScopeHandle());
 }
 
+void SymbolTable::initSymbolTable() {
+    m_currScopeHandle = BlockScopeHandle(0);
+    m_blockScopes.emplace_back(*this, BlockScopeType::GLOBAL, 0, BlockScopeHandle());
+}
+
 BlockScope& SymbolTable::getBlockScope(BlockScopeHandle handle) {
     return m_blockScopes.at(handle.index);
 }

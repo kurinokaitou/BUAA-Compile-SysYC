@@ -2,6 +2,9 @@
 #define VALUE_TYPE_H
 #include <vector>
 #include <memory>
+
+static const int INT_SIZE = 4;
+static const int VOID_SIZE = 0;
 class ValueType {
 public:
     virtual int countSize() const = 0;
@@ -30,12 +33,12 @@ private:
 class IntType : public ValueType {
 public:
     using InternalType = int;
-    virtual int countSize() const override { return 4; }
+    virtual int countSize() const override { return INT_SIZE; }
 };
 
 class VoidType : public ValueType {
 public:
     using InternalType = void;
-    virtual int countSize() const override { return 0; }
+    virtual int countSize() const override { return VOID_SIZE; }
 };
 #endif

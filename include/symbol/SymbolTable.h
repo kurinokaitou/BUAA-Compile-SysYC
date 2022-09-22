@@ -5,6 +5,7 @@
 class SymbolTable {
 public:
     SymbolTable();
+    void initSymbolTable();
     BlockScope& getBlockScope(BlockScopeHandle handle);
     BlockScope& getCurrentScope();
     BlockScopeHandle getCurrentScopeHandle();
