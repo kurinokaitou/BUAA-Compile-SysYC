@@ -57,7 +57,6 @@
         },
         {
             "label": "debug",
-            "group": "build",
             "type": "shell",
             "command": "cmake",
             "args": [
@@ -69,6 +68,10 @@
                 "cwd": "${workspaceFolder}"
             },
             "detail": "debug build project",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "dependsOn": [
                 "cmake debug"
             ]
@@ -116,10 +119,6 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
             "detail": "调试器生成的任务",
         }
     ]

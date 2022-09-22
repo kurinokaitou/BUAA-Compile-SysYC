@@ -23,6 +23,7 @@ public:
     int getLevel() const { return m_level; }
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }
     void addChildScope(BlockScopeHandle handle);
+    std::size_t countSymbol() { return m_symbols.size(); }
 
 private:
     SymbolTable& m_symbolTable;

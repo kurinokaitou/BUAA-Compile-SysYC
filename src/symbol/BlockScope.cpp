@@ -1,8 +1,7 @@
 #include <symbol/BlockScope.h>
 #include <symbol/SymbolTable.h>
-
 BlockScope::BlockScope(SymbolTable& table, BlockScopeType type, int level, BlockScopeHandle parent) :
-    m_symbolTable(table), m_type(type), m_parentHandle(parent) {
+    m_symbolTable(table), m_type(type), m_level(level), m_parentHandle(parent) {
 }
 
 void BlockScope::addChildScope(BlockScopeHandle handle) {
@@ -23,6 +22,7 @@ SymbolTableItem* BlockScope::findItem(const std::string& name) {
 }
 
 void BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
+    item->setLevel(m_level);
     m_symbols.insert(std::make_pair(item->getName(), std::move(item)));
 }
 

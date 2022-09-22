@@ -6,6 +6,24 @@
     "configurations": [
         {
             "type": "cppdbg",
+            "name": "Launch Test Debug",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test/symbol/symbol_test", //指定C/C++程序位置
+            "args": [], //指定运行参数
+            "cwd": "${workspaceFolder}", //指定工作目录
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerArgs": "-q -ex quit; wait() { fg >/dev/null; }; /bin/gdb -q --interpreter=mi",
+        },
+        {
+            "type": "cppdbg",
             "name": "Launch Debug", //名称/调试类型，除使用msvc进行调试外，均为该类型
             "request": "launch",
             "program": "${workspaceFolder}/build/sysyc", //指定C/C++程序位置

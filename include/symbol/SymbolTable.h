@@ -1,6 +1,7 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 #include "BlockScope.h"
+#include "SymbolTableItem.h"
 class SymbolTable {
 public:
     SymbolTable();
@@ -12,14 +13,15 @@ public:
     template <typename ItemType, typename DataType>
     void insertItem(const std::string& name, DataType data);
     SymbolTableItem* findItem(const std::string& name);
+    void clearSymbolTable();
 
 private:
     std::vector<BlockScope> m_blockScopes;
     BlockScopeHandle m_currScopeHandle;
 };
 
-template <typename ItemType, typename DataType>
-void SymbolTable::insertItem(const std::string& name, DataType data) {
+template <typename ItemType, typename Data>
+void SymbolTable::insertItem(const std::string& name, Data data) {
     if (std::is_base_of<SymbolTableItem, ItemType>::value) {
         getCurrentScope().insertItem(std::unique_ptr<ItemType>(new ItemType(name, data)));
     }
