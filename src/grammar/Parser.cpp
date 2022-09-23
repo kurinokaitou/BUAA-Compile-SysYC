@@ -225,7 +225,7 @@ std::shared_ptr<VNodeBase> Parser::constExp(int level) {
     return constExpNode;
 }
 
-// 变量声明 bType -> varDef { ',' varDef } ';'
+// 变量声明 varDecl -> bType varDef { ',' varDef } ';'
 std::shared_ptr<VNodeBase> Parser::varDecl(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto varDeclNode = std::make_shared<VNodeBranch>(VNodeEnum::VARDECL);

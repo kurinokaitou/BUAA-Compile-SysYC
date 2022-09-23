@@ -2,8 +2,17 @@ VOIDTK void
 <FuncType>
 IDENFR f
 LPARENT (
+INTTK int
+IDENFR val
+<FuncFParam>
+<FuncFParams>
 RPARENT )
   LBRACE {
+    INTTK int
+    IDENFR a
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
   RBRACE }
   <Block>
 <FuncDef>
@@ -210,6 +219,23 @@ RPARENT )
       RBRACE }
       <Block>
     <Stmt>
+    <Stmt>
+    IDENFR f
+    LPARENT (
+    IDENFR x
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
     <Stmt>
     RETURNTK return
     SEMICN ;
