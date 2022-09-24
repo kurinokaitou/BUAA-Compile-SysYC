@@ -7,7 +7,8 @@ enum class VType : bool {
     VT = true
 };
 enum class VNodeEnum : int {
-    COMPUNIT = 0,
+    UNKNOWNN = 0,
+    COMPUNIT,
     DECL,
     CONSTDECL,
     BTYPE,
@@ -41,6 +42,7 @@ enum class VNodeEnum : int {
     FUNCRPARAMS,
 };
 static const std::vector<std::string> s_vnodeEnumText{
+    "unknown",
     "CompUnit",
     "Decl",
     "ConstDecl",

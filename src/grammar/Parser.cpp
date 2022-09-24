@@ -22,9 +22,9 @@ void Parser::traversalAST(std::filebuf& file) {
 void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
     if (node->getType() == VType::VN) {
         auto branch = std::static_pointer_cast<VNodeBranch>(node);
-        for (auto& child : branch->getChildren()) {
-            postTraversal(child, os);
-        }
+        do {
+            postTraversal(*node->getCurrChildIter(), os);
+        } while (node->nextChild());
         if (!(branch->getNodeEnum() == VNodeEnum::DECL
               || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
               || branch->getNodeEnum() == VNodeEnum::BTYPE)) {

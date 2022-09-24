@@ -9,12 +9,17 @@
 
 class VNodeBase {
 public:
+    using ChidrenIter = std::vector<std::shared_ptr<VNodeBase>>::const_iterator;
     VNodeBase() = default;
     explicit VNodeBase(bool isCorrect) :
         m_isCorrect(isCorrect) {}
     virtual VType getType() const = 0;
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
+    virtual ChidrenIter getCurrChildIter() = 0;
+    virtual bool nextChild() = 0;
     virtual void dumpToFile(std::ostream& os) = 0;
+    virtual VNodeEnum getNodeEnum() const = 0;
+    virtual SymbolEnum getSymbol() const = 0;
 
 public:
     int getLevel() const { return m_level; }
@@ -45,6 +50,19 @@ public:
         for (int i = 1; i < m_level; i++) os << "  ";
         os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
+    virtual ChidrenIter getCurrChildIter() override {
+        DBG_LOG("Try to get children from a leaf node!");
+        return ChidrenIter();
+    }
+    virtual bool nextChild() override {
+        DBG_LOG("Try to iterate children nodes of a leaf node!");
+        return false;
+    }
+    virtual VNodeEnum getNodeEnum() const override {
+        DBG_LOG("Try to get node enum of a leaf node!");
+        return VNodeEnum::UNKNOWNN;
+    }
+    virtual SymbolEnum getSymbol() const override { return m_symbol; }
 
 private:
     SymbolEnum m_symbol{SymbolEnum::UNKNOWN};
@@ -63,18 +81,30 @@ public:
             setCorrect(false);
         }
         m_childrenNodes.push_back(std::move(child));
+        m_currentChild = m_childrenNodes.begin();
     }
     virtual void dumpToFile(std::ostream& os) override {
         for (int i = 1; i < m_level; i++) os << "  ";
         os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
-
-public:
-    VNodeEnum getNodeEnum() const { return m_nodeEnum; }
-    std::vector<std::shared_ptr<VNodeBase>>& getChildren() { return m_childrenNodes; }
+    virtual ChidrenIter getCurrChildIter() override { return m_currentChild; }
+    virtual bool nextChild() override {
+        m_currentChild++;
+        if (m_currentChild != m_childrenNodes.end()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    virtual VNodeEnum getNodeEnum() const override { return m_nodeEnum; }
+    virtual SymbolEnum getSymbol() const override {
+        DBG_LOG("Try to get symbol enum of a branch node!");
+        return SymbolEnum::UNKNOWN;
+    }
 
 private:
     VNodeEnum m_nodeEnum{VNodeEnum::COMPUNIT};
     std::vector<std::shared_ptr<VNodeBase>> m_childrenNodes;
+    ChidrenIter m_currentChild;
 };
 #endif
