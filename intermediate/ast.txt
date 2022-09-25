@@ -1,261 +1,46 @@
-<CompUnit>
-<ConstDecl>
-CONSTTK const
-INTTK int
-<ConstDef>
-IDENFR a
-ASSIGN =
-<ConstInitVal>
-<ConstExp>
-<AddExp>
-<MulExp>
-<UnaryExp>
-<PrimaryExp>
-<Number>
-INTCON 1
-SEMICN ;
-<FuncDef>
-<FuncType>
-VOIDTK void
-IDENFR f
-LPARENT (
-<FuncFParams>
-<FuncFParam>
-INTTK int
-IDENFR val
-RPARENT )
-  <Block>
-  LBRACE {
-    <VarDecl>
-    INTTK int
-    <VarDef>
-    IDENFR a
-    SEMICN ;
-  RBRACE }
-<MainFuncDef>
 INTTK int
 MAINTK main
 LPARENT (
 RPARENT )
-  <Block>
-  LBRACE {
-    <ConstDecl>
-    CONSTTK const
-    INTTK int
-    <ConstDef>
-    IDENFR x
-    ASSIGN =
-    <ConstInitVal>
-    LBRACE {
-    <ConstInitVal>
-    LBRACE {
-    <ConstInitVal>
-    <ConstExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    COMMA ,
-    <ConstInitVal>
-    <ConstExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 0
-    RBRACE }
-    COMMA ,
-    <ConstInitVal>
-    LBRACE {
-    <ConstInitVal>
-    <ConstExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 0
-    COMMA ,
-    <ConstInitVal>
-    <ConstExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    RBRACE }
-    RBRACE }
-    SEMICN ;
-    <Stmt>
-    <LVal>
-    IDENFR _
-    LBRACK [
-    <Exp>
-    <AddExp>
-    <AddExp>
-    <AddExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    PLUS +
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    PLUS +
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    PLUS +
-    <MulExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    MULT *
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    RBRACK ]
-    LBRACK [
-    <Exp>
-    <AddExp>
-    <MulExp>
-    <MulExp>
-    <UnaryExp>
-    <UnaryOp>
-    NOT !
-    <UnaryExp>
-    <UnaryOp>
-    PLUS +
-    <UnaryExp>
-    <UnaryOp>
-    NOT !
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    MOD %
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    RBRACK ]
-    ASSIGN =
-    <Exp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    IDENFR f
-    LPARENT (
-    <FuncRParams>
-    <Exp>
-    <AddExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <UnaryOp>
-    MINU -
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    MINU -
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <Number>
-    INTCON 1
-    COMMA ,
-    <Exp>
-    <AddExp>
-    <MulExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR _
-    MULT *
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR _
-    RPARENT )
-    SEMICN ;
-    <Stmt>
-    IFTK if
-    LPARENT (
-    <Cond>
-    <LOrExp>
-    <LOrExp>
-    <LAndExp>
-    <EqExp>
-    <RelExp>
-    <RelExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR p
-    LEQ <=
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR q
-    OR ||
-    <LAndExp>
-    <EqExp>
-    <RelExp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <UnaryOp>
-    NOT !
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR a
-    RPARENT )
-    <Stmt>
-    SEMICN ;
-    ELSETK else
-    <Stmt>
-      <Block>
-      LBRACE {
-      RBRACE }
-    <Stmt>
-    <Exp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    IDENFR f
-    LPARENT (
-    <FuncRParams>
-    <Exp>
-    <AddExp>
-    <MulExp>
-    <UnaryExp>
-    <PrimaryExp>
-    <LVal>
-    IDENFR x
-    RPARENT )
-    SEMICN ;
-    <Stmt>
-    RETURNTK return
-    SEMICN ;
-  RBRACE }
+LBRACE {
+INTTK int
+IDENFR c
+<VarDef>
+SEMICN ;
+<VarDecl>
+IDENFR c
+<LVal>
+ASSIGN =
+GETINTTK getint
+LPARENT (
+RPARENT )
+SEMICN ;
+<Stmt>
+PRINTFTK printf
+LPARENT (
+STRCON "%d"
+COMMA ,
+IDENFR c
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+RPARENT )
+SEMICN ;
+<Stmt>
+RETURNTK return
+IDENFR c
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+SEMICN ;
+<Stmt>
+RBRACE }
+<Block>
+<MainFuncDef>
+<CompUnit>

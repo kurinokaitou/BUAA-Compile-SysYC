@@ -51,6 +51,8 @@ bool Compiler::firstPass(std::filebuf& file) {
         m_tokenList = m_tokenizer->tokenize();
         m_parser = std::unique_ptr<Parser>(new Parser(m_tokenList));
         m_parser->parse();
+        m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
+        m_generator->generate();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         return false;

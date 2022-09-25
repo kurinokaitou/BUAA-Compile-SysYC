@@ -4,6 +4,7 @@
 class CodeGenerator {
 public:
     CodeGenerator(std::shared_ptr<VNodeBase> astRoot);
+    void generate();
 
 private:
     std::unique_ptr<Visitor> m_visitor;

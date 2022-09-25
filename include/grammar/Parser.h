@@ -6,6 +6,7 @@ class Parser {
 public:
     explicit Parser(std::vector<Token>& tokenList);
     void parse();
+    std::shared_ptr<VNodeBase> getASTRoot() const { return m_astRoot; }
     void traversalAST(std::filebuf& file);
 
 private:
