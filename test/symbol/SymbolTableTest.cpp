@@ -41,7 +41,7 @@ TEST_F(SymbolTableTest, ArrayTypeInsert) {
     table.insertItem<ConstVarItem<ArrayI2>>("const int arr", {.parentHandle = table.getCurrentScopeHandle(), .constVar = {{1, 2}, {3, 4}}});
     SymbolTableItem* item = table.findItem("const int arr");
     auto type = getValueType<ArrayI2>(item);
-    type.setDimension(2, 2);
+    type.setDimension({2, 2});
     EXPECT_EQ(type.countSize(), 16);
     auto arri2 = dynamic_cast<ConstVarItem<ArrayI2>*>(item)->getConstVar();
     EXPECT_EQ(arri2[0][0], 1);

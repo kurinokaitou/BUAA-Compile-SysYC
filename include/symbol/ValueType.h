@@ -75,7 +75,7 @@ public:
     MultiArray(std::initializer_list<InteralType> list) {
         m_values.assign(list);
     }
-    void push_back(InteralType&& value) {
+    void push_back(InteralType value) {
         m_values.push_back(std::forward<InteralType>(value));
     }
     friend std::ostream& operator<<(std::ostream& os, MultiArray<T, 1>& arr) {
@@ -97,12 +97,22 @@ private:
     std::vector<InteralType> m_values;
 };
 
+template <typename T>
+class MultiArray<T, 0> {
+public:
+    using InteralType = typename T::InternalType;
+    MultiArray() = default;
+    void push_back(InteralType&& value) {}
+    friend std::ostream& operator<<(std::ostream& os, MultiArray<T, 0>& arr) { return os; }
+    int operator[](size_t index) { return 0; }
+};
+
 template <typename Type, size_t N>
 class ArrayType : public ValueType {
 public:
     using InternalType = MultiArray<Type, N>;
     virtual int countSize() const override {
-        int count = 1;
+        int count = m_basicType.countSize();
         for (int dimension : m_dimensions) {
             count *= dimension;
         }

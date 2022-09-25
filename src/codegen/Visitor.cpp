@@ -1,4 +1,7 @@
 #include <codegen/Vistitor.h>
+#define INSERT_INT_ARRAY(dim) m_table.insertItem<ConstVarItem<ArrayType<IntType, dim>>>(identName,                                        \
+                                                                                        {.parentHandle = m_table.getCurrentScopeHandle(), \
+                                                                                         .constVar = constInitVal<dim>(*node->getChildIter())});
 
 Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table) :
     m_astRoot(astRoot), m_table(table) {
@@ -68,6 +71,34 @@ void Visitor::constDecl(std::shared_ptr<VNodeBase> node) {
 void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
 }
 
+IntType::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
+    // TODO: parse expression
+    return 1;
+}
+
+template <>
+typename IntType::InternalType Visitor::constInitVal<IntType>(std::shared_ptr<VNodeBase> node) {
+    return constExp(*node->getChildIter());
+};
+
+template <>
+typename ArrayType<IntType, 1>::InternalType Visitor::constInitVal<1>(std::shared_ptr<VNodeBase> node) {
+    typename ArrayType<IntType, 1>::InternalType values;
+    if (expect(*node->getChildIter(), SymbolEnum::LBRACE)) {
+        node->nextChild();
+        if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
+            values.push_back(constInitVal<IntType>(*node->getChildIter()));
+            node->nextChild(); // jump '}'
+            while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
+                node->nextChild(); // jump ','
+                values.push_back(constInitVal<IntType>(*node->getChildIter()));
+                node->nextChild(); // jump '}'
+            }
+        }
+    }
+    return values;
+};
+
 void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(node);
     std::string identName = leafNode->getToken().literal;
@@ -78,13 +109,21 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
         node->nextChild(3); // jump '[dimension]'
     }
     node->nextChild(); // jump '='
-    if (dimensions.size() == 0) {
+    const size_t dimensionSize = dimensions.size();
+    if (dimensionSize == 0) {
         auto value = constInitVal<IntType>(*node->getChildIter());
         m_table.insertItem<ConstVarItem<IntType>>(identName,
                                                   {.parentHandle = m_table.getCurrentScopeHandle(),
                                                    .constVar = value});
     } else {
-        // TODO: handle multi dimension array type
+        // TODO: 手动实例化更多维的数组初值处理函数
+        switch (dimensionSize) {
+        case 1: INSERT_INT_ARRAY(1); break;
+        case 2: INSERT_INT_ARRAY(2); break;
+        case 3: INSERT_INT_ARRAY(3); break;
+        case 4: INSERT_INT_ARRAY(4); break;
+        default: break;
+        }
     }
 }
 
