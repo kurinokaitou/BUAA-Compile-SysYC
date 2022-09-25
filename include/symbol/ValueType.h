@@ -2,6 +2,8 @@
 #define VALUE_TYPE_H
 #include <vector>
 #include <memory>
+#include <iostream>
+#include <algorithm>
 
 enum class ValueTypeEnum : unsigned int {
     INT_TYPE = 0,
@@ -15,72 +17,6 @@ class ValueType {
 public:
     virtual int countSize() const = 0;
     virtual ValueTypeEnum getValueTypeEnum() = 0;
-};
-
-template <typename Type, size_t N>
-class ArrayType : public ValueType {
-public:
-    using InternalType = std::vector<typename Type::InternalType>;
-    virtual int countSize() const override {
-        int count = 1;
-        for (int dimension : m_dimensions) {
-            count *= dimension;
-        }
-        return count;
-    }
-    virtual ValueTypeEnum getValueTypeEnum() override {
-        return ValueTypeEnum::ARRAY_TYPE;
-    }
-
-    void setDimension(std::initializer_list<int> dimensions) {
-        m_dimensions.assign(dimensions.begin(), dimensions.end());
-    }
-
-private:
-    std::vector<int> m_dimensions;
-    Type m_basicType;
-};
-
-template <typename Type>
-class ArrayType<Type, 1> : public ValueType {
-public:
-    using InternalType = std::vector<typename Type::InternalType>;
-    virtual int countSize() const override {
-        return m_dx * m_basicType.countSize();
-    }
-    virtual ValueTypeEnum getValueTypeEnum() override {
-        return ValueTypeEnum::ARRAY_TYPE;
-    }
-
-    void setDimension(int x) {
-        m_dx = x;
-    }
-
-private:
-    size_t m_dx{0};
-    Type m_basicType;
-};
-
-template <typename Type>
-class ArrayType<Type, 2> : public ValueType {
-public:
-    using InternalType = std::vector<std::vector<typename Type::InternalType>>;
-    virtual int countSize() const override {
-        return m_dx * m_dy * m_basicType.countSize();
-    }
-    virtual ValueTypeEnum getValueTypeEnum() override {
-        return ValueTypeEnum::ARRAY_TYPE;
-    }
-
-    void setDimension(int x, int y) {
-        m_dx = x;
-        m_dy = y;
-    }
-
-private:
-    size_t m_dx{0};
-    size_t m_dy{0};
-    Type m_basicType;
 };
 
 class IntType : public ValueType {
@@ -99,6 +35,90 @@ public:
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
     }
+};
+
+template <typename T, size_t N>
+class MultiArray {
+public:
+    using InteralType = MultiArray<T, N - 1>;
+    MultiArray() = default;
+    MultiArray(std::initializer_list<InteralType> list) {
+        m_values.assign(list);
+    }
+    void push_back(InteralType&& value) {
+        m_values.push_back(std::forward<InteralType>(value));
+    }
+    friend std::ostream& operator<<(std::ostream& os, MultiArray<T, N>& arr) {
+        os << "{";
+        for (auto it = arr.m_values.begin(); it != arr.m_values.end(); it++) {
+            os << *it;
+            if (it != arr.m_values.end() - 1) {
+                os << ", ";
+            }
+        }
+        os << "}";
+        return os;
+    }
+    MultiArray<T, N - 1>& operator[](size_t index) {
+        return m_values[index];
+    }
+
+private:
+    std::vector<InteralType> m_values;
+};
+
+template <typename T>
+class MultiArray<T, 1> {
+public:
+    using InteralType = typename T::InternalType;
+    MultiArray() = default;
+    MultiArray(std::initializer_list<InteralType> list) {
+        m_values.assign(list);
+    }
+    void push_back(InteralType&& value) {
+        m_values.push_back(std::forward<InteralType>(value));
+    }
+    friend std::ostream& operator<<(std::ostream& os, MultiArray<T, 1>& arr) {
+        os << "{";
+        for (auto it = arr.m_values.begin(); it != arr.m_values.end(); it++) {
+            os << *it;
+            if (it != arr.m_values.end() - 1) {
+                os << ", ";
+            }
+        }
+        os << "}";
+        return os;
+    }
+    int operator[](size_t index) {
+        return m_values[index];
+    }
+
+private:
+    std::vector<InteralType> m_values;
+};
+
+template <typename Type, size_t N>
+class ArrayType : public ValueType {
+public:
+    using InternalType = MultiArray<Type, N>;
+    virtual int countSize() const override {
+        int count = 1;
+        for (int dimension : m_dimensions) {
+            count *= dimension;
+        }
+        return count;
+    }
+    virtual ValueTypeEnum getValueTypeEnum() override {
+        return ValueTypeEnum::ARRAY_TYPE;
+    }
+
+    void setDimension(const std::array<int, N>&& dimensions) {
+        std::copy(dimensions.begin(), dimensions.end(), m_dimensions.begin());
+    }
+
+private:
+    std::array<int, N> m_dimensions;
+    Type m_basicType;
 };
 
 using ArrayI2 = ArrayType<IntType, 2>;

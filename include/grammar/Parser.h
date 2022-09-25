@@ -16,6 +16,7 @@ private:
     bool expectUnaryOp();
     bool expectFuncRParams();
     void postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os);
+    void preTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os);
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元

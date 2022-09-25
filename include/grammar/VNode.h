@@ -15,8 +15,8 @@ public:
         m_isCorrect(isCorrect) {}
     virtual VType getType() const = 0;
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
-    virtual ChidrenIter getCurrChildIter() = 0;
-    virtual bool nextChild() = 0;
+    virtual ChidrenIter getChildIter(int offset = 0) = 0;
+    virtual bool nextChild(int offset = 1) = 0;
     virtual void dumpToFile(std::ostream& os) = 0;
     virtual VNodeEnum getNodeEnum() const = 0;
     virtual SymbolEnum getSymbol() const = 0;
@@ -50,11 +50,11 @@ public:
         for (int i = 1; i < m_level; i++) os << "  ";
         os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
-    virtual ChidrenIter getCurrChildIter() override {
+    virtual ChidrenIter getChildIter(int offset = 0) override {
         DBG_LOG("Try to get children from a leaf node!");
         return ChidrenIter();
     }
-    virtual bool nextChild() override {
+    virtual bool nextChild(int offset = 1) override {
         DBG_LOG("Try to iterate children nodes of a leaf node!");
         return false;
     }
@@ -63,6 +63,7 @@ public:
         return VNodeEnum::UNKNOWNN;
     }
     virtual SymbolEnum getSymbol() const override { return m_symbol; }
+    const Token& getToken() const { return m_token; }
 
 private:
     SymbolEnum m_symbol{SymbolEnum::UNKNOWN};
@@ -87,12 +88,13 @@ public:
         for (int i = 1; i < m_level; i++) os << "  ";
         os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
-    virtual ChidrenIter getCurrChildIter() override { return m_currentChild; }
-    virtual bool nextChild() override {
-        m_currentChild++;
+    virtual ChidrenIter getChildIter(int offset = 0) override { return m_currentChild + offset; }
+    virtual bool nextChild(int offset = 1) override {
+        m_currentChild += offset;
         if (m_currentChild != m_childrenNodes.end()) {
             return true;
         } else {
+            DBG_LOG("Iterator out of range!");
             return false;
         }
     }

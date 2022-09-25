@@ -16,20 +16,38 @@ void Parser::parse() {
 
 void Parser::traversalAST(std::filebuf& file) {
     std::ostream os(&file);
-    postTraversal(m_astRoot, os);
+    //postTraversal(m_astRoot, os);
+    preTraversal(m_astRoot, os);
 }
 
 void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
     if (node->getType() == VType::VN) {
         auto branch = std::static_pointer_cast<VNodeBranch>(node);
         do {
-            postTraversal(*node->getCurrChildIter(), os);
+            postTraversal(*node->getChildIter(), os);
         } while (node->nextChild());
         if (!(branch->getNodeEnum() == VNodeEnum::DECL
               || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
               || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
             branch->dumpToFile(os);
         }
+    } else {
+        auto leaf = std::static_pointer_cast<VNodeLeaf>(node);
+        leaf->dumpToFile(os);
+    }
+}
+
+void Parser::preTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
+    if (node->getType() == VType::VN) {
+        auto branch = std::static_pointer_cast<VNodeBranch>(node);
+        if (!(branch->getNodeEnum() == VNodeEnum::DECL
+              || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
+              || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
+            branch->dumpToFile(os);
+        }
+        do {
+            postTraversal(*node->getChildIter(), os);
+        } while (node->nextChild());
     } else {
         auto leaf = std::static_pointer_cast<VNodeLeaf>(node);
         leaf->dumpToFile(os);

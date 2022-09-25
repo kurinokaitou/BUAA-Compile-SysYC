@@ -10,7 +10,11 @@
 #define PARSER_LOG_INFO(...) Logger::logInfo(__VA_ARGS__);
 
 #ifdef DEBUG
-#define DBG_LOG(...) Logger::logDebug(__VA_ARGS__);
+#define DBG_LOG(...)                           \
+    do {                                       \
+        Logger::logDebug(__VA_ARGS__);         \
+        throw std::runtime_error(__VA_ARGS__); \
+    } while (false)
 #else
 #define DBG_LOG(...)
 #endif
