@@ -15,7 +15,8 @@ public:
         m_isCorrect(isCorrect) {}
     virtual VType getType() const = 0;
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
-    virtual ChidrenIter getChildIter(int offset = 0) = 0;
+    virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const = 0;
+    virtual ChidrenIter getChildIter(int offset = 0) const = 0;
     virtual bool nextChild(int offset = 1) = 0;
     virtual void dumpToFile(std::ostream& os) = 0;
     virtual VNodeEnum getNodeEnum() const = 0;
@@ -50,7 +51,12 @@ public:
         for (int i = 1; i < m_level; i++) os << "  ";
         os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
-    virtual ChidrenIter getChildIter(int offset = 0) override {
+    virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override {
+        DBG_LOG("Try to get children from a leaf node!");
+        static const std::vector<std::shared_ptr<VNodeBase>> dummy;
+        return dummy;
+    };
+    virtual ChidrenIter getChildIter(int offset = 0) const override {
         DBG_LOG("Try to get children from a leaf node!");
         return ChidrenIter();
     }
@@ -88,7 +94,8 @@ public:
         for (int i = 1; i < m_level; i++) os << "  ";
         os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
-    virtual ChidrenIter getChildIter(int offset = 0) override { return m_currentChild + offset; }
+    virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override { return m_childrenNodes; };
+    virtual ChidrenIter getChildIter(int offset = 0) const override { return m_currentChild + offset; }
     virtual bool nextChild(int offset = 1) override {
         m_currentChild += offset;
         if (m_currentChild != m_childrenNodes.end()) {

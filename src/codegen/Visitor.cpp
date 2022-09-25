@@ -41,6 +41,7 @@ void Visitor::compUnit(std::shared_ptr<VNodeBase> node) {
     }
     if (expect(*node->getChildIter(), VNodeEnum::MAINFUNCDEF)) {
         mainFuncDef(*node->getChildIter());
+        node->nextChild();
     }
 
     m_table.popScope();

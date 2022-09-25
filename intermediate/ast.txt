@@ -1,46 +1,261 @@
+CONSTTK const
+INTTK int
+IDENFR a
+ASSIGN =
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+SEMICN ;
+<ConstDecl>
+VOIDTK void
+<FuncType>
+IDENFR f
+LPARENT (
+INTTK int
+IDENFR val
+<FuncFParam>
+<FuncFParams>
+RPARENT )
+  LBRACE {
+    INTTK int
+    IDENFR a
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+  RBRACE }
+  <Block>
+<FuncDef>
 INTTK int
 MAINTK main
 LPARENT (
 RPARENT )
-LBRACE {
-INTTK int
-IDENFR c
-<VarDef>
-SEMICN ;
-<VarDecl>
-IDENFR c
-<LVal>
-ASSIGN =
-GETINTTK getint
-LPARENT (
-RPARENT )
-SEMICN ;
-<Stmt>
-PRINTFTK printf
-LPARENT (
-STRCON "%d"
-COMMA ,
-IDENFR c
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-RPARENT )
-SEMICN ;
-<Stmt>
-RETURNTK return
-IDENFR c
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-SEMICN ;
-<Stmt>
-RBRACE }
-<Block>
+  LBRACE {
+    CONSTTK const
+    INTTK int
+    IDENFR x
+    ASSIGN =
+    LBRACE {
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    COMMA ,
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    COMMA ,
+    LBRACE {
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    COMMA ,
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    <ConstDef>
+    SEMICN ;
+    <ConstDecl>
+    IDENFR _
+    LBRACK [
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    MULT *
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    LBRACK [
+    NOT !
+    <UnaryOp>
+    PLUS +
+    <UnaryOp>
+    NOT !
+    <UnaryOp>
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <MulExp>
+    MOD %
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    ASSIGN =
+    IDENFR f
+    LPARENT (
+    MINU -
+    <UnaryOp>
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    IDENFR _
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    MULT *
+    IDENFR _
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR p
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    LEQ <=
+    IDENFR q
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    OR ||
+    NOT !
+    <UnaryOp>
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+    SEMICN ;
+    <Stmt>
+    ELSETK else
+      LBRACE {
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IDENFR f
+    LPARENT (
+    IDENFR x
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    RETURNTK return
+    SEMICN ;
+    <Stmt>
+  RBRACE }
+  <Block>
 <MainFuncDef>
 <CompUnit>

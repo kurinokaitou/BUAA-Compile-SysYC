@@ -14,18 +14,23 @@ void Parser::parse() {
     }
 }
 
+std::shared_ptr<VNodeBase> Parser::getASTRoot() const {
+    return m_astRoot;
+}
+
 void Parser::traversalAST(std::filebuf& file) {
     std::ostream os(&file);
-    //postTraversal(m_astRoot, os);
-    preTraversal(m_astRoot, os);
+    postTraversal(m_astRoot, os);
+    //preTraversal(m_astRoot, os);
 }
 
 void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
     if (node->getType() == VType::VN) {
         auto branch = std::static_pointer_cast<VNodeBranch>(node);
-        do {
-            postTraversal(*node->getChildIter(), os);
-        } while (node->nextChild());
+        auto children = branch->getChildren();
+        for (auto& child : children) {
+            postTraversal(child, os);
+        }
         if (!(branch->getNodeEnum() == VNodeEnum::DECL
               || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
               || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
@@ -45,9 +50,10 @@ void Parser::preTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
               || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
             branch->dumpToFile(os);
         }
-        do {
-            postTraversal(*node->getChildIter(), os);
-        } while (node->nextChild());
+        auto children = branch->getChildren();
+        for (auto& child : children) {
+            postTraversal(child, os);
+        }
     } else {
         auto leaf = std::static_pointer_cast<VNodeLeaf>(node);
         leaf->dumpToFile(os);

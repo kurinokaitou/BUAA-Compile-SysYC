@@ -76,7 +76,7 @@ public:
         m_values.assign(list);
     }
     void push_back(InteralType value) {
-        m_values.push_back(std::forward<InteralType>(value));
+        m_values.push_back(value);
     }
     friend std::ostream& operator<<(std::ostream& os, MultiArray<T, 1>& arr) {
         os << "{";
