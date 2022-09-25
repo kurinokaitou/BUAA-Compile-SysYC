@@ -11,18 +11,18 @@ enum class ValueTypeEnum : unsigned int {
     VOID_TYPE,
 };
 
-static const int INT_SIZE = 4;
-static const int VOID_SIZE = 0;
+static const size_t INT_SIZE = 4;
+static const size_t VOID_SIZE = 0;
 class ValueType {
 public:
-    virtual int countSize() const = 0;
+    virtual size_t countSize() const = 0;
     virtual ValueTypeEnum getValueTypeEnum() = 0;
 };
 
 class IntType : public ValueType {
 public:
     using InternalType = int;
-    virtual int countSize() const override { return INT_SIZE; }
+    virtual size_t countSize() const override { return INT_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
     }
@@ -31,10 +31,49 @@ public:
 class VoidType : public ValueType {
 public:
     using InternalType = void;
-    virtual int countSize() const override { return VOID_SIZE; }
+    virtual size_t countSize() const override { return VOID_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
     }
+};
+
+template <typename Type>
+class ArrayType : public ValueType {
+public:
+    using InternalType = std::vector<typename Type::InternalType>;
+    virtual size_t countSize() const override {
+        size_t count = m_basicType.countSize();
+        for (size_t dimension : m_dimensions) {
+            count *= dimension;
+        }
+        return count;
+    }
+    virtual ValueTypeEnum getValueTypeEnum() override {
+        return ValueTypeEnum::ARRAY_TYPE;
+    }
+    size_t getValueIndex(std::vector<size_t>&& pos) {
+        size_t index = 0;
+        int diff = m_dimensions.size() - pos.size();
+        for (int i = 0; i < diff; i++) {
+            pos.push_back(0);
+        }
+        for (int i = 0; i < m_dimensions.size(); i++) {
+            size_t term = 1;
+            for (int j = i + 1; j < m_dimensions.size(); j++) {
+                term *= m_dimensions[j];
+            }
+            index += pos[i] * term;
+        }
+        return index;
+    }
+
+    void setDimension(std::initializer_list<size_t> dimensions) {
+        m_dimensions.assign(dimensions);
+    }
+
+private:
+    std::vector<size_t> m_dimensions;
+    Type m_basicType;
 };
 
 template <typename T, size_t N>
@@ -89,7 +128,7 @@ public:
         os << "}";
         return os;
     }
-    int operator[](size_t index) {
+    InteralType operator[](size_t index) {
         return m_values[index];
     }
 
@@ -107,30 +146,4 @@ public:
     int operator[](size_t index) { return 0; }
 };
 
-template <typename Type, size_t N>
-class ArrayType : public ValueType {
-public:
-    using InternalType = MultiArray<Type, N>;
-    virtual int countSize() const override {
-        int count = m_basicType.countSize();
-        for (int dimension : m_dimensions) {
-            count *= dimension;
-        }
-        return count;
-    }
-    virtual ValueTypeEnum getValueTypeEnum() override {
-        return ValueTypeEnum::ARRAY_TYPE;
-    }
-
-    void setDimension(const std::array<int, N>&& dimensions) {
-        std::copy(dimensions.begin(), dimensions.end(), m_dimensions.begin());
-    }
-
-private:
-    std::array<int, N> m_dimensions;
-    Type m_basicType;
-};
-
-using ArrayI2 = ArrayType<IntType, 2>;
-using ArrayI1 = ArrayType<IntType, 1>;
 #endif

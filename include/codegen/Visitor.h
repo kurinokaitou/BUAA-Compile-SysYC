@@ -2,6 +2,7 @@
 #define VISITOR_H
 #include <symbol/SymbolTable.h>
 #include <grammar/VNode.h>
+
 class Visitor {
 public:
     explicit Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table);
@@ -18,8 +19,6 @@ private:
     typename VT::InternalType constInitVal(std::shared_ptr<VNodeBase> node) { // 常量初值
         return typename VT::InternalType();
     };
-    template <size_t N>
-    typename ArrayType<IntType, N>::InternalType constInitVal(std::shared_ptr<VNodeBase> node);
     IntType::InternalType constExp(std::shared_ptr<VNodeBase> node); // 常量表达式
     void varDecl(std::shared_ptr<VNodeBase> node);                   // 变量声明
     void varDef(std::shared_ptr<VNodeBase> node);                    // 变量定义
@@ -48,29 +47,11 @@ private:
     void funcRParams(std::shared_ptr<VNodeBase> node);               // 函数实参表
     ValueTypeEnum bType(std::shared_ptr<VNodeBase> node);            // 基本类型
 
+    IntType::InternalType calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
+
 private:
     SymbolTable& m_table;
     std::shared_ptr<VNodeBase> m_astRoot;
-};
-
-template <size_t N>
-typename ArrayType<IntType, N>::InternalType Visitor::constInitVal(std::shared_ptr<VNodeBase> node) {
-    typename ArrayType<IntType, N>::InternalType values;
-    if (expect(*node->getChildIter(), SymbolEnum::LBRACE)) {
-        node->nextChild();
-        if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
-            auto value = constInitVal<ArrayType<IntType, N - 1>>(*node->getChildIter());
-            values.push_back(std::move(value));
-            node->nextChild(); // jump '}'
-            while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
-                node->nextChild(); // jump ','
-                auto value = constInitVal<ArrayType<IntType, N - 1>>(*node->getChildIter());
-                values.push_back(std::move(value));
-                node->nextChild(); // jump '}'
-            }
-        }
-    }
-    return values;
 };
 
 #endif

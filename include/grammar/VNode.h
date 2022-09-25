@@ -17,6 +17,7 @@ public:
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const = 0;
     virtual ChidrenIter getChildIter(int offset = 0) const = 0;
+    virtual size_t getChildrenNum() const = 0;
     virtual bool nextChild(int offset = 1) = 0;
     virtual void dumpToFile(std::ostream& os) = 0;
     virtual VNodeEnum getNodeEnum() const = 0;
@@ -60,6 +61,10 @@ public:
         DBG_LOG("Try to get children from a leaf node!");
         return ChidrenIter();
     }
+    virtual size_t getChildrenNum() const override {
+        DBG_LOG("Try to get children number from a leaf node!");
+        return 0;
+    }
     virtual bool nextChild(int offset = 1) override {
         DBG_LOG("Try to iterate children nodes of a leaf node!");
         return false;
@@ -96,6 +101,9 @@ public:
     }
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override { return m_childrenNodes; };
     virtual ChidrenIter getChildIter(int offset = 0) const override { return m_currentChild + offset; }
+    virtual size_t getChildrenNum() const override {
+        return m_childrenNodes.size();
+    }
     virtual bool nextChild(int offset = 1) override {
         m_currentChild += offset;
         if (m_currentChild != m_childrenNodes.end()) {

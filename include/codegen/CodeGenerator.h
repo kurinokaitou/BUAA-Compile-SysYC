@@ -1,6 +1,6 @@
 #ifndef CODE_GENERATOR_H
 #define CODE_GENERATOR_H
-#include "Vistitor.h"
+#include "Visitor.h"
 class CodeGenerator {
 public:
     CodeGenerator(std::shared_ptr<VNodeBase> astRoot);

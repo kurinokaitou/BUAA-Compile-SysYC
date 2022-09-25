@@ -1,4 +1,4 @@
-const int a = 1;
+const int a = array[0][1];
 void f(int val) {
     int a;
 }

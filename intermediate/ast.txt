@@ -1,9 +1,28 @@
+<CompUnit>
 CONSTTK const
 INTTK int
 IDENFR a
 ASSIGN =
+IDENFR array
+LBRACK [
+INTCON 0
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+RBRACK ]
+LBRACK [
 INTCON 1
 <Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+RBRACK ]
+<LVal>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
@@ -258,4 +277,3 @@ RPARENT )
   RBRACE }
   <Block>
 <MainFuncDef>
-<CompUnit>

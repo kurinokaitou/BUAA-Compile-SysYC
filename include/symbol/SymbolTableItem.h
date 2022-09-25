@@ -3,6 +3,8 @@
 #include "BlockScopeHandle.h"
 #include "ValueType.h"
 
+#define GET_ARRAY_VALUE_BY_INDEX(item, ...) item->getConstVar()[item->getType().getValueIndex({__VA_ARGS__})]
+
 class SymbolTableItem {
 public:
     SymbolTableItem(const std::string& name, BlockScopeHandle handle) :
@@ -29,16 +31,8 @@ public:
     explicit TypedItem(const std::string& name, BlockScopeHandle handle) :
         SymbolTableItem(name, handle) {}
     virtual ~TypedItem() {}
-    Type& getType() { return m_dataType; }
-
-protected:
-    Type m_dataType;
+    virtual Type& getType() = 0;
 };
-
-template <typename Type>
-static Type& getValueType(SymbolTableItem* item) {
-    return dynamic_cast<TypedItem<Type>*>(item)->getType();
-}
 
 template <typename Type>
 class FuncItem : public TypedItem<Type> {
@@ -50,10 +44,12 @@ public:
     explicit FuncItem(const std::string& name, Data data) :
         TypedItem<Type>(name, data.parentHandle), m_params(data.params){};
     std::vector<SymbolTableItem*>& getParams() { return m_params; }
+    virtual Type& getType() override { return m_dataType; }
     virtual ~FuncItem() {}
 
 private:
     std::vector<SymbolTableItem*> m_params;
+    Type m_dataType;
 };
 
 template <typename Type>
@@ -65,11 +61,13 @@ public:
     };
     explicit VarItem(const std::string& name, Data data) :
         TypedItem<Type>(name, data.parentHandle), m_var(data.var){};
+    virtual Type& getType() override { return m_dataType; }
     virtual ~VarItem() {}
     typename Type::InternalType getVar() const { return m_var; }
 
 private:
     typename Type::InternalType m_var;
+    Type m_dataType;
 };
 
 template <typename Type>
@@ -81,11 +79,13 @@ public:
     };
     explicit ConstVarItem(const std::string& name, Data data) :
         TypedItem<Type>(name, data.parentHandle), m_constVar(data.constVar){};
+    virtual Type& getType() override { return m_dataType; }
     virtual ~ConstVarItem() {}
     typename Type::InternalType getConstVar() const { return m_constVar; }
 
 private:
     typename Type::InternalType m_constVar;
+    Type m_dataType;
 };
 
 #endif

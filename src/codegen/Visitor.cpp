@@ -1,7 +1,4 @@
-#include <codegen/Vistitor.h>
-#define INSERT_INT_ARRAY(dim) m_table.insertItem<ConstVarItem<ArrayType<IntType, dim>>>(identName,                                        \
-                                                                                        {.parentHandle = m_table.getCurrentScopeHandle(), \
-                                                                                         .constVar = constInitVal<dim>(*node->getChildIter())});
+#include <codegen/Visitor.h>
 
 Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table) :
     m_astRoot(astRoot), m_table(table) {
@@ -73,8 +70,90 @@ void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
 }
 
 IntType::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
-    // TODO: parse expression
-    return 1;
+    return calConstExp(*node->getChildIter());
+}
+IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
+    if (node->getType() == VType::VT) {
+        if (expect(node, SymbolEnum::INTCON)) {
+            return std::dynamic_pointer_cast<VNodeLeaf>(node)->getToken().value;
+        }
+        return std::dynamic_pointer_cast<VNodeLeaf>(node)->getToken().value;
+    } else {
+        switch (node->getNodeEnum()) {
+        case VNodeEnum::ADDEXP:
+            if (node->getChildrenNum() == 1) {
+                return calConstExp(*node->getChildIter());
+            } else {
+                if ((*node->getChildIter(1))->getSymbol() == SymbolEnum::PLUS) {
+                    return calConstExp(*node->getChildIter()) + calConstExp(*node->getChildIter(2));
+                } else {
+                    return calConstExp(*node->getChildIter()) - calConstExp(*node->getChildIter(2));
+                }
+            }
+            break;
+        case VNodeEnum::MULEXP:
+            if (node->getChildrenNum() == 1) {
+                return calConstExp(*node->getChildIter());
+            } else {
+                if ((*node->getChildIter(1))->getSymbol() == SymbolEnum::MULT) {
+                    return calConstExp(*node->getChildIter()) * calConstExp(*node->getChildIter(2));
+                } else if ((*node->getChildIter(1))->getSymbol() == SymbolEnum::DIV) {
+                    return calConstExp(*node->getChildIter()) / calConstExp(*node->getChildIter(2));
+                } else {
+                    return calConstExp(*node->getChildIter()) % calConstExp(*node->getChildIter(2));
+                }
+            }
+            break;
+        case VNodeEnum::UNARYEXP:
+            if (expect(*node->getChildIter(), SymbolEnum::IDENFR)) { // func
+                PARSER_LOG_ERROR("Function can't not be parsed as constexpr!");
+            } else if (expect(*node->getChildIter(), VNodeEnum::PRIMARYEXP)) {
+                return calConstExp(*node->getChildIter());
+            } else {
+                auto symbol = (*(*node->getChildIter())->getChildIter())->getSymbol();
+                if (symbol == SymbolEnum::PLUS) {
+                    return calConstExp(*node->getChildIter(1));
+                } else if (symbol == SymbolEnum::MINU) {
+                    return -calConstExp(*node->getChildIter(1));
+                } else {
+                    PARSER_LOG_ERROR("Symbol: '!' should not be in constexpr!");
+                }
+            }
+            break;
+        case VNodeEnum::PRIMARYEXP:
+            if (expect(*node->getChildIter(), SymbolEnum::LPARENT)) {
+                calConstExp(*node->getChildIter(1));
+            } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
+                calConstExp(*node->getChildIter());
+            } else {
+                calConstExp(*node->getChildIter());
+            }
+            break;
+        case VNodeEnum::LVAL: {
+            auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+            auto item = m_table.findItem(leafNode->getToken().literal);
+            auto constVarItem = dynamic_cast<ConstVarItem<IntType>*>(item);
+            if (constVarItem) {
+                return constVarItem->getConstVar();
+            } else {
+                std::vector<size_t> dims;
+                while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+                    dims.push_back(std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter(1))->getToken().value);
+                    node->nextChild(3); // jump '[dim]'
+                }
+                auto constArrayItem = dynamic_cast<ConstVarItem<ArrayType<IntType>>*>(item);
+                return constArrayItem->getConstVar()[constArrayItem->getType().getValueIndex(std::move(dims))];
+            }
+        } break;
+        case VNodeEnum::EXP:
+        case VNodeEnum::NUM:
+            return calConstExp(*node->getChildIter());
+            break;
+        default: break;
+        }
+    }
+    DBG_LOG("Can not calculate constexpr value!");
+    return 0;
 }
 
 template <>
@@ -83,16 +162,18 @@ typename IntType::InternalType Visitor::constInitVal<IntType>(std::shared_ptr<VN
 };
 
 template <>
-typename ArrayType<IntType, 1>::InternalType Visitor::constInitVal<1>(std::shared_ptr<VNodeBase> node) {
-    typename ArrayType<IntType, 1>::InternalType values;
+typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node) {
+    typename ArrayType<IntType>::InternalType values;
     if (expect(*node->getChildIter(), SymbolEnum::LBRACE)) {
         node->nextChild();
         if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
-            values.push_back(constInitVal<IntType>(*node->getChildIter()));
+            auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter());
+            values.insert(values.end(), value.begin(), value.end());
             node->nextChild(); // jump '}'
             while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
                 node->nextChild(); // jump ','
-                values.push_back(constInitVal<IntType>(*node->getChildIter()));
+                auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter());
+                values.insert(values.end(), value.begin(), value.end());
                 node->nextChild(); // jump '}'
             }
         }
@@ -104,27 +185,22 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(node);
     std::string identName = leafNode->getToken().literal;
     node->nextChild(); // jump IDENT
-    std::vector<int> dimensions;
-    while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACE)) {
-        dimensions.push_back(std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter(1))->getToken().value);
-        node->nextChild(3); // jump '[dimension]'
+    std::vector<size_t> dims;
+    while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+        dims.push_back(std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter(1))->getToken().value);
+        node->nextChild(3); // jump '[dim]'
     }
     node->nextChild(); // jump '='
-    const size_t dimensionSize = dimensions.size();
-    if (dimensionSize == 0) {
+    const size_t dimSize = dims.size();
+    if (dimSize == 0) {
         auto value = constInitVal<IntType>(*node->getChildIter());
         m_table.insertItem<ConstVarItem<IntType>>(identName,
                                                   {.parentHandle = m_table.getCurrentScopeHandle(),
                                                    .constVar = value});
     } else {
-        // TODO: 手动实例化更多维的数组初值处理函数
-        switch (dimensionSize) {
-        case 1: INSERT_INT_ARRAY(1); break;
-        case 2: INSERT_INT_ARRAY(2); break;
-        case 3: INSERT_INT_ARRAY(3); break;
-        case 4: INSERT_INT_ARRAY(4); break;
-        default: break;
-        }
+        auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter());
+        m_table.insertItem<ConstVarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                         .constVar = value});
     }
 }
 
