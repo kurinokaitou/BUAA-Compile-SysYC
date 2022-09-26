@@ -15,64 +15,104 @@ static const size_t INT_SIZE = 4;
 static const size_t VOID_SIZE = 0;
 class ValueType {
 public:
-    virtual size_t countSize() const = 0;
+    using InteralType = int;
+    size_t valueSize(InteralType value) const { return 0; };
     virtual ValueTypeEnum getValueTypeEnum() = 0;
 };
 
 class IntType : public ValueType {
 public:
     using InternalType = int;
-    virtual size_t countSize() const override { return INT_SIZE; }
+    size_t valueSize(InternalType value) const { return INT_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
+    }
+    friend std::ostream& operator<<(std::ostream& os, const IntType& type) {
+        os << "int";
+        return os;
     }
 };
 
 class VoidType : public ValueType {
 public:
     using InternalType = void;
-    virtual size_t countSize() const override { return VOID_SIZE; }
+    size_t valueSize(InternalType) const { return VOID_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
     }
+    friend std::ostream& operator<<(std::ostream& os, const VoidType& type) {
+        os << "void";
+        return os;
+    }
+};
+
+template <typename T>
+class MultiFlatArray {
+public:
+    using Data = struct MultiFlatArrayData {
+        std::vector<T> values;
+        std::vector<size_t> dimensions;
+    };
+    MultiFlatArray() = default;
+    MultiFlatArray(Data data) :
+        m_data(data) {
+    }
+
+    T& operator[](std::vector<size_t>&& pos) {
+        size_t index = 0;
+        int diff = m_data.dimensions.size() - pos.size();
+        for (int i = 0; i < diff; i++) {
+            pos.push_back(0);
+        }
+        for (int i = 0; i < m_data.dimensions.size(); i++) {
+            size_t term = 1;
+            for (int j = i + 1; j < m_data.dimensions.size(); j++) {
+                term *= m_data.dimensions[j];
+            }
+            index += pos[i] * term;
+        }
+        return m_data.values[index];
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const MultiFlatArray<T>& array) {
+        return os;
+    }
+
+    void append(MultiFlatArray<T>&& appendance) {
+        m_data.values.insert(m_data.values.end(), appendance.m_data.values.begin(), appendance.m_data.values.end());
+    }
+
+    size_t spaceSize(size_t unitSize) {
+        size_t count = unitSize;
+        for (size_t dimension : m_data.dimensions) {
+            count *= dimension;
+        }
+        return count;
+    }
+
+private:
+    Data m_data;
 };
 
 template <typename Type>
 class ArrayType : public ValueType {
 public:
-    using InternalType = std::vector<typename Type::InternalType>;
-    virtual size_t countSize() const override {
-        size_t count = m_basicType.countSize();
-        for (size_t dimension : m_dimensions) {
-            count *= dimension;
-        }
-        return count;
+    using InternalType = MultiFlatArray<typename Type::InternalType>;
+    size_t valueSize(InternalType value) const {
+        typename Type::InteralType dummy;
+        size_t count = m_basicType.valueSize(dummy);
+        return value.spaceSize(count);
     }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::ARRAY_TYPE;
     }
-    size_t getValueIndex(std::vector<size_t>&& pos) {
-        size_t index = 0;
-        int diff = m_dimensions.size() - pos.size();
-        for (int i = 0; i < diff; i++) {
-            pos.push_back(0);
-        }
-        for (int i = 0; i < m_dimensions.size(); i++) {
-            size_t term = 1;
-            for (int j = i + 1; j < m_dimensions.size(); j++) {
-                term *= m_dimensions[j];
-            }
-            index += pos[i] * term;
-        }
-        return index;
-    }
 
-    void setDimension(std::initializer_list<size_t> dimensions) {
-        m_dimensions.assign(dimensions);
+    friend std::ostream& operator<<(std::ostream& os, const ArrayType& type) {
+        os << "array<" << type.m_basicType << ">";
+        return os;
     }
 
 private:
-    std::vector<size_t> m_dimensions;
     Type m_basicType;
 };
 

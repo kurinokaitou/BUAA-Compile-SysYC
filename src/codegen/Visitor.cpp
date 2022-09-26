@@ -142,7 +142,7 @@ IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
                     node->nextChild(3); // jump '[dim]'
                 }
                 auto constArrayItem = dynamic_cast<ConstVarItem<ArrayType<IntType>>*>(item);
-                return constArrayItem->getConstVar()[constArrayItem->getType().getValueIndex(std::move(dims))];
+                return constArrayItem->getConstVar()[std::move(dims)];
             }
         } break;
         case VNodeEnum::EXP:
@@ -168,12 +168,12 @@ typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntTyp
         node->nextChild();
         if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
             auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter());
-            values.insert(values.end(), value.begin(), value.end());
+            values.append(std::move(value));
             node->nextChild(); // jump '}'
             while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
                 node->nextChild(); // jump ','
                 auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter());
-                values.insert(values.end(), value.begin(), value.end());
+                values.append(std::move(value));
                 node->nextChild(); // jump '}'
             }
         }

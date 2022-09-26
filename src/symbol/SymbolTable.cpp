@@ -31,7 +31,7 @@ void SymbolTable::pushScope(BlockScopeType type) {
 
 void SymbolTable::popScope() {
     m_currScopeHandle = getCurrentScope().getParentHandle();
-    m_blockScopes.pop_back();
+    // m_blockScopes.pop_back();
 }
 
 SymbolTableItem* SymbolTable::findItem(const std::string& name) {
@@ -40,4 +40,10 @@ SymbolTableItem* SymbolTable::findItem(const std::string& name) {
 
 void SymbolTable::clearSymbolTable() {
     m_blockScopes.clear();
+}
+
+void SymbolTable::dumpTable(std::ostream& os) {
+    for (auto& scope : m_blockScopes) {
+        scope.dumpScope(os);
+    }
 }

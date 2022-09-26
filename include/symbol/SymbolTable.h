@@ -15,6 +15,7 @@ public:
     template <typename ItemType>
     std::pair<SymbolTableItem*, bool> insertItem(const std::string& name, typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);
+    void dumpTable(std::ostream& os);
     void clearSymbolTable();
 
 private:

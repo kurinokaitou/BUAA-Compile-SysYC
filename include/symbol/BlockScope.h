@@ -24,6 +24,7 @@ public:
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }
     void addChildScope(BlockScopeHandle handle);
     std::size_t countSymbol() { return m_symbols.size(); }
+    void dumpScope(std::ostream& os);
 
 private:
     SymbolTable& m_symbolTable;
