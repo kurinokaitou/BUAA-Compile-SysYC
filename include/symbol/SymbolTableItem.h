@@ -48,16 +48,17 @@ public:
         TypedItem<Type>(name, data.parentHandle), m_params(data.params){};
     std::vector<SymbolTableItem*>& getParams() { return m_params; }
     virtual Type& getType() override { return m_dataType; }
-    virtual size_t getSize() override { return m_dataType.valueSize(m_var); };
+    virtual size_t getSize() override { return m_dataType.valueSize(m_returnVar); };
     virtual ~FuncItem() {}
     virtual void dumpSymbolItem(std::ostream& os) override {
+        os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << m_dataType;
+        os << " " << m_returnVar << "\n";
     }
 
 private:
     std::vector<TypedItem<Type>*> m_params;
-    typename Type::InternalType m_var;
+    typename Type::InternalType m_returnVar;
     Type m_dataType;
 };
 
@@ -75,8 +76,9 @@ public:
     virtual ~VarItem() {}
     typename Type::InternalType getVar() const { return m_var; }
     virtual void dumpSymbolItem(std::ostream& os) override {
+        os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << m_dataType << " " << m_var;
+        os << " " << m_var << "\n";
     }
 
 private:
@@ -100,8 +102,9 @@ public:
     virtual ~ConstVarItem() {}
     typename Type::InternalType getConstVar() const { return m_constVar; }
     virtual void dumpSymbolItem(std::ostream& os) override {
+        os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << m_dataType << " " << m_constVar;
+        os << " " << m_constVar << "\n";
     }
 
 private:

@@ -4,6 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <algorithm>
+#include <Log.h>
 
 enum class ValueTypeEnum : unsigned int {
     INT_TYPE = 0,
@@ -56,6 +57,12 @@ public:
     MultiFlatArray() = default;
     MultiFlatArray(Data data) :
         m_data(data) {
+        if (m_data.values.size() > spaceSize(1)) {
+            PARSER_LOG_ERROR("Too much value defined");
+        }
+    }
+    MultiFlatArray(T val, size_t n) {
+        m_data.values.assign(val, n);
     }
 
     T& operator[](std::vector<size_t>&& pos) {
@@ -75,11 +82,26 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const MultiFlatArray<T>& array) {
+        for (auto dim : array.m_data.dimensions) {
+            os << "[" << dim << "]";
+        }
+        os << " ";
+        for (auto val : array.m_data.values) {
+            os << val << " ";
+        }
         return os;
     }
 
     void append(MultiFlatArray<T>&& appendance) {
         m_data.values.insert(m_data.values.end(), appendance.m_data.values.begin(), appendance.m_data.values.end());
+    }
+
+    void insert(T val) {
+        m_data.values.push_back(val);
+    }
+
+    void setDimensions(std::vector<size_t>&& dims) {
+        m_data.dimensions.assign(dims.begin(), dims.end());
     }
 
     size_t spaceSize(size_t unitSize) {

@@ -16,7 +16,7 @@ private:
     void constDecl(std::shared_ptr<VNodeBase> node); // 常量声明
     void constDef(std::shared_ptr<VNodeBase> node);  // 常量定义
     template <typename VT>
-    typename VT::InternalType constInitVal(std::shared_ptr<VNodeBase> node) { // 常量初值
+    typename VT::InternalType constInitVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) { // 常量初值
         return typename VT::InternalType();
     };
     IntType::InternalType constExp(std::shared_ptr<VNodeBase> node); // 常量表达式

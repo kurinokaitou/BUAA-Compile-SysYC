@@ -53,24 +53,24 @@ public:
         os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override {
-        DBG_LOG("Try to get children from a leaf node!");
+        DBG_ERROR("Try to get children from a leaf node!");
         static const std::vector<std::shared_ptr<VNodeBase>> dummy;
         return dummy;
     };
     virtual ChidrenIter getChildIter(int offset = 0) const override {
-        DBG_LOG("Try to get children from a leaf node!");
+        DBG_ERROR("Try to get children from a leaf node!");
         return ChidrenIter();
     }
     virtual size_t getChildrenNum() const override {
-        DBG_LOG("Try to get children number from a leaf node!");
+        DBG_ERROR("Try to get children number from a leaf node!");
         return 0;
     }
     virtual bool nextChild(int offset = 1) override {
-        DBG_LOG("Try to iterate children nodes of a leaf node!");
+        DBG_ERROR("Try to iterate children nodes of a leaf node!");
         return false;
     }
     virtual VNodeEnum getNodeEnum() const override {
-        DBG_LOG("Try to get node enum of a leaf node!");
+        DBG_ERROR("Try to get node enum of a leaf node!");
         return VNodeEnum::UNKNOWNN;
     }
     virtual SymbolEnum getSymbol() const override { return m_symbol; }
@@ -106,16 +106,17 @@ public:
     }
     virtual bool nextChild(int offset = 1) override {
         m_currentChild += offset;
-        if (m_currentChild != m_childrenNodes.end()) {
+        if (m_currentChild < m_childrenNodes.end()) {
             return true;
         } else {
+            m_currentChild -= offset;
             DBG_LOG("Iterator out of range!");
             return false;
         }
     }
     virtual VNodeEnum getNodeEnum() const override { return m_nodeEnum; }
     virtual SymbolEnum getSymbol() const override {
-        DBG_LOG("Try to get symbol enum of a branch node!");
+        DBG_ERROR("Try to get symbol enum of a branch node!");
         return SymbolEnum::UNKNOWN;
     }
 

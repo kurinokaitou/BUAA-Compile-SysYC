@@ -9,13 +9,18 @@
     } while (false)
 #define PARSER_LOG_INFO(...) Logger::logInfo(__VA_ARGS__);
 
-#ifdef DEBUG
-#define DBG_LOG(...)                           \
+#ifndef DEBUG
+#define DBG_ERROR(...)                         \
     do {                                       \
         Logger::logDebug(__VA_ARGS__);         \
         throw std::runtime_error(__VA_ARGS__); \
     } while (false)
+#define DBG_LOG(...)                   \
+    do {                               \
+        Logger::logDebug(__VA_ARGS__); \
+    } while (false)
 #else
+#define DBG_ERROR(...)
 #define DBG_LOG(...)
 #endif
 
@@ -33,7 +38,6 @@ public:
 
     static void logDebug(const std::string& error) {
         // std::cout << error << std::endl;
-        std::cerr << error << std::endl;
     }
 };
 #endif

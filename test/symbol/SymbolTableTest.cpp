@@ -39,13 +39,13 @@ TEST_F(SymbolTableTest, PushAndPopScope) {
 
 TEST_F(SymbolTableTest, ArrayTypeInsert) {
     table.insertItem<ConstVarItem<ArrayType<IntType>>>("const int arr", {.parentHandle = table.getCurrentScopeHandle(),
-                                                                         .constVar = {{.values = {1, 2, 3, 4}, .dimensions = {2, 2}}}});
+                                                                         .constVar = {{.values = {1, 3, 0, 4, 0, 0, 1, 0, 0}, .dimensions = {3, 3}}}});
     SymbolTableItem* item = table.findItem("const int arr");
     auto arri2 = dynamic_cast<ConstVarItem<ArrayType<IntType>>*>(item);
 
-    EXPECT_EQ(arri2->getSize(), 16);
+    EXPECT_EQ(arri2->getSize(), 36);
     EXPECT_EQ((arri2->getConstVar()[{0, 0}]), 1);
-    EXPECT_EQ((arri2->getConstVar()[{0, 1}]), 2);
-    EXPECT_EQ((arri2->getConstVar()[{1, 0}]), 3);
-    EXPECT_EQ((arri2->getConstVar()[{1, 1}]), 4);
+    EXPECT_EQ((arri2->getConstVar()[{0, 1}]), 3);
+    EXPECT_EQ((arri2->getConstVar()[{1, 0}]), 4);
+    EXPECT_EQ((arri2->getConstVar()[{1, 1}]), 0);
 }

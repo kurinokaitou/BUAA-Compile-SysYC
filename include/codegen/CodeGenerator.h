@@ -5,6 +5,7 @@ class CodeGenerator {
 public:
     CodeGenerator(std::shared_ptr<VNodeBase> astRoot);
     void generate();
+    void dumpTable(std::filebuf& os);
 
 private:
     std::unique_ptr<Visitor> m_visitor;

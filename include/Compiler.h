@@ -12,6 +12,7 @@ public:
     std::shared_ptr<VNodeBase> getAstNode();
     void dumpToken(std::filebuf& file);
     void dumpAST(std::filebuf& file);
+    void dumpTable(std::filebuf& file);
 
 private:
     std::unique_ptr<Tokenizer> m_tokenizer;

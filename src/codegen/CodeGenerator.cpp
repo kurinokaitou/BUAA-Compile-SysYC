@@ -7,3 +7,8 @@ CodeGenerator::CodeGenerator(std::shared_ptr<VNodeBase> astRoot) {
 void CodeGenerator::generate() {
     m_visitor->visit();
 }
+
+void CodeGenerator::dumpTable(std::filebuf& file) {
+    std::ostream os(&file);
+    m_table.dumpTable(os);
+}

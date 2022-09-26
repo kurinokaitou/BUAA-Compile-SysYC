@@ -38,6 +38,7 @@ std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {
 }
 
 void BlockScope::dumpScope(std::ostream& os) {
-    for (auto& symbol : m_symbols) {
+    for (auto& symbolPair : m_symbols) {
+        symbolPair.second->dumpSymbolItem(os);
     }
 }

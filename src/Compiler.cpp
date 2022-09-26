@@ -1,13 +1,15 @@
 #include <Compiler.h>
 
-static std::string s_sourcePath = "test/grammar/test.txt";
+static std::string s_sourcePath = "intermediate/test.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
+static std::string s_dumpTablePath = "intermediate/table.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
+static bool s_dumpTable = false;
 
 static bool takeArg(char* arg) {
-    static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast"};
+    static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
     return x.count(std::string(arg));
 }
 
@@ -36,9 +38,15 @@ void parseArgs(int argc, char** argv) {
             s_dumpAST = true;
             continue;
         }
+        if (argv[i] == std::string("--dump-table")) {
+            s_dumpTablePath = argv[++i];
+            s_dumpTable = true;
+            continue;
+        }
         if (argv[i] == std::string("--test")) {
             s_dumpToken = true;
             s_dumpAST = true;
+            s_dumpTable = true;
             break;
         }
         s_sourcePath = std::string(argv[i]);
@@ -53,6 +61,7 @@ bool Compiler::firstPass(std::filebuf& file) {
         m_parser->parse();
         m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
         m_generator->generate();
+
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         return false;
@@ -77,10 +86,18 @@ void Compiler::dumpAST(std::filebuf& file) {
     m_parser->traversalAST(file);
 }
 
+void Compiler::dumpTable(std::filebuf& file) {
+    if (!file.open(s_dumpTablePath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the dump table file!");
+    }
+    m_generator->dumpTable(file);
+}
+
 int main(int argc, char** argv) {
     Compiler compiler;
     std::filebuf token;
     std::filebuf ast;
+    std::filebuf table;
     std::filebuf in;
 
     parseArgs(argc, argv);
@@ -93,6 +110,9 @@ int main(int argc, char** argv) {
         }
         if (s_dumpAST) {
             compiler.dumpAST(ast);
+        }
+        if (s_dumpTable) {
+            compiler.dumpTable(table);
         }
     }
 }

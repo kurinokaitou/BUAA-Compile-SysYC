@@ -45,11 +45,7 @@ void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
 void Parser::preTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
     if (node->getType() == VType::VN) {
         auto branch = std::static_pointer_cast<VNodeBranch>(node);
-        if (!(branch->getNodeEnum() == VNodeEnum::DECL
-              || branch->getNodeEnum() == VNodeEnum::BLOCKITEM
-              || branch->getNodeEnum() == VNodeEnum::BTYPE)) {
-            branch->dumpToFile(os);
-        }
+        branch->dumpToFile(os);
         auto children = branch->getChildren();
         for (auto& child : children) {
             postTraversal(child, os);
