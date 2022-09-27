@@ -9,9 +9,11 @@ void BlockScope::addChildScope(BlockScopeHandle handle) {
 }
 
 SymbolTableItem* BlockScope::findItem(const std::string& name) {
-    auto item = m_symbols.find(name);
+    auto item = std::find_if(m_symbols.begin(), m_symbols.end(), [&name](const std::unique_ptr<SymbolTableItem>& symbol) {
+        return name == symbol->getName();
+    });
     if (item != m_symbols.end()) {
-        return item->second.get();
+        return item->get();
     } else {
         if (m_type != BlockScopeType::GLOBAL) {
             return m_symbolTable.getBlockScope(m_parentHandle).findItem(name);
@@ -23,22 +25,27 @@ SymbolTableItem* BlockScope::findItem(const std::string& name) {
 
 std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
     item->setLevel(m_level);
-    auto res = m_symbols.insert(std::make_pair(item->getName(), std::move(item)));
-    return std::make_pair(res.first->second.get(), res.second);
+    auto finded = findItem(item->getName());
+    if (finded != nullptr) {
+        return std::make_pair(finded, false);
+    } else {
+        m_symbols.push_back(std::move(item));
+        return std::make_pair(m_symbols.back().get(), true);
+    }
 }
 
 std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {
     m_paramItems.clear();
     for (auto& item : m_symbols) {
-        if (item.second->isParam()) {
-            m_paramItems.push_back(item.second.get());
+        if (item->isParam()) {
+            m_paramItems.push_back(item.get());
         }
     }
     return m_paramItems;
 }
 
 void BlockScope::dumpScope(std::ostream& os) {
-    for (auto& symbolPair : m_symbols) {
-        symbolPair.second->dumpSymbolItem(os);
+    for (auto& symbol : m_symbols) {
+        symbol->dumpSymbolItem(os);
     }
 }

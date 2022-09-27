@@ -1,5 +1,6 @@
-array<int> a [2][2] 1 2 3 4 
-array<int> arr2 [16] 1 2 3 4 5 6 7 8 0 0 0 0 0 0 0 0 
-array<int> array [3][3] 7 2 3 4 5 6 7 8 9 
-int b 5
-int c 12
+array<int> b [2][2] 1 2 3 4 
+array<int> c [16] 1 2 3 4 5 6 7 8 0 0 0 0 0 0 0 0 
+array<int> a [3][3] 7 2 3 4 5 6 7 8 9 
+int b1 1
+int c1 1
+int d1 0

@@ -1,7 +1,7 @@
 <CompUnit>
 CONSTTK const
 INTTK int
-IDENFR a
+IDENFR b
 LBRACK [
 INTCON 2
 <Number>
@@ -70,7 +70,7 @@ SEMICN ;
 <ConstDecl>
 CONSTTK const
 INTTK int
-IDENFR arr2
+IDENFR c
 LBRACK [
 INTCON 1
 <Number>
@@ -200,7 +200,7 @@ SEMICN ;
 <ConstDecl>
 CONSTTK const
 INTTK int
-IDENFR array
+IDENFR a
 LBRACK [
 INTCON 3
 <Number>
@@ -222,7 +222,7 @@ RBRACK ]
 ASSIGN =
 LBRACE {
 LBRACE {
-IDENFR arr2
+IDENFR c
 LBRACK [
 INTCON 3
 <Number>
@@ -331,12 +331,10 @@ RBRACE }
 <ConstDef>
 SEMICN ;
 <ConstDecl>
-CONSTTK const
 INTTK int
-IDENFR b
+IDENFR b1
 ASSIGN =
-IDENFR array
-LBRACK [
+LBRACE {
 INTCON 1
 <Number>
 <PrimaryExp>
@@ -344,66 +342,65 @@ INTCON 1
 <MulExp>
 <AddExp>
 <Exp>
-RBRACK ]
-LBRACK [
-INTCON 1
+<InitVal>
+COMMA ,
+INTCON 2
 <Number>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
 <Exp>
-RBRACK ]
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-<ConstInitVal>
-<ConstDef>
+<InitVal>
+RBRACE }
+<InitVal>
+<VarDef>
 SEMICN ;
-<ConstDecl>
-CONSTTK const
+<VarDecl>
 INTTK int
-IDENFR c
+IDENFR c1
 ASSIGN =
 IDENFR b
+LBRACK [
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+RBRACK ]
+LBRACK [
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+RBRACK ]
 <LVal>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
 PLUS +
-IDENFR array
-LBRACK [
-INTCON 0
+INTCON 2
 <Number>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
 <Exp>
-RBRACK ]
-LBRACK [
-INTCON 0
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-RBRACK ]
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-<ConstInitVal>
-<ConstDef>
+<InitVal>
+<VarDef>
 SEMICN ;
-<ConstDecl>
+<VarDecl>
+INTTK int
+IDENFR d1
+<VarDef>
+SEMICN ;
+<VarDecl>
 VOIDTK void
 <FuncType>
 IDENFR f

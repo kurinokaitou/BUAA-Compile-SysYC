@@ -2,9 +2,9 @@
 #define BLOCK_SCOPE_H
 #include "BlockScopeHandle.h"
 #include "SymbolTableItem.h"
-#include <map>
 #include <vector>
 #include <memory>
+#include <algorithm>
 enum class BlockScopeType : unsigned int {
     NORMAL = 0,
     FUNC,
@@ -32,7 +32,7 @@ private:
     std::vector<BlockScopeHandle> m_childrenHandle;
     int m_level{0};
     BlockScopeType m_type;
-    std::map<std::string, std::unique_ptr<SymbolTableItem>> m_symbols;
+    std::vector<std::unique_ptr<SymbolTableItem>> m_symbols;
     mutable std::vector<SymbolTableItem*> m_paramItems;
 };
 

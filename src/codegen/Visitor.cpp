@@ -90,7 +90,7 @@ IntType::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
 }
 
 IntType::InternalType Visitor::exp(std::shared_ptr<VNodeBase> node) {
-    // TODO: resulve exp value
+    // TODO: resolve exp value
     return 1;
 }
 
@@ -338,7 +338,13 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
                                                                         .var = value});
         }
     } else {
-        // TODO: no init val
+        if (dims.size() == 0) {
+            m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .var = {}});
+        } else {
+            auto value = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims});
+            m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                        .var = value});
+        }
     }
 }
 
