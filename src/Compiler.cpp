@@ -106,7 +106,7 @@ void Compiler::dumpError(std::filebuf& file) {
         throw std::runtime_error("Fail to open the dump error file!");
     }
     std::ostream os(&file);
-    for (auto& log : s_errorDump) {
+    for (auto& log : Logger::s_errorDump) {
         os << log;
     }
 }

@@ -23,25 +23,13 @@ struct ErrorLog {
     }
 };
 
-static std::vector<ErrorLog> s_errorDump;
 class Logger {
 public:
-    static void logError(ErrorType error, int lineNum, const std::string& meta = "", const std::string& target = "") {
-        std::cout << "[error] line:" << lineNum << " " << genErrorText(error, meta, target) << std::endl;
-        s_errorDump.emplace_back(lineNum, static_cast<std::underlying_type<ErrorType>::type>(error));
-    }
-
-    static void logError(const std::string& error) {
-        std::cout << "[error] " << error << std::endl;
-    }
-
-    static void logInfo(const std::string& info) {
-        std::cout << "[info] " << info << std::endl;
-    }
-
-    static void logDebug(const std::string& message) {
-        std::cout << "[debug] " << message << std::endl;
-    }
+    static void logError(ErrorType error, int lineNum, const std::string& meta = "", const std::string& target = "");
+    static void logError(const std::string& error);
+    static void logInfo(const std::string& info);
+    static void logDebug(const std::string& message);
+    static std::vector<ErrorLog> s_errorDump;
 };
 
 #endif

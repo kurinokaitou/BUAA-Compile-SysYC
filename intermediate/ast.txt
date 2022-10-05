@@ -394,7 +394,7 @@ INTCON 2
 <Exp>
 <InitVal>
 <VarDef>
-SEMICN ;
+SEMICN +
 <VarDecl>
 INTTK int
 IDENFR d1

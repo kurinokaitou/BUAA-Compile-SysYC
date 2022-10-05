@@ -57,9 +57,6 @@ public:
     MultiFlatArray() = default;
     MultiFlatArray(Data data) :
         m_data(data) {
-        if (m_data.values.size() > spaceSize(1)) {
-            Logger::logError("Too much value defined");
-        }
     }
     MultiFlatArray(T val, size_t n) {
         m_data.values.assign(val, n);
