@@ -13,6 +13,7 @@ public:
     void dumpToken(std::filebuf& file);
     void dumpAST(std::filebuf& file);
     void dumpTable(std::filebuf& file);
+    void dumpError(std::filebuf& file);
 
 private:
     std::unique_ptr<Tokenizer> m_tokenizer;

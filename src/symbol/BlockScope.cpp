@@ -25,9 +25,12 @@ SymbolTableItem* BlockScope::findItem(const std::string& name) {
 
 std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
     item->setLevel(m_level);
-    auto finded = findItem(item->getName());
-    if (finded != nullptr) {
-        return std::make_pair(finded, false);
+    // 只在当前scope内插入symbolItem
+    auto finded = std::find_if(m_symbols.begin(), m_symbols.end(), [&item](const std::unique_ptr<SymbolTableItem>& symbol) {
+        return item->getName() == symbol->getName();
+    });
+    if (finded != m_symbols.end()) {
+        return std::make_pair(finded->get(), false);
     } else {
         m_symbols.push_back(std::move(item));
         return std::make_pair(m_symbols.back().get(), true);

@@ -8,6 +8,7 @@ public:
     void initSymbolTable();
     BlockScope& getBlockScope(BlockScopeHandle handle);
     BlockScope& getCurrentScope();
+    BlockScope& getGlobalScope();
     BlockScopeHandle getCurrentScopeHandle();
     void pushScope(BlockScopeType type);
     void popScope();

@@ -46,7 +46,6 @@ SymbolEnum Tokenizer::readInteger() {
             m_tokenValue = std::stoi(m_tokenStr);
             return SymbolEnum::INTCON;
         } else {
-            throw std::runtime_error("compile error!");
             // TODO: 前导零错误
             return SymbolEnum::UNKNOWN;
         }
@@ -106,7 +105,6 @@ SymbolEnum Tokenizer::readString() {
         m_tokenStr += m_currChar;
         return SymbolEnum::STRCON;
     } else {
-        throw std::runtime_error("compile error!");
         // TODO: 无后引号错误
         return SymbolEnum::UNKNOWN;
     }

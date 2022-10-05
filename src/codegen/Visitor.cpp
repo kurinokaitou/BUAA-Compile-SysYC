@@ -128,7 +128,7 @@ IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
             break;
         case VNodeEnum::UNARYEXP:
             if (expect(*node->getChildIter(), SymbolEnum::IDENFR)) { // func
-                PARSER_LOG_ERROR("Function can't not be parsed as constexpr!");
+                Logger::logError("Function can't not be parsed as constexpr!");
             } else if (expect(*node->getChildIter(), VNodeEnum::PRIMARYEXP)) {
                 return calConstExp(*node->getChildIter());
             } else {
@@ -138,7 +138,7 @@ IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
                 } else if (symbol == SymbolEnum::MINU) {
                     return -calConstExp(*node->getChildIter(1));
                 } else {
-                    PARSER_LOG_ERROR("Symbol: '!' should not be in constexpr!");
+                    Logger::logError("Symbol: '!' should not be in constexpr!");
                 }
             }
             break;
@@ -166,7 +166,7 @@ IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
                         if (dim >= 0) {
                             dims.push_back(static_cast<size_t>(dim));
                         } else {
-                            PARSER_LOG_ERROR("Use dimension as negative size!");
+                            Logger::logError("Use dimension as negative size!");
                         }
                         if (!node->nextChild(3)) break; // jump '[dim]'
                     }
@@ -175,7 +175,7 @@ IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
                     return val;
                 }
             } else {
-                PARSER_LOG_ERROR("Variable not declared!");
+                Logger::logError(ErrorType::UNDECL_IDENT, leafNode->getToken().lineNum, leafNode->getToken().literal);
             }
 
         } break;
@@ -227,7 +227,7 @@ typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntTyp
                 }
             }
         } else {
-            PARSER_LOG_ERROR("Too much number defined!");
+            Logger::logError("Too much number defined!");
         }
     } else {
         IntType::InternalType val = constInitVal<IntType>(*node->getChildIter(), dims, level + 1);
@@ -273,7 +273,7 @@ typename ArrayType<IntType>::InternalType Visitor::initVal<ArrayType<IntType>>(s
                 }
             }
         } else {
-            PARSER_LOG_ERROR("Too much number defined!");
+            Logger::logError("Too much number defined!");
         }
     } else {
         IntType::InternalType val = initVal<IntType>(*node->getChildIter(), dims, level + 1);
@@ -292,7 +292,7 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
         if (dim >= 0) {
             dims.push_back(static_cast<size_t>(dim));
         } else {
-            PARSER_LOG_ERROR("Use dimension as negative size!");
+            Logger::logError("Use dimension as negative size!");
         }
         node->nextChild(3); // jump '[dim]'
     }
@@ -320,7 +320,7 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         if (dim >= 0) {
             dims.push_back(static_cast<size_t>(dim));
         } else {
-            PARSER_LOG_ERROR("Use dimension as negative size!");
+            Logger::logError("Use dimension as negative size!");
         }
         node->nextChild(3); // jump '[dim]'
     }
@@ -341,9 +341,8 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         if (dims.size() == 0) {
             m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .var = {}});
         } else {
-            auto value = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims});
             m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                        .var = value});
+                                                                        .var = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
         }
     }
 }

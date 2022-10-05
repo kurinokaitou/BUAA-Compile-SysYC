@@ -4,9 +4,11 @@ static std::string s_sourcePath = "intermediate/test.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
+static std::string s_dumpErrorPath = "intermediate/error.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
+static bool s_dumpError = false;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
@@ -43,10 +45,16 @@ void parseArgs(int argc, char** argv) {
             s_dumpTable = true;
             continue;
         }
+        if (argv[i] == std::string("--dump-error")) {
+            s_dumpErrorPath = argv[++i];
+            s_dumpError = true;
+            continue;
+        }
         if (argv[i] == std::string("--test")) {
             s_dumpToken = true;
             s_dumpAST = true;
             s_dumpTable = true;
+            s_dumpError = true;
             break;
         }
         s_sourcePath = std::string(argv[i]);
@@ -93,11 +101,22 @@ void Compiler::dumpTable(std::filebuf& file) {
     m_generator->dumpTable(file);
 }
 
+void Compiler::dumpError(std::filebuf& file) {
+    if (!file.open(s_dumpErrorPath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the dump error file!");
+    }
+    std::ostream os(&file);
+    for (auto& log : s_errorDump) {
+        os << log;
+    }
+}
+
 int main(int argc, char** argv) {
     Compiler compiler;
     std::filebuf token;
     std::filebuf ast;
     std::filebuf table;
+    std::filebuf error;
     std::filebuf in;
 
     parseArgs(argc, argv);
@@ -113,6 +132,9 @@ int main(int argc, char** argv) {
         }
         if (s_dumpTable) {
             compiler.dumpTable(table);
+        }
+        if (s_dumpError) {
+            compiler.dumpError(error);
         }
     }
 }

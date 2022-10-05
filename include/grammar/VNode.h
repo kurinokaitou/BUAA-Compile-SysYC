@@ -46,7 +46,7 @@ public:
         m_symbol(symbol), m_token(token) {}
     virtual VType getType() const override { return VType::VT; }
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) override {
-        PARSER_LOG_ERROR("Leaf node add child error");
+        DBG_ERROR("Leaf node add child error");
     }
     virtual void dumpToFile(std::ostream& os) override {
         for (int i = 1; i < m_level; i++) os << "  ";

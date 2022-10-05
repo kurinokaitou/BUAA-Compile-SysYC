@@ -9,8 +9,9 @@ Parser::Parser(std::vector<Token>& tokenList) {
 
 void Parser::parse() {
     m_astRoot = compUnit(0);
+    m_currToken++;
     if (m_currToken != m_tokenList.end()) {
-        PARSER_LOG_INFO("Token解析未完成");
+        Logger::logInfo("Token解析未完成");
     }
 }
 
@@ -65,7 +66,7 @@ std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol, int level) {
         return leaf;
     } else {
         if (!m_probingMode) {
-            PARSER_LOG_ERROR("[Error] line " + std::to_string(m_currToken->lineNum) + ": expected " + getSymbolText(symbol) + ", but " + m_currToken->literal + " provided.");
+            handleGrammarError(symbol);
         }
         return std::make_shared<VNodeLeaf>(symbol, *(m_currToken - 1), false);
     }
@@ -80,8 +81,25 @@ std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symb
         leaf->setLevel(level);
         return leaf;
     } else {
-        PARSER_LOG_ERROR(getSymbolText(m_currToken->symbol) + " error");
+        if (!m_probingMode) {
+            handleGrammarError(m_currToken->symbol);
+        }
         return std::make_shared<VNodeLeaf>(*symbolList.begin(), *(m_currToken - 1), false);
+    }
+}
+
+void Parser::handleGrammarError(SymbolEnum symbol) {
+    switch (symbol) {
+    case SymbolEnum::SEMICN:
+        Logger::logError(ErrorType::MISSING_SEMICN, m_currToken->lineNum);
+        break;
+    case SymbolEnum::RPARENT:
+        Logger::logError(ErrorType::MISSING_RPARENT, m_currToken->lineNum);
+        break;
+    case SymbolEnum::RBRACK:
+        Logger::logError(ErrorType::MISSING_RBRACK, m_currToken->lineNum);
+        break;
+    default: break;
     }
 }
 

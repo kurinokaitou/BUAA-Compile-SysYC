@@ -17,6 +17,10 @@ BlockScope& SymbolTable::getCurrentScope() {
     return m_blockScopes.at(m_currScopeHandle.index);
 }
 
+BlockScope& SymbolTable::getGlobalScope() {
+    return m_blockScopes.at(0);
+}
+
 BlockScopeHandle SymbolTable::getCurrentScopeHandle() {
     return m_currScopeHandle;
 }
