@@ -1,5 +1,6 @@
 #include <token/Tokenizer.h>
 #include <Utils.h>
+#include <Log.h>
 
 Tokenizer::Tokenizer(std::filebuf& fileBuf) :
     m_istream(&fileBuf) {
@@ -97,9 +98,11 @@ SymbolEnum Tokenizer::readPunct() {
 SymbolEnum Tokenizer::readString() {
     m_tokenStr += m_currChar;
     extractChar();
-    while (m_currChar != '"') {
+    while (true) {
         m_tokenStr += m_currChar;
+        checkFormatChar();
         extractChar();
+        if (m_currChar == '"') break;
     }
     if (m_currChar == '"') {
         m_tokenStr += m_currChar;
@@ -107,6 +110,28 @@ SymbolEnum Tokenizer::readString() {
     } else {
         // TODO: 无后引号错误
         return SymbolEnum::UNKNOWN;
+    }
+}
+
+void Tokenizer::checkFormatChar() {
+    if (!(m_currChar == 32 || m_currChar == 33 || (m_currChar >= 40 && m_currChar <= 126))) {
+        if (m_currChar == '%') {
+            extractChar();
+            if (m_currChar != 'd') {
+                Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, std::string("%").append(1, m_currChar));
+            }
+        } else {
+            Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, std::string(1, m_currChar));
+        }
+
+    } else {
+        if (m_currChar == '\\') {
+            extractChar();
+            if (m_currChar != 'n') {
+                Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, "\\");
+            }
+            unextractChar();
+        }
     }
 }
 

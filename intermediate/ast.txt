@@ -148,7 +148,7 @@ RPARENT )
     SEMICN ;
     <VarDecl>
     INTTK int
-    IDENFR a
+    IDENFR b
     ASSIGN =
     INTCON 3
     <Number>
@@ -161,13 +161,18 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
-    IDENFR func
+    PRINTFTK printf
     LPARENT (
-    RPARENT )
+    STRCON "$%d\n"
+    COMMA ,
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <Exp>
+    RPARENT )
     SEMICN ;
     <Stmt>
   RBRACE }

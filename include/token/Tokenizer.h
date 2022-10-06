@@ -51,6 +51,7 @@ private:
     SymbolEnum readInteger();
     SymbolEnum readPunct();
     SymbolEnum readString();
+    void checkFormatChar();
     void extractChar();
     void unextractChar();
 

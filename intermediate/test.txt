@@ -1,11 +1,11 @@
 int a = 2;
-int b[2][2] = {{1,2},{3,4}}
+int b[2][2] = {{1,2},{3,4}};
 int a = 1;
 void func(int a[] , int b){
     int a = 1;
 }
 int main() {
     int a = 2;
-    int a = 3;
-    func();
+    int b = 3;
+    printf("$%$d\n", a);
 }
