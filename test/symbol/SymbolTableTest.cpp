@@ -2,13 +2,12 @@
 #include <iostream>
 
 TEST_F(SymbolTableTest, SimpleInsert) {
-    auto ret = table.insertItem<FuncItem>("hello", {.parentHandle = BlockScopeHandle(0), .retType = ValueTypeEnum::INT_TYPE});
-
+    auto ret = table.insertItem<FuncItem>("func1", {.parentHandle = BlockScopeHandle(0), .retType = ValueTypeEnum::INT_TYPE});
     table.pushScope(BlockScopeType::FUNC);
     table.insertItem<ConstVarItem<IntType>>("a", {.parentHandle = BlockScopeHandle(1), .constVar = 1});
     EXPECT_EQ(table.getCurrentScope().countSymbol(), 1);
-    EXPECT_EQ(table.findItem("hello")->getLevel(), 0);
     EXPECT_EQ(table.findItem("a")->getLevel(), 1);
+    EXPECT_EQ(table.findFunc("func1")->getLevel(), 0);
 }
 
 TEST_F(SymbolTableTest, DoubleInsertInSameScope) {
@@ -19,22 +18,20 @@ TEST_F(SymbolTableTest, DoubleInsertInSameScope) {
 }
 
 TEST_F(SymbolTableTest, DoubleInsertInDiffScope) {
+    auto ret2 = table.insertItem<ConstVarItem<IntType>>("hello", {.parentHandle = table.getCurrentScopeHandle(), .constVar = 2});
     auto ret1 = table.insertItem<FuncItem>("hello", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
     table.pushScope(BlockScopeType::FUNC);
-    auto ret2 = table.insertItem<FuncItem>("hello", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
     EXPECT_EQ(ret1.second, true);
     EXPECT_EQ(ret2.second, true);
 }
 
 TEST_F(SymbolTableTest, PushAndPopScope) {
     table.insertItem<FuncItem>("item1_in_scope1", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
-    table.pushScope(BlockScopeType::FUNC);
     table.insertItem<FuncItem>("item2_in_scope2", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::VOID_TYPE});
-    table.popScope();
-    auto item1 = table.findItem("item1_in_scope1");
-    auto item2 = table.findItem("item2_in_scope2");
+    auto item1 = table.findFunc("item1_in_scope1");
+    auto item2 = table.findFunc("item2_in_scope2");
     EXPECT_NE(item1, nullptr);
-    EXPECT_EQ(item2, nullptr);
+    EXPECT_NE(item2, nullptr);
 }
 
 TEST_F(SymbolTableTest, ArrayTypeInsert) {

@@ -16,6 +16,7 @@ public:
     template <typename ItemType>
     std::pair<ItemType*, bool> insertItem(const std::string& name, typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);
+    SymbolTableItem* findFunc(const std::string& name);
     void dumpTable(std::ostream& os);
     void clearSymbolTable();
 
@@ -33,4 +34,5 @@ std::pair<ItemType*, bool> SymbolTable::insertItem(const std::string& name, type
         return std::make_pair(nullptr, false);
     }
 }
+
 #endif

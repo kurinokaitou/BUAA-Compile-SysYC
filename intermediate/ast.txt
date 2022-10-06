@@ -125,6 +125,9 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
+    RETURNTK return
+    SEMICN ;
+    <Stmt>
   RBRACE }
   <Block>
 <FuncDef>
@@ -163,7 +166,7 @@ RPARENT )
     <VarDecl>
     PRINTFTK printf
     LPARENT (
-    STRCON "$%d\n"
+    STRCON "%\n"
     COMMA ,
     IDENFR a
     <LVal>
@@ -173,6 +176,16 @@ RPARENT )
     <AddExp>
     <Exp>
     RPARENT )
+    SEMICN ;
+    <Stmt>
+    RETURNTK return
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
     SEMICN ;
     <Stmt>
   RBRACE }

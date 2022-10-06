@@ -34,6 +34,17 @@ SymbolTableItem* BlockScope::findItem(const std::string& name) {
     }
 }
 
+SymbolTableItem* BlockScope::findFunc(const std::string& name) {
+    auto item = std::find_if(m_funcs.begin(), m_funcs.end(), [&name](const std::unique_ptr<SymbolTableItem>& func) {
+        return func->getName() == name;
+    });
+    if (item != m_funcs.end()) {
+        return item->get();
+    } else {
+        return nullptr;
+    }
+}
+
 std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
     item->setLevel(m_level);
     // 只在当前scope内插入symbolItem
@@ -45,6 +56,20 @@ std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolT
     } else {
         m_symbols.push_back(std::move(item));
         return std::make_pair(m_symbols.back().get(), true);
+    }
+}
+
+std::pair<SymbolTableItem*, bool> BlockScope::insertFunc(std::unique_ptr<SymbolTableItem>&& func) {
+    func->setLevel(m_level);
+    // 只在当前scope内插入symbolItem
+    auto finded = std::find_if(m_funcs.begin(), m_funcs.end(), [&func](const std::unique_ptr<SymbolTableItem>& symbol) {
+        return func->getName() == symbol->getName();
+    });
+    if (finded != m_funcs.end()) {
+        return std::make_pair(finded->get(), false);
+    } else {
+        m_funcs.push_back(std::move(func));
+        return std::make_pair(m_funcs.back().get(), true);
     }
 }
 

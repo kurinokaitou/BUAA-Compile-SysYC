@@ -1,6 +1,4 @@
 int a 2
 array<int> b [2][2] 1 2 3 4 
-void func
-int main
 array<int> a  
 int b 0
