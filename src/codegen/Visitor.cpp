@@ -358,6 +358,10 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
 }
 
 ValueTypeEnum Visitor::bType(std::shared_ptr<VNodeBase> node) { // 基本类型
+    return ValueTypeEnum::INT_TYPE;
+}
+
+ValueTypeEnum Visitor::funcType(std::shared_ptr<VNodeBase> node) {
     if ((*node->getChildIter())->getSymbol() == SymbolEnum::INTTK) {
         return ValueTypeEnum::INT_TYPE;
     } else {
@@ -366,7 +370,106 @@ ValueTypeEnum Visitor::bType(std::shared_ptr<VNodeBase> node) { // 基本类型
 }
 
 void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
+    auto retType = funcType(*node->getChildIter());
+    node->nextChild(); // jump 'int' | 'void'
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    std::string identName = leafNode->getToken().literal;
+    int lineNum = leafNode->getToken().lineNum;
+    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = retType});
+    if (!res.second) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+    }
+    node->nextChild(2); // jump IDENT '('
+    m_table.pushScope(BlockScopeType::FUNC);
+    DBG_PROBE_BRANCH(name, *node->getChildIter());
+    std::vector<SymbolTableItem*> params;
+    if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
+        params = funcFParams(*node->getChildIter());
+        node->nextChild();
+    }
+    res.first->setParams(std::move(params));
+    node->nextChild(); // jump ')'
+    block(*node->getChildIter());
+    m_table.popScope();
+}
+
+// TODO: 完成形参列表
+std::vector<SymbolTableItem*> Visitor::funcFParams(std::shared_ptr<VNodeBase> node) {
+    std::vector<SymbolTableItem*> params;
+    params.push_back(funcFParam(*node->getChildIter()));
+    node->nextChild();
+    while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
+        node->nextChild(); // jump ','
+        params.push_back(funcFParam(*node->getChildIter()));
+    }
+    return params;
+}
+SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
+    if (bType(*node->getChildIter()) == ValueTypeEnum::INT_TYPE) {
+        node->nextChild(); // jump 'int'
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        std::string identName = leafNode->getToken().literal;
+        int lineNum = leafNode->getToken().lineNum;
+        std::vector<size_t> dims;
+        if (node->nextChild()) {
+            if (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(1), SymbolEnum::RBRACK)) {
+                dims.push_back(0);
+                if (node->nextChild(2)) {
+                    while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+                        int dim = static_cast<size_t>(constExp(*node->getChildIter(1)));
+                        if (dim >= 0) {
+                            dims.push_back(static_cast<size_t>(dim));
+                        } else {
+                            Logger::logError("Use dimension as negative size!");
+                        }
+                        if (!node->nextChild(3)) break; // jump '[dim]'
+                    }
+                }
+            }
+        }
+
+        SymbolTableItem* ret = nullptr;
+        bool valid = true;
+        if (dims.size() == 0) {
+            auto res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
+            ret = res.first;
+            valid = res.second;
+        } else {
+            auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                                   .initVar = {},
+                                                                                   .varItem = {{.values = {}, .dimensions = dims}}});
+            ret = res.first;
+            valid = res.second;
+        }
+        if (!valid) {
+            Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+        }
+        ret->setParam();
+        return ret;
+    }
+    return nullptr;
+}
+
+void Visitor::block(std::shared_ptr<VNodeBase> node) {
 }
 
 void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
+    node->nextChild(); // jump 'int' | 'void'
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    std::string identName = "main";
+    int lineNum = leafNode->getToken().lineNum;
+    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
+    if (!res.second) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+    }
+    m_table.pushScope(BlockScopeType::FUNC);
+    std::vector<SymbolTableItem*> params;
+    if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
+        params = funcFParams(*node->getChildIter());
+        node->nextChild();
+    }
+    res.first->setParams(std::move(params));
+    node->nextChild(); // jump ')'
+    block(*node->getChildIter());
+    m_table.popScope();
 }

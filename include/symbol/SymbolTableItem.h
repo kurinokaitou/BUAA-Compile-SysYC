@@ -6,6 +6,12 @@
 #include <iostream>
 #include <algorithm>
 
+enum class ValueTypeEnum : unsigned int {
+    INT_TYPE = 0,
+    ARRAY_TYPE,
+    VOID_TYPE,
+};
+
 class SymbolTableItem {
 public:
     SymbolTableItem(const std::string& name, BlockScopeHandle handle) :
@@ -38,31 +44,6 @@ public:
         SymbolTableItem(name, handle) {}
     virtual ~TypedItem() {}
     virtual Type& getType() = 0;
-};
-
-template <typename Type>
-class FuncItem : public TypedItem<Type> {
-public:
-    using Data = struct {
-        BlockScopeHandle parentHandle;
-        std::vector<TypedItem<Type>*> params;
-    };
-    explicit FuncItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_params(data.params){};
-    std::vector<SymbolTableItem*>& getParams() { return m_params; }
-    virtual Type& getType() override { return m_dataType; }
-    virtual size_t getSize() override { return m_dataType.valueSize(m_returnVar); };
-    virtual ~FuncItem() {}
-    virtual void dumpSymbolItem(std::ostream& os) override {
-        os << m_dataType << " ";
-        SymbolTableItem::dumpSymbolItem(os);
-        os << " " << m_returnVar << "\n";
-    }
-
-private:
-    std::vector<TypedItem<Type>*> m_params;
-    typename Type::InternalType m_returnVar;
-    Type m_dataType;
 };
 
 template <typename Type>
@@ -117,4 +98,32 @@ private:
     Type m_dataType;
 };
 
+class IntType;
+class FuncItem : public SymbolTableItem {
+public:
+    using Data = struct {
+        BlockScopeHandle parentHandle;
+        ValueTypeEnum retType;
+    };
+    explicit FuncItem(const std::string& name, Data data) :
+        SymbolTableItem(name, data.parentHandle), m_retType(data.retType){};
+    std::vector<SymbolTableItem*>& getParams() { return m_params; }
+
+    virtual size_t getSize() override { return 0; };
+    virtual ~FuncItem() {}
+    virtual void dumpSymbolItem(std::ostream& os) override {
+        os << (m_retType == ValueTypeEnum::INT_TYPE ? "int " : "void ");
+        SymbolTableItem::dumpSymbolItem(os);
+        os << "\n";
+    }
+
+    void setParams(std::vector<SymbolTableItem*>&& params) {
+        m_params.assign(params.begin(), params.end());
+    }
+
+private:
+    std::vector<SymbolTableItem*> m_params;
+    VarItem<IntType>* m_retValItem;
+    ValueTypeEnum m_retType;
+};
 #endif

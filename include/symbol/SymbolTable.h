@@ -14,7 +14,7 @@ public:
     void popScope();
 
     template <typename ItemType>
-    std::pair<SymbolTableItem*, bool> insertItem(const std::string& name, typename ItemType::Data data);
+    std::pair<ItemType*, bool> insertItem(const std::string& name, typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);
     void dumpTable(std::ostream& os);
     void clearSymbolTable();
@@ -25,9 +25,10 @@ private:
 };
 
 template <typename ItemType>
-std::pair<SymbolTableItem*, bool> SymbolTable::insertItem(const std::string& name, typename ItemType::Data data) {
+std::pair<ItemType*, bool> SymbolTable::insertItem(const std::string& name, typename ItemType::Data data) {
     if (std::is_base_of<SymbolTableItem, ItemType>::value) {
-        return getCurrentScope().insertItem(std::unique_ptr<ItemType>(new ItemType(name, data)));
+        auto pair = getCurrentScope().insertItem(std::unique_ptr<ItemType>(new ItemType(name, data)));
+        return std::make_pair(dynamic_cast<ItemType*>(pair.first), pair.second);
     } else {
         return std::make_pair(nullptr, false);
     }

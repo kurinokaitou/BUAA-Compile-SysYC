@@ -162,18 +162,8 @@ RPARENT )
     SEMICN ;
     <VarDecl>
     IDENFR func
-    <LVal>
-ASSIGN 
     LPARENT (
-IDENFR 
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
     RPARENT )
-    <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>

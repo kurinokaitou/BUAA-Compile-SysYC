@@ -69,7 +69,7 @@ std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol, int level) {
         if (!m_probingMode) {
             literal = handleGrammarError(symbol);
         }
-        return std::make_shared<VNodeLeaf>(symbol, Token(m_currToken->lineNum, symbol, literal, 0), m_probingMode ? true : false);
+        return std::make_shared<VNodeLeaf>(symbol, Token(m_currToken->lineNum, symbol, literal, 0), false);
     }
 }
 
@@ -87,7 +87,7 @@ std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symb
             literal = handleGrammarError(m_currToken->symbol);
         }
         return std::make_shared<VNodeLeaf>(*symbolList.begin(),
-                                           Token(m_currToken->lineNum, *symbolList.begin(), literal, 0), m_probingMode ? true : false);
+                                           Token(m_currToken->lineNum, *symbolList.begin(), literal, 0), false);
     }
 }
 
@@ -455,9 +455,6 @@ std::shared_ptr<VNodeBase> Parser::lVal(int level) {
         children.push_back(exp(level));
         children.push_back(expect(SymbolEnum::RBRACK, level));
         cnt++;
-    }
-    if (cnt >= 2) {
-        // TODO: handle multi > 2 dimension array
     }
     for (auto& child : children) {
         lValNode->addChild(std::move(child));

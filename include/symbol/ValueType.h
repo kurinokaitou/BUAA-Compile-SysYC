@@ -3,12 +3,6 @@
 #include <Log.h>
 #include "SymbolTableItem.h"
 
-enum class ValueTypeEnum : unsigned int {
-    INT_TYPE = 0,
-    ARRAY_TYPE,
-    VOID_TYPE,
-};
-
 static const size_t INT_SIZE = 4;
 static const size_t VOID_SIZE = 0;
 class ValueType {
@@ -34,7 +28,7 @@ public:
 
 class VoidType : public ValueType {
 public:
-    using InternalType = void;
+    using InternalType = unsigned int; // 无法存储一个void类型的成员变量，因此用uint区分
     size_t valueSize(InternalType) const { return VOID_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
