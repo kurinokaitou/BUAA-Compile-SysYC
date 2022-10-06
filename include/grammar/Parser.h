@@ -18,7 +18,7 @@ private:
     bool expectFuncRParams();
     void postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os);
     void preTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os);
-    void handleGrammarError(SymbolEnum symbol);
+    std::string handleGrammarError(SymbolEnum symbol);
 
 private:
     std::shared_ptr<VNodeBase> compUnit(int level);     // 编译单元

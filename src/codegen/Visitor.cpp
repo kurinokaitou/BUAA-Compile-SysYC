@@ -285,6 +285,7 @@ typename ArrayType<IntType>::InternalType Visitor::initVal<ArrayType<IntType>>(s
 void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     std::string identName = leafNode->getToken().literal;
+    int lineNum = leafNode->getToken().lineNum;
     node->nextChild(); // jump IDENT
     std::vector<size_t> dims;
     while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
@@ -297,22 +298,28 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
         node->nextChild(3); // jump '[dim]'
     }
     node->nextChild(); // jump '='
+    std::pair<SymbolTableItem*, bool> res;
     if (dims.size() == 0) {
         auto value = constInitVal<IntType>(*node->getChildIter(), dims, 0);
-        m_table.insertItem<ConstVarItem<IntType>>(identName,
-                                                  {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                   .constVar = value});
+        res = m_table.insertItem<ConstVarItem<IntType>>(identName,
+                                                        {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                         .constVar = value});
+
     } else {
         auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
         value.setDimensions(std::move(dims));
-        m_table.insertItem<ConstVarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                         .constVar = value});
+        res = m_table.insertItem<ConstVarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                               .constVar = value});
+    }
+    if (!res.second) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
     }
 }
 
 void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     std::string identName = leafNode->getToken().literal;
+    int lineNum = leafNode->getToken().lineNum;
     node->nextChild(); // jump IDENT
     std::vector<size_t> dims;
     while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
@@ -324,26 +331,30 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         }
         node->nextChild(3); // jump '[dim]'
     }
+    std::pair<SymbolTableItem*, bool> res;
     if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
         node->nextChild();
         if (dims.size() == 0) {
             auto value = initVal<IntType>(*node->getChildIter(), dims, 0);
-            m_table.insertItem<VarItem<IntType>>(identName,
-                                                 {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                  .var = value});
+            res = m_table.insertItem<VarItem<IntType>>(identName,
+                                                       {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                        .var = value});
         } else {
             auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
             value.setDimensions(std::move(dims));
-            m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                        .var = value});
+            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                              .var = value});
         }
     } else {
         if (dims.size() == 0) {
-            m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .var = {}});
+            res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .var = {}});
         } else {
-            m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                        .var = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
+            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                              .var = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
         }
+    }
+    if (!res.second) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
     }
 }
 
