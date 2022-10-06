@@ -9,13 +9,24 @@ void BlockScope::addChildScope(BlockScopeHandle handle) {
 }
 
 SymbolTableItem* BlockScope::findItem(const std::string& name) {
+    // 在当前作用域中寻找
     auto item = std::find_if(m_symbols.begin(), m_symbols.end(), [&name](const std::unique_ptr<SymbolTableItem>& symbol) {
-        return name == symbol->getName();
+        return symbol->getName() == name;
     });
     if (item != m_symbols.end()) {
         return item->get();
     } else {
+        if (m_type == BlockScopeType::FUNC) {
+            // 如果是函数作用域，在形参中寻找
+            auto paramItem = std::find_if(m_paramItems.begin(), m_paramItems.end(), [&name](SymbolTableItem* param) {
+                return param->getName() == name;
+            });
+            if (paramItem != m_paramItems.end()) {
+                return *paramItem;
+            }
+        }
         if (m_type != BlockScopeType::GLOBAL) {
+            // 没有找到再去其父作用域中寻找
             return m_symbolTable.getBlockScope(m_parentHandle).findItem(name);
         } else {
             return nullptr;

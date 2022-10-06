@@ -1,7 +1,10 @@
 #ifndef SYMBOL_TABLE_ITEM_H
 #define SYMBOL_TABLE_ITEM_H
 #include "BlockScopeHandle.h"
-#include "ValueType.h"
+#include <vector>
+#include <memory>
+#include <iostream>
+#include <algorithm>
 
 class SymbolTableItem {
 public:
@@ -67,14 +70,13 @@ class VarItem : public TypedItem<Type> {
 public:
     using Data = struct {
         BlockScopeHandle parentHandle;
-        typename Type::InternalType var;
+        typename Type::InternalType initVar;
     };
     explicit VarItem(const std::string& name, Data data) :
         TypedItem<Type>(name, data.parentHandle), m_var(data.var){};
     virtual Type& getType() override { return m_dataType; }
     virtual size_t getSize() override { return m_dataType.valueSize(m_var); };
     virtual ~VarItem() {}
-    typename Type::InternalType getVar() const { return m_var; }
     virtual void dumpSymbolItem(std::ostream& os) override {
         os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);

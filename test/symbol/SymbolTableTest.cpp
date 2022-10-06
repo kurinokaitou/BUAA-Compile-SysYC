@@ -5,7 +5,7 @@ TEST_F(SymbolTableTest, SimpleInsert) {
     auto ret = table.insertItem<FuncItem<ArrayType<IntType>>>("hello", {.parentHandle = BlockScopeHandle(0), .params = {nullptr}});
 
     table.pushScope(BlockScopeType::FUNC);
-    table.insertItem<VarItem<IntType>>("a", {.parentHandle = BlockScopeHandle(1), .var = 1});
+    table.insertItem<ConstVarItem<IntType>>("a", {.parentHandle = BlockScopeHandle(1), .constVar = 1});
     EXPECT_EQ(table.getCurrentScope().countSymbol(), 1);
     EXPECT_EQ(table.findItem("hello")->getLevel(), 0);
     EXPECT_EQ(table.findItem("a")->getLevel(), 1);

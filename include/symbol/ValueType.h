@@ -1,10 +1,7 @@
 #ifndef VALUE_TYPE_H
 #define VALUE_TYPE_H
-#include <vector>
-#include <memory>
-#include <iostream>
-#include <algorithm>
 #include <Log.h>
+#include "SymbolTableItem.h"
 
 enum class ValueTypeEnum : unsigned int {
     INT_TYPE = 0,

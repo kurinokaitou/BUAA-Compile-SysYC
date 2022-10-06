@@ -2,7 +2,7 @@
 INTTK int
 IDENFR a
 ASSIGN =
-INTCON 1
+INTCON 2
 <Number>
 <PrimaryExp>
 <UnaryExp>
@@ -14,9 +14,77 @@ INTCON 1
 SEMICN ;
 <VarDecl>
 INTTK int
+IDENFR b
+LBRACK [
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+LBRACK [
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+ASSIGN =
+LBRACE {
+LBRACE {
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+RBRACE }
+<InitVal>
+COMMA ,
+LBRACE {
+INTCON 3
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 4
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+RBRACE }
+<InitVal>
+RBRACE }
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
 IDENFR a
 ASSIGN =
-INTCON 2
+INTCON 1
 <Number>
 <PrimaryExp>
 <UnaryExp>
@@ -44,7 +112,7 @@ IDENFR b
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR var
+    IDENFR a
     ASSIGN =
     INTCON 1
     <Number>
@@ -53,50 +121,6 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
-SEMICN ;
-    <VarDecl>
-    INTTK int
-    IDENFR var
-    LBRACK [
-    INTCON 3
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <ConstExp>
-RBRACK ]
-    ASSIGN =
-    LBRACE {
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    COMMA ,
-    INTCON 2
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    COMMA ,
-    INTCON 3
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    RBRACE }
     <InitVal>
     <VarDef>
     SEMICN ;
@@ -109,6 +133,34 @@ MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
+    INTTK int
+    IDENFR a
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR a
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
     IDENFR func
     <LVal>
 ASSIGN 
@@ -120,7 +172,7 @@ IDENFR
     <MulExp>
     <AddExp>
     <Exp>
-RPARENT )
+    RPARENT )
     <PrimaryExp>
     <UnaryExp>
     <MulExp>

@@ -237,24 +237,24 @@ typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntTyp
 };
 
 template <>
-typename IntType::InternalType Visitor::initVal<IntType>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    return exp(*node->getChildIter());
+typename IntType::InternalType Visitor::initValGlobal<IntType>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+    return constExp(*node->getChildIter());
 };
 
 template <>
-typename ArrayType<IntType>::InternalType Visitor::initVal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+typename ArrayType<IntType>::InternalType Visitor::initValGlobal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
     typename ArrayType<IntType>::InternalType values;
     if (expect(*node->getChildIter(), SymbolEnum::LBRACE)) {
         node->nextChild();
         size_t num = 0;
         if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
-            auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
+            auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
             values.append(std::move(value));
             node->nextChild(); // jump '}'
             num++;
             while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
                 node->nextChild(); // jump ','
-                auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
+                auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
                 values.append(std::move(value));
                 node->nextChild(); // jump '}'
                 num++;
@@ -276,7 +276,7 @@ typename ArrayType<IntType>::InternalType Visitor::initVal<ArrayType<IntType>>(s
             Logger::logError("Too much number defined!");
         }
     } else {
-        IntType::InternalType val = initVal<IntType>(*node->getChildIter(), dims, level + 1);
+        IntType::InternalType val = initValGlobal<IntType>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
     return values;
@@ -332,25 +332,27 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         node->nextChild(3); // jump '[dim]'
     }
     std::pair<SymbolTableItem*, bool> res;
-    if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
-        node->nextChild();
-        if (dims.size() == 0) {
-            auto value = initVal<IntType>(*node->getChildIter(), dims, 0);
-            res = m_table.insertItem<VarItem<IntType>>(identName,
-                                                       {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                        .var = value});
+    if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
+        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
+            node->nextChild();
+            if (dims.size() == 0) {
+                auto value = initValGlobal<IntType>(*node->getChildIter(), dims, 0);
+                res = m_table.insertItem<VarItem<IntType>>(identName,
+                                                           {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                            .initVar = value});
+            } else {
+                auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
+                value.setDimensions(std::move(dims));
+                res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                                  .initVar = value});
+            }
         } else {
-            auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
-            value.setDimensions(std::move(dims));
-            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                              .var = value});
-        }
-    } else {
-        if (dims.size() == 0) {
-            res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .var = {}});
-        } else {
-            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                              .var = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
+            if (dims.size() == 0) {
+                res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0});
+            } else {
+                res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                                  .initVar = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
+            }
         }
     }
     if (!res.second) {

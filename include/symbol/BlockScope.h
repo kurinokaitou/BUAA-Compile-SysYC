@@ -21,6 +21,7 @@ public:
     std::pair<SymbolTableItem*, bool> insertItem(std::unique_ptr<SymbolTableItem>&& item);
     std::vector<SymbolTableItem*>& getParamItems() const;
     int getLevel() const { return m_level; }
+    BlockScopeType getType() const { return m_type; }
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }
     void addChildScope(BlockScopeHandle handle);
     std::size_t countSymbol() { return m_symbols.size(); }

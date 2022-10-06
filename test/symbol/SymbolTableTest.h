@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_TEST_H
 #include <gtest/gtest.h>
 #include <symbol/SymbolTable.h>
+#include <symbol/ValueType.h>
 
 class SymbolTableTest : public ::testing::Test {
 protected:

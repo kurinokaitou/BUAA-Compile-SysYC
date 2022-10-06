@@ -1,6 +1,7 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 #include <symbol/SymbolTable.h>
+#include <symbol/ValueType.h>
 #include <grammar/VNode.h>
 
 class Visitor {
@@ -20,10 +21,11 @@ private:
         return typename VT::InternalType();
     };
     IntType::InternalType constExp(std::shared_ptr<VNodeBase> node); // 常量表达式
-    void varDecl(std::shared_ptr<VNodeBase> node);                   // 变量声明
-    void varDef(std::shared_ptr<VNodeBase> node);                    // 变量定义
+
+    void varDecl(std::shared_ptr<VNodeBase> node); // 变量声明
+    void varDef(std::shared_ptr<VNodeBase> node);  // 变量定义
     template <typename VT>
-    typename VT::InternalType initVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) { // 变量初值
+    typename VT::InternalType initValGlobal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) { // 变量初值
         return typename VT::InternalType();
     }
     IntType::InternalType exp(std::shared_ptr<VNodeBase> node); // 表达式
