@@ -71,9 +71,10 @@ public:
     using Data = struct {
         BlockScopeHandle parentHandle;
         typename Type::InternalType initVar;
+        typename Type::InternalItem varItem;
     };
     explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_var(data.var){};
+        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar){};
     virtual Type& getType() override { return m_dataType; }
     virtual size_t getSize() override { return m_dataType.valueSize(m_var); };
     virtual ~VarItem() {}
@@ -82,9 +83,11 @@ public:
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_var << "\n";
     }
+    const typename Type::InternalItem& getVarItem() const { return m_varItem; }
 
 private:
     typename Type::InternalType m_var;
+    typename Type::InternalItem m_varItem;
     Type m_dataType;
 };
 

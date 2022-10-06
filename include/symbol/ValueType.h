@@ -21,6 +21,7 @@ public:
 class IntType : public ValueType {
 public:
     using InternalType = int;
+    using InternalItem = VarItem<IntType>*;
     size_t valueSize(InternalType value) const { return INT_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
@@ -114,6 +115,7 @@ template <typename Type>
 class ArrayType : public ValueType {
 public:
     using InternalType = MultiFlatArray<typename Type::InternalType>;
+    using InternalItem = MultiFlatArray<VarItem<Type>*>;
     size_t valueSize(InternalType value) const {
         typename Type::InteralType dummy;
         size_t count = m_basicType.valueSize(dummy);

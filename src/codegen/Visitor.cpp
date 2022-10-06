@@ -89,9 +89,9 @@ IntType::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
     return calConstExp(*node->getChildIter());
 }
 
-IntType::InternalType Visitor::exp(std::shared_ptr<VNodeBase> node) {
-    // TODO: resolve exp value
-    return 1;
+VarItem<IntType>* Visitor::exp(std::shared_ptr<VNodeBase> node) {
+    // TODO: 实现exp递归下降
+    return nullptr;
 }
 
 IntType::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node) {
@@ -237,49 +237,44 @@ typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntTyp
 };
 
 template <>
-typename IntType::InternalType Visitor::initValGlobal<IntType>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    return constExp(*node->getChildIter());
+IntType::InternalItem Visitor::initVal<IntType>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+    return exp(*node->getChildIter());
 };
 
 template <>
-typename ArrayType<IntType>::InternalType Visitor::initValGlobal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    typename ArrayType<IntType>::InternalType values;
+typename ArrayType<IntType>::InternalItem Visitor::initVal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+    typename ArrayType<IntType>::InternalItem values;
     if (expect(*node->getChildIter(), SymbolEnum::LBRACE)) {
         node->nextChild();
         size_t num = 0;
         if (!expect(*node->getChildIter(), SymbolEnum::RBRACE)) {
-            auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
+            auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
             values.append(std::move(value));
             node->nextChild(); // jump '}'
             num++;
             while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
                 node->nextChild(); // jump ','
-                auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
+                auto value = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, level + 1);
                 values.append(std::move(value));
                 node->nextChild(); // jump '}'
                 num++;
             }
         }
-        //std::cout << num << " " << level << std::endl;
-        int diff = dims[level] - num; // 补零和报错
-        if (diff >= 0) {
-            for (int i = 0; i < diff; i++) {
-                if (level + 1 >= dims.size()) {
-                    values.insert(0);
-                } else {
-                    for (int j = 0; j < dims[level + 1]; j++) {
-                        values.insert(0);
-                    }
-                }
-            }
-        } else {
-            Logger::logError("Too much number defined!");
-        }
     } else {
-        IntType::InternalType val = initValGlobal<IntType>(*node->getChildIter(), dims, level + 1);
+        IntType::InternalItem val = initVal<IntType>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
     return values;
+};
+
+template <>
+typename IntType::InternalType Visitor::initValGlobal<IntType>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+    return constInitVal<IntType>(node, dims, level);
+};
+
+template <>
+typename ArrayType<IntType>::InternalType Visitor::initValGlobal<ArrayType<IntType>>(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
+    return constInitVal<ArrayType<IntType>>(node, dims, level);
 };
 
 void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
@@ -354,6 +349,8 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
                                                                                   .initVar = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
             }
         }
+    } else {
+        // TODO: 局部变量的初始化处理
     }
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
