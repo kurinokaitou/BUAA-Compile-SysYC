@@ -60,6 +60,12 @@ RPARENT )
     <Exp>
     SEMICN ;
     <Stmt>
+    CONTINUETK continue
+    SEMICN ;
+    <Stmt>
+    BREAKTK break
+SEMICN ;
+    <Stmt>
     IDENFR change1
     <LVal>
     ASSIGN =

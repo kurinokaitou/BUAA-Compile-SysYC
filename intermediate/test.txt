@@ -2,6 +2,8 @@ const int const1 = 1, const2 = -100;
 int change1;
 int gets1(int var1,int var2){
    const1 = 999;
+   continue;
+   break
    change1 = var1 + var2          return (change1);
 }
 int main(){

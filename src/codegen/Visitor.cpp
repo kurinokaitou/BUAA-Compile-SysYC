@@ -316,7 +316,7 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     std::string identName = leafNode->getToken().literal;
     int lineNum = leafNode->getToken().lineNum;
-    node->nextChild(); // jump IDENT
+    node->nextChild(1, false); // jump IDENT
     std::vector<size_t> dims;
     while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
         int dim = constExp(*node->getChildIter(1));
@@ -453,7 +453,7 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
         std::string identName = leafNode->getToken().literal;
         int lineNum = leafNode->getToken().lineNum;
         std::vector<size_t> dims;
-        if (node->nextChild()) {
+        if (node->nextChild(1, false)) {
             if (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(1), SymbolEnum::RBRACK)) {
                 dims.push_back(0);
                 if (node->nextChild(2)) {
@@ -536,13 +536,13 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         node->nextChild(); // jump STMT
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        if (m_table.getCurrentScope().getType() == BlockScopeType::LOOP) {
+        if (m_table.getCurrentScope().getType() != BlockScopeType::LOOP) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
         }
         node->nextChild(); // jump BREAKTK
     } else if (expect(*node->getChildIter(), SymbolEnum::CONTINUETK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        if (m_table.getCurrentScope().getType() == BlockScopeType::LOOP) {
+        if (m_table.getCurrentScope().getType() != BlockScopeType::LOOP) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
         }
         node->nextChild(); // jump CONTINUETK

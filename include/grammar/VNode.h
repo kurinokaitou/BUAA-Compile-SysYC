@@ -18,7 +18,7 @@ public:
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const = 0;
     virtual ChidrenIter getChildIter(int offset = 0) const = 0;
     virtual size_t getChildrenNum() const = 0;
-    virtual bool nextChild(int offset = 1) = 0;
+    virtual bool nextChild(int offset = 1, bool enableDbg = true) = 0;
     virtual void dumpToFile(std::ostream& os) = 0;
     virtual VNodeEnum getNodeEnum() const = 0;
     virtual SymbolEnum getSymbol() const = 0;
@@ -65,7 +65,7 @@ public:
         DBG_ERROR("Try to get children number from a leaf node!");
         return 0;
     }
-    virtual bool nextChild(int offset = 1) override {
+    virtual bool nextChild(int offset = 1, bool enableDbg = true) override {
         DBG_ERROR("Try to iterate children nodes of a leaf node!");
         return false;
     }
@@ -104,13 +104,15 @@ public:
     virtual size_t getChildrenNum() const override {
         return m_childrenNodes.size();
     }
-    virtual bool nextChild(int offset = 1) override {
+    virtual bool nextChild(int offset = 1, bool enableDbg = true) override {
         m_currentChild += offset;
         if (m_currentChild < m_childrenNodes.end()) {
             return true;
         } else {
             m_currentChild -= offset;
-            DBG_LOG("Iterator out of range!");
+            if (enableDbg) {
+                DBG_LOG("Iterator out of range!");
+            }
             return false;
         }
     }
