@@ -112,7 +112,7 @@ IDENFR b
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR a
+    IDENFR c
     ASSIGN =
     INTCON 1
     <Number>
@@ -166,7 +166,7 @@ RPARENT )
     <VarDecl>
     PRINTFTK printf
     LPARENT (
-    STRCON "%\n"
+    STRCON "%d\n"
     COMMA ,
     IDENFR a
     <LVal>

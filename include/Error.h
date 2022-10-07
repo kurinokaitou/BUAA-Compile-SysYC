@@ -47,7 +47,7 @@ static std::string genErrorText(ErrorType error, const std::string& meta, const 
     case ErrorType::MISSING_RBRACK:
         return "Expected ']'";
     case ErrorType::PRINTF_UMATCHED:
-        return "Printf format string expected " + target + " data arguments but " + meta + "provided";
+        return "Printf format string expected " + target + " data arguments but " + meta + " provided";
     case ErrorType::UNKNOWN:
     default: return "";
     }

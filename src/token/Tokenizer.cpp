@@ -120,6 +120,7 @@ void Tokenizer::checkFormatChar() {
             if (m_currChar != 'd') {
                 Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, std::string("%").append(1, m_currChar));
             }
+            unextractChar();
         } else {
             Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, std::string(1, m_currChar));
         }

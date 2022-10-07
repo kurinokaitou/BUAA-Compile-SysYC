@@ -89,7 +89,7 @@ public:
         m_data.values.push_back(val);
     }
 
-    void setDimensions(std::vector<size_t>&& dims) {
+    void setDimensions(std::vector<size_t>& dims) {
         m_data.dimensions.assign(dims.begin(), dims.end());
     }
 

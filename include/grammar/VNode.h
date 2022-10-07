@@ -58,7 +58,7 @@ public:
         return dummy;
     };
     virtual ChidrenIter getChildIter(int offset = 0) const override {
-        DBG_ERROR("Try to get children from a leaf node!");
+        DBG_ERROR("Try to get childIter from a leaf node!");
         return ChidrenIter();
     }
     virtual size_t getChildrenNum() const override {

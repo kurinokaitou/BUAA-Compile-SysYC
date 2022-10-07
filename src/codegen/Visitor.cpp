@@ -75,6 +75,7 @@ void Visitor::constDecl(std::shared_ptr<VNodeBase> node) {
 void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
     if (bType(*node->getChildIter()) == ValueTypeEnum::INT_TYPE) {
         node->nextChild(); // jump 'int'
+
         varDef(*node->getChildIter());
         node->nextChild(); // jump <VarDef>
         while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
@@ -233,6 +234,7 @@ typename ArrayType<IntType>::InternalType Visitor::constInitVal<ArrayType<IntTyp
         IntType::InternalType val = constInitVal<IntType>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
+    values.setDimensions(dims);
     return values;
 };
 
@@ -302,7 +304,6 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
 
     } else {
         auto value = constInitVal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
-        value.setDimensions(std::move(dims));
         res = m_table.insertItem<ConstVarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
                                                                                .constVar = value});
     }
@@ -326,7 +327,7 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         }
         node->nextChild(3); // jump '[dim]'
     }
-    std::pair<SymbolTableItem*, bool> res;
+    std::pair<SymbolTableItem*, bool> res(nullptr, true);
     if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
         if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
             node->nextChild();
@@ -337,7 +338,6 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
                                                             .initVar = value});
             } else {
                 auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
-                value.setDimensions(std::move(dims));
                 res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
                                                                                   .initVar = value});
             }
@@ -368,6 +368,28 @@ ValueTypeEnum Visitor::funcType(std::shared_ptr<VNodeBase> node) {
         return ValueTypeEnum::VOID_TYPE;
     }
 }
+void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
+    node->nextChild(); // jump 'int' | 'void'
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    std::string identName = "main";
+    int lineNum = leafNode->getToken().lineNum;
+    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
+    if (!res.second) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+    }
+    node->nextChild(2); // jump MAINTK & '('
+    m_table.pushScope(BlockScopeType::FUNC);
+    m_table.getCurrentScope().setFuncItem(res.first);
+    std::vector<SymbolTableItem*> params;
+    if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
+        params = funcFParams(*node->getChildIter());
+        node->nextChild();
+    }
+    res.first->setParams(std::move(params));
+    node->nextChild(); // jump ')'
+    block(*node->getChildIter());
+    m_table.popScope();
+}
 
 void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     auto retType = funcType(*node->getChildIter());
@@ -381,7 +403,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     }
     node->nextChild(2); // jump IDENT '('
     m_table.pushScope(BlockScopeType::FUNC);
-    DBG_PROBE_BRANCH(name, *node->getChildIter());
+    m_table.getCurrentScope().setFuncItem(res.first);
     std::vector<SymbolTableItem*> params;
     if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
         params = funcFParams(*node->getChildIter());
@@ -390,7 +412,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     res.first->setParams(std::move(params));
     node->nextChild(); // jump ')'
     block(*node->getChildIter());
-    m_table.popScope();
+    m_table.popScope(); // pop from func
 }
 
 // TODO: 完成形参列表
@@ -436,7 +458,7 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
             valid = res.second;
         } else {
             auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                                   .initVar = {},
+                                                                                   .initVar = {{.values = {}, .dimensions = dims}},
                                                                                    .varItem = {{.values = {}, .dimensions = dims}}});
             ret = res.first;
             valid = res.second;
@@ -451,25 +473,95 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
 }
 
 void Visitor::block(std::shared_ptr<VNodeBase> node) {
+    node->nextChild(); // jump '{'
+    auto& children = node->getChildren();
+    for (auto it = node->getChildIter(); it != children.end() - 1; it++) {
+        blockItem(*it);
+    }
+    node->nextChild(); // jump '}'
 }
 
-void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
-    node->nextChild(); // jump 'int' | 'void'
-    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-    std::string identName = "main";
-    int lineNum = leafNode->getToken().lineNum;
-    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
-    if (!res.second) {
-        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+void Visitor::blockItem(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::DECL)) {
+        decl(*node->getChildIter());
+    } else {
+        stmt(*node->getChildIter());
     }
-    m_table.pushScope(BlockScopeType::FUNC);
-    std::vector<SymbolTableItem*> params;
-    if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
-        params = funcFParams(*node->getChildIter());
+}
+
+void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), SymbolEnum::IFTK)) { // if
+        node->nextChild(2);                                // jump  IFTK & '('
+        cond(*node->getChildIter());
+        node->nextChild(); // jump ')'
+        m_table.pushScope(BlockScopeType::BRANCH);
+        stmt(*node->getChildIter());
+        m_table.popScope();
+        node->nextChild(); // jump STMT
+        if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
+            node->nextChild(); // jump ELSETK
+            m_table.pushScope(BlockScopeType::BRANCH);
+            stmt(*node->getChildIter());
+            m_table.popScope();
+        }
+    } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
+        node->nextChild(2); // jump WHILE & '('
+        cond(*node->getChildIter());
         node->nextChild();
+        m_table.pushScope(BlockScopeType::LOOP);
+        stmt(*node->getChildIter());
+        m_table.popScope();
+        node->nextChild(); // jump STMT
+    } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
+        node->nextChild(); // jump BREAKTK
+    } else if (expect(*node->getChildIter(), SymbolEnum::CONTINUETK)) {
+        node->nextChild(); // jump CONTINUETK
+    } else if (expect(*node->getChildIter(), SymbolEnum::RETURNTK)) {
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        node->nextChild(); // jump RETURNTK
+        FuncItem* funcItem = m_table.getCurrentScope().getFuncItem();
+        ValueTypeEnum type = funcItem->getReturnValueType();
+        std::string funcName = funcItem->getName();
+        int lineNum = leafNode->getToken().lineNum;
+        if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
+            if (type == ValueTypeEnum::VOID_TYPE) {
+                Logger::logError(ErrorType::VOID_FUNC_HAVE_RETURNED, lineNum, funcName);
+            }
+            exp(*node->getChildIter());
+            node->nextChild(); // jump EXP
+        } else {
+            if (type == ValueTypeEnum::INT_TYPE) {
+                Logger::logError(ErrorType::NONVOID_FUNC_MISS_RETURN, lineNum, funcName); // 这里表示有return 但是没有返回值的情况
+                // TODO: 是INT_TYPE 但是没有出现return关键字的情况
+            }
+        }
+    } else if (expect(*node->getChildIter(), SymbolEnum::PRINTFTK)) {
+        node->nextChild(2); // jump PRINTTK & '('
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        node->nextChild(); // jump STRCON
+        const std::string& formatStr = leafNode->getToken().literal;
+        int lineNum = leafNode->getToken().lineNum;
+        int count = 0;
+        std::string sub = "%d";
+        for (size_t offset = formatStr.find(sub); offset != std::string::npos;
+             offset = formatStr.find(sub, offset + 2)) {
+            count++;
+        }
+        std::vector<VarItem<IntType>*> items;
+        while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
+            node->nextChild(); // jump ','
+            items.push_back(exp(*node->getChildIter()));
+            node->nextChild(); // jump EXP
+        }
+        if (items.size() != count) {
+            Logger::logError(ErrorType::PRINTF_UMATCHED, lineNum, std::to_string(items.size()), std::to_string(count));
+        }
+    } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
+        // TODO: lVal int stmt
+    } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
+    } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
     }
-    res.first->setParams(std::move(params));
-    node->nextChild(); // jump ')'
-    block(*node->getChildIter());
-    m_table.popScope();
+}
+
+void Visitor::cond(std::shared_ptr<VNodeBase> node) {
 }

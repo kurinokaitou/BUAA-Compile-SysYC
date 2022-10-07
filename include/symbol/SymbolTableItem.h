@@ -55,14 +55,14 @@ public:
         typename Type::InternalItem varItem;
     };
     explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar){};
+        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar), m_varItem(data.varItem){};
     virtual Type& getType() override { return m_dataType; }
     virtual size_t getSize() override { return m_dataType.valueSize(m_var); };
     virtual ~VarItem() {}
     virtual void dumpSymbolItem(std::ostream& os) override {
         os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << " " << m_var << "\n";
+        os << " " << m_varItem;
     }
     const typename Type::InternalItem& getVarItem() const { return m_varItem; }
 
@@ -90,7 +90,7 @@ public:
     virtual void dumpSymbolItem(std::ostream& os) override {
         os << m_dataType << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << " " << m_constVar << "\n";
+        os << " " << m_constVar;
     }
 
 private:
@@ -114,12 +114,21 @@ public:
     virtual void dumpSymbolItem(std::ostream& os) override {
         os << (m_retType == ValueTypeEnum::INT_TYPE ? "int " : "void ");
         SymbolTableItem::dumpSymbolItem(os);
-        os << "\n";
+        os << "(";
+        for (auto param = m_params.begin(); param != m_params.end(); param++) {
+            (*param)->dumpSymbolItem(os);
+            if (param != m_params.end() - 1) {
+                os << ", ";
+            }
+        }
+        os << ")";
     }
 
     void setParams(std::vector<SymbolTableItem*>&& params) {
         m_params.assign(params.begin(), params.end());
     }
+
+    ValueTypeEnum getReturnValueType() const { return m_retType; }
 
 private:
     std::vector<SymbolTableItem*> m_params;

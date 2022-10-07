@@ -1,4 +1,6 @@
-int a 2
-array<int> b [2][2] 1 2 3 4 
-array<int> a  
+void func(array<int> a [0] , int b 0)
+int main()
+int a 0
+array<int> b  
+array<int> a [0] 
 int b 0

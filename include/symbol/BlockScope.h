@@ -26,6 +26,8 @@ public:
     BlockScopeType getType() const { return m_type; }
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }
     void addChildScope(BlockScopeHandle handle);
+    void setFuncItem(FuncItem* func) { mp_funcItem = func; }
+    FuncItem* getFuncItem() const { return mp_funcItem; }
     std::size_t countSymbol() { return m_symbols.size(); }
     void dumpScope(std::ostream& os);
 
@@ -38,6 +40,7 @@ private:
     std::vector<std::unique_ptr<SymbolTableItem>> m_symbols;
     std::vector<std::unique_ptr<SymbolTableItem>> m_funcs;
     mutable std::vector<SymbolTableItem*> m_paramItems;
+    FuncItem* mp_funcItem{nullptr};
 };
 
 #endif
