@@ -29,10 +29,14 @@ void Logger::logError(const std::string& error) {
     std::cout << BOLDRED << "[error]" << RESET << " " << error << std::endl;
 }
 
+void Logger::logWarning(const std::string& warning) {
+    std::cout << BOLDYELLOW << "[warning]" << RESET << " " << warning << std::endl;
+}
+
 void Logger::logInfo(const std::string& info) {
     std::cout << BOLDBLUE << "[info]" << RESET << " " << info << std::endl;
 }
 
 void Logger::logDebug(const std::string& message) {
-    std::cout << BOLDYELLOW << "[debug]" << RESET << " " << message << std::endl;
+    std::cout << BOLDGREEN << "[debug]" << RESET << " " << message << std::endl;
 }

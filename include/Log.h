@@ -28,6 +28,7 @@ public:
     static void logError(ErrorType error, int lineNum, const std::string& meta = "", const std::string& target = "");
     static void logError(const std::string& error);
     static void logInfo(const std::string& info);
+    static void logWarning(const std::string& warning);
     static void logDebug(const std::string& message);
     static std::vector<ErrorLog> s_errorDump;
 };

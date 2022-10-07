@@ -37,7 +37,7 @@ private:
     void block(std::shared_ptr<VNodeBase> node);                                // 语句块
     void blockItem(std::shared_ptr<VNodeBase> node);                            // 语句块项
     void stmt(std::shared_ptr<VNodeBase> node);                                 // 语句
-    void lVal(std::shared_ptr<VNodeBase> node);                                 // 左值
+    VarItem<IntType>* lVal(std::shared_ptr<VNodeBase> node);                    // 左值
     void cond(std::shared_ptr<VNodeBase> node);                                 // 条件表达式
     void number(std::shared_ptr<VNodeBase> node);                               // 数字
     void primaryExp(std::shared_ptr<VNodeBase> node);                           // 基本表达式
@@ -58,7 +58,6 @@ private:
     ValueTypeEnum bType(std::shared_ptr<VNodeBase> node);                       // 基本类型
 
     IntType::InternalType calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
-
 private:
     SymbolTable& m_table;
     std::shared_ptr<VNodeBase> m_astRoot;

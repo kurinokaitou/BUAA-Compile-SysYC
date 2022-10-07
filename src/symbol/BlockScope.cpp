@@ -1,5 +1,6 @@
 #include <symbol/BlockScope.h>
 #include <symbol/SymbolTable.h>
+#include <Log.h>
 BlockScope::BlockScope(SymbolTable& table, BlockScopeType type, int level, BlockScopeHandle parent) :
     m_symbolTable(table), m_type(type), m_level(level), m_parentHandle(parent) {
 }
@@ -81,6 +82,12 @@ std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {
         }
     }
     return m_paramItems;
+}
+
+void BlockScope::checkFuncScopeReturn(int lineNum) const {
+    if (!m_hasReturn && m_type == BlockScopeType::FUNC) {
+        Logger::logError(ErrorType::NONVOID_FUNC_MISS_RETURN, lineNum, mp_funcItem->getName());
+    }
 }
 
 void BlockScope::dumpScope(std::ostream& os) {

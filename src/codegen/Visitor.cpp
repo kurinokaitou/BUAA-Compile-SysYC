@@ -334,9 +334,9 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
             node->nextChild();
             if (dims.size() == 0) {
-                auto value = initValGlobal<IntType>(*node->getChildIter(), dims, 0);
+                valueVar = initValGlobal<IntType>(*node->getChildIter(), dims, 0);
             } else {
-                auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
+                valueArray = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
             }
         }
         if (dims.size() == 0) {
@@ -350,7 +350,27 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         }
 
     } else {
-        // TODO: 局部变量的初始化处理
+        MultiFlatArray<VarItem<IntType>*> itemArray;
+        VarItem<IntType>* item;
+        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
+            node->nextChild();
+            if (dims.size() == 0) {
+                item = initVal<IntType>(*node->getChildIter(), dims, 0);
+            } else {
+                itemArray = initVal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
+            }
+        }
+        if (dims.size() == 0) {
+            res = m_table.insertItem<VarItem<IntType>>(identName,
+                                                       {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                        .initVar = 0,
+                                                        .varItem = item});
+        } else {
+            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName,
+                                                                  {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                   .initVar = {},
+                                                                   .varItem = itemArray});
+        }
     }
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
@@ -474,11 +494,13 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
 
 void Visitor::block(std::shared_ptr<VNodeBase> node) {
     node->nextChild(); // jump '{'
-    auto& children = node->getChildren();
-    for (auto it = node->getChildIter(); it != children.end() - 1; it++) {
-        blockItem(*it);
+    while (expect(*node->getChildIter(), VNodeEnum::BLOCKITEM)) {
+        blockItem(*node->getChildIter());
+        node->nextChild();
     }
-    node->nextChild(); // jump '}'
+    int lineNum = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter())->getToken().lineNum;
+    m_table.getCurrentScope().checkFuncScopeReturn(lineNum);
+    // node->nextChild(); // jump '}'
 }
 
 void Visitor::blockItem(std::shared_ptr<VNodeBase> node) {
@@ -513,10 +535,19 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         m_table.popScope();
         node->nextChild(); // jump STMT
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        if (m_table.getCurrentScope().getType() == BlockScopeType::LOOP) {
+            Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
+        }
         node->nextChild(); // jump BREAKTK
     } else if (expect(*node->getChildIter(), SymbolEnum::CONTINUETK)) {
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        if (m_table.getCurrentScope().getType() == BlockScopeType::LOOP) {
+            Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
+        }
         node->nextChild(); // jump CONTINUETK
     } else if (expect(*node->getChildIter(), SymbolEnum::RETURNTK)) {
+        m_table.getCurrentScope().markHasReturn();
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         node->nextChild(); // jump RETURNTK
         FuncItem* funcItem = m_table.getCurrentScope().getFuncItem();
@@ -557,14 +588,58 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
             Logger::logError(ErrorType::PRINTF_UMATCHED, lineNum, std::to_string(items.size()), std::to_string(count));
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
-        // TODO: lVal int stmt
-        // auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        // std::string identName = leafNode->getToken().literal;
-        // auto finded = m_table.findItem(identName);
-        // if (finded) {
-        // }
+        VarItem<IntType>* lValItem = lVal(*node->getChildIter());
+        node->nextChild(2); // jump lVal & =
+        VarItem<IntType>* ret = nullptr;
+        if (expect(*node->getChildIter(), SymbolEnum::GETINTTK)) {
+            ret = MAKE_INT_VAR();
+            // TODO: 生成将此通过getint获取值的代码
+        } else {
+            ret = exp(*node->getChildIter());
+        }
+        // TODO: 生成将暂存值存入左值的代码
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
+        m_table.pushScope(BlockScopeType::NORMAL);
+        block(*node->getChildIter());
+        m_table.popScope();
     } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
+        exp(*node->getChildIter());
+    } else {
+        Logger::logWarning("Empty statement or double semicolon.");
+    }
+}
+
+VarItem<IntType>* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
+    auto identNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter()); // lVal 的第一个子节点ident
+    std::string identName = identNode->getToken().literal;
+    int lineNum = identNode->getToken().lineNum;
+    auto finded = m_table.findItem(identName);
+    if (finded) {
+        if (!finded->isChangble()) {
+            Logger::logError(ErrorType::ASSIGN_TO_CONST, lineNum, identName);
+        }
+        if (finded->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
+            return dynamic_cast<VarItem<IntType>*>(finded);
+        } else {
+            auto lValArray = dynamic_cast<VarItem<ArrayType<IntType>>*>(finded);
+            auto targetDims = lValArray->getVarItem().getDimensions();
+            std::vector<VarItem<IntType>*> pos;
+            node->nextChild(); // jump IDENT
+            while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+                pos.push_back(exp(*node->getChildIter(1)));
+                if (!node->nextChild(3)) break; // jump '[pos]'
+            }
+            if (pos.size() != targetDims.size()) { // 如果维数不匹配则不是单个的数组元素，不能成为lVal
+                Logger::logError("Can not convert a array to variable!");
+                return nullptr;
+            }
+            auto lVal = MAKE_INT_VAR();
+            //TODO: 代码生成时使用pos中的位置与实际的数组
+            return lVal;
+        }
+    } else {
+        Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);
+        return nullptr;
     }
 }
 

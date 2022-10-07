@@ -92,6 +92,10 @@ public:
         m_data.dimensions.assign(dims.begin(), dims.end());
     }
 
+    const std::vector<size_t>& getDimensions() const {
+        return m_data.dimensions;
+    }
+
     size_t spaceSize(size_t unitSize) {
         size_t count = unitSize;
         for (size_t dimension : m_data.dimensions) {

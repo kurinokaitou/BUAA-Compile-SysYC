@@ -48,6 +48,8 @@ static std::string genErrorText(ErrorType error, const std::string& meta, const 
         return "Expected ']'";
     case ErrorType::PRINTF_UMATCHED:
         return "Printf format string expected " + target + " data arguments but " + meta + " provided";
+    case ErrorType::BRK_CONT_NOT_IN_LOOP:
+        return "Break or continue statement not in loop";
     case ErrorType::UNKNOWN:
     default: return "";
     }

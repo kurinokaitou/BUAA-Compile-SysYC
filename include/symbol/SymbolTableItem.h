@@ -28,6 +28,7 @@ public:
     void setLevel(int level) { m_level = level; }
     int getLevel() const { return m_level; }
     virtual ValueType* getType() = 0;
+    virtual bool isChangble() = 0;
     BlockScopeHandle getParentHandle() const { return m_scopeHandle; }
 
 private:
@@ -45,6 +46,7 @@ public:
         SymbolTableItem(name, handle), m_type(std::move(type)) {}
     virtual ~TypedItem() {}
     virtual ValueType* getType() { return m_type.get(); };
+    virtual bool isChangble() = 0;
 
 protected:
     std::unique_ptr<ValueType> m_type;
@@ -68,6 +70,7 @@ public:
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_varItem;
     }
+    virtual bool isChangble() override { return true; }
     const typename Type::InternalItem& getVarItem() const { return m_varItem; }
 
 private:
@@ -93,6 +96,7 @@ public:
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_constVar;
     }
+    virtual bool isChangble() override { return false; }
 
 private:
     typename Type::InternalType m_constVar;
@@ -123,6 +127,7 @@ public:
         }
         os << ")";
     }
+    virtual bool isChangble() override { return false; }
     virtual ValueType* getType() override { return nullptr; };
     void setParams(std::vector<SymbolTableItem*>&& params) {
         m_params.assign(params.begin(), params.end());

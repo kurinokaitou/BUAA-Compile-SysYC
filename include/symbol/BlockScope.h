@@ -29,6 +29,8 @@ public:
     void setFuncItem(FuncItem* func) { mp_funcItem = func; }
     FuncItem* getFuncItem() const { return mp_funcItem; }
     std::size_t countSymbol() { return m_symbols.size(); }
+    void markHasReturn() { m_hasReturn = true; }
+    void checkFuncScopeReturn(int lineNum) const;
     void dumpScope(std::ostream& os);
 
 private:
@@ -41,6 +43,7 @@ private:
     std::vector<std::unique_ptr<SymbolTableItem>> m_funcs;
     mutable std::vector<SymbolTableItem*> m_paramItems;
     FuncItem* mp_funcItem{nullptr};
+    bool m_hasReturn{false};
 };
 
 #endif
