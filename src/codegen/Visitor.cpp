@@ -558,6 +558,11 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
         // TODO: lVal int stmt
+        // auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        // std::string identName = leafNode->getToken().literal;
+        // auto finded = m_table.findItem(identName);
+        // if (finded) {
+        // }
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
     } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
     }

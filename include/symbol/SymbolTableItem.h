@@ -11,6 +11,7 @@ enum class ValueTypeEnum : unsigned int {
     ARRAY_TYPE,
     VOID_TYPE,
 };
+class ValueType;
 
 class SymbolTableItem {
 public:
@@ -26,7 +27,7 @@ public:
     void setParam() { m_isParam = true; }
     void setLevel(int level) { m_level = level; }
     int getLevel() const { return m_level; }
-
+    virtual ValueType* getType() = 0;
     BlockScopeHandle getParentHandle() const { return m_scopeHandle; }
 
 private:
@@ -40,10 +41,13 @@ private:
 template <typename Type>
 class TypedItem : public SymbolTableItem {
 public:
-    explicit TypedItem(const std::string& name, BlockScopeHandle handle) :
-        SymbolTableItem(name, handle) {}
+    explicit TypedItem(const std::string& name, BlockScopeHandle handle, std::unique_ptr<ValueType>&& type) :
+        SymbolTableItem(name, handle), m_type(std::move(type)) {}
     virtual ~TypedItem() {}
-    virtual Type& getType() = 0;
+    virtual ValueType* getType() { return m_type.get(); };
+
+protected:
+    std::unique_ptr<ValueType> m_type;
 };
 
 template <typename Type>
@@ -55,12 +59,12 @@ public:
         typename Type::InternalItem varItem;
     };
     explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar), m_varItem(data.varItem){};
-    virtual Type& getType() override { return m_dataType; }
-    virtual size_t getSize() override { return m_dataType.valueSize(m_var); };
+        TypedItem<Type>(name, data.parentHandle, std::unique_ptr<Type>(new Type())), m_var(data.initVar), m_varItem(data.varItem){};
+    virtual size_t getSize() override { return TypedItem<Type>::m_type->valueSize(); };
     virtual ~VarItem() {}
     virtual void dumpSymbolItem(std::ostream& os) override {
-        os << m_dataType << " ";
+        TypedItem<Type>::m_type->dumpType(os);
+        os << " ";
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_varItem;
     }
@@ -69,7 +73,6 @@ public:
 private:
     typename Type::InternalType m_var;
     typename Type::InternalItem m_varItem;
-    Type m_dataType;
 };
 
 template <typename Type>
@@ -80,22 +83,19 @@ public:
         typename Type::InternalType constVar;
     };
     explicit ConstVarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_constVar(data.constVar){};
-    virtual Type& getType() override { return m_dataType; }
-    virtual size_t getSize() override {
-        return m_dataType.valueSize(m_constVar);
-    };
+        TypedItem<Type>(name, data.parentHandle, std::unique_ptr<Type>(new Type())), m_constVar(data.constVar){};
+    virtual size_t getSize() override { return TypedItem<Type>::m_type->valueSize(); };
     virtual ~ConstVarItem() {}
     typename Type::InternalType getConstVar() const { return m_constVar; }
     virtual void dumpSymbolItem(std::ostream& os) override {
-        os << m_dataType << " ";
+        TypedItem<Type>::m_type->dumpType(os);
+        os << " ";
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_constVar;
     }
 
 private:
     typename Type::InternalType m_constVar;
-    Type m_dataType;
 };
 
 class IntType;
@@ -123,7 +123,7 @@ public:
         }
         os << ")";
     }
-
+    virtual ValueType* getType() override { return nullptr; };
     void setParams(std::vector<SymbolTableItem*>&& params) {
         m_params.assign(params.begin(), params.end());
     }

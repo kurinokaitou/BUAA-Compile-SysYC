@@ -8,34 +8,33 @@ static const size_t VOID_SIZE = 0;
 class ValueType {
 public:
     using InteralType = int;
-    size_t valueSize(InteralType value) const { return 0; };
+    virtual size_t valueSize() const { return 0; };
     virtual ValueTypeEnum getValueTypeEnum() = 0;
+    virtual void dumpType(std::ostream& os) const = 0;
 };
 
 class IntType : public ValueType {
 public:
     using InternalType = int;
     using InternalItem = VarItem<IntType>*;
-    size_t valueSize(InternalType value) const { return INT_SIZE; }
+    virtual size_t valueSize() const override { return INT_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
     }
-    friend std::ostream& operator<<(std::ostream& os, const IntType& type) {
+    virtual void dumpType(std::ostream& os) const override {
         os << "int";
-        return os;
     }
 };
 
 class VoidType : public ValueType {
 public:
-    using InternalType = unsigned int; // 无法存储一个void类型的成员变量，因此用uint区分
-    size_t valueSize(InternalType) const { return VOID_SIZE; }
+    using InternalType = int;
+    virtual size_t valueSize() const override { return VOID_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
     }
-    friend std::ostream& operator<<(std::ostream& os, const VoidType& type) {
+    virtual void dumpType(std::ostream& os) const override {
         os << "void";
-        return os;
     }
 };
 
@@ -110,18 +109,16 @@ class ArrayType : public ValueType {
 public:
     using InternalType = MultiFlatArray<typename Type::InternalType>;
     using InternalItem = MultiFlatArray<VarItem<Type>*>;
-    size_t valueSize(InternalType value) const {
-        typename Type::InteralType dummy;
-        size_t count = m_basicType.valueSize(dummy);
-        return value.spaceSize(count);
+    virtual size_t valueSize() const override {
+        return m_basicType.valueSize();
     }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::ARRAY_TYPE;
     }
-
-    friend std::ostream& operator<<(std::ostream& os, const ArrayType& type) {
-        os << "array<" << type.m_basicType << ">";
-        return os;
+    virtual void dumpType(std::ostream& os) const override {
+        os << "array<";
+        m_basicType.dumpType(os);
+        os << ">";
     }
 
 private:
