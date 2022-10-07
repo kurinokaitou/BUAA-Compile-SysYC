@@ -329,26 +329,26 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
     }
     std::pair<SymbolTableItem*, bool> res(nullptr, true);
     if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
+        MultiFlatArray<int> valueArray;
+        int valueVar = 0;
         if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
             node->nextChild();
             if (dims.size() == 0) {
                 auto value = initValGlobal<IntType>(*node->getChildIter(), dims, 0);
-                res = m_table.insertItem<VarItem<IntType>>(identName,
-                                                           {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                            .initVar = value});
             } else {
                 auto value = initValGlobal<ArrayType<IntType>>(*node->getChildIter(), dims, 0);
-                res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                                  .initVar = value});
-            }
-        } else {
-            if (dims.size() == 0) {
-                res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0});
-            } else {
-                res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                                  .initVar = ArrayType<IntType>::InternalType({.values = {}, .dimensions = dims})});
             }
         }
+        if (dims.size() == 0) {
+            res = m_table.insertItem<VarItem<IntType>>(identName,
+                                                       {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                        .initVar = valueVar});
+        } else {
+            res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName,
+                                                                  {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                   .initVar = valueArray});
+        }
+
     } else {
         // TODO: 局部变量的初始化处理
     }

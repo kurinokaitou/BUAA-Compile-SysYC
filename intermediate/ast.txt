@@ -1,88 +1,7 @@
 <CompUnit>
+CONSTTK const
 INTTK int
-IDENFR a
-ASSIGN =
-INTCON 2
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR b
-LBRACK [
-INTCON 2
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-LBRACK [
-INTCON 2
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-ASSIGN =
-LBRACE {
-LBRACE {
-INTCON 1
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-COMMA ,
-INTCON 2
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-RBRACE }
-<InitVal>
-COMMA ,
-LBRACE {
-INTCON 3
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-COMMA ,
-INTCON 4
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-RBRACE }
-<InitVal>
-RBRACE }
-<InitVal>
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR a
+IDENFR const1
 ASSIGN =
 INTCON 1
 <Number>
@@ -90,42 +9,91 @@ INTCON 1
 <UnaryExp>
 <MulExp>
 <AddExp>
-<Exp>
-<InitVal>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+COMMA ,
+IDENFR const2
+ASSIGN =
+MINU -
+<UnaryOp>
+INTCON 100
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+SEMICN ;
+<ConstDecl>
+INTTK int
+IDENFR change1
 <VarDef>
 SEMICN ;
 <VarDecl>
-VOIDTK void
+INTTK int
 <FuncType>
-IDENFR func
+IDENFR gets1
 LPARENT (
 INTTK int
-IDENFR a
-LBRACK [
-RBRACK ]
+IDENFR var1
 <FuncFParam>
 COMMA ,
 INTTK int
-IDENFR b
+IDENFR var2
 <FuncFParam>
 <FuncFParams>
 RPARENT )
   LBRACE {
-    INTTK int
-    IDENFR c
+    IDENFR const1
+    <LVal>
     ASSIGN =
-    INTCON 1
+    INTCON 999
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
     SEMICN ;
-    <VarDecl>
+    <Stmt>
+    IDENFR change1
+    <LVal>
+    ASSIGN =
+    IDENFR var1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR var2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+SEMICN ;
+    <Stmt>
     RETURNTK return
+    LPARENT (
+    IDENFR change1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RPARENT )
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
     SEMICN ;
     <Stmt>
   RBRACE }
@@ -136,45 +104,21 @@ MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
-    INTTK int
-    IDENFR a
+    IDENFR change1
+    <LVal>
     ASSIGN =
-    INTCON 2
+    INTCON 10
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
     SEMICN ;
-    <VarDecl>
-    INTTK int
-    IDENFR b
-    ASSIGN =
-    INTCON 3
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
+    <Stmt>
     PRINTFTK printf
     LPARENT (
-    STRCON "%d\n"
-    COMMA ,
-    IDENFR a
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
+    STRCON "Hello World$"
     RPARENT )
     SEMICN ;
     <Stmt>

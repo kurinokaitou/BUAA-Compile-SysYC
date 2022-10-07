@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Error.h>
 
-#ifndef DEBUG
+#ifndef NDEBUG
 #define DBG_ERROR(...) throw std::runtime_error(__VA_ARGS__);
 #define DBG_LOG(...) Logger::logDebug(__VA_ARGS__);
 #else
