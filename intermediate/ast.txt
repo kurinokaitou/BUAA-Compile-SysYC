@@ -34,6 +34,11 @@ IDENFR change1
 <VarDef>
 SEMICN ;
 <VarDecl>
+CHARTK char
+IDENFR char1
+<VarDef>
+SEMICN ;
+<VarDecl>
 INTTK int
 <FuncType>
 IDENFR gets1

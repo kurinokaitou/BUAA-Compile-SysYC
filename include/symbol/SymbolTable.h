@@ -3,6 +3,7 @@
 #include "BlockScope.h"
 #include "SymbolTableItem.h"
 #define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle()})
+#define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle()})
 class SymbolTable {
 public:
     SymbolTable();

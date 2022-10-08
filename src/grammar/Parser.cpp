@@ -214,7 +214,12 @@ std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
 std::shared_ptr<VNodeBase> Parser::bType(int level) {
     auto btypeNode = std::make_shared<VNodeBranch>(VNodeEnum::BTYPE);
     btypeNode->setLevel(level);
-    btypeNode->addChild(expect(SymbolEnum::INTTK, level));
+    if ((m_currToken + 1)->symbol == SymbolEnum::INTTK) {
+        btypeNode->addChild(expect(SymbolEnum::INTTK, level));
+    } else {
+        btypeNode->addChild(expect(SymbolEnum::CHARTK, level));
+    }
+
     return btypeNode;
 }
 
@@ -349,7 +354,9 @@ std::shared_ptr<VNodeBase> Parser::block(int level) {
 std::shared_ptr<VNodeBase> Parser::blockItem(int level) {
     auto blockItemNode = std::make_shared<VNodeBranch>(VNodeEnum::BLOCKITEM);
     blockItemNode->setLevel(level);
-    if ((m_currToken + 1)->symbol == SymbolEnum::CONSTTK || (m_currToken + 1)->symbol == SymbolEnum::INTTK) {
+    if ((m_currToken + 1)->symbol == SymbolEnum::CONSTTK
+        || (m_currToken + 1)->symbol == SymbolEnum::INTTK
+        || (m_currToken + 1)->symbol == SymbolEnum::CHARTK) {
         blockItemNode->addChild(decl(level));
     } else {
         blockItemNode->addChild(stmt(level));
@@ -681,7 +688,7 @@ std::shared_ptr<VNodeBase> Parser::mainFuncDef(int level) {
 std::shared_ptr<VNodeBase> Parser::funcType(int level) {
     auto funcTypeNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCTYPE);
     funcTypeNode->setLevel(level);
-    funcTypeNode->addChild(expect({SymbolEnum::VOIDTK, SymbolEnum::INTTK}, level));
+    funcTypeNode->addChild(expect({SymbolEnum::VOIDTK, SymbolEnum::INTTK, SymbolEnum::CHARTK}, level));
     return funcTypeNode;
 }
 

@@ -12,6 +12,9 @@ SEMICN ;
 INTTK int
 IDENFR change1
 SEMICN ;
+CHARTK char
+IDENFR char1
+SEMICN ;
 INTTK int
 IDENFR gets1
 LPARENT (

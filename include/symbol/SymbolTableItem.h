@@ -8,6 +8,7 @@
 
 enum class ValueTypeEnum : unsigned int {
     INT_TYPE = 0,
+    CHAR_TYPE,
     ARRAY_TYPE,
     VOID_TYPE,
 };

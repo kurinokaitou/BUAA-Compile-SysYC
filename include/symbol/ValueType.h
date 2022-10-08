@@ -4,12 +4,14 @@
 #include "SymbolTableItem.h"
 
 static const size_t INT_SIZE = 4;
+static const size_t CHAR_SIZE = 1;
 static const size_t VOID_SIZE = 0;
 class ValueType {
 public:
     using InteralType = int;
     virtual size_t valueSize() const { return 0; };
     virtual ValueTypeEnum getValueTypeEnum() = 0;
+    virtual bool isArray() = 0;
     virtual void dumpType(std::ostream& os) const = 0;
 };
 
@@ -21,8 +23,23 @@ public:
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
     }
+    virtual bool isArray() override { return false; }
     virtual void dumpType(std::ostream& os) const override {
         os << "int";
+    }
+};
+
+class CharType : public ValueType {
+public:
+    using InternalType = char;
+    using InternalItem = VarItem<CharType>*;
+    virtual size_t valueSize() const override { return CHAR_SIZE; }
+    virtual ValueTypeEnum getValueTypeEnum() override {
+        return ValueTypeEnum::CHAR_TYPE;
+    }
+    virtual bool isArray() override { return false; }
+    virtual void dumpType(std::ostream& os) const override {
+        os << "char";
     }
 };
 
@@ -33,6 +50,7 @@ public:
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;
     }
+    virtual bool isArray() override { return false; }
     virtual void dumpType(std::ostream& os) const override {
         os << "void";
     }
@@ -117,8 +135,9 @@ public:
         return m_basicType.valueSize();
     }
     virtual ValueTypeEnum getValueTypeEnum() override {
-        return ValueTypeEnum::ARRAY_TYPE;
+        return m_basicType.getValueTypeEnum();
     }
+    virtual bool isArray() override { return true; }
     virtual void dumpType(std::ostream& os) const override {
         os << "array<";
         m_basicType.dumpType(os);

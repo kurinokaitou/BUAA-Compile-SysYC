@@ -6,9 +6,10 @@
 #include <map>
 enum class SymbolEnum : int {
     UNKNOWN = 0,
-    IDENFR, // 标识符
-    INTCON, // 无符号整数
-    STRCON, // 常量字符串
+    IDENFR,  // 标识符
+    INTCON,  // 无符号整数
+    CHARCON, // 字符
+    STRCON,  // 常量字符串
     // 分界符
     SEMICN,  // ;
     COMMA,   // ,
@@ -38,6 +39,7 @@ enum class SymbolEnum : int {
     CONSTTK,    // const
     MAINTK,     // main
     INTTK,      // int
+    CHARTK,     // char
     VOIDTK,     // void
     RETURNTK,   // return
     IFTK,       // if
@@ -53,6 +55,7 @@ static const std::vector<std::string> s_symbolText{
     "UNKNOWN",
     "IDENFR",
     "INTCON",
+    "CHARCON",
     "STRCON",
     "SEMICN",
     "COMMA",
@@ -81,6 +84,7 @@ static const std::vector<std::string> s_symbolText{
     "CONSTTK",
     "MAINTK",
     "INTTK",
+    "CHARTK",
     "VOIDTK",
     "RETURNTK",
     "IFTK",

@@ -182,6 +182,7 @@ SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) const {
         "const",
         "main",
         "int",
+        "char",
         "void",
         "return",
         "if",
