@@ -3,6 +3,6 @@ int main()
 int const1 1
 int const2 -100
 int change1 0
-char char1 0
+char char1 c
 int var1 0
 int var2 0

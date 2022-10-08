@@ -168,6 +168,12 @@ std::vector<Token>& Tokenizer::tokenize() {
         // 处理字面量字符串
         else if (m_currChar == '"') {
             m_symbol = readString();
+        } else if (m_currChar == '\'') {
+            extractChar();
+            std::string charNum = std::to_string(m_currChar);
+            m_tokenValue = std::stoi(charNum);
+            m_symbol = SymbolEnum::INTCON;
+            extractChar();
         }
         if (m_symbol != SymbolEnum::COMMENT) {
             m_currToken = makeToken(m_currLine, m_symbol, m_tokenStr, m_tokenValue);
