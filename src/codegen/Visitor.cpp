@@ -209,6 +209,7 @@ std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> no
     FuncItem* func = m_table.findFunc(funcName);
     auto& formalParams = func->getParams();
     if (formalParams.size() == exps.size()) {
+        bool match = true;
         for (size_t i = 0; i < formalParams.size(); i++) {
             auto type = formalParams[i]->getType()->getValueTypeEnum();
             auto isArray = formalParams[i]->getType()->isArray();
@@ -221,8 +222,11 @@ std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> no
             if (ret) {
                 realParams.push_back(ret);
             } else {
-                Logger::logError(ErrorType::PARAMS_TYPE_NOT_MATCH, lineNum);
+                match = false;
             }
+        }
+        if (!match) {
+            Logger::logError(ErrorType::PARAMS_TYPE_NOT_MATCH, lineNum);
         }
     } else {
         Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, std::to_string(exps.size()), std::to_string(formalParams.size()));
@@ -486,7 +490,7 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
         } else {
             Logger::logError("Use dimension as negative size!");
         }
-        node->nextChild(3); // jump '[dim]'
+        if (!node->nextChild(3)) break; // jump '[dim]'
     }
     node->nextChild(); // jump '='
     std::pair<SymbolTableItem*, bool> res;
@@ -519,7 +523,7 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         } else {
             Logger::logError("Use dimension as negative size!");
         }
-        node->nextChild(3); // jump '[dim]'
+        if (!node->nextChild(3, false)) break; // jump '[dim]'
     }
     std::pair<SymbolTableItem*, bool> res(nullptr, true);
     if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
@@ -665,7 +669,7 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
                     } else {
                         Logger::logError("Use dimension as negative size!");
                     }
-                    if (!node->nextChild(3)) break; // jump '[dim]'
+                    if (!node->nextChild(3, false)) break; // jump '[dim]'
                 }
             }
         }
@@ -684,7 +688,7 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
             ret = res.first;
             valid = res.second;
         }
-    } else if (bType(*node->getChildIter()) == ValueTypeEnum::CHAR_TYPE) {
+    } else if (type == ValueTypeEnum::CHAR_TYPE) {
         if (dims.size() == 0) {
             auto res = m_table.insertItem<VarItem<CharType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
             ret = res.first;
@@ -849,10 +853,10 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
             SymbolTableItem* lVal = makeTempItem(type);
 
             std::vector<VarItem<IntType>*> pos;
-            node->nextChild(); // jump IDENT
+            node->nextChild(1, false); // jump IDENT
             while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
                 pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
-                if (!node->nextChild(3)) break; // jump '[pos]'
+                if (!node->nextChild(3, false)) break; // jump '[pos]'
             }
             if (pos.size() != targetDims.size()) { // 如果维数不匹配则不是单个的数组元素，不能成为lVal
                 Logger::logError("Can not convert a array to variable!");
@@ -881,7 +885,7 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
             SymbolTableItem* ret = nullptr;
             // 实际读取到的右值
             std::vector<VarItem<IntType>*> pos;
-            node->nextChild(); // jump IDENT
+            node->nextChild(1, false); // jump IDENT
             while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
                 pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
                 if (!node->nextChild(3, false)) break; // jump '[pos]'

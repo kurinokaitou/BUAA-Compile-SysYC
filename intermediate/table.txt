@@ -1,7 +1,8 @@
-int gets1(int var1 0, int var2 0)
+int gets1(int var1 0, char var2 0)
 int main()
 int const1 1
 int const2 -100
-int change1 0
+array<int> change1  
+char char1 0
 int var1 0
-int var2 0
+char var2 0

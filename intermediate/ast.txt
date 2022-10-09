@@ -31,6 +31,29 @@ SEMICN ;
 <ConstDecl>
 INTTK int
 IDENFR change1
+LBRACK [
+INTCON 5
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+<VarDef>
+SEMICN ;
+<VarDecl>
+CHARTK char
+IDENFR char1
+ASSIGN =
+INTCON 
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
 <VarDef>
 SEMICN ;
 <VarDecl>
@@ -42,7 +65,7 @@ INTTK int
 IDENFR var1
 <FuncFParam>
 COMMA ,
-INTTK int
+CHARTK char
 IDENFR var2
 <FuncFParam>
 <FuncFParams>
@@ -77,7 +100,7 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-SEMICN ;
+    SEMICN ;
     <Stmt>
     RETURNTK return
     LPARENT (
@@ -110,6 +133,31 @@ RPARENT )
     INTCON 10
     <Number>
     <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR gets1
+    LPARENT (
+    IDENFR const1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    IDENFR char1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
     <UnaryExp>
     <MulExp>
     <AddExp>
