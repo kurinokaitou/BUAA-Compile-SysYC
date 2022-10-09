@@ -736,6 +736,7 @@ std::shared_ptr<VNodeBase> Parser::funcFParam(int level) {
 std::shared_ptr<VNodeBase> Parser::funcRParams(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto funcRParamsNode = std::make_shared<VNodeBranch>(VNodeEnum::FUNCRPARAMS);
+
     funcRParamsNode->setLevel(level);
     children.push_back(exp(level));
     while ((m_currToken + 1)->symbol == SymbolEnum::COMMA) {

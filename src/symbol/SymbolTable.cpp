@@ -52,7 +52,7 @@ SymbolTableItem* SymbolTable::findItem(const std::string& name) {
     return getCurrentScope().findItem(name);
 }
 
-SymbolTableItem* SymbolTable::findFunc(const std::string& name) {
+FuncItem* SymbolTable::findFunc(const std::string& name) {
     return getGlobalScope().findFunc(name);
 }
 

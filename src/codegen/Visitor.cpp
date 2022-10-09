@@ -1,9 +1,13 @@
 #include <codegen/Visitor.h>
 
-#ifndef DEBUG
-#define DBG_PROBE_BRANCH(name, node) auto name = (node)->getNodeEnum()
-#define DBG_PROBE_LEAF(name, node) auto name = (node)->getSymbol()
+#ifndef NDEBUG
+#define DBG_PROBE_BRANCH(name) auto name = (*node->getChildIter())->getNodeEnum()
+#define DBG_PROBE_LEAF(name) auto name = (*node->getChildIter())->getSymbol()
 #define DBG_PROBE_VAL(val, expr) auto val = expr
+#else
+#define DBG_PROBE_BRANCH(name, node)
+#define DBG_PROBE_LEAF(name, node)
+#define DBG_PROBE_VAL(val, expr)
 #endif
 
 Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table) :
@@ -50,7 +54,6 @@ void Visitor::compUnit(std::shared_ptr<VNodeBase> node) {
 }
 
 void Visitor::decl(std::shared_ptr<VNodeBase> node) {
-    DBG_PROBE_BRANCH(type, *node->getChildIter());
     if (expect(*node->getChildIter(), VNodeEnum::CONSTDECL)) {
         constDecl(*node->getChildIter());
     } else {
@@ -107,10 +110,180 @@ template <typename Type>
 typename Type::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
     return calConstExp<Type>(*node->getChildIter());
 }
-
+template <typename Type>
 SymbolTableItem* Visitor::exp(std::shared_ptr<VNodeBase> node) {
-    // TODO: 实现exp递归下降
-    return nullptr;
+    return addExp<Type>(*node->getChildIter());
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::addExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::MULEXP)) {
+        return mulExp<Type>(*node->getChildIter());
+    } else {
+        auto add = addExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of plus or minus
+        node->nextChild();
+        auto mul = mulExp<Type>(*node->getChildIter());
+        auto ret = MAKE_VAR();
+        if (op == SymbolEnum::PLUS) {
+            // 生成加法的代码
+        } else if (op == SymbolEnum::MINU) {
+            // 生成减法的代码
+        } else {
+            DBG_ERROR("Add expression only accept '+' & '-'!");
+            return nullptr;
+        }
+        return ret;
+    }
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::mulExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::UNARYEXP)) {
+        return unaryExp<Type>(*node->getChildIter());
+    } else {
+        auto mul = mulExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of plus or minus
+        node->nextChild();
+        auto unary = unaryExp<Type>(*node->getChildIter());
+        auto ret = MAKE_VAR();
+        if (op == SymbolEnum::MULT) {
+            // 生成乘法的代码
+        } else if (op == SymbolEnum::DIV) {
+            // 生成除法的代码
+        } else if (op == SymbolEnum::MOD) {
+            // 生成取余的代码
+        } else {
+            DBG_ERROR("Mul expression only accept '*' & '/' & '%'!");
+            return nullptr;
+        }
+        return ret;
+    }
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::PRIMARYEXP)) {
+        return primaryExp<Type>(*node->getChildIter());
+    } else if (expect(*node->getChildIter(), SymbolEnum::IDENFR)) {
+        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+        std::string identName = leafNode->getToken().literal;
+        int lineNum = leafNode->getToken().lineNum;
+        node->nextChild(2); // jump IDENT & '('
+        std::vector<SymbolTableItem*> realParams;
+        if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
+            realParams = funcRParams(*node->getChildIter(), identName, lineNum); // 传入identName查找对应函数
+        }
+        auto ret = MAKE_VAR();
+        // 生成函数调用，复制参数的代码，ret为返回值
+        return ret;
+    } else if (expect(*node->getChildIter(), VNodeEnum::UNARYOP)) {
+        auto op = unaryOp(*node->getChildIter());
+        node->nextChild();
+        auto ret = unaryExp<Type>(*node->getChildIter());
+        // 生成处理'-'和'!'的代码
+        if (op == SymbolEnum::MINU) {
+        } else if (op == SymbolEnum::NOT) {
+        }
+        return ret;
+    } else {
+        DBG_ERROR("Unary exppression can not handle input!");
+        return nullptr;
+    }
+}
+
+SymbolEnum Visitor::unaryOp(std::shared_ptr<VNodeBase> node) {
+    return (*node->getChildIter())->getSymbol();
+}
+
+std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> node, const std::string& funcName, int lineNum) {
+    std::vector<SymbolTableItem*> realParams;
+    std::vector<std::shared_ptr<VNodeBase>> exps;
+    for (auto& child : node->getChildren()) {
+        if (expect(child, VNodeEnum::EXP)) {
+            exps.push_back(child);
+        }
+    }
+    FuncItem* func = m_table.findFunc(funcName);
+    auto& formalParams = func->getParams();
+    if (formalParams.size() == exps.size()) {
+        for (size_t i = 0; i < formalParams.size(); i++) {
+            auto type = formalParams[i]->getType()->getValueTypeEnum();
+            auto isArray = formalParams[i]->getType()->isArray();
+            SymbolTableItem* ret = nullptr;
+            if (type == ValueTypeEnum::INT_TYPE) {
+                ret = funcRParam<IntType>(exps[i], isArray);
+            } else {
+                ret = funcRParam<CharType>(exps[i], isArray);
+            }
+            if (ret) {
+                realParams.push_back(ret);
+            } else {
+                Logger::logError(ErrorType::PARAMS_TYPE_NOT_MATCH, lineNum);
+            }
+        }
+    } else {
+        Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, std::to_string(exps.size()), std::to_string(formalParams.size()));
+    }
+
+    return realParams;
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::funcRParam(std::shared_ptr<VNodeBase> node, bool isArray) {
+    if (isArray) {
+        return exp<ArrayType<Type>>(node);
+    } else {
+        return exp<Type>(node);
+    }
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::primaryExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), SymbolEnum::LPARENT)) {
+        node->nextChild();
+        return exp<Type>(*node->getChildIter());
+    } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
+        // 检查rVal返回的值类型是否与指定Type相同，如果不同给出警告并转换，不可转换则报错;
+        auto rawValue = rVal(*node->getChildIter());
+        SymbolTableItem* ret = nullptr;
+        auto varValue = dynamic_cast<VarItem<Type>*>(rawValue);           // 直接转换，只有类型完全相同才能转化
+        auto constVarValue = dynamic_cast<ConstVarItem<Type>*>(rawValue); // 直接转换，只有类型完全相同才能转化
+        if (varValue) {
+            ret = varValue;
+        }
+        if (constVarValue) {
+            ret = constVarValue;
+        }
+        return ret;
+    } else {
+        return number<Type>(*node->getChildIter());
+    }
+}
+
+template <typename Type>
+VarItem<Type>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+    return MAKE_VAR();
+}
+
+template <>
+VarItem<IntType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    auto value = static_cast<typename IntType::InternalType>(leafNode->getToken().value);
+    auto number = m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value});
+    // 生成代码
+    return number;
+}
+
+template <>
+VarItem<CharType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    auto value = static_cast<typename CharType::InternalType>(leafNode->getToken().value);
+    auto number = m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value});
+    // 生成代码
+    return number;
 }
 
 template <typename Type>
@@ -260,7 +433,7 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
 
 template <typename Type>
 typename Type::InternalItem Visitor::initVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    return dynamic_cast<typename Type::InternalItem>(exp(*node->getChildIter()));
+    return exp<Type>(*node->getChildIter());
 };
 
 template <typename Type>
@@ -371,8 +544,8 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         }
 
     } else {
-        MultiFlatArray<VarItem<Type>*> itemArray;
-        VarItem<Type>* item;
+        MultiFlatArray<SymbolTableItem*> itemArray;
+        SymbolTableItem* item;
         if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
             node->nextChild();
             if (dims.size() == 0) {
@@ -475,31 +648,31 @@ std::vector<SymbolTableItem*> Visitor::funcFParams(std::shared_ptr<VNodeBase> no
 }
 
 SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
-    if (bType(*node->getChildIter()) == ValueTypeEnum::INT_TYPE) {
-        node->nextChild(); // jump 'int'
-        auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        std::string identName = leafNode->getToken().literal;
-        int lineNum = leafNode->getToken().lineNum;
-        std::vector<size_t> dims;
-        if (node->nextChild(1, false)) {
-            if (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(1), SymbolEnum::RBRACK)) {
-                dims.push_back(0);
-                if (node->nextChild(2)) {
-                    while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
-                        int dim = static_cast<size_t>(constExp<IntType>(*node->getChildIter(1)));
-                        if (dim >= 0) {
-                            dims.push_back(static_cast<size_t>(dim));
-                        } else {
-                            Logger::logError("Use dimension as negative size!");
-                        }
-                        if (!node->nextChild(3)) break; // jump '[dim]'
+    auto type = bType(*node->getChildIter());
+    node->nextChild(); // jump 'int'
+    auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    std::string identName = leafNode->getToken().literal;
+    int lineNum = leafNode->getToken().lineNum;
+    std::vector<size_t> dims;
+    if (node->nextChild(1, false)) {
+        if (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(1), SymbolEnum::RBRACK)) {
+            dims.push_back(0);
+            if (node->nextChild(2, false)) {
+                while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+                    int dim = constExp<IntType>(*node->getChildIter(1));
+                    if (dim >= 0) {
+                        dims.push_back(static_cast<size_t>(dim));
+                    } else {
+                        Logger::logError("Use dimension as negative size!");
                     }
+                    if (!node->nextChild(3)) break; // jump '[dim]'
                 }
             }
         }
-
-        SymbolTableItem* ret = nullptr;
-        bool valid = true;
+    }
+    SymbolTableItem* ret = nullptr;
+    bool valid = true;
+    if (type == ValueTypeEnum::INT_TYPE) {
         if (dims.size() == 0) {
             auto res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
             ret = res.first;
@@ -511,12 +684,24 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
             ret = res.first;
             valid = res.second;
         }
-        if (!valid) {
-            Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+    } else if (bType(*node->getChildIter()) == ValueTypeEnum::CHAR_TYPE) {
+        if (dims.size() == 0) {
+            auto res = m_table.insertItem<VarItem<CharType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
+            ret = res.first;
+            valid = res.second;
+        } else {
+            auto res = m_table.insertItem<VarItem<ArrayType<CharType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
+                                                                                    .initVar = {{.values = {}, .dimensions = dims}},
+                                                                                    .varItem = {{.values = {}, .dimensions = dims}}});
+            ret = res.first;
+            valid = res.second;
         }
-        ret->setParam();
-        return ret;
     }
+    if (!valid) {
+        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+    }
+    ret->setParam();
+    return ret;
     return nullptr;
 }
 
@@ -585,8 +770,10 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
             if (type == ValueTypeEnum::VOID_TYPE) {
                 Logger::logError(ErrorType::VOID_FUNC_HAVE_RETURNED, lineNum, funcName);
+            } else if (type == ValueTypeEnum::INT_TYPE) {
+                exp<IntType>(*node->getChildIter());
             } else {
-                exp(*node->getChildIter());
+                exp<CharType>(*node->getChildIter());
             }
             node->nextChild(); // jump EXP
         } else {
@@ -609,30 +796,37 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         }
         std::vector<SymbolTableItem*> items;
         while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
-            node->nextChild();                           // jump ','
-            items.push_back(exp(*node->getChildIter())); // Char 是不能被%d打印的
-            node->nextChild();                           // jump EXP
+            node->nextChild();                                    // jump ','
+            items.push_back(exp<IntType>(*node->getChildIter())); // Char 是不能被%d打印的, 如果需要%c则按照顺序进行模板实例化即可
+            node->nextChild();                                    // jump EXP
         }
         if (items.size() != count) {
             Logger::logError(ErrorType::PRINTF_UMATCHED, lineNum, std::to_string(items.size()), std::to_string(count));
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
         auto lValItem = lVal(*node->getChildIter());
-        node->nextChild(2); // jump lVal & =
-        SymbolTableItem* ret = nullptr;
-        if (expect(*node->getChildIter(), SymbolEnum::GETINTTK)) {
-            ret = MAKE_INT_VAR();
-            // TODO: 生成将此通过getint获取值的代码
-        } else {
-            ret = exp(*node->getChildIter());
+        if (lValItem) {
+            node->nextChild(2); // jump lVal & =
+            auto type = lValItem->getType()->getValueTypeEnum();
+            SymbolTableItem* ret = nullptr;
+            if (expect(*node->getChildIter(), SymbolEnum::GETINTTK)) {
+                ret = MAKE_INT_VAR();
+                // TODO: 生成将此通过getint获取值的代码
+            } else {
+                if (type == ValueTypeEnum::INT_TYPE) {
+                    ret = exp<IntType>(*node->getChildIter());
+                } else {
+                    ret = exp<CharType>(*node->getChildIter());
+                }
+            }
+            // TODO: 生成将暂存值存入左值的代码
         }
-        // TODO: 生成将暂存值存入左值的代码
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
         m_table.pushScope(BlockScopeType::NORMAL);
         block(*node->getChildIter());
         m_table.popScope();
     } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
-        exp(*node->getChildIter());
+        exp<IntType>(*node->getChildIter());
     } else {
         Logger::logWarning("Empty statement or double semicolon.");
     }
@@ -650,23 +844,14 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
         if (!finded->getType()->isArray()) {
             return finded;
         } else {
-            std::vector<size_t> targetDims;
-            SymbolTableItem* lVal = nullptr;
-            if (finded->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
-                auto lValArray = dynamic_cast<VarItem<ArrayType<IntType>>*>(finded);
-                targetDims = lValArray->getVarItem().getDimensions();
-                lVal = MAKE_INT_VAR();
-                //TODO: 代码生成时使用pos中的位置与实际的数组
-            } else {
-                auto lValArray = dynamic_cast<VarItem<ArrayType<CharType>>*>(finded);
-                targetDims = lValArray->getVarItem().getDimensions();
-                lVal = MAKE_CHAR_VAR();
-            }
+            auto type = finded->getType()->getValueTypeEnum();
+            std::vector<size_t> targetDims = getArrayItemDimensions(finded, type);
+            SymbolTableItem* lVal = makeTempItem(type);
 
             std::vector<VarItem<IntType>*> pos;
             node->nextChild(); // jump IDENT
             while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
-                pos.push_back(dynamic_cast<VarItem<IntType>*>(exp(*node->getChildIter(1))));
+                pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
                 if (!node->nextChild(3)) break; // jump '[pos]'
             }
             if (pos.size() != targetDims.size()) { // 如果维数不匹配则不是单个的数组元素，不能成为lVal
@@ -681,5 +866,79 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
     }
 }
 
+SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
+    auto identNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter()); // lVal 的第一个子节点ident
+    std::string identName = identNode->getToken().literal;
+    int lineNum = identNode->getToken().lineNum;
+    auto finded = m_table.findItem(identName);
+    if (finded) {
+        if (!finded->getType()->isArray()) {
+            return finded;
+        } else {
+            // 符号表中存储的数组的维数
+            auto type = finded->getType()->getValueTypeEnum();
+            std::vector<size_t> targetDims = getArrayItemDimensions(finded, type);
+            SymbolTableItem* ret = nullptr;
+            // 实际读取到的右值
+            std::vector<VarItem<IntType>*> pos;
+            node->nextChild(); // jump IDENT
+            while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
+                pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
+                if (!node->nextChild(3, false)) break; // jump '[pos]'
+            }
+            int diff = targetDims.size() - pos.size();
+            if (diff > 0) { // 维数不匹配，需要剪裁成部分数组
+                std::vector<size_t> sliceDims(targetDims.begin(), targetDims.begin() + diff);
+                ret = makeTempItem(type, true, std::move(sliceDims));
+                // TODO: 生成sliceArray的代码
+
+            } else if (diff == 0) { // 维数匹配，返回原数组的对应的元素
+                ret = makeTempItem(type);
+                // TODO: 生成返回一个元素的代码
+            } else {
+                Logger::logError("Variable dimension do not match!");
+            }
+            return ret;
+        }
+    } else {
+        Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);
+        return nullptr;
+    }
+}
+
 void Visitor::cond(std::shared_ptr<VNodeBase> node) {
+    lOrExp<IntType>(*node->getChildIter());
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
+    return nullptr;
+}
+
+std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type) {
+    if (item->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
+        auto lValArray = dynamic_cast<VarItem<ArrayType<IntType>>*>(item);
+        return lValArray->getVarItem().getDimensions();
+    } else {
+        auto lValArray = dynamic_cast<VarItem<ArrayType<CharType>>*>(item);
+        return lValArray->getVarItem().getDimensions();
+    }
+}
+
+SymbolTableItem* Visitor::makeTempItem(ValueTypeEnum type, bool isArray, std::vector<size_t>&& dims) {
+    SymbolTableItem* ret = nullptr;
+    if (isArray) {
+        switch (type) {
+        case ValueTypeEnum::INT_TYPE: ret = MAKE_INT_ARRAY(dims); break;
+        case ValueTypeEnum::CHAR_TYPE: ret = MAKE_CHAR_ARRAY(dims); break;
+        case ValueTypeEnum::VOID_TYPE: break;
+        }
+    } else {
+        switch (type) {
+        case ValueTypeEnum::INT_TYPE: ret = MAKE_INT_VAR(); break;
+        case ValueTypeEnum::CHAR_TYPE: ret = MAKE_CHAR_VAR(); break;
+        case ValueTypeEnum::VOID_TYPE: break;
+        }
+    }
+    return ret;
 }

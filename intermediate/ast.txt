@@ -34,21 +34,6 @@ IDENFR change1
 <VarDef>
 SEMICN ;
 <VarDecl>
-CONSTTK const
-CHARTK char
-IDENFR char1
-ASSIGN =
-INTCON 
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-<ConstInitVal>
-<ConstDef>
-SEMICN ;
-<ConstDecl>
 INTTK int
 <FuncType>
 IDENFR gets1
@@ -74,12 +59,6 @@ RPARENT )
     <AddExp>
     <Exp>
     SEMICN ;
-    <Stmt>
-    CONTINUETK continue
-    SEMICN ;
-    <Stmt>
-    BREAKTK break
-SEMICN ;
     <Stmt>
     IDENFR change1
     <LVal>

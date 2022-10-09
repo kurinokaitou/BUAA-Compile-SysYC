@@ -18,7 +18,7 @@ public:
 class IntType : public ValueType {
 public:
     using InternalType = int;
-    using InternalItem = VarItem<IntType>*;
+    using InternalItem = SymbolTableItem*;
     virtual size_t valueSize() const override { return INT_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::INT_TYPE;
@@ -32,7 +32,7 @@ public:
 class CharType : public ValueType {
 public:
     using InternalType = char;
-    using InternalItem = VarItem<CharType>*;
+    using InternalItem = SymbolTableItem*;
     virtual size_t valueSize() const override { return CHAR_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::CHAR_TYPE;
@@ -130,7 +130,7 @@ template <typename Type>
 class ArrayType : public ValueType {
 public:
     using InternalType = MultiFlatArray<typename Type::InternalType>;
-    using InternalItem = MultiFlatArray<VarItem<Type>*>;
+    using InternalItem = MultiFlatArray<SymbolTableItem*>;
     virtual size_t valueSize() const override {
         return m_basicType.valueSize();
     }

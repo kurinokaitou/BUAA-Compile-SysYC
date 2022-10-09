@@ -18,9 +18,9 @@ class BlockScope {
 public:
     explicit BlockScope(SymbolTable& table, BlockScopeType type, int level, BlockScopeHandle parent);
     SymbolTableItem* findItem(const std::string& name);
-    SymbolTableItem* findFunc(const std::string& name);
+    FuncItem* findFunc(const std::string& name);
     std::pair<SymbolTableItem*, bool> insertItem(std::unique_ptr<SymbolTableItem>&& item);
-    std::pair<SymbolTableItem*, bool> insertFunc(std::unique_ptr<SymbolTableItem>&& func);
+    std::pair<FuncItem*, bool> insertFunc(std::unique_ptr<FuncItem>&& func);
     std::vector<SymbolTableItem*>& getParamItems() const;
     int getLevel() const { return m_level; }
     BlockScopeType getType() const { return m_type; }
@@ -40,7 +40,7 @@ private:
     int m_level{0};
     BlockScopeType m_type;
     std::vector<std::unique_ptr<SymbolTableItem>> m_symbols;
-    std::vector<std::unique_ptr<SymbolTableItem>> m_funcs;
+    std::vector<std::unique_ptr<FuncItem>> m_funcs;
     mutable std::vector<SymbolTableItem*> m_paramItems;
     FuncItem* mp_funcItem{nullptr};
     bool m_hasReturn{false};

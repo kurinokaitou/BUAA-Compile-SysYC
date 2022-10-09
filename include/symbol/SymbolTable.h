@@ -2,8 +2,7 @@
 #define SYMBOL_TABLE_H
 #include "BlockScope.h"
 #include "SymbolTableItem.h"
-#define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle()})
-#define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle()})
+
 class SymbolTable {
 public:
     SymbolTable();
@@ -20,7 +19,7 @@ public:
     template <typename ItemType>
     ItemType* makeItem(typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);
-    SymbolTableItem* findFunc(const std::string& name);
+    FuncItem* findFunc(const std::string& name);
     void dumpTable(std::ostream& os);
     void clearSymbolTable();
 
