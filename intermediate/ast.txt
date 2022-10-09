@@ -1,10 +1,24 @@
 <CompUnit>
-VOIDTK void
+INTTK int
 <FuncType>
 IDENFR f1
 LPARENT (
+INTTK int
+IDENFR x
+<FuncFParam>
+<FuncFParams>
 RPARENT )
   LBRACE {
+    RETURNTK return
+    IDENFR x
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
   RBRACE }
   <Block>
 <FuncDef>
@@ -12,8 +26,48 @@ VOIDTK void
 <FuncType>
 IDENFR f2
 LPARENT (
+INTTK int
+IDENFR x
+LBRACK [
+RBRACK ]
+<FuncFParam>
+<FuncFParams>
 RPARENT )
   LBRACE {
+    INTTK int
+    IDENFR a
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    IDENFR f1
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+SEMICN ;
+    <Stmt>
+    RETURNTK return
+    SEMICN ;
+    <Stmt>
   RBRACE }
   <Block>
 <FuncDef>
@@ -22,8 +76,99 @@ MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
-    IDENFR f3
+    INTTK int
+    IDENFR arr
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    IDENFR f2
     LPARENT (
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f2
+    LPARENT (
+    IDENFR arr
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f1
+    LPARENT (
+    IDENFR f2
+    LPARENT (
+    IDENFR arr
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
     RPARENT )
     <UnaryExp>
     <MulExp>

@@ -127,10 +127,9 @@ bool Parser::expectPureExp() {
     m_probingMode = true;
     auto temp = exp(-1);
     if (temp->isCorrect() && m_currToken != iterBefore) {
-        bool correct = (m_currToken + 1)->symbol == SymbolEnum::SEMICN;
         m_currToken = iterBefore;
         m_probingMode = false;
-        return correct;
+        return true;
     } else {
         m_currToken = iterBefore;
         m_probingMode = false;
