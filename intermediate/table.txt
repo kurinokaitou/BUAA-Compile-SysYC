@@ -1,8 +1,3 @@
-int gets1(int var1 0, char var2 0)
+void f1()
+void f2()
 int main()
-int const1 1
-int const2 -100
-array<int> change1  
-char char1 0
-int var1 0
-char var2 0

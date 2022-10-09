@@ -173,8 +173,12 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
         int lineNum = leafNode->getToken().lineNum;
         node->nextChild(2); // jump IDENT & '('
         std::vector<SymbolTableItem*> realParams;
+        FuncItem* func = m_table.findFunc(identName);
+        if (!func) {
+            Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);
+        }
         if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
-            realParams = funcRParams(*node->getChildIter(), identName, lineNum); // 传入identName查找对应函数
+            realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入identName查找对应函数
         }
         auto ret = MAKE_VAR();
         // 生成函数调用，复制参数的代码，ret为返回值
@@ -198,7 +202,7 @@ SymbolEnum Visitor::unaryOp(std::shared_ptr<VNodeBase> node) {
     return (*node->getChildIter())->getSymbol();
 }
 
-std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> node, const std::string& funcName, int lineNum) {
+std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> node, FuncItem* func, int lineNum) {
     std::vector<SymbolTableItem*> realParams;
     std::vector<std::shared_ptr<VNodeBase>> exps;
     for (auto& child : node->getChildren()) {
@@ -206,30 +210,31 @@ std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> no
             exps.push_back(child);
         }
     }
-    FuncItem* func = m_table.findFunc(funcName);
-    auto& formalParams = func->getParams();
-    if (formalParams.size() == exps.size()) {
-        bool match = true;
-        for (size_t i = 0; i < formalParams.size(); i++) {
-            auto type = formalParams[i]->getType()->getValueTypeEnum();
-            auto isArray = formalParams[i]->getType()->isArray();
-            SymbolTableItem* ret = nullptr;
-            if (type == ValueTypeEnum::INT_TYPE) {
-                ret = funcRParam<IntType>(exps[i], isArray);
-            } else {
-                ret = funcRParam<CharType>(exps[i], isArray);
+    if (func) {
+        auto& formalParams = func->getParams();
+        if (formalParams.size() == exps.size()) {
+            bool match = true;
+            for (size_t i = 0; i < formalParams.size(); i++) {
+                auto type = formalParams[i]->getType()->getValueTypeEnum();
+                auto isArray = formalParams[i]->getType()->isArray();
+                SymbolTableItem* ret = nullptr;
+                if (type == ValueTypeEnum::INT_TYPE) {
+                    ret = funcRParam<IntType>(exps[i], isArray);
+                } else {
+                    ret = funcRParam<CharType>(exps[i], isArray);
+                }
+                if (ret) {
+                    realParams.push_back(ret);
+                } else {
+                    match = false;
+                }
             }
-            if (ret) {
-                realParams.push_back(ret);
-            } else {
-                match = false;
+            if (!match) {
+                Logger::logError(ErrorType::PARAMS_TYPE_NOT_MATCH, lineNum);
             }
+        } else {
+            Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, std::to_string(exps.size()), std::to_string(formalParams.size()));
         }
-        if (!match) {
-            Logger::logError(ErrorType::PARAMS_TYPE_NOT_MATCH, lineNum);
-        }
-    } else {
-        Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, std::to_string(exps.size()), std::to_string(formalParams.size()));
     }
 
     return realParams;
@@ -643,7 +648,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
 std::vector<SymbolTableItem*> Visitor::funcFParams(std::shared_ptr<VNodeBase> node) {
     std::vector<SymbolTableItem*> params;
     params.push_back(funcFParam(*node->getChildIter()));
-    node->nextChild();
+    node->nextChild(1, false);
     while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
         node->nextChild(); // jump ','
         params.push_back(funcFParam(*node->getChildIter()));
@@ -716,7 +721,9 @@ void Visitor::block(std::shared_ptr<VNodeBase> node) {
         node->nextChild();
     }
     int lineNum = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter())->getToken().lineNum;
-    m_table.getCurrentScope().checkFuncScopeReturn(lineNum);
+    if (m_table.getCurrentScope().getFuncItem()->getReturnValueType() != ValueTypeEnum::VOID_TYPE) {
+        m_table.getCurrentScope().checkFuncScopeReturn(lineNum);
+    }
     // node->nextChild(); // jump '}'
 }
 

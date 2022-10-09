@@ -1,14 +1,12 @@
-const int const1 = 1, const2 = -100;
-int change1[5];
-char char1 = 'c';
-int gets1(int var1, char var2){
-   const1 = 999;
-   change1 = var1 + var2;
-   return (change1);
+void f1(){
+
 }
-int main(){
-   change1 = 10;
-   gets1(const1, char1);
-   printf("Hello World$");
-   return 0;
+
+void f2(){
+
+}
+
+int main() {
+    f3();
+    return 0;
 }

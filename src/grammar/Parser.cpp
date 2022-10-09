@@ -69,7 +69,7 @@ std::shared_ptr<VNodeBase> Parser::expect(SymbolEnum symbol, int level) {
         if (!m_probingMode) {
             literal = handleGrammarError(symbol);
         }
-        return std::make_shared<VNodeLeaf>(symbol, Token(m_currToken->lineNum, symbol, literal, 0), false);
+        return std::make_shared<VNodeLeaf>(symbol, Token(m_currToken->lineNum, symbol, literal, 0), m_probingMode ? true : false); // 如果全是false会导致死循环，这么写会导致expect生成式的函数出错
     }
 }
 
@@ -87,7 +87,7 @@ std::shared_ptr<VNodeBase> Parser::expect(std::initializer_list<SymbolEnum> symb
             literal = handleGrammarError(m_currToken->symbol);
         }
         return std::make_shared<VNodeLeaf>(*symbolList.begin(),
-                                           Token(m_currToken->lineNum, *symbolList.begin(), literal, 0), false);
+                                           Token(m_currToken->lineNum, *symbolList.begin(), literal, 0), m_probingMode ? true : false);
     }
 }
 
@@ -112,10 +112,10 @@ bool Parser::expectAssignment() {
     m_probingMode = true;
     auto temp = lVal(-1);
     if (temp->isCorrect()) {
-        auto assign = expect(SymbolEnum::ASSIGN, -1);
+        bool correct = (m_currToken + 1)->symbol == SymbolEnum::ASSIGN;
         m_currToken = iterBefore;
         m_probingMode = false;
-        return assign->isCorrect();
+        return correct;
     } else {
         m_currToken = iterBefore;
         m_probingMode = false;
@@ -127,10 +127,10 @@ bool Parser::expectPureExp() {
     m_probingMode = true;
     auto temp = exp(-1);
     if (temp->isCorrect() && m_currToken != iterBefore) {
-        auto semi = expect(SymbolEnum::SEMICN, -1);
+        bool correct = (m_currToken + 1)->symbol == SymbolEnum::SEMICN;
         m_currToken = iterBefore;
         m_probingMode = false;
-        return semi->isCorrect();
+        return correct;
     } else {
         m_currToken = iterBefore;
         m_probingMode = false;
