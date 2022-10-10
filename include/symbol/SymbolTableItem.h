@@ -42,14 +42,14 @@ private:
 template <typename Type>
 class TypedItem : public SymbolTableItem {
 public:
-    explicit TypedItem(const std::string& name, BlockScopeHandle handle, std::unique_ptr<ValueType>&& type) :
-        SymbolTableItem(name, handle), m_type(std::move(type)) {}
+    explicit TypedItem(const std::string& name, BlockScopeHandle handle) :
+        SymbolTableItem(name, handle) {}
     virtual ~TypedItem() {}
-    virtual ValueType* getType() { return m_type.get(); };
+    virtual ValueType* getType() { return &m_type; };
     virtual bool isChangble() = 0;
 
 protected:
-    std::unique_ptr<ValueType> m_type;
+    Type m_type;
 };
 
 template <typename Type>
@@ -61,14 +61,14 @@ public:
         typename Type::InternalItem varItem;
     };
     explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle, std::unique_ptr<Type>(new Type())), m_var(data.initVar), m_varItem(data.varItem){};
-    virtual size_t getSize() override { return TypedItem<Type>::m_type->valueSize(); };
+        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar), m_varItem(data.varItem){};
+    virtual size_t getSize() override { return TypedItem<Type>::m_type.valueSize(); };
     virtual ~VarItem() {}
     virtual void dumpSymbolItem(std::ostream& os) override {
-        TypedItem<Type>::m_type->dumpType(os);
+        TypedItem<Type>::m_type.dumpType(os);
         os << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << " " << m_varItem;
+        os << " " << m_var;
     }
     virtual bool isChangble() override { return true; }
     const typename Type::InternalItem& getVarItem() const { return m_varItem; }
@@ -86,12 +86,12 @@ public:
         typename Type::InternalType constVar;
     };
     explicit ConstVarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle, std::unique_ptr<Type>(new Type())), m_constVar(data.constVar){};
-    virtual size_t getSize() override { return TypedItem<Type>::m_type->valueSize(); };
+        TypedItem<Type>(name, data.parentHandle), m_constVar(data.constVar){};
+    virtual size_t getSize() override { return TypedItem<Type>::m_type.valueSize(); };
     virtual ~ConstVarItem() {}
     typename Type::InternalType getConstVar() const { return m_constVar; }
     virtual void dumpSymbolItem(std::ostream& os) override {
-        TypedItem<Type>::m_type->dumpType(os);
+        TypedItem<Type>::m_type.dumpType(os);
         os << " ";
         SymbolTableItem::dumpSymbolItem(os);
         os << " " << m_constVar;

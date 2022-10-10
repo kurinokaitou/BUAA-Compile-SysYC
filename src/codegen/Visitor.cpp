@@ -108,10 +108,12 @@ void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
 
 template <typename Type>
 typename Type::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
+    DBG_PROBE_BRANCH(name);
     return calConstExp<Type>(*node->getChildIter());
 }
 template <typename Type>
 SymbolTableItem* Visitor::exp(std::shared_ptr<VNodeBase> node) {
+    DBG_PROBE_BRANCH(name);
     return addExp<Type>(*node->getChildIter());
 }
 
@@ -298,8 +300,9 @@ VarItem<Type>* Visitor::number(std::shared_ptr<VNodeBase> node) {
 template <>
 VarItem<IntType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
+    auto lineNum = leafNode->getToken().lineNum;
     auto value = static_cast<typename IntType::InternalType>(leafNode->getToken().value);
-    auto number = m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value});
+    auto number = m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value, .varItem = nullptr});
     // 生成代码
     return number;
 }
@@ -308,7 +311,7 @@ template <>
 VarItem<CharType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     auto value = static_cast<typename CharType::InternalType>(leafNode->getToken().value);
-    auto number = m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value});
+    auto number = m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value, .varItem = nullptr});
     // 生成代码
     return number;
 }
@@ -412,7 +415,8 @@ typename Type::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node
 
 template <typename Type>
 typename Type::InternalType Visitor::constInitVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    return constExp<Type>(*node->getChildIter());
+    DBG_PROBE_BRANCH(name);
+    return constExp<Type>(node);
 };
 
 // TODO: char 模板化
@@ -451,6 +455,7 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
             Logger::logError("Too much number defined!");
         }
     } else {
+        DBG_PROBE_BRANCH(name);
         typename Type::InternalType val = constInitVal<Type>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
@@ -460,7 +465,8 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
 
 template <typename Type>
 typename Type::InternalItem Visitor::initVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    return exp<Type>(*node->getChildIter());
+    DBG_PROBE_BRANCH(name);
+    return exp<Type>(node);
 };
 
 template <typename Type>
@@ -483,6 +489,7 @@ typename ArrayType<Type>::InternalItem Visitor::initValArray(std::shared_ptr<VNo
             }
         }
     } else {
+        DBG_PROBE_BRANCH(name);
         typename Type::InternalItem val = initVal<Type>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
@@ -564,11 +571,13 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         if (dims.size() == 0) {
             res = m_table.insertItem<VarItem<Type>>(identName,
                                                     {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                     .initVar = valueVar});
+                                                     .initVar = valueVar,
+                                                     .varItem = nullptr});
         } else {
             res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName,
                                                                {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                .initVar = valueArray});
+                                                                .initVar = valueArray,
+                                                                .varItem = {{.values = {}, .dimensions = dims}}});
         }
 
     } else {
@@ -592,7 +601,7 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         } else {
             res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName,
                                                                {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                .initVar = {},
+                                                                .initVar = {{.values = {}, .dimensions = dims}},
                                                                 .varItem = itemArray});
         }
     }
@@ -742,8 +751,10 @@ void Visitor::block(std::shared_ptr<VNodeBase> node) {
         node->nextChild();
     }
     int lineNum = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter())->getToken().lineNum;
-    if (m_table.getCurrentScope().getFuncItem()->getReturnValueType() != ValueTypeEnum::VOID_TYPE) {
-        m_table.getCurrentScope().checkFuncScopeReturn(lineNum);
+    if (m_table.getCurrentScope().getType() == BlockScopeType::FUNC) {
+        if (m_table.getCurrentScope().getFuncItem()->getReturnValueType() != ValueTypeEnum::VOID_TYPE) {
+            m_table.getCurrentScope().checkFuncScopeReturn(lineNum);
+        }
     }
     // node->nextChild(); // jump '}'
 }
@@ -797,7 +808,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         node->nextChild(); // jump RETURNTK
         FuncItem* funcItem = m_table.getCurrentScope().getFuncItem();
         ValueTypeEnum type = funcItem->getReturnValueType();
-        std::string funcName = funcItem->getName();
+        auto& funcName = funcItem->getName();
         int lineNum = leafNode->getToken().lineNum;
         if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
             if (type == ValueTypeEnum::VOID_TYPE) {

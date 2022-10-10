@@ -26,7 +26,7 @@ public:
 private:
     std::vector<BlockScope> m_blockScopes;
     BlockScopeHandle m_currScopeHandle;
-    std::vector<std::unique_ptr<SymbolTableItem>> m_tempItems;
+    std::vector<SymbolTableItem*> m_tempItems;
 };
 
 template <typename ItemType>
@@ -42,8 +42,15 @@ std::pair<ItemType*, bool> SymbolTable::insertItem(const std::string& name, type
 template <typename ItemType>
 ItemType* SymbolTable::makeItem(typename ItemType::Data data) {
     if (std::is_base_of<SymbolTableItem, ItemType>::value) {
-        m_tempItems.push_back(std::unique_ptr<ItemType>(new ItemType("@var" + std::to_string(m_tempItems.size() + 1), data)));
-        return dynamic_cast<ItemType*>(m_tempItems.back().get());
+        auto num = std::to_string(m_tempItems.size() + 1);
+        SymbolTableItem* item = nullptr;
+        try {
+            item = new ItemType("@var" + num, data);
+        } catch (std::bad_alloc e) {
+            std::cout << e.what() << std::endl;
+        }
+        m_tempItems.push_back(item);
+        return dynamic_cast<ItemType*>(m_tempItems.back());
     } else {
         return nullptr;
     }

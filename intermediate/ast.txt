@@ -1,45 +1,53 @@
 <CompUnit>
 INTTK int
-<FuncType>
-IDENFR f1
-LPARENT (
-INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    RETURNTK return
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-VOIDTK void
-<FuncType>
-IDENFR f2
-LPARENT (
-INTTK int
-IDENFR x
+IDENFR a
 LBRACK [
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
 RBRACK ]
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    RETURNTK return
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
+ASSIGN =
+LBRACE {
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+PLUS +
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+PLUS +
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+RBRACE }
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
 INTTK int
 MAINTK main
 LPARENT (
@@ -56,20 +64,8 @@ RPARENT )
     <AddExp>
     <ConstExp>
     RBRACK ]
-    LBRACK [
-    INTCON 2
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <ConstExp>
-    RBRACK ]
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
-    IDENFR f2
-    LPARENT (
+    ASSIGN =
+    LBRACE {
     INTCON 1
     <Number>
     <PrimaryExp>
@@ -77,58 +73,21 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    <FuncRParams>
-    RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-SEMICN ;
-    <Stmt>
-    IDENFR f1
-    LPARENT (
-    IDENFR f2
-    LPARENT (
-    IDENFR arr
-    LBRACK [
-    INTCON 0
+    <InitVal>
+    COMMA ,
+    INTCON 2
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <FuncRParams>
-    RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <FuncRParams>
-    RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-SEMICN ;
-    <Stmt>
-    RETURNTK return
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
+    <InitVal>
+    RBRACE }
+    <InitVal>
+    <VarDef>
     SEMICN ;
-    <Stmt>
+    <VarDecl>
   RBRACE }
   <Block>
 <MainFuncDef>
