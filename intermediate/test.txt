@@ -4,15 +4,12 @@ int f1(int x){
 
 void f2(int x[])
 {
-    int a = 1;
-    f1(a)
     return;
 }
 
 int main() {
     int arr[2][2];
     f2(1);
-    f2(arr[0]);
     f1(f2(arr[0]));
     return 0;
 }

@@ -34,37 +34,6 @@ RBRACK ]
 <FuncFParams>
 RPARENT )
   LBRACE {
-    INTTK int
-    IDENFR a
-    ASSIGN =
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
-    IDENFR f1
-    LPARENT (
-    IDENFR a
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <FuncRParams>
-    RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-SEMICN ;
-    <Stmt>
     RETURNTK return
     SEMICN ;
     <Stmt>
@@ -114,33 +83,7 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR f2
-    LPARENT (
-    IDENFR arr
-    LBRACK [
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <FuncRParams>
-    RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
+SEMICN ;
     <Stmt>
     IDENFR f1
     LPARENT (
@@ -174,7 +117,7 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    SEMICN ;
+SEMICN ;
     <Stmt>
     RETURNTK return
     INTCON 0

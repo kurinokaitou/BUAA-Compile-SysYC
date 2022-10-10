@@ -3,5 +3,4 @@ void f2(array<int> x [0] )
 int main()
 int x 0
 array<int> x [0] 
-int a 0x555555604580
-array<int> arr  
+array<int> arr [2][2] 

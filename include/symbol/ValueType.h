@@ -45,7 +45,8 @@ public:
 
 class VoidType : public ValueType {
 public:
-    using InternalType = int;
+    using InternalType = void*;
+    using InternalItem = SymbolTableItem*;
     virtual size_t valueSize() const override { return VOID_SIZE; }
     virtual ValueTypeEnum getValueTypeEnum() override {
         return ValueTypeEnum::VOID_TYPE;

@@ -5,6 +5,7 @@
 #include <grammar/VNode.h>
 #define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle()})
 #define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle()})
+#define MAKE_VOID_VAR() m_table.makeItem<VarItem<VoidType>>({.parentHandle = m_table.getCurrentScopeHandle()})
 #define MAKE_INT_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<IntType>>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = {}, .varItem = {{.values = {}, .dimensions = dims}}})
 #define MAKE_CHAR_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<CharType>>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = {}, .varItem = {{.values = {}, .dimensions = dims}}})
 
@@ -76,14 +77,18 @@ private:
     SymbolTableItem* funcFParam(std::shared_ptr<VNodeBase> node);                                            // 函数形参
     std::vector<SymbolTableItem*> funcRParams(std::shared_ptr<VNodeBase> node, FuncItem* func, int lineNum); // 函数实参表
     template <typename Type>
-    SymbolTableItem* funcRParam(std::shared_ptr<VNodeBase> node, bool isArray);
+    SymbolTableItem* funcRParam(std::shared_ptr<VNodeBase> node, SymbolTableItem* formalParam);
     ValueTypeEnum bType(std::shared_ptr<VNodeBase> node); // 基本类型
 
 private:
     template <typename Type>
     typename Type::InternalType calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
     std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type);
+    template <typename Type>
+    std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item);
     SymbolTableItem* makeTempItem(ValueTypeEnum type, bool isArray = false, std::vector<size_t>&& dims = {});
+    template <typename Type>
+    bool checkConvertiable(SymbolTableItem* item);
 
 private:
     SymbolTable& m_table;

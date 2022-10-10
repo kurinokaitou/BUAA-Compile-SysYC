@@ -178,9 +178,17 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
             Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);
         }
         if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
-            realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入identName查找对应函数
+            realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入func
         }
-        auto ret = MAKE_VAR();
+        SymbolTableItem* ret = nullptr;
+        if (func->getReturnValueType() == ValueTypeEnum::INT_TYPE) {
+            ret = MAKE_INT_VAR();
+        } else if (func->getReturnValueType() == ValueTypeEnum::CHAR_TYPE) {
+            ret = MAKE_CHAR_VAR();
+        } else {
+            ret = MAKE_VOID_VAR();
+        }
+
         // 生成函数调用，复制参数的代码，ret为返回值
         return ret;
     } else if (expect(*node->getChildIter(), VNodeEnum::UNARYOP)) {
@@ -217,11 +225,12 @@ std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> no
             for (size_t i = 0; i < formalParams.size(); i++) {
                 auto type = formalParams[i]->getType()->getValueTypeEnum();
                 auto isArray = formalParams[i]->getType()->isArray();
+
                 SymbolTableItem* ret = nullptr;
                 if (type == ValueTypeEnum::INT_TYPE) {
-                    ret = funcRParam<IntType>(exps[i], isArray);
+                    ret = funcRParam<IntType>(exps[i], formalParams[i]);
                 } else {
-                    ret = funcRParam<CharType>(exps[i], isArray);
+                    ret = funcRParam<CharType>(exps[i], formalParams[i]);
                 }
                 if (ret) {
                     realParams.push_back(ret);
@@ -241,12 +250,23 @@ std::vector<SymbolTableItem*> Visitor::funcRParams(std::shared_ptr<VNodeBase> no
 }
 
 template <typename Type>
-SymbolTableItem* Visitor::funcRParam(std::shared_ptr<VNodeBase> node, bool isArray) {
+SymbolTableItem* Visitor::funcRParam(std::shared_ptr<VNodeBase> node, SymbolTableItem* formalParam) {
+    auto isArray = formalParam->getType()->isArray();
+    SymbolTableItem* ret = nullptr;
     if (isArray) {
-        return exp<ArrayType<Type>>(node);
+        auto realArr = exp<ArrayType<Type>>(node);
+        auto formalDims = getArrayItemDimensions<Type>(formalParam);
+        auto realDims = getArrayItemDimensions<Type>(realArr);
+        if (checkConvertiable<ArrayType<Type>>(realArr)) {
+            ret = (realDims.size() == formalDims.size()) ? realArr : nullptr;
+        }
     } else {
-        return exp<Type>(node);
+        auto realVar = exp<Type>(node);
+        if (checkConvertiable<Type>(realVar)) {
+            ret = realVar;
+        }
     }
+    return ret;
 }
 
 template <typename Type>
@@ -256,20 +276,18 @@ SymbolTableItem* Visitor::primaryExp(std::shared_ptr<VNodeBase> node) {
         return exp<Type>(*node->getChildIter());
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
         // 检查rVal返回的值类型是否与指定Type相同，如果不同给出警告并转换，不可转换则报错;
-        auto rawValue = rVal(*node->getChildIter());
-        SymbolTableItem* ret = nullptr;
-        auto varValue = dynamic_cast<VarItem<Type>*>(rawValue);           // 直接转换，只有类型完全相同才能转化
-        auto constVarValue = dynamic_cast<ConstVarItem<Type>*>(rawValue); // 直接转换，只有类型完全相同才能转化
-        if (varValue) {
-            ret = varValue;
-        }
-        if (constVarValue) {
-            ret = constVarValue;
-        }
-        return ret;
+        return rVal(*node->getChildIter());
     } else {
         return number<Type>(*node->getChildIter());
     }
+}
+
+template <typename Type>
+bool Visitor::checkConvertiable(SymbolTableItem* item) {
+    SymbolTableItem* ret = nullptr;
+    auto varValue = dynamic_cast<VarItem<Type>*>(item); // 直接转换，只有类型完全相同才能转化
+    auto constVarValue = dynamic_cast<ConstVarItem<Type>*>(item);
+    return (varValue != nullptr) || (constVarValue != nullptr);
 }
 
 template <typename Type>
@@ -468,6 +486,7 @@ typename ArrayType<Type>::InternalItem Visitor::initValArray(std::shared_ptr<VNo
         typename Type::InternalItem val = initVal<Type>(*node->getChildIter(), dims, level + 1);
         values.insert(val);
     }
+    values.setDimensions(dims);
     return values;
 };
 
@@ -562,6 +581,8 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
             } else {
                 itemArray = initValArray<Type>(*node->getChildIter(), dims, 0);
             }
+        } else {
+            itemArray.setDimensions(dims);
         }
         if (dims.size() == 0) {
             res = m_table.insertItem<VarItem<Type>>(identName,
@@ -928,11 +949,20 @@ SymbolTableItem* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
 
 std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type) {
     if (item->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
-        auto lValArray = dynamic_cast<VarItem<ArrayType<IntType>>*>(item);
+        return getArrayItemDimensions<IntType>(item);
+    } else {
+        return getArrayItemDimensions<CharType>(item);
+    }
+}
+
+template <typename Type>
+std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item) {
+    if (item->isChangble()) {
+        auto lValArray = dynamic_cast<VarItem<ArrayType<Type>>*>(item);
         return lValArray->getVarItem().getDimensions();
     } else {
-        auto lValArray = dynamic_cast<VarItem<ArrayType<CharType>>*>(item);
-        return lValArray->getVarItem().getDimensions();
+        auto lValArray = dynamic_cast<ConstVarItem<ArrayType<Type>>*>(item);
+        return lValArray->getConstVar().getDimensions();
     }
 }
 
