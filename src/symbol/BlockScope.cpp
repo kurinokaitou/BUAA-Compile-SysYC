@@ -84,9 +84,29 @@ std::vector<SymbolTableItem*>& BlockScope::getParamItems() const {
     return m_paramItems;
 }
 
+FuncItem* BlockScope::getFuncItem() const {
+    if (m_type == BlockScopeType::FUNC) {
+        return mp_funcItem;
+    } else if (m_type == BlockScopeType::GLOBAL) {
+        return nullptr;
+    } else {
+        return m_symbolTable.getBlockScope(m_parentHandle).getFuncItem();
+    }
+}
+
 void BlockScope::checkFuncScopeReturn(int lineNum) const {
     if (!m_hasReturn && m_type == BlockScopeType::FUNC) {
         Logger::logError(ErrorType::NONVOID_FUNC_MISS_RETURN, lineNum, mp_funcItem->getName());
+    }
+}
+
+bool BlockScope::isSubLoopScope() const {
+    if (m_type == BlockScopeType::LOOP) {
+        return true;
+    } else if (m_type == BlockScopeType::GLOBAL) {
+        return false;
+    } else {
+        return m_symbolTable.getBlockScope(m_parentHandle).isSubLoopScope();
     }
 }
 

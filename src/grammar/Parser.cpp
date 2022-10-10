@@ -404,7 +404,8 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
         children.push_back(expect(SymbolEnum::SEMICN, level));
     } else if ((m_currToken + 1)->symbol == SymbolEnum::RETURNTK) {
         children.push_back(expect(SymbolEnum::RETURNTK, level));
-        if ((m_currToken + 1)->symbol != SymbolEnum::SEMICN) {
+        if ((m_currToken + 1)->symbol != SymbolEnum::SEMICN
+            && (m_currToken + 1)->symbol != SymbolEnum::RBRACE) {
             children.push_back(exp(level));
         }
         children.push_back(expect(SymbolEnum::SEMICN, level));
@@ -660,7 +661,8 @@ std::shared_ptr<VNodeBase> Parser::funcDef(int level) {
     children.push_back(funcType(level));
     children.push_back(expect(SymbolEnum::IDENFR, level));
     children.push_back(expect(SymbolEnum::LPARENT, level));
-    if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT) {
+    if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT
+        && (m_currToken + 1)->symbol != SymbolEnum::LBRACE) {
         children.push_back(funcFParams(level));
     }
     children.push_back(expect(SymbolEnum::RPARENT, level));

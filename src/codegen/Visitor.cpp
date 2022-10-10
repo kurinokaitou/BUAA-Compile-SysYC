@@ -176,15 +176,18 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
         FuncItem* func = m_table.findFunc(identName);
         if (!func) {
             Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);
-        }
-        if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
-            realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入func
+            return nullptr;
         } else {
-            auto expectParams = func->getParams().size();
-            if (expectParams != 0) {
-                Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, "0", std::to_string(expectParams));
+            if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
+                realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入func
+            } else {
+                auto expectParams = func->getParams().size();
+                if (expectParams != 0) {
+                    Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, "0", std::to_string(expectParams));
+                }
             }
         }
+
         SymbolTableItem* ret = nullptr;
         if (func->getReturnValueType() == ValueTypeEnum::INT_TYPE) {
             ret = MAKE_INT_VAR();
@@ -260,11 +263,14 @@ SymbolTableItem* Visitor::funcRParam(std::shared_ptr<VNodeBase> node, SymbolTabl
     SymbolTableItem* ret = nullptr;
     if (isArray) {
         auto realArr = exp<ArrayType<Type>>(node);
-        auto formalDims = getArrayItemDimensions<Type>(formalParam);
-        auto realDims = getArrayItemDimensions<Type>(realArr);
-        if (checkConvertiable<ArrayType<Type>>(realArr)) {
-            ret = (realDims.size() == formalDims.size()) ? realArr : nullptr;
+        if (realArr && realArr->getType()->getValueTypeEnum() != ValueTypeEnum::VOID_TYPE) {
+            auto formalDims = getArrayItemDimensions<Type>(formalParam);
+            auto realDims = getArrayItemDimensions<Type>(realArr);
+            if (checkConvertiable<ArrayType<Type>>(realArr)) {
+                ret = (realDims.size() == formalDims.size()) ? realArr : nullptr;
+            }
         }
+
     } else {
         auto realVar = exp<Type>(node);
         if (checkConvertiable<Type>(realVar)) {
@@ -281,7 +287,7 @@ SymbolTableItem* Visitor::primaryExp(std::shared_ptr<VNodeBase> node) {
         return exp<Type>(*node->getChildIter());
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
         // 检查rVal返回的值类型是否与指定Type相同，如果不同给出警告并转换，不可转换则报错;
-        return rVal(*node->getChildIter());
+        return rVal<Type>(*node->getChildIter());
     } else {
         return number<Type>(*node->getChildIter());
     }
@@ -766,7 +772,7 @@ void Visitor::blockItem(std::shared_ptr<VNodeBase> node) {
     }
 }
 
-void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
+void Visitor::stmt(std::shared_ptr<VNodeBase> node, BlockScopeType scopeType) {
     if (expect(*node->getChildIter(), SymbolEnum::IFTK)) { // if
         node->nextChild(2);                                // jump  IFTK & '('
         cond(*node->getChildIter());
@@ -777,28 +783,24 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         node->nextChild(1, false); // jump STMT
         if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
             node->nextChild(); // jump ELSETK
-            m_table.pushScope(BlockScopeType::BRANCH);
-            stmt(*node->getChildIter());
-            m_table.popScope();
+            stmt(*node->getChildIter(), BlockScopeType::BRANCH);
             node->nextChild(1, false); // jump STMT
         }
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
         node->nextChild(2); // jump WHILE & '('
         cond(*node->getChildIter());
         node->nextChild(2);
-        m_table.pushScope(BlockScopeType::LOOP);
-        stmt(*node->getChildIter());
-        m_table.popScope();
+        stmt(*node->getChildIter(), BlockScopeType::LOOP);
         node->nextChild(1, false); // jump STMT
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        if (m_table.getCurrentScope().getType() != BlockScopeType::LOOP) {
+        if (!m_table.getCurrentScope().isSubLoopScope()) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
         }
         node->nextChild(); // jump BREAKTK
     } else if (expect(*node->getChildIter(), SymbolEnum::CONTINUETK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
-        if (m_table.getCurrentScope().getType() != BlockScopeType::LOOP) {
+        if (!m_table.getCurrentScope().isSubLoopScope()) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
         }
         node->nextChild(); // jump CONTINUETK
@@ -807,24 +809,22 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         node->nextChild(); // jump RETURNTK
         FuncItem* funcItem = m_table.getCurrentScope().getFuncItem();
-        ValueTypeEnum type = funcItem->getReturnValueType();
-        auto& funcName = funcItem->getName();
-        int lineNum = leafNode->getToken().lineNum;
-        if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
-            if (type == ValueTypeEnum::VOID_TYPE) {
-                Logger::logError(ErrorType::VOID_FUNC_HAVE_RETURNED, lineNum, funcName);
-            } else if (type == ValueTypeEnum::INT_TYPE) {
-                exp<IntType>(*node->getChildIter());
-            } else {
-                exp<CharType>(*node->getChildIter());
-            }
-            node->nextChild(); // jump EXP
-        } else {
-            if (type == ValueTypeEnum::INT_TYPE) {
-                Logger::logError(ErrorType::NONVOID_FUNC_MISS_RETURN, lineNum, funcName); // 这里表示有return 但是没有返回值的情况
-                // TODO: 是INT_TYPE 但是没有出现return关键字的情况
+        if (funcItem) {
+            ValueTypeEnum type = funcItem->getReturnValueType();
+            auto& funcName = funcItem->getName();
+            int lineNum = leafNode->getToken().lineNum;
+            if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
+                if (type == ValueTypeEnum::VOID_TYPE) {
+                    Logger::logError(ErrorType::VOID_FUNC_HAVE_RETURNED, lineNum, funcName);
+                } else if (type == ValueTypeEnum::INT_TYPE) {
+                    exp<IntType>(*node->getChildIter());
+                } else {
+                    exp<CharType>(*node->getChildIter());
+                }
+                node->nextChild(); // jump EXP
             }
         }
+
     } else if (expect(*node->getChildIter(), SymbolEnum::PRINTFTK)) {
         node->nextChild(2); // jump PRINTTK & '('
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
@@ -865,7 +865,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
             // TODO: 生成将暂存值存入左值的代码
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
-        m_table.pushScope(BlockScopeType::NORMAL);
+        m_table.pushScope(scopeType);
         block(*node->getChildIter());
         m_table.popScope();
     } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
@@ -909,17 +909,28 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
     }
 }
 
+template <typename Type>
 SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
     auto identNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter()); // lVal 的第一个子节点ident
     std::string identName = identNode->getToken().literal;
     int lineNum = identNode->getToken().lineNum;
     auto finded = m_table.findItem(identName);
     if (finded) {
-        if (!finded->getType()->isArray()) {
+        auto type = finded->getType()->getValueTypeEnum();
+        bool findedIsArray = finded->getType()->isArray();
+        bool rValIsArray = false;
+        if (type == ValueTypeEnum::INT_TYPE) {
+            rValIsArray = std::is_base_of<ArrayType<IntType>, Type>::value;
+        } else {
+            rValIsArray = std::is_base_of<ArrayType<CharType>, Type>::value;
+        }
+        if (rValIsArray != findedIsArray) return nullptr;
+
+        if (!findedIsArray) {
             return finded;
         } else {
             // 符号表中存储的数组的维数
-            auto type = finded->getType()->getValueTypeEnum();
+
             std::vector<size_t> targetDims = getArrayItemDimensions(finded, type);
             SymbolTableItem* ret = nullptr;
             // 实际读取到的右值

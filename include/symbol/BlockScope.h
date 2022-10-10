@@ -27,10 +27,12 @@ public:
     BlockScopeHandle getParentHandle() const { return m_parentHandle; }
     void addChildScope(BlockScopeHandle handle);
     void setFuncItem(FuncItem* func) { mp_funcItem = func; }
-    FuncItem* getFuncItem() const { return mp_funcItem; }
+
     std::size_t countSymbol() { return m_symbols.size(); }
     void markHasReturn() { m_hasReturn = true; }
+    FuncItem* getFuncItem() const;
     void checkFuncScopeReturn(int lineNum) const;
+    bool isSubLoopScope() const;
     void dumpScope(std::ostream& os);
 
 private:

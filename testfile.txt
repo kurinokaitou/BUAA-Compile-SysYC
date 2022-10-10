@@ -1,8 +1,27 @@
-void f2(){
+const int a[2][2 = {{1,2},{3,4}};
+const c = 10;
+int func(int a[){
 
+    return 
 }
 
-int main() {
-    f2(;
+int intFunc(int a{
+
+    return ;
+}
+
+void voidFunc(int a{
+    return ;
+}
+
+void voidRetVoid({}
+
+
+
+int main({
+    int b;
+    func(voidFunc(b);
+    voidFunc(func(a[0]));
+    voidRetVoid(c);
     return 0;
 }
