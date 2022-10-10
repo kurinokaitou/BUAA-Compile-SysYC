@@ -181,6 +181,11 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
         }
         if (expect(*node->getChildIter(), VNodeEnum::FUNCRPARAMS)) {
             realParams = funcRParams(*node->getChildIter(), func, lineNum); // 传入func
+        } else {
+            auto expectParams = func->getParams().size();
+            if (expectParams != 0) {
+                Logger::logError(ErrorType::PARAMS_NUM_NOT_MATCH, lineNum, "0", std::to_string(expectParams));
+            }
         }
         SymbolTableItem* ret = nullptr;
         if (func->getReturnValueType() == ValueTypeEnum::INT_TYPE) {
@@ -416,7 +421,7 @@ typename Type::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node
 template <typename Type>
 typename Type::InternalType Visitor::constInitVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
     DBG_PROBE_BRANCH(name);
-    return constExp<Type>(node);
+    return constExp<Type>(*node->getChildIter());
 };
 
 // TODO: char 模板化
@@ -456,7 +461,7 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
         }
     } else {
         DBG_PROBE_BRANCH(name);
-        typename Type::InternalType val = constInitVal<Type>(*node->getChildIter(), dims, level + 1);
+        typename Type::InternalType val = constInitVal<Type>(node, dims, level + 1);
         values.insert(val);
     }
     values.setDimensions(dims);
@@ -466,7 +471,7 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
 template <typename Type>
 typename Type::InternalItem Visitor::initVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
     DBG_PROBE_BRANCH(name);
-    return exp<Type>(node);
+    return exp<Type>(*node->getChildIter());
 };
 
 template <typename Type>
@@ -490,7 +495,7 @@ typename ArrayType<Type>::InternalItem Visitor::initValArray(std::shared_ptr<VNo
         }
     } else {
         DBG_PROBE_BRANCH(name);
-        typename Type::InternalItem val = initVal<Type>(*node->getChildIter(), dims, level + 1);
+        typename Type::InternalItem val = initVal<Type>(node, dims, level + 1);
         values.insert(val);
     }
     values.setDimensions(dims);
