@@ -1,14 +1,14 @@
 #include <Compiler.h>
 
-static std::string s_sourcePath = "intermediate/test.txt";
+static std::string s_sourcePath = "testfile.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
-static std::string s_dumpErrorPath = "intermediate/error.txt";
+static std::string s_dumpErrorPath = "error.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
-static bool s_dumpError = false;
+static bool s_dumpError = true;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
     Compiler compiler;
     std::filebuf in;
 
-    parseArgs(argc, argv);
+    //parseArgs(argc, argv);
     if (!in.open(s_sourcePath, std::ios::in)) {
         throw std::runtime_error("Fail to open the source file!");
     }
