@@ -7,7 +7,7 @@
 #include <sstream>
 
 static bool isNewline(const char c) {
-    return c == '\n' || c == '\r';
+    return c == '\n';
 }
 static bool isTab(const char c) {
     return c == '\t';

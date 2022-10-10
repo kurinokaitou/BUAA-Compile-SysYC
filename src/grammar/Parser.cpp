@@ -126,13 +126,12 @@ bool Parser::expectPureExp() {
     auto iterBefore = m_currToken;
     m_probingMode = true;
     auto temp = exp(-1);
+    m_probingMode = false;
     if (temp->isCorrect() && m_currToken != iterBefore) {
         m_currToken = iterBefore;
-        m_probingMode = false;
         return true;
     } else {
         m_currToken = iterBefore;
-        m_probingMode = false;
         return false;
     }
 }
@@ -147,10 +146,14 @@ bool Parser::expectUnaryOp() {
 bool Parser::expectFuncRParams() {
     auto iterBefore = m_currToken;
     m_probingMode = true;
-    auto params = funcRParams(-1);
-    m_currToken = iterBefore;
+    funcRParams(-1);
     m_probingMode = false;
-    return params->isCorrect();
+    if (m_currToken == iterBefore) {
+        return false;
+    } else {
+        m_currToken = iterBefore;
+        return true;
+    }
 }
 
 // 编译单元compUnit -> {decl} {funcDef} mainFuncDef
@@ -515,11 +518,13 @@ std::shared_ptr<VNodeBase> Parser::unaryExp(int level) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto unaryExpNode = std::make_shared<VNodeBranch>(VNodeEnum::UNARYEXP);
     unaryExpNode->setLevel(level);
-    if ((m_currToken + 1)->symbol == SymbolEnum::IDENFR && (m_currToken + 2)->symbol == SymbolEnum::LPARENT) {
+    if ((m_currToken + 1)->symbol == SymbolEnum::IDENFR
+        && (m_currToken + 2)->symbol == SymbolEnum::LPARENT) {
         children.push_back(expect(SymbolEnum::IDENFR, level));
         children.push_back(expect(SymbolEnum::LPARENT, level));
         // TODO: 修复'('错误
-        if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT) {
+        if ((m_currToken + 1)->symbol != SymbolEnum::RPARENT
+            && (m_currToken + 1)->symbol != SymbolEnum::SEMICN) {
             children.push_back(funcRParams(level));
         }
         children.push_back(expect(SymbolEnum::RPARENT, level));

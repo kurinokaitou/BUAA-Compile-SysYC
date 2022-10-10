@@ -1,0 +1,37 @@
+<CompUnit>
+VOIDTK void
+<FuncType>
+IDENFR f2
+LPARENT (
+RPARENT )
+  LBRACE {
+  RBRACE }
+  <Block>
+<FuncDef>
+INTTK int
+MAINTK main
+LPARENT (
+RPARENT )
+  LBRACE {
+    IDENFR f2
+    LPARENT (
+RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    RETURNTK return
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+  RBRACE }
+  <Block>
+<MainFuncDef>
