@@ -770,25 +770,26 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
     if (expect(*node->getChildIter(), SymbolEnum::IFTK)) { // if
         node->nextChild(2);                                // jump  IFTK & '('
         cond(*node->getChildIter());
-        node->nextChild(); // jump ')'
+        node->nextChild(2); // jump COND ')'
         m_table.pushScope(BlockScopeType::BRANCH);
         stmt(*node->getChildIter());
         m_table.popScope();
-        node->nextChild(); // jump STMT
+        node->nextChild(1, false); // jump STMT
         if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
             node->nextChild(); // jump ELSETK
             m_table.pushScope(BlockScopeType::BRANCH);
             stmt(*node->getChildIter());
             m_table.popScope();
+            node->nextChild(1, false); // jump STMT
         }
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
         node->nextChild(2); // jump WHILE & '('
         cond(*node->getChildIter());
-        node->nextChild();
+        node->nextChild(2);
         m_table.pushScope(BlockScopeType::LOOP);
         stmt(*node->getChildIter());
         m_table.popScope();
-        node->nextChild(); // jump STMT
+        node->nextChild(1, false); // jump STMT
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         if (m_table.getCurrentScope().getType() != BlockScopeType::LOOP) {
@@ -953,8 +954,91 @@ void Visitor::cond(std::shared_ptr<VNodeBase> node) {
 }
 
 template <typename Type>
-SymbolTableItem* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
-    return nullptr;
+void Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::LANDEXP)) {
+        lAndExp<Type>(*node->getChildIter());
+    } else {
+        lOrExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of or
+        node->nextChild();
+        lAndExp<Type>(*node->getChildIter());
+        if (op == SymbolEnum::OR) {
+            // 生成或的代码
+        } else {
+            DBG_ERROR("lOr expression only accept '||'!");
+        }
+    }
+}
+
+template <typename Type>
+void Visitor::lAndExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::EQEXP)) {
+        auto eq = eqExp<Type>(*node->getChildIter());
+        // TODO: 生成condition的代码
+    } else {
+        lAndExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol and
+        node->nextChild();
+        auto eq = eqExp<Type>(*node->getChildIter());
+        // TODO: 生成condition的代码
+        if (op == SymbolEnum::AND) {
+            // 生成且的代码
+        } else {
+            DBG_ERROR("lAnd expression only accept '&&'!");
+        }
+    }
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::eqExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::RELEXP)) {
+        return relExp<Type>(*node->getChildIter());
+    } else {
+        auto eq = eqExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of eql or neq
+        node->nextChild();
+        auto rel = relExp<Type>(*node->getChildIter());
+        auto ret = MAKE_VAR();
+        if (op == SymbolEnum::EQL) {
+            // 生成相等的代码
+        } else if (op == SymbolEnum::NEQ) {
+            // 生成不等的代码
+        } else {
+            DBG_ERROR("Equal expression only accept '==' & '!='!");
+            return nullptr;
+        }
+        return ret;
+    }
+}
+
+template <typename Type>
+SymbolTableItem* Visitor::relExp(std::shared_ptr<VNodeBase> node) {
+    if (expect(*node->getChildIter(), VNodeEnum::ADDEXP)) {
+        return addExp<Type>(*node->getChildIter());
+    } else {
+        auto rel = relExp<Type>(*node->getChildIter());
+        node->nextChild();
+        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of less and great
+        node->nextChild();
+        auto add = addExp<Type>(*node->getChildIter());
+        auto ret = MAKE_VAR();
+        if (op == SymbolEnum::LSS) {
+            // 生成小于的代码
+        } else if (op == SymbolEnum::GRE) {
+            // 生成大于的代码
+        } else if (op == SymbolEnum::LEQ) {
+            // 生成小于等于的代码
+        } else if (op == SymbolEnum::GEQ) {
+            // 生成大于等于的代码
+        } else {
+            DBG_ERROR("Relation expression only accept '<' & '>' & '<=' & '>='!");
+            return nullptr;
+        }
+        return ret;
+    }
 }
 
 std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type) {

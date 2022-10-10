@@ -1762,8 +1762,444 @@ RPARENT )
     SEMICN ;
     <Stmt>
       LBRACE {
+        INTTK int
+        IDENFR inner
+        ASSIGN =
+        INTCON 10
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
+        <InitVal>
+        <VarDef>
+        SEMICN ;
+        <VarDecl>
       RBRACE }
       <Block>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "false\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    ELSETK else
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "true\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    NOT !
+    <UnaryOp>
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "true\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    ELSETK else
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "false\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    LSS <
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a<b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    GRE >
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a>b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    LEQ <=
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a<=b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    GEQ >=
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a>=b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    EQL ==
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a==b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    NEQ !=
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        PRINTFTK printf
+        LPARENT (
+        STRCON "a!=b\n"
+        RPARENT )
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    WHILETK while
+    LPARENT (
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        IDENFR value
+        <LVal>
+        ASSIGN =
+        IDENFR value
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        MINU -
+        INTCON 1
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
+        SEMICN ;
+        <Stmt>
+        IFTK if
+        LPARENT (
+        IDENFR value
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        LSS <
+        INTCON 10
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        <EqExp>
+        <LAndExp>
+        AND &&
+        IDENFR add_g
+        LPARENT (
+        RPARENT )
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        <EqExp>
+        <LAndExp>
+        <LOrExp>
+        <Cond>
+        RPARENT )
+          LBRACE {
+            SEMICN ;
+            <Stmt>
+          RBRACE }
+          <Block>
+        <Stmt>
+        <Stmt>
+        IFTK if
+        LPARENT (
+        IDENFR value
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        LSS <
+        INTCON 0
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        <EqExp>
+        <LAndExp>
+        <LOrExp>
+        <Cond>
+        RPARENT )
+          LBRACE {
+            BREAKTK break
+            SEMICN ;
+            <Stmt>
+          RBRACE }
+          <Block>
+        <Stmt>
+        ELSETK else
+          LBRACE {
+            CONTINUETK continue
+            SEMICN ;
+            <Stmt>
+          RBRACE }
+          <Block>
+        <Stmt>
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    <Stmt>
+    IFTK if
+    LPARENT (
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    OR ||
+    IDENFR add_g
+    LPARENT (
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
     <Stmt>
     PRINTFTK printf
     LPARENT (

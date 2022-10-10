@@ -67,9 +67,9 @@ private:
     template <typename Type>
     SymbolTableItem* eqExp(std::shared_ptr<VNodeBase> node); // 相等性表达式
     template <typename Type>
-    SymbolTableItem* lAndExp(std::shared_ptr<VNodeBase> node); // 逻辑与表达式
+    void lAndExp(std::shared_ptr<VNodeBase> node); // 逻辑与表达式
     template <typename Type>
-    SymbolTableItem* lOrExp(std::shared_ptr<VNodeBase> node);                                                // 逻辑或表达式
+    void lOrExp(std::shared_ptr<VNodeBase> node);                                                            // 逻辑或表达式
     void funcDef(std::shared_ptr<VNodeBase> node);                                                           // 函数定义
     void mainFuncDef(std::shared_ptr<VNodeBase> node);                                                       // 主函数定义
     ValueTypeEnum funcType(std::shared_ptr<VNodeBase> node);                                                 // 函数类型

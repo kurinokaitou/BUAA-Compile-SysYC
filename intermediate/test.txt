@@ -91,8 +91,8 @@ int main() {
     n = n * m;
     m = (n + m) * n;
     {
+        int inner = 10;
     }
-    /*
     if (0) {
         printf("false\n");
     } else {
@@ -137,7 +137,6 @@ int main() {
     if (1 || add_g()) {
         ;
     }
-    */
     printf("g = %d\n", g);
     value = 5;
     value = -+-5;

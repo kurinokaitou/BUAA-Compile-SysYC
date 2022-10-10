@@ -91,12 +91,13 @@ void BlockScope::checkFuncScopeReturn(int lineNum) const {
 }
 
 void BlockScope::dumpScope(std::ostream& os) {
-    for (auto& func : m_funcs) {
-        func->dumpSymbolItem(os);
-        os << "\n";
-    }
     for (auto& symbol : m_symbols) {
         symbol->dumpSymbolItem(os);
+        os << "\n";
+    }
+    os << "\n";
+    for (auto& func : m_funcs) {
+        func->dumpSymbolItem(os);
         os << "\n";
     }
 }
