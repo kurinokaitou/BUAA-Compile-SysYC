@@ -108,12 +108,10 @@ void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
 
 template <typename Type>
 typename Type::InternalType Visitor::constExp(std::shared_ptr<VNodeBase> node) {
-    DBG_PROBE_BRANCH(name);
     return calConstExp<Type>(*node->getChildIter());
 }
 template <typename Type>
 SymbolTableItem* Visitor::exp(std::shared_ptr<VNodeBase> node) {
-    DBG_PROBE_BRANCH(name);
     return addExp<Type>(*node->getChildIter());
 }
 
@@ -420,7 +418,6 @@ typename Type::InternalType Visitor::calConstExp(std::shared_ptr<VNodeBase> node
 
 template <typename Type>
 typename Type::InternalType Visitor::constInitVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    DBG_PROBE_BRANCH(name);
     return constExp<Type>(*node->getChildIter());
 };
 
@@ -460,7 +457,6 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
             Logger::logError("Too much number defined!");
         }
     } else {
-        DBG_PROBE_BRANCH(name);
         typename Type::InternalType val = constInitVal<Type>(node, dims, level + 1);
         values.insert(val);
     }
@@ -470,7 +466,6 @@ typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_pt
 
 template <typename Type>
 typename Type::InternalItem Visitor::initVal(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
-    DBG_PROBE_BRANCH(name);
     return exp<Type>(*node->getChildIter());
 };
 
@@ -494,7 +489,6 @@ typename ArrayType<Type>::InternalItem Visitor::initValArray(std::shared_ptr<VNo
             }
         }
     } else {
-        DBG_PROBE_BRANCH(name);
         typename Type::InternalItem val = initVal<Type>(node, dims, level + 1);
         values.insert(val);
     }
