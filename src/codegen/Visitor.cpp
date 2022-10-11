@@ -265,8 +265,8 @@ SymbolTableItem* Visitor::funcRParam(std::shared_ptr<VNodeBase> node, SymbolTabl
         auto realArr = exp<ArrayType<Type>>(node);
         if (realArr && realArr->getType()->getValueTypeEnum() != ValueTypeEnum::VOID_TYPE) {
             auto formalDims = getArrayItemDimensions<Type>(formalParam);
-            auto realDims = getArrayItemDimensions<Type>(realArr);
             if (checkConvertiable<ArrayType<Type>>(realArr)) {
+                auto realDims = getArrayItemDimensions<Type>(realArr);
                 ret = (realDims.size() == formalDims.size()) ? realArr : nullptr;
             }
         }
@@ -664,6 +664,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = retType});
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+        return;
     }
     node->nextChild(2); // jump IDENT '('
     m_table.pushScope(BlockScopeType::FUNC);
@@ -687,6 +688,7 @@ std::vector<SymbolTableItem*> Visitor::funcFParams(std::shared_ptr<VNodeBase> no
     while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
         node->nextChild(); // jump ','
         params.push_back(funcFParam(*node->getChildIter()));
+        if (!node->nextChild(1, false)) break;
     }
     return params;
 }
@@ -772,7 +774,7 @@ void Visitor::blockItem(std::shared_ptr<VNodeBase> node) {
     }
 }
 
-void Visitor::stmt(std::shared_ptr<VNodeBase> node, BlockScopeType scopeType) {
+void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
     if (expect(*node->getChildIter(), SymbolEnum::IFTK)) { // if
         node->nextChild(2);                                // jump  IFTK & '('
         cond(*node->getChildIter());
@@ -783,14 +785,18 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node, BlockScopeType scopeType) {
         node->nextChild(1, false); // jump STMT
         if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
             node->nextChild(); // jump ELSETK
-            stmt(*node->getChildIter(), BlockScopeType::BRANCH);
+            m_table.pushScope(BlockScopeType::BRANCH);
+            stmt(*node->getChildIter());
+            m_table.popScope();
             node->nextChild(1, false); // jump STMT
         }
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
         node->nextChild(2); // jump WHILE & '('
         cond(*node->getChildIter());
         node->nextChild(2);
-        stmt(*node->getChildIter(), BlockScopeType::LOOP);
+        m_table.pushScope(BlockScopeType::LOOP);
+        stmt(*node->getChildIter());
+        m_table.popScope();
         node->nextChild(1, false); // jump STMT
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
@@ -865,7 +871,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node, BlockScopeType scopeType) {
             // TODO: 生成将暂存值存入左值的代码
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
-        m_table.pushScope(scopeType);
+        m_table.pushScope(BlockScopeType::NORMAL);
         block(*node->getChildIter());
         m_table.popScope();
     } else if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
@@ -918,13 +924,13 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
     if (finded) {
         auto type = finded->getType()->getValueTypeEnum();
         bool findedIsArray = finded->getType()->isArray();
-        bool rValIsArray = false;
-        if (type == ValueTypeEnum::INT_TYPE) {
-            rValIsArray = std::is_base_of<ArrayType<IntType>, Type>::value;
-        } else {
-            rValIsArray = std::is_base_of<ArrayType<CharType>, Type>::value;
-        }
-        if (rValIsArray != findedIsArray) return nullptr;
+        // bool rValIsArray = false;
+        // if (type == ValueTypeEnum::INT_TYPE) {
+        //     rValIsArray = std::is_base_of<ArrayType<IntType>, Type>::value;
+        // } else {
+        //     rValIsArray = std::is_base_of<ArrayType<CharType>, Type>::value;
+        // }
+        // if (rValIsArray != findedIsArray) return nullptr;
 
         if (!findedIsArray) {
             return finded;

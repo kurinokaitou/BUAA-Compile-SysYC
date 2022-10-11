@@ -12,8 +12,8 @@ static std::string s_dumpASTPath = "ast.txt";
 static std::string s_dumpTablePath = "table.txt";
 static std::string s_dumpErrorPath = "error.txt";
 static bool s_dumpToken = false;
-static bool s_dumpAST = true;
-static bool s_dumpTable = true;
+static bool s_dumpAST = false;
+static bool s_dumpTable = false;
 static bool s_dumpError = true;
 
 static bool takeArg(char* arg) {

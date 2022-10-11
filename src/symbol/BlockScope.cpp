@@ -49,28 +49,43 @@ FuncItem* BlockScope::findFunc(const std::string& name) {
 std::pair<SymbolTableItem*, bool> BlockScope::insertItem(std::unique_ptr<SymbolTableItem>&& item) {
     item->setLevel(m_level);
     // 只在当前scope内插入symbolItem
-    auto finded = std::find_if(m_symbols.begin(), m_symbols.end(), [&item](const std::unique_ptr<SymbolTableItem>& symbol) {
+    auto findedSym = std::find_if(m_symbols.begin(), m_symbols.end(), [&item](const std::unique_ptr<SymbolTableItem>& symbol) {
         return item->getName() == symbol->getName();
     });
-    if (finded != m_symbols.end()) {
-        return std::make_pair(finded->get(), false);
+    if (findedSym != m_symbols.end()) {
+        return std::make_pair(findedSym->get(), false);
     } else {
-        m_symbols.push_back(std::move(item));
-        return std::make_pair(m_symbols.back().get(), true);
+        auto findedFunc = std::find_if(m_funcs.begin(), m_funcs.end(), [&item](const std::unique_ptr<FuncItem>& symbol) {
+            return item->getName() == symbol->getName();
+        });
+        if (findedFunc != m_funcs.end()) {
+            return std::make_pair(nullptr, false);
+        } else {
+            m_symbols.push_back(std::move(item));
+            return std::make_pair(m_symbols.back().get(), true);
+        }
     }
 }
 
 std::pair<FuncItem*, bool> BlockScope::insertFunc(std::unique_ptr<FuncItem>&& func) {
     func->setLevel(m_level);
     // 只在当前scope内插入symbolItem
-    auto finded = std::find_if(m_funcs.begin(), m_funcs.end(), [&func](const std::unique_ptr<FuncItem>& symbol) {
+    auto findedFunc = std::find_if(m_funcs.begin(), m_funcs.end(), [&func](const std::unique_ptr<FuncItem>& symbol) {
         return func->getName() == symbol->getName();
     });
-    if (finded != m_funcs.end()) {
-        return std::make_pair(finded->get(), false);
+
+    if (findedFunc != m_funcs.end()) {
+        return std::make_pair(findedFunc->get(), false);
     } else {
-        m_funcs.push_back(std::move(func));
-        return std::make_pair(m_funcs.back().get(), true);
+        auto findedSym = std::find_if(m_symbols.begin(), m_symbols.end(), [&func](const std::unique_ptr<SymbolTableItem>& symbol) {
+            return func->getName() == symbol->getName();
+        });
+        if (findedSym != m_symbols.end()) {
+            return std::make_pair(nullptr, false);
+        } else {
+            m_funcs.push_back(std::move(func));
+            return std::make_pair(m_funcs.back().get(), true);
+        }
     }
 }
 

@@ -44,11 +44,11 @@ private:
     typename ArrayType<Type>::InternalItem initValArray(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level);
 
     template <typename Type>
-    SymbolTableItem* exp(std::shared_ptr<VNodeBase> node);                                         // 表达式
-    void block(std::shared_ptr<VNodeBase> node);                                                   // 语句块
-    void blockItem(std::shared_ptr<VNodeBase> node);                                               // 语句块项
-    void stmt(std::shared_ptr<VNodeBase> node, BlockScopeType scopeType = BlockScopeType::NORMAL); // 语句
-    SymbolTableItem* lVal(std::shared_ptr<VNodeBase> node);                                        // 左值
+    SymbolTableItem* exp(std::shared_ptr<VNodeBase> node);  // 表达式
+    void block(std::shared_ptr<VNodeBase> node);            // 语句块
+    void blockItem(std::shared_ptr<VNodeBase> node);        // 语句块项
+    void stmt(std::shared_ptr<VNodeBase> node);             // 语句
+    SymbolTableItem* lVal(std::shared_ptr<VNodeBase> node); // 左值
     template <typename Type>
     SymbolTableItem* rVal(std::shared_ptr<VNodeBase> node); // 右值（生成式中依然是左值，只不过是右值的功能）
     void cond(std::shared_ptr<VNodeBase> node);             // 条件表达式

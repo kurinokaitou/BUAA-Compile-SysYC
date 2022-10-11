@@ -66,7 +66,7 @@ void Compiler::dumpError(std::filebuf& file) {
     }
     std::ostream os(&file);
     std::sort(Logger::s_errorDump.begin(), Logger::s_errorDump.end(), [](const ErrorLog& log1, const ErrorLog& log2) {
-        return log1.lineNum < log2.lineNum;
+        return (log1.lineNum == log2.lineNum) ? (log1.code < log2.code) : (log1.lineNum < log2.lineNum);
     });
     for (auto& log : Logger::s_errorDump) {
         os << log;
