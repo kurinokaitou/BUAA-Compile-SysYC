@@ -65,7 +65,7 @@ void Compiler::dumpError(std::filebuf& file) {
         throw std::runtime_error("Fail to open the dump error file!");
     }
     std::ostream os(&file);
-    std::sort(Logger::s_errorDump.begin(), Logger::s_errorDump.end(), [](const ErrorLog& log1, const ErrorLog& log2) {
+    std::sort(Logger::s_errorDump.begin(), Logger::s_errorDump.end(), [](const ErrorLog& log1, const ErrorLog& log2) -> bool {
         return (log1.lineNum == log2.lineNum) ? (log1.code < log2.code) : (log1.lineNum < log2.lineNum);
     });
     for (auto& log : Logger::s_errorDump) {
@@ -76,11 +76,13 @@ void Compiler::dumpError(std::filebuf& file) {
 int main(int argc, char** argv) {
     Compiler compiler;
     std::filebuf in;
+    int ret = 0;
 
-    //parseArgs(argc, argv);
+    parseArgs(argc, argv);
     if (!in.open(s_sourcePath, std::ios::in)) {
-        throw std::runtime_error("Fail to open the source file!");
+        std::cerr << "Fail to open the source file!" << std::endl;
+        ret = 1;
     }
-    compiler.firstPass(in);
-    return 0;
+    ret = compiler.firstPass(in) ? ret : 1;
+    return ret;
 }

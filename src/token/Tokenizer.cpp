@@ -31,6 +31,7 @@ SymbolEnum Tokenizer::readIdent() {
 }
 
 SymbolEnum Tokenizer::readInteger() {
+    SymbolEnum ret = SymbolEnum::UNKNOWN;
     if (m_currChar != '0') {
         while (isdigit(m_currChar)) {
             m_tokenStr += m_currChar;
@@ -38,19 +39,20 @@ SymbolEnum Tokenizer::readInteger() {
         }
         unextractChar();
         m_tokenValue = std::stoi(m_tokenStr);
-        return SymbolEnum::INTCON;
+        ret = SymbolEnum::INTCON;
     } else {
         m_tokenStr += m_currChar;
         extractChar();
         if (!isdigit(m_currChar)) {
             unextractChar();
             m_tokenValue = std::stoi(m_tokenStr);
-            return SymbolEnum::INTCON;
+            ret = SymbolEnum::INTCON;
         } else {
             // TODO: 前导零错误
-            return SymbolEnum::UNKNOWN;
+            ret = SymbolEnum::UNKNOWN;
         }
     }
+    return ret;
 }
 SymbolEnum Tokenizer::skipComment() {
     if (m_currChar == '/') { // 单行注释
@@ -114,7 +116,7 @@ SymbolEnum Tokenizer::readString() {
 }
 
 void Tokenizer::checkFormatChar() {
-    if (!(m_currChar == 32 || m_currChar == 33 || (m_currChar >= 40 && m_currChar <= 126))) {
+    if (!(m_currChar == ' ' || m_currChar == '!' || (m_currChar >= '(' && m_currChar <= '~'))) {
         if (m_currChar == '%') {
             extractChar();
             if (m_currChar != 'd') {
@@ -184,7 +186,7 @@ std::vector<Token>& Tokenizer::tokenize() {
     return m_tokenList;
 }
 
-SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) const {
+SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) {
     static const std::set<std::string> reservedWordSet{
         "const",
         "main",

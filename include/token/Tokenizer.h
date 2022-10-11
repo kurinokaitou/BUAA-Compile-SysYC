@@ -44,7 +44,7 @@ private:
 
 private:
     TokenIter makeToken(int lineNum, const SymbolEnum& symbolNum, const std::string& literal, int value = 0);
-    SymbolEnum getReservedWordSymbol(std::string& word) const;
+    static SymbolEnum getReservedWordSymbol(std::string& word);
     bool skipVacant();
     SymbolEnum skipComment();
     SymbolEnum readIdent();
