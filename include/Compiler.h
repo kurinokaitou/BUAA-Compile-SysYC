@@ -6,13 +6,13 @@
 #include <symbol/SymbolTable.h>
 #include <codegen/CodeGenerator.h>
 
-static std::string s_sourcePath = "intermediate/testfile.txt";
+static std::string s_sourcePath = "testfile.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
-static std::string s_dumpASTPath = "intermediate/ast.txt";
+static std::string s_dumpASTPath = "output.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
 static bool s_dumpToken = false;
-static bool s_dumpAST = false;
+static bool s_dumpAST = true;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
 

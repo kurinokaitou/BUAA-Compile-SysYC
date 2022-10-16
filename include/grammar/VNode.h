@@ -49,7 +49,7 @@ public:
         DBG_ERROR("Leaf node add child error");
     }
     virtual void dumpToFile(std::ostream& os) override {
-        for (int i = 1; i < m_level; i++) os << "  ";
+        // for (int i = 1; i < m_level; i++) os << "  ";
         os << getSymbolText(m_symbol) << " " << m_token.literal << "\n";
     }
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override {
@@ -96,7 +96,7 @@ public:
         m_currentChild = m_childrenNodes.begin();
     }
     virtual void dumpToFile(std::ostream& os) override {
-        for (int i = 1; i < m_level; i++) os << "  ";
+        // for (int i = 1; i < m_level; i++) os << "  ";
         os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override { return m_childrenNodes; };

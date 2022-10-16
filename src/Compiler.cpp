@@ -19,16 +19,16 @@ bool Compiler::firstPass(std::filebuf& file) {
             ast.close();
         }
 
-        m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
-        m_generator->generate();
-        if (s_dumpTable) {
-            dumpTable(table);
-            table.close();
-        }
-        if (s_dumpError) {
-            dumpError(error);
-            error.close();
-        }
+        // m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
+        // m_generator->generate();
+        // if (s_dumpTable) {
+        //     dumpTable(table);
+        //     table.close();
+        // }
+        // if (s_dumpError) {
+        //     dumpError(error);
+        //     error.close();
+        // }
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         return false;
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     std::filebuf in;
     int ret = 0;
 
-    parseArgs(argc, argv);
+    // parseArgs(argc, argv);
     if (!in.open(s_sourcePath, std::ios::in)) {
         std::cerr << "Fail to open the source file!" << std::endl;
         ret = 1;

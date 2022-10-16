@@ -21,8 +21,8 @@ std::shared_ptr<VNodeBase> Parser::getASTRoot() const {
 
 void Parser::traversalAST(std::filebuf& file) {
     std::ostream os(&file);
-    //postTraversal(m_astRoot, os);
-    preTraversal(m_astRoot, os);
+    postTraversal(m_astRoot, os);
+    //preTraversal(m_astRoot, os);
 }
 
 void Parser::postTraversal(std::shared_ptr<VNodeBase> node, std::ostream& os) {
