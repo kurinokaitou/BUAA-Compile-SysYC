@@ -2,32 +2,32 @@
 #include <iostream>
 
 TEST_F(SymbolTableTest, SimpleInsert) {
-    auto ret = table.insertItem<FuncItem>("func1", {.parentHandle = BlockScopeHandle(0), .retType = ValueTypeEnum::INT_TYPE});
+    auto ret = table.insertFunc("func1", ValueTypeEnum::INT_TYPE);
     table.pushScope(BlockScopeType::FUNC);
-    table.insertItem<ConstVarItem<IntType>>("a", {.parentHandle = BlockScopeHandle(1), .constVar = 1});
+    table.insertItem<ConstVarItem<IntType>>("a", 1);
     EXPECT_EQ(table.getCurrentScope().countSymbol(), 1);
     EXPECT_EQ(table.findItem("a")->getLevel(), 1);
     EXPECT_EQ(table.findFunc("func1")->getLevel(), 0);
 }
 
 TEST_F(SymbolTableTest, DoubleInsertInSameScope) {
-    auto ret1 = table.insertItem<FuncItem>("hello", {.parentHandle = BlockScopeHandle(0), .retType = ValueTypeEnum::INT_TYPE});
-    auto ret2 = table.insertItem<FuncItem>("hello", {.parentHandle = BlockScopeHandle(0), .retType = ValueTypeEnum::VOID_TYPE});
+    auto ret1 = table.insertFunc("hello", ValueTypeEnum::INT_TYPE);
+    auto ret2 = table.insertFunc("hello", ValueTypeEnum::VOID_TYPE);
     EXPECT_EQ(ret1.second, true);
     EXPECT_EQ(ret2.second, false);
 }
 
 TEST_F(SymbolTableTest, DoubleInsertInDiffScope) {
-    auto ret2 = table.insertItem<ConstVarItem<IntType>>("hello", {.parentHandle = table.getCurrentScopeHandle(), .constVar = 2});
-    auto ret1 = table.insertItem<FuncItem>("hello", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
+    auto ret2 = table.insertItem<ConstVarItem<IntType>>("hello", 2);
+    auto ret1 = table.insertFunc("hello", ValueTypeEnum::INT_TYPE);
     table.pushScope(BlockScopeType::FUNC);
     EXPECT_EQ(ret1.second, true);
     EXPECT_EQ(ret2.second, true);
 }
 
 TEST_F(SymbolTableTest, PushAndPopScope) {
-    table.insertItem<FuncItem>("item1_in_scope1", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
-    table.insertItem<FuncItem>("item2_in_scope2", {.parentHandle = table.getCurrentScopeHandle(), .retType = ValueTypeEnum::VOID_TYPE});
+    table.insertFunc("item1_in_scope1", ValueTypeEnum::INT_TYPE);
+    table.insertFunc("item2_in_scope2", ValueTypeEnum::VOID_TYPE);
     auto item1 = table.findFunc("item1_in_scope1");
     auto item2 = table.findFunc("item2_in_scope2");
     EXPECT_NE(item1, nullptr);
@@ -35,8 +35,7 @@ TEST_F(SymbolTableTest, PushAndPopScope) {
 }
 
 TEST_F(SymbolTableTest, ArrayTypeInsert) {
-    table.insertItem<ConstVarItem<ArrayType<IntType>>>("const int arr", {.parentHandle = table.getCurrentScopeHandle(),
-                                                                         .constVar = {{.values = {1, 3, 0, 4, 0, 0, 1, 0, 0}, .dimensions = {3, 3}}}});
+    table.insertItem<ConstVarItem<ArrayType<IntType>>>("const int arr", {{.values = {1, 3, 0, 4, 0, 0, 1, 0, 0}, .dimensions = {3, 3}}});
     SymbolTableItem* item = table.findItem("const int arr");
     auto arri2 = dynamic_cast<ConstVarItem<ArrayType<IntType>>*>(item);
 

@@ -16,6 +16,7 @@ public:
 
     template <typename ItemType>
     std::pair<ItemType*, bool> insertItem(const std::string& name, typename ItemType::Data data);
+    std::pair<FuncItem*, bool> insertFunc(const std::string& name, FuncItem::Data data);
     template <typename ItemType>
     ItemType* makeItem(typename ItemType::Data data);
     SymbolTableItem* findItem(const std::string& name);

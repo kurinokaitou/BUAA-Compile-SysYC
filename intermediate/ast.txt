@@ -1,22 +1,101 @@
 <CompUnit>
-VOIDTK void
+CONSTTK const
+INTTK int
+IDENFR const1
+ASSIGN =
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+COMMA ,
+IDENFR const2
+ASSIGN =
+MINU -
+<UnaryOp>
+INTCON 100
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+SEMICN ;
+<ConstDecl>
+INTTK int
+IDENFR change1
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
 <FuncType>
-IDENFR func
+IDENFR gets1
 LPARENT (
 INTTK int
-IDENFR a
+IDENFR var1
 <FuncFParam>
 COMMA ,
 INTTK int
-IDENFR b
-<FuncFParam>
-COMMA ,
-INTTK int
-IDENFR c
+IDENFR var2
 <FuncFParam>
 <FuncFParams>
 RPARENT )
   LBRACE {
+    IDENFR const1
+    <LVal>
+    ASSIGN =
+    INTCON 999
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR change1
+    <LVal>
+    ASSIGN =
+    IDENFR var1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR var2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+SEMICN ;
+    <Stmt>
+    RETURNTK return
+    LPARENT (
+    IDENFR change1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RPARENT )
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
   RBRACE }
   <Block>
 <FuncDef>
@@ -25,37 +104,22 @@ MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
-    IDENFR func
+    IDENFR change1
+    <LVal>
+    ASSIGN =
+    INTCON 10
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    PRINTFTK printf
     LPARENT (
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    COMMA ,
-    INTCON 2
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    COMMA ,
-    INTCON 3
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <FuncRParams>
+    STRCON "Hello World$"
     RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
     SEMICN ;
     <Stmt>
     RETURNTK return
@@ -66,7 +130,7 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-SEMICN ;
+    SEMICN ;
     <Stmt>
   RBRACE }
   <Block>

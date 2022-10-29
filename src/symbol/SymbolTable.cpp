@@ -4,8 +4,7 @@ SymbolTable::SymbolTable() :
     m_blockScopes.emplace_back(*this, BlockScopeType::GLOBAL, 0, BlockScopeHandle());
 }
 
-template <>
-std::pair<FuncItem*, bool> SymbolTable::insertItem<FuncItem>(const std::string& name, typename FuncItem::Data data) {
+std::pair<FuncItem*, bool> SymbolTable::insertFunc(const std::string& name, typename FuncItem::Data data) {
     if (std::is_base_of<SymbolTableItem, FuncItem>::value) {
         auto pair = getGlobalScope().insertFunc(std::unique_ptr<FuncItem>(new FuncItem(name, data)));
         return std::make_pair(dynamic_cast<FuncItem*>(pair.first), pair.second);

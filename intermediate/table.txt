@@ -1,8 +1,10 @@
+int const1 1
+int const2 -100
+int change1 1432345920
 
-void func(int a 0, int b 0, int c 0)
+int gets1(int var1 1432350560, int var2 1432348688)
 int main()
-int a 0
-int b 0
-int c 0
+int var1 1432350560
+int var2 1432348688
 
 

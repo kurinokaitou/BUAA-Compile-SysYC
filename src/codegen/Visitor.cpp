@@ -148,7 +148,7 @@ SymbolTableItem* Visitor::mulExp(std::shared_ptr<VNodeBase> node) {
         SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of plus or minus
         node->nextChild();
         auto unary = unaryExp<Type>(*node->getChildIter());
-        auto ret = MAKE_VAR();
+        auto ret = m_table.makeItem<VarItem<Type>>({});
         if (op == SymbolEnum::MULT) {
             // 生成乘法的代码
         } else if (op == SymbolEnum::DIV) {
@@ -302,25 +302,25 @@ bool Visitor::checkConvertiable(SymbolTableItem* item) {
 }
 
 template <typename Type>
-VarItem<Type>* Visitor::number(std::shared_ptr<VNodeBase> node) {
-    return MAKE_VAR();
+ConstVarItem<Type>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+    return m_table.makeItem<ConstVarItem<Type>>({});
 }
 
 template <>
-VarItem<IntType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+ConstVarItem<IntType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     auto lineNum = leafNode->getToken().lineNum;
     auto value = static_cast<typename IntType::InternalType>(leafNode->getToken().value);
-    auto number = m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value, .varItem = nullptr});
+    auto number = m_table.makeItem<ConstVarItem<IntType>>(value);
     // 生成代码
     return number;
 }
 
 template <>
-VarItem<CharType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
+ConstVarItem<CharType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     auto value = static_cast<typename CharType::InternalType>(leafNode->getToken().value);
-    auto number = m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = value, .varItem = nullptr});
+    auto number = m_table.makeItem<ConstVarItem<CharType>>(value);
     // 生成代码
     return number;
 }
@@ -427,7 +427,6 @@ typename Type::InternalType Visitor::constInitVal(std::shared_ptr<VNodeBase> nod
     return constExp<Type>(*node->getChildIter());
 };
 
-// TODO: char 模板化
 template <typename Type>
 typename ArrayType<Type>::InternalType Visitor::constInitValArray(std::shared_ptr<VNodeBase> node, std::vector<size_t>& dims, int level) {
     typename ArrayType<Type>::InternalType values;
@@ -532,14 +531,11 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
     std::pair<SymbolTableItem*, bool> res;
     if (dims.size() == 0) {
         auto value = constInitVal<Type>(*node->getChildIter(), dims, 0);
-        res = m_table.insertItem<ConstVarItem<Type>>(identName,
-                                                     {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                      .constVar = value});
+        res = m_table.insertItem<ConstVarItem<Type>>(identName, value);
 
     } else {
         auto value = constInitValArray<Type>(*node->getChildIter(), dims, 0);
-        res = m_table.insertItem<ConstVarItem<ArrayType<Type>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                            .constVar = value});
+        res = m_table.insertItem<ConstVarItem<ArrayType<Type>>>(identName, value);
     }
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
@@ -562,54 +558,25 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
         if (!node->nextChild(3, false)) break; // jump '[dim]'
     }
     std::pair<SymbolTableItem*, bool> res(nullptr, true);
-    if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
-        MultiFlatArray<typename Type::InternalType> valueArray;
-        typename Type::InternalType valueVar = 0;
-        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
-            node->nextChild();
-            if (dims.size() == 0) {
-                valueVar = initValGlobal<Type>(*node->getChildIter(), dims, 0);
-            } else {
-                valueArray = initValGlobalArray<Type>(*node->getChildIter(), dims, 0);
-            }
-        }
-        if (dims.size() == 0) {
-            res = m_table.insertItem<VarItem<Type>>(identName,
-                                                    {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                     .initVar = valueVar,
-                                                     .varItem = nullptr});
-        } else {
-            res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName,
-                                                               {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                .initVar = valueArray,
-                                                                .varItem = {{.values = {}, .dimensions = dims}}});
-        }
 
-    } else {
-        MultiFlatArray<SymbolTableItem*> itemArray;
-        SymbolTableItem* item;
-        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
-            node->nextChild();
-            if (dims.size() == 0) {
-                item = initVal<Type>(*node->getChildIter(), dims, 0);
-            } else {
-                itemArray = initValArray<Type>(*node->getChildIter(), dims, 0);
-            }
-        } else {
-            itemArray.setDimensions(dims);
-        }
+    MultiFlatArray<SymbolTableItem*> itemArray;
+    SymbolTableItem* item;
+    if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
+        node->nextChild();
         if (dims.size() == 0) {
-            res = m_table.insertItem<VarItem<Type>>(identName,
-                                                    {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                     .initVar = 0,
-                                                     .varItem = item});
+            item = initVal<Type>(*node->getChildIter(), dims, 0);
         } else {
-            res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName,
-                                                               {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                .initVar = {{.values = {}, .dimensions = dims}},
-                                                                .varItem = itemArray});
+            itemArray = initValArray<Type>(*node->getChildIter(), dims, 0);
         }
+    } else {
+        itemArray.setDimensions(dims);
     }
+    if (dims.size() == 0) {
+        res = m_table.insertItem<VarItem<Type>>(identName, item);
+    } else {
+        res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName, itemArray);
+    }
+
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
     }
@@ -637,7 +604,7 @@ void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     std::string identName = "main";
     int lineNum = leafNode->getToken().lineNum;
-    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = ValueTypeEnum::INT_TYPE});
+    auto res = m_table.insertFunc(identName, ValueTypeEnum::INT_TYPE);
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
     }
@@ -661,7 +628,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     std::string identName = leafNode->getToken().literal;
     int lineNum = leafNode->getToken().lineNum;
-    auto res = m_table.insertItem<FuncItem>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .retType = retType});
+    auto res = m_table.insertFunc(identName, retType);
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
         return;
@@ -720,25 +687,21 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
     bool valid = true;
     if (type == ValueTypeEnum::INT_TYPE) {
         if (dims.size() == 0) {
-            auto res = m_table.insertItem<VarItem<IntType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
+            auto res = m_table.insertItem<VarItem<IntType>>(identName, nullptr);
             ret = res.first;
             valid = res.second;
         } else {
-            auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                                   .initVar = {{.values = {}, .dimensions = dims}},
-                                                                                   .varItem = {{.values = {}, .dimensions = dims}}});
+            auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {{.values = {}, .dimensions = dims}});
             ret = res.first;
             valid = res.second;
         }
     } else if (type == ValueTypeEnum::CHAR_TYPE) {
         if (dims.size() == 0) {
-            auto res = m_table.insertItem<VarItem<CharType>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(), .initVar = 0, .varItem = nullptr});
+            auto res = m_table.insertItem<VarItem<CharType>>(identName, nullptr);
             ret = res.first;
             valid = res.second;
         } else {
-            auto res = m_table.insertItem<VarItem<ArrayType<CharType>>>(identName, {.parentHandle = m_table.getCurrentScopeHandle(),
-                                                                                    .initVar = {{.values = {}, .dimensions = dims}},
-                                                                                    .varItem = {{.values = {}, .dimensions = dims}}});
+            auto res = m_table.insertItem<VarItem<ArrayType<CharType>>>(identName, {{.values = {}, .dimensions = dims}});
             ret = res.first;
             valid = res.second;
         }
@@ -748,7 +711,6 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
     }
     ret->setParam();
     return ret;
-    return nullptr;
 }
 
 void Visitor::block(std::shared_ptr<VNodeBase> node) {

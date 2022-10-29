@@ -3,14 +3,14 @@
 #include <symbol/SymbolTable.h>
 #include <symbol/ValueType.h>
 #include <grammar/VNode.h>
-#define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({.parentHandle = m_table.getCurrentScopeHandle()})
-#define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({.parentHandle = m_table.getCurrentScopeHandle()})
-#define MAKE_VOID_VAR() m_table.makeItem<VarItem<VoidType>>({.parentHandle = m_table.getCurrentScopeHandle()})
-#define MAKE_INT_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<IntType>>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = {}, .varItem = {{.values = {}, .dimensions = dims}}})
-#define MAKE_CHAR_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<CharType>>>({.parentHandle = m_table.getCurrentScopeHandle(), .initVar = {}, .varItem = {{.values = {}, .dimensions = dims}}})
+#define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({})
+#define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({})
+#define MAKE_VOID_VAR() m_table.makeItem<VarItem<VoidType>>({})
+#define MAKE_INT_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<IntType>>>({{.values = {}, .dimensions = dims}})
+#define MAKE_CHAR_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<CharType>>>({{.values = {}, .dimensions = dims}})
 
-#define MAKE_VAR() m_table.makeItem<VarItem<Type>>({.parentHandle = m_table.getCurrentScopeHandle()})
-#define MAKE_CONST_VAR() m_table.makeItem<ConstVarItem<Type>>({.parentHandle = m_table.getCurrentScopeHandle()})
+#define MAKE_VAR() m_table.makeItem<VarItem<Type>>({})
+#define MAKE_CONST_VAR() m_table.makeItem<ConstVarItem<Type>>(0)
 
 class Visitor {
 public:
@@ -53,7 +53,7 @@ private:
     SymbolTableItem* rVal(std::shared_ptr<VNodeBase> node); // 右值（生成式中依然是左值，只不过是右值的功能）
     void cond(std::shared_ptr<VNodeBase> node);             // 条件表达式
     template <typename Type>
-    VarItem<Type>* number(std::shared_ptr<VNodeBase> node); // 数字
+    ConstVarItem<Type>* number(std::shared_ptr<VNodeBase> node); // 数字
     template <typename Type>
     SymbolTableItem* primaryExp(std::shared_ptr<VNodeBase> node); // 基本表达式
     template <typename Type>

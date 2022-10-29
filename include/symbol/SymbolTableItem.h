@@ -15,8 +15,8 @@ class ValueType;
 
 class SymbolTableItem {
 public:
-    SymbolTableItem(const std::string& name, BlockScopeHandle handle) :
-        m_name(name), m_scopeHandle(handle){};
+    SymbolTableItem(const std::string& name) :
+        m_name(name){};
     virtual ~SymbolTableItem() {}
     virtual void dumpSymbolItem(std::ostream& os) {
         os << m_name;
@@ -26,6 +26,7 @@ public:
     bool isParam() const { return m_isParam; }
     void setParam() { m_isParam = true; }
     void setLevel(int level) { m_level = level; }
+    void setScopeHandle(BlockScopeHandle handle) { m_scopeHandle = handle; }
     int getLevel() const { return m_level; }
     virtual ValueType* getType() = 0;
     virtual bool isChangble() = 0;
@@ -42,8 +43,8 @@ private:
 template <typename Type>
 class TypedItem : public SymbolTableItem {
 public:
-    explicit TypedItem(const std::string& name, BlockScopeHandle handle) :
-        SymbolTableItem(name, handle) {}
+    explicit TypedItem(const std::string& name) :
+        SymbolTableItem(name) {}
     virtual ~TypedItem() {}
     virtual ValueType* getType() { return &m_type; };
     virtual bool isChangble() = 0;
@@ -55,13 +56,10 @@ protected:
 template <typename Type>
 class VarItem : public TypedItem<Type> {
 public:
-    using Data = struct {
-        BlockScopeHandle parentHandle;
-        typename Type::InternalType initVar;
-        typename Type::InternalItem varItem;
-    };
-    explicit VarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_var(data.initVar), m_varItem(data.varItem){};
+    using Data = typename Type::InternalItem;
+
+    explicit VarItem(const std::string& name, typename Type::InternalItem varItem) :
+        TypedItem<Type>(name), m_varItem(varItem){};
     virtual size_t getSize() override { return TypedItem<Type>::m_type.valueSize(); };
     virtual ~VarItem() {}
     virtual void dumpSymbolItem(std::ostream& os) override {
@@ -81,12 +79,9 @@ private:
 template <typename Type>
 class ConstVarItem : public TypedItem<Type> {
 public:
-    using Data = struct {
-        BlockScopeHandle parentHandle;
-        typename Type::InternalType constVar;
-    };
-    explicit ConstVarItem(const std::string& name, Data data) :
-        TypedItem<Type>(name, data.parentHandle), m_constVar(data.constVar){};
+    using Data = typename Type::InternalType;
+    explicit ConstVarItem(const std::string& name, typename Type::InternalType constVar) :
+        TypedItem<Type>(name), m_constVar(constVar){};
     virtual size_t getSize() override { return TypedItem<Type>::m_type.valueSize(); };
     virtual ~ConstVarItem() {}
     typename Type::InternalType getConstVar() const { return m_constVar; }
@@ -105,12 +100,9 @@ private:
 class IntType;
 class FuncItem : public SymbolTableItem {
 public:
-    using Data = struct {
-        BlockScopeHandle parentHandle;
-        ValueTypeEnum retType;
-    };
-    explicit FuncItem(const std::string& name, Data data) :
-        SymbolTableItem(name, data.parentHandle), m_retType(data.retType){};
+    using Data = ValueTypeEnum;
+    explicit FuncItem(const std::string& name, ValueTypeEnum retType) :
+        SymbolTableItem(name), m_retType(retType){};
     std::vector<SymbolTableItem*>& getParams() { return m_params; }
 
     virtual size_t getSize() override { return 0; };
