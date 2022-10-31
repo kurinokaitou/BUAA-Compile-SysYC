@@ -886,14 +886,6 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
     if (finded) {
         auto type = finded->getType()->getValueTypeEnum();
         bool findedIsArray = finded->getType()->isArray();
-        // bool rValIsArray = false;
-        // if (type == ValueTypeEnum::INT_TYPE) {
-        //     rValIsArray = std::is_base_of<ArrayType<IntType>, Type>::value;
-        // } else {
-        //     rValIsArray = std::is_base_of<ArrayType<CharType>, Type>::value;
-        // }
-        // if (rValIsArray != findedIsArray) return nullptr;
-
         if (!findedIsArray) {
             return finded;
         } else {
