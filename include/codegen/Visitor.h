@@ -3,6 +3,7 @@
 #include <symbol/SymbolTable.h>
 #include <symbol/ValueType.h>
 #include <grammar/VNode.h>
+#include <ir/IR.h>
 #define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({})
 #define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({})
 #define MAKE_VOID_VAR() m_table.makeItem<VarItem<VoidType>>({})
@@ -83,7 +84,7 @@ private:
 
 private:
     template <typename Type>
-    typename Type::InternalType calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
+    std::pair<typename Type::InternalType, bool> calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
     std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type);
     template <typename Type>
     std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item);
@@ -93,6 +94,7 @@ private:
 
 private:
     SymbolTable& m_table;
+    CodeContext m_ctx;
     std::shared_ptr<VNodeBase> m_astRoot;
 };
 

@@ -2,7 +2,7 @@
 #include <symbol/ValueType.h>
 template <>
 size_t VarItem<ArrayType<IntType>>::getSize() {
-    return m_var.spaceSize(TypedItem<ArrayType<IntType>>::m_type.valueSize());
+    return m_varItem.spaceSize(TypedItem<ArrayType<IntType>>::m_type.valueSize());
 };
 
 template <>

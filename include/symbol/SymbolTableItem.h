@@ -66,13 +66,11 @@ public:
         TypedItem<Type>::m_type.dumpType(os);
         os << " ";
         SymbolTableItem::dumpSymbolItem(os);
-        os << " " << m_var;
     }
     virtual bool isChangble() override { return true; }
     const typename Type::InternalItem& getVarItem() const { return m_varItem; }
 
 private:
-    typename Type::InternalType m_var;
     typename Type::InternalItem m_varItem;
 };
 

@@ -10,8 +10,6 @@
 #include <symbol/SymbolTableItem.h>
 
 struct Use;
-class IrFunc;
-
 class Value {
 public:
     explicit Value(IRType type) :
@@ -31,22 +29,66 @@ protected:
     std::vector<std::unique_ptr<Use>> m_uses;
 };
 
-class BasicBlock : public Value {
-    std::vector<BasicBlock*> pred;
-    BasicBlock* idom;
-    std::set<BasicBlock*> dom_by;  // 支配它的节点集
-    std::vector<BasicBlock*> doms; // 它支配的节点集
-    int dom_level;                 // dom树中的深度，根深度为0
-    bool vis;                      // 各种算法中用到，标记是否访问过，算法开头应把所有vis置false(调用IrFunc::clear_all_vis)
-    //   ilist<User> Users;
-    //   ilist<User> mem_phis;  // 元素都是MemPhiUser
-};
-
 class Inst : public Value {
+    friend class BasicBlock;
+
 public:
     Inst(IRType type) :
         Value(type){};
     virtual std::vector<Value*> getOperands() { return {}; };
+    virtual const std::string& toString() = 0;
+};
+
+class BasicBlock {
+public:
+    BasicBlock() = default;
+    std::vector<BasicBlock*>& getPreds() { return m_pred; }
+    std::array<BasicBlock*, 2> getSuccs();
+    Inst* pushBackInst(Inst* inst) {
+        m_insts.push_back(std::unique_ptr<Inst>(inst));
+        return m_insts.back().get();
+    };
+
+private:
+    std::vector<BasicBlock*> m_pred;
+    bool m_vis{false};
+    std::vector<std::unique_ptr<Inst>> m_insts;
+};
+
+class Function {
+public:
+    explicit Function(FuncItem* funcItem) :
+        m_funcItem(funcItem) {}
+    BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
+        m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
+        return m_basicBlocks.back().get();
+    }
+    void addCallee(Function* func) { m_callee.insert(func); }
+    void addCaller(Function* func) { m_caller.insert(func); }
+
+private:
+    FuncItem* m_funcItem{nullptr};
+    std::vector<std::unique_ptr<BasicBlock>> m_basicBlocks;
+    std::set<Function*> m_callee;
+    std::set<Function*> m_caller;
+    bool m_isBuiltin{false};
+};
+
+class Module {
+public:
+    Function* addFunc(Function* func) {
+        m_funcs.push_back(std::unique_ptr<Function>(func));
+        return m_funcs.back().get();
+    }
+
+    SymbolTableItem* addGlobVar(SymbolTableItem* item) {
+        m_globalVariables.push_back(item);
+        return item;
+    }
+
+private:
+    std::vector<std::unique_ptr<Function>> m_funcs;
+    std::vector<SymbolTableItem*> m_globalVariables;
 };
 
 struct Use {
@@ -77,6 +119,7 @@ struct Use {
         if (value) value->removeUse(this);
     }
 };
+
 class BinaryInst : public Inst {
 public:
     BinaryInst(IRType type, Value* lhs, Value* rhs) :
@@ -180,6 +223,8 @@ private:
 };
 
 struct BranchInst : public Inst {
+    friend class BasicBlock;
+
 public:
     explicit BranchInst(Value* cond, BasicBlock* left, BasicBlock* right) :
         Inst(IRType::Branch), m_cond(cond, this), m_left(left), m_right(right) {}
@@ -193,6 +238,8 @@ private:
 };
 
 class JumpInst : public Inst {
+    friend class BasicBlock;
+
 public:
     explicit JumpInst(BasicBlock* next) :
         Inst(IRType::Jump), m_next(next) {}
@@ -202,6 +249,8 @@ private:
 };
 
 class ReturnInst : public Inst {
+    friend class BasicBlock;
+
 public:
     explicit ReturnInst(Value* ret) :
         Inst(IRType::Return), m_ret(ret, this) {}
@@ -211,6 +260,8 @@ private:
 };
 
 struct AccessInst : Inst {
+    friend class BasicBlock;
+
 public:
     explicit AccessInst(IRType type, SymbolTableItem* lhs_sym, Value* arr, Value* index) :
         Inst(type), m_lhsSym(lhs_sym), m_arr(arr, this), m_index(index, this) {}
@@ -250,11 +301,11 @@ private:
 
 class CallInst : public Inst {
 public:
-    explicit CallInst(IrFunc* func) :
+    explicit CallInst(Function* func) :
         Inst(IRType::Call), m_func(func) {}
 
 private:
-    IrFunc* m_func;
+    Function* m_func;
     std::vector<Use> m_args;
 };
 
@@ -265,6 +316,13 @@ public:
 
 private:
     SymbolTableItem* m_sym;
+};
+
+struct CodeContext {
+    Module module;
+    Function* function;
+    BasicBlock* basicBlock;
+    std::vector<std::pair<BasicBlock*, BasicBlock*>> loop_stk; // <continue, break>
 };
 
 #endif

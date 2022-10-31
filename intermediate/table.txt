@@ -1,10 +1,7 @@
-int const1 1
-int const2 -100
-int change1 1432345920
 
-int gets1(int var1 1432350560, int var2 1432348688)
 int main()
-int var1 1432350560
-int var2 1432348688
-
+int k 1
+int n
+array<int> a [2] 2 3 
+int var 3
 
