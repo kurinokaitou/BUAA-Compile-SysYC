@@ -5,6 +5,7 @@ bool Compiler::firstPass(std::filebuf& file) {
     std::filebuf ast;
     std::filebuf table;
     std::filebuf error;
+    std::filebuf ir;
     try {
         m_tokenizer = std::unique_ptr<Tokenizer>(new Tokenizer(file));
         m_tokenList = m_tokenizer->tokenize();
@@ -21,6 +22,10 @@ bool Compiler::firstPass(std::filebuf& file) {
 
         m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
         m_generator->generate();
+        if (s_dumpIr) {
+            dumpIr(ir);
+            ir.close();
+        }
         if (s_dumpTable) {
             dumpTable(table);
             table.close();
@@ -71,6 +76,13 @@ void Compiler::dumpError(std::filebuf& file) {
     for (auto& log : Logger::s_errorDump) {
         os << log;
     }
+}
+
+void Compiler::dumpIr(std::filebuf& file) {
+    if (!file.open(s_dumpIrPath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the ir file!");
+    }
+    m_generator->dumpIr(file);
 }
 
 int main(int argc, char** argv) {

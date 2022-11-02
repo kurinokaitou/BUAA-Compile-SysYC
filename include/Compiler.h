@@ -11,10 +11,12 @@ static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
+static std::string s_dumpIrPath = "intermediate/ir.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
+static bool s_dumpIr = false;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
@@ -56,11 +58,17 @@ static void parseArgs(int argc, char** argv) {
             s_dumpError = true;
             continue;
         }
+        if (argv[i] == std::string("--dump-ir")) {
+            s_dumpIrPath = argv[++i];
+            s_dumpIr = true;
+            continue;
+        }
         if (argv[i] == std::string("--test")) {
             s_dumpToken = true;
             s_dumpAST = true;
             s_dumpTable = true;
             s_dumpError = true;
+            s_dumpIr = true;
             break;
         }
         s_sourcePath = std::string(argv[i]);
@@ -76,6 +84,7 @@ public:
     void dumpAST(std::filebuf& file);
     void dumpTable(std::filebuf& file);
     static void dumpError(std::filebuf& file);
+    void dumpIr(std::filebuf& file);
 
 private:
     std::unique_ptr<Tokenizer> m_tokenizer;

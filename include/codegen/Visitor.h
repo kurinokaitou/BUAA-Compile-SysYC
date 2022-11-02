@@ -7,15 +7,15 @@
 #define MAKE_INT_VAR() m_table.makeItem<VarItem<IntType>>({})
 #define MAKE_CHAR_VAR() m_table.makeItem<VarItem<CharType>>({})
 #define MAKE_VOID_VAR() m_table.makeItem<VarItem<VoidType>>({})
-#define MAKE_INT_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<IntType>>>({{.values = {}, .dimensions = dims}})
-#define MAKE_CHAR_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<CharType>>>({{.values = {}, .dimensions = dims}})
+#define MAKE_INT_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<IntType>>>({{{{}, dims}}, {{{}, dims}}, false})
+#define MAKE_CHAR_ARRAY(dims) m_table.makeItem<VarItem<ArrayType<CharType>>>({{{{}, dims}}, {{{}, dims}}, false})
 
 #define MAKE_VAR() m_table.makeItem<VarItem<Type>>({})
 #define MAKE_CONST_VAR() m_table.makeItem<ConstVarItem<Type>>(0)
 
 class Visitor {
 public:
-    explicit Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table);
+    explicit Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, CodeContext& ctx);
     void visit();
 
 private:
@@ -85,16 +85,13 @@ private:
 private:
     template <typename Type>
     std::pair<typename Type::InternalType, bool> calConstExp(std::shared_ptr<VNodeBase> node); // 计算常量表达式
-    std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type);
-    template <typename Type>
-    std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item);
     SymbolTableItem* makeTempItem(ValueTypeEnum type, bool isArray = false, std::vector<size_t>&& dims = {});
     template <typename Type>
     bool checkConvertiable(SymbolTableItem* item);
 
 private:
     SymbolTable& m_table;
-    CodeContext m_ctx;
+    CodeContext& m_ctx;
     std::shared_ptr<VNodeBase> m_astRoot;
 };
 

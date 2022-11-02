@@ -25,7 +25,7 @@ public:
     }
     virtual bool isArray() override { return false; }
     virtual void dumpType(std::ostream& os) const override {
-        os << "int";
+        os << "i32";
     }
 };
 
@@ -39,7 +39,7 @@ public:
     }
     virtual bool isArray() override { return false; }
     virtual void dumpType(std::ostream& os) const override {
-        os << "char";
+        os << "i8";
     }
 };
 
@@ -72,6 +72,8 @@ public:
         m_data.values.assign(val, n);
     }
 
+    std::vector<T>& getValues() { return m_data.values; }
+
     T& operator[](std::vector<size_t>&& pos) {
         size_t index = 0;
         int diff = m_data.dimensions.size() - pos.size();
@@ -89,12 +91,15 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const MultiFlatArray<T>& array) {
-        for (auto dim : array.m_data.dimensions) {
-            os << "[" << dim << "]";
-        }
-        os << " ";
-        for (auto val : array.m_data.values) {
-            os << val << " ";
+        if (!array.m_data.values.empty()) {
+            os << " [";
+            for (auto val = array.m_data.values.begin(); val != array.m_data.values.end(); val++) {
+                os << *val;
+                if (val != array.m_data.values.end() - 1) {
+                    os << ", ";
+                }
+            }
+            os << "]";
         }
         return os;
     }
@@ -140,14 +145,40 @@ public:
     }
     virtual bool isArray() override { return true; }
     virtual void dumpType(std::ostream& os) const override {
-        os << "array<";
         m_basicType.dumpType(os);
-        os << ">";
     }
 
 private:
     Type m_basicType;
 };
+
+template <typename Type>
+static std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item) {
+    if (item->isChangble()) {
+        auto lValArray = dynamic_cast<VarItem<ArrayType<Type>>*>(item);
+        if (lValArray) {
+            return lValArray->getVarItem().getDimensions();
+        } else {
+            return {};
+        }
+
+    } else {
+        auto lValArray = dynamic_cast<ConstVarItem<ArrayType<Type>>*>(item);
+        if (lValArray) {
+            return lValArray->getConstVar().getDimensions();
+        } else {
+            return {};
+        }
+    }
+}
+
+static std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item) {
+    if (item->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
+        return getArrayItemDimensions<IntType>(item);
+    } else {
+        return getArrayItemDimensions<CharType>(item);
+    }
+}
 
 template <typename T, size_t N>
 class MultiArray {

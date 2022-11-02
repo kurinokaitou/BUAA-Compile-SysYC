@@ -39,7 +39,6 @@ TEST_F(SymbolTableTest, ArrayTypeInsert) {
     SymbolTableItem* item = table.findItem("const int arr");
     auto arri2 = dynamic_cast<ConstVarItem<ArrayType<IntType>>*>(item);
 
-    EXPECT_EQ(arri2->getSize(), 36);
     EXPECT_EQ((arri2->getConstVar()[{0, 0}]), 1);
     EXPECT_EQ((arri2->getConstVar()[{0, 1}]), 3);
     EXPECT_EQ((arri2->getConstVar()[{1, 0}]), 4);

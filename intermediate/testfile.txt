@@ -1,8 +1,15 @@
-int main(){
-    const int k = 1;
-    int n = k;
-    const int a[2] = {2,3};
-    const int var = a[k];
-    func(1,2,3);
-    return 0
+int a = 1;
+const int c = 2;
+int arr[2][2][2] = {{{1, 2}, {3, 4}}, {{1, 2}, {3, 4}}};
+
+int add(int a, int b, int c[]) {
+    int d = a + b;
+    c[0] = d;
+    return d;
+}
+
+int main() {
+    int var = 1;
+    const int var2 = 2;
+    printf("%d", var);
 }

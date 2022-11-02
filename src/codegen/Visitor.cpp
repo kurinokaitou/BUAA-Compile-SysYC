@@ -10,8 +10,8 @@
 #define DBG_PROBE_VAL(val, expr)
 #endif
 
-Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table) :
-    m_astRoot(astRoot), m_table(table) {}
+Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, CodeContext& ctx) :
+    m_astRoot(astRoot), m_table(table), m_ctx(ctx) {}
 
 void Visitor::visit() {
     if (m_astRoot->getType() == VType::VN) {
@@ -36,7 +36,6 @@ bool Visitor::expect(std::shared_ptr<VNodeBase> node, SymbolEnum symbolEnum) {
 }
 
 void Visitor::compUnit(std::shared_ptr<VNodeBase> node) {
-    // TODO: codegen global scope
     while (expect(*node->getChildIter(), VNodeEnum::DECL)) {
         decl(*node->getChildIter());
         if (!node->nextChild()) break;
@@ -118,7 +117,9 @@ template <typename Type>
 SymbolTableItem* Visitor::addExp(std::shared_ptr<VNodeBase> node) {
     auto res = calConstExp<Type>(node);
     if (res.second) {
-        return m_table.makeItem<ConstVarItem<Type>>(res.first);
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
         if (expect(*node->getChildIter(), VNodeEnum::MULEXP)) {
             return mulExp<Type>(*node->getChildIter());
@@ -146,7 +147,9 @@ template <typename Type>
 SymbolTableItem* Visitor::mulExp(std::shared_ptr<VNodeBase> node) {
     auto res = calConstExp<Type>(node);
     if (res.second) {
-        return m_table.makeItem<ConstVarItem<Type>>(res.first);
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
         node->resetIter();
         if (expect(*node->getChildIter(), VNodeEnum::UNARYEXP)) {
@@ -177,7 +180,9 @@ template <typename Type>
 SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
     auto res = calConstExp<Type>(node);
     if (res.second) {
-        return m_table.makeItem<ConstVarItem<Type>>(res.first);
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
         node->resetIter();
         if (expect(*node->getChildIter(), VNodeEnum::PRIMARYEXP)) {
@@ -334,7 +339,6 @@ ConstVarItem<IntType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto lineNum = leafNode->getToken().lineNum;
     auto value = static_cast<typename IntType::InternalType>(leafNode->getToken().value);
     auto number = m_table.makeItem<ConstVarItem<IntType>>(value);
-    // 生成代码
     return number;
 }
 
@@ -343,7 +347,6 @@ ConstVarItem<CharType>* Visitor::number(std::shared_ptr<VNodeBase> node) {
     auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
     auto value = static_cast<typename CharType::InternalType>(leafNode->getToken().value);
     auto number = m_table.makeItem<ConstVarItem<CharType>>(value);
-    // 生成代码
     return number;
 }
 
@@ -569,14 +572,33 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
     }
     node->nextChild(); // jump '='
     std::pair<SymbolTableItem*, bool> res;
-    if (dims.size() == 0) {
-        auto value = constInitVal<Type>(*node->getChildIter(), dims, 0);
-        res = m_table.insertItem<ConstVarItem<Type>>(identName, value);
+    typename Type::InternalType var;
+    MultiFlatArray<typename Type::InternalType> varArray;
+    bool notArray = dims.size() == 0;
+    if (notArray) {
+        var = constInitVal<Type>(*node->getChildIter(), dims, 0);
+        res = m_table.insertItem<ConstVarItem<Type>>(identName, var);
 
     } else {
-        auto value = constInitValArray<Type>(*node->getChildIter(), dims, 0);
-        res = m_table.insertItem<ConstVarItem<ArrayType<Type>>>(identName, value);
+        varArray = constInitValArray<Type>(*node->getChildIter(), dims, 0);
+        res = m_table.insertItem<ConstVarItem<ArrayType<Type>>>(identName, varArray);
     }
+
+    /*---------------------------------codegen------------------------------------*/
+    if (m_table.getCurrentScope().getType() != BlockScopeType::GLOBAL) {
+        auto inst = m_ctx.basicBlock->pushBackInst(new AllocaInst(res.first));
+        if (notArray) {
+            m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(0)));
+        } else {
+            for (auto& var : varArray.getValues()) {
+                m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(0)));
+            }
+        }
+    } else {
+        m_ctx.module.addGlobalVar(res.first);
+    }
+    /*----------------------------------------------------------------------------*/
+
     if (!res.second) {
         Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
     }
@@ -599,26 +621,68 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
     }
     std::pair<SymbolTableItem*, bool> res(nullptr, true);
 
-    MultiFlatArray<SymbolTableItem*> itemArray;
-    SymbolTableItem* item;
-    if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
-        node->nextChild();
-        if (dims.size() == 0) {
-            item = initVal<Type>(*node->getChildIter(), dims, 0);
+    if (m_table.getCurrentScope().getType() == BlockScopeType::GLOBAL) {
+        MultiFlatArray<typename Type::InternalType> varArray;
+        typename Type::InternalType var;
+        bool hasInit = false;
+        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
+            node->nextChild();
+            hasInit = true;
+            if (dims.size() == 0) {
+                var = constInitVal<Type>(*node->getChildIter(), dims, 0);
+            } else {
+                varArray = constInitValArray<Type>(*node->getChildIter(), dims, 0);
+            }
         } else {
-            itemArray = initValArray<Type>(*node->getChildIter(), dims, 0);
+            varArray.setDimensions(dims);
+        }
+        if (dims.size() == 0) {
+            res = m_table.insertItem<VarItem<Type>>(identName, {nullptr, var, hasInit});
+        } else {
+            res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName, {{{.values = {}, .dimensions = varArray.getDimensions()}}, varArray, hasInit});
+        }
+        /*---------------------------------codegen------------------------------------*/
+        m_ctx.module.addGlobalVar(res.first);
+        /*----------------------------------------------------------------------------*/
+        if (!res.second) {
+            Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
         }
     } else {
-        itemArray.setDimensions(dims);
-    }
-    if (dims.size() == 0) {
-        res = m_table.insertItem<VarItem<Type>>(identName, item);
-    } else {
-        res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName, itemArray);
-    }
-
-    if (!res.second) {
-        Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+        MultiFlatArray<SymbolTableItem*> itemArray;
+        SymbolTableItem* item;
+        bool hasInit = false;
+        bool notArray = dims.size() == 0;
+        if (expect(*node->getChildIter(), SymbolEnum::ASSIGN)) {
+            node->nextChild();
+            hasInit = true;
+            if (notArray) {
+                item = initVal<Type>(*node->getChildIter(), dims, 0);
+            } else {
+                itemArray = initValArray<Type>(*node->getChildIter(), dims, 0);
+            }
+        } else {
+            itemArray.setDimensions(dims);
+        }
+        if (notArray) {
+            res = m_table.insertItem<VarItem<Type>>(identName, {item, 0, hasInit});
+        } else {
+            res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName, {itemArray, {}, hasInit});
+        }
+        /*---------------------------------codegen------------------------------------*/
+        auto inst = m_ctx.basicBlock->pushBackInst(new AllocaInst(res.first));
+        if (hasInit) {
+            if (notArray) {
+                m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(0)));
+            } else {
+                for (auto& item : itemArray.getValues()) {
+                    m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(0)));
+                }
+            }
+        }
+        /*----------------------------------------------------------------------------*/
+        if (!res.second) {
+            Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
+        }
     }
 }
 
@@ -651,6 +715,10 @@ void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
     node->nextChild(2); // jump MAINTK & '('
     m_table.pushScope(BlockScopeType::FUNC);
     m_table.getCurrentScope().setFuncItem(res.first);
+    /*---------------------------------codegen------------------------------------*/
+    m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
+    m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
+    /*----------------------------------------------------------------------------*/
     std::vector<SymbolTableItem*> params;
     if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
         params = funcFParams(*node->getChildIter());
@@ -731,21 +799,21 @@ SymbolTableItem* Visitor::funcFParam(std::shared_ptr<VNodeBase> node) {
     bool valid = true;
     if (type == ValueTypeEnum::INT_TYPE) {
         if (dims.size() == 0) {
-            auto res = m_table.insertItem<VarItem<IntType>>(identName, nullptr);
+            auto res = m_table.insertItem<VarItem<IntType>>(identName, {nullptr, 0});
             ret = res.first;
             valid = res.second;
         } else {
-            auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {{.values = {}, .dimensions = dims}});
+            auto res = m_table.insertItem<VarItem<ArrayType<IntType>>>(identName, {{{{}, dims}}, {{{}, dims}}, false});
             ret = res.first;
             valid = res.second;
         }
     } else if (type == ValueTypeEnum::CHAR_TYPE) {
         if (dims.size() == 0) {
-            auto res = m_table.insertItem<VarItem<CharType>>(identName, nullptr);
+            auto res = m_table.insertItem<VarItem<CharType>>(identName, {nullptr, 0});
             ret = res.first;
             valid = res.second;
         } else {
-            auto res = m_table.insertItem<VarItem<ArrayType<CharType>>>(identName, {{.values = {}, .dimensions = dims}});
+            auto res = m_table.insertItem<VarItem<ArrayType<CharType>>>(identName, {{{{}, dims}}, {{{}, dims}}, false});
             ret = res.first;
             valid = res.second;
         }
@@ -900,7 +968,7 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
             return finded;
         } else {
             auto type = finded->getType()->getValueTypeEnum();
-            std::vector<size_t> targetDims = getArrayItemDimensions(finded, type);
+            std::vector<size_t> targetDims = getArrayItemDimensions(finded);
             SymbolTableItem* lVal = makeTempItem(type);
 
             std::vector<VarItem<IntType>*> pos;
@@ -925,7 +993,9 @@ template <typename Type>
 SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
     auto res = calConstExp<Type>(node);
     if (res.second) {
-        return m_table.makeItem<ConstVarItem<Type>>(res.first);
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
         node->resetIter();
         auto identNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter()); // lVal 的第一个子节点ident
@@ -940,7 +1010,7 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
             } else {
                 // 符号表中存储的数组的维数
 
-                std::vector<size_t> targetDims = getArrayItemDimensions(finded, type);
+                std::vector<size_t> targetDims = getArrayItemDimensions(finded);
                 SymbolTableItem* ret = nullptr;
                 // 实际读取到的右值
                 std::vector<VarItem<IntType>*> pos;
@@ -1059,25 +1129,6 @@ SymbolTableItem* Visitor::relExp(std::shared_ptr<VNodeBase> node) {
             return nullptr;
         }
         return ret;
-    }
-}
-
-std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item, ValueTypeEnum type) {
-    if (item->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
-        return getArrayItemDimensions<IntType>(item);
-    } else {
-        return getArrayItemDimensions<CharType>(item);
-    }
-}
-
-template <typename Type>
-std::vector<size_t> Visitor::getArrayItemDimensions(SymbolTableItem* item) {
-    if (item->isChangble()) {
-        auto lValArray = dynamic_cast<VarItem<ArrayType<Type>>*>(item);
-        return lValArray->getVarItem().getDimensions();
-    } else {
-        auto lValArray = dynamic_cast<ConstVarItem<ArrayType<Type>>*>(item);
-        return lValArray->getConstVar().getDimensions();
     }
 }
 
