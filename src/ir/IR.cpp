@@ -32,20 +32,20 @@ void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
 
 void Module::toCode(std::ostream& os) {
     for (auto& var : m_globalVariables) {
-        os << "@" << var.m_globalItem->getName() << " = ";
-        if (var.m_globalItem->isChangble()) {
+        os << "@" << var.get()->m_globalItem->getName() << " = ";
+        if (var.get()->m_globalItem->isChangble()) {
             os << "global ";
         } else {
             os << "constant ";
         }
         // type
-        auto dims = getArrayItemDimensions(var.m_globalItem);
+        auto dims = getArrayItemDimensions(var.get()->m_globalItem);
         printDimensions(os, dims);
-        if (var.m_globalItem->hasInit()) {
+        if (var.get()->m_globalItem->hasInit()) {
             os << " ";
-            var.m_globalItem->dumpSymbolItem(os, false);
+            var.get()->m_globalItem->dumpSymbolItem(os, false);
         } else {
-            os << "zeroinitializer";
+            os << " zeroinitializer";
         }
         os << std::endl;
     }
@@ -126,46 +126,74 @@ void AllocaInst::toCode(std::ostream& os) {
 void GetElementPtrInst::toCode(std::ostream& os) {
     os << "; getelementptr " << Value::s_valueMapper.get(this) << std::endl
        << "\t";
-    int temp = Value::s_valueMapper.alloc();
-    os << "%t" << temp << " = mul i32 ";
-    m_index.value->printValue(os);
-    os << ", " << m_multiplier << std::endl;
-    os << "\t";
-    printValue(os);
-    os << " = getelementptr inbounds i32, i32* ";
-    m_arr.value->printValue(os);
-    os << ", i32 %t" << temp << std::endl;
+    if (auto index = dynamic_cast<ConstValue*>(m_index.value)) {
+        int res = index->getImm() * m_multiplier;
+        printValue(os);
+        os << " = getelementptr inbounds i32, i32* ";
+        if (m_arr.value) {
+            m_arr.value->printValue(os);
+        }
+        os << ", i32 " << res << std::endl;
+    } else {
+        int temp = Value::s_valueMapper.alloc();
+        os << "%t" << temp << " = mul i32 ";
+        m_index.value->printValue(os);
+        os << ", " << m_multiplier << std::endl;
+        os << "\t";
+        printValue(os);
+        os << " = getelementptr inbounds i32, i32* ";
+        m_arr.value->printValue(os);
+        os << ", i32 %t" << temp << std::endl;
+    }
 }
 
 void StoreInst::toCode(std::ostream& os) {
     os << "; store " << Value::s_valueMapper.get(this) << std::endl
        << "\t";
     // temp ptr
-    int temp = Value::s_valueMapper.alloc();
-    os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
-    m_arr.value->printValue(os);
-    os << ", i32 ";
-    m_index.value->printValue(os);
-    os << std::endl;
-    os << "\tstore i32 ";
-    if (m_data.value) {
-        m_data.value->printValue(os);
+    if (dynamic_cast<ConstValue*>(m_index.value)->getImm() != 0) {
+        int temp = Value::s_valueMapper.alloc();
+        os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
+        m_arr.value->printValue(os);
+        os << ", i32 ";
+        m_index.value->printValue(os);
+        os << std::endl;
+        os << "\tstore i32 ";
+        if (m_data.value) {
+            m_data.value->printValue(os);
+        }
+        os << ", i32* %t" << temp << ", align 4" << std::endl;
+    } else {
+        os << "store i32 ";
+        if (m_data.value) {
+            m_data.value->printValue(os);
+        }
+        os << ", i32* ";
+        m_arr.value->printValue(os);
+        os << ", align 4" << std::endl;
     }
-
-    os << ", i32* %t" << temp << ", align 4" << std::endl;
 }
 
 void LoadInst::toCode(std::ostream& os) {
     // temp ptr
-    int temp = Value::s_valueMapper.alloc();
-    os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
-    m_arr.value->printValue(os);
-    os << ", i32 ";
-    m_index.value->printValue(os);
-    os << std::endl;
-    os << "\t";
-    printValue(os);
-    os << " = load i32, i32* %t" << temp << ", align 4" << std::endl;
+    if (dynamic_cast<ConstValue*>(m_index.value)->getImm() != 0) {
+        int temp = Value::s_valueMapper.alloc();
+        os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
+        if (m_arr.value) {
+            m_arr.value->printValue(os);
+        }
+        os << ", i32 ";
+        m_index.value->printValue(os);
+        os << std::endl;
+        os << "\t";
+        printValue(os);
+        os << " = load i32, i32* %t" << temp << ", align 4" << std::endl;
+    } else {
+        printValue(os);
+        os << " = load i32, i32* ";
+        m_arr.value->printValue(os);
+        os << ", align 4" << std::endl;
+    }
 }
 
 void BinaryInst::toCode(std::ostream& os) {

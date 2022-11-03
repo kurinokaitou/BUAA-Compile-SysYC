@@ -92,9 +92,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const MultiFlatArray<T>& array) {
         if (!array.m_data.values.empty()) {
-            os << " [";
+            os << "[";
             for (auto val = array.m_data.values.begin(); val != array.m_data.values.end(); val++) {
-                os << *val;
+                os << "i" << sizeof(T) * 8 << " " << *val;
                 if (val != array.m_data.values.end() - 1) {
                     os << ", ";
                 }
@@ -178,6 +178,19 @@ static std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item) {
     } else {
         return getArrayItemDimensions<CharType>(item);
     }
+}
+
+static std::vector<size_t> calAccDimensions(std::vector<size_t>& dims) {
+    std::vector<size_t> accDims;
+    accDims.reserve(dims.size());
+    for (int i = 0; i < dims.size(); i++) {
+        int acc = 1;
+        for (int j = i + 1; j < dims.size(); j++) {
+            acc *= dims[j];
+        }
+        accDims.push_back(acc);
+    }
+    return accDims;
 }
 
 template <typename T, size_t N>

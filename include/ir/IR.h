@@ -177,16 +177,16 @@ public:
         return m_funcs.back().get();
     }
 
-    SymbolTableItem* addGlobalVar(SymbolTableItem* item) {
-        m_globalVariables.emplace_back(item);
-        return item;
+    GlobalVariable* addGlobalVar(SymbolTableItem* item) {
+        m_globalVariables.push_back(std::unique_ptr<GlobalVariable>(new GlobalVariable(item)));
+        return m_globalVariables.back().get();
     }
 
     void toCode(std::ostream& os);
 
 private:
     std::vector<std::unique_ptr<Function>> m_funcs;
-    std::vector<GlobalVariable> m_globalVariables;
+    std::vector<std::unique_ptr<GlobalVariable>> m_globalVariables;
     std::vector<std::string> m_strs;
 };
 
@@ -264,6 +264,7 @@ public:
         if (inserted) it->second = new ConstValue(imm);
         return it->second;
     }
+    const int getImm() const { return m_imm; }
     void printValue(std::ostream& os) override {
         os << m_imm;
     }

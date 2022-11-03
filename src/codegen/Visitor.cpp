@@ -590,12 +590,14 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
         if (notArray) {
             m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(0)));
         } else {
+            int k = 0;
             for (auto& var : varArray.getValues()) {
-                m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(0)));
+                m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(k++)));
             }
         }
     } else {
-        m_ctx.module.addGlobalVar(res.first);
+        auto glob = m_ctx.module.addGlobalVar(res.first);
+        res.first->setIrValue(glob);
     }
     /*----------------------------------------------------------------------------*/
 
@@ -642,7 +644,8 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
             res = m_table.insertItem<VarItem<ArrayType<Type>>>(identName, {{{.values = {}, .dimensions = varArray.getDimensions()}}, varArray, hasInit});
         }
         /*---------------------------------codegen------------------------------------*/
-        m_ctx.module.addGlobalVar(res.first);
+        auto glob = m_ctx.module.addGlobalVar(res.first);
+        res.first->setIrValue(glob);
         /*----------------------------------------------------------------------------*/
         if (!res.second) {
             Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
@@ -674,11 +677,13 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
             if (notArray) {
                 m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(0)));
             } else {
+                int k = 0;
                 for (auto& item : itemArray.getValues()) {
-                    m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(0)));
+                    m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(k++)));
                 }
             }
         }
+        res.first->setIrValue(inst);
         /*----------------------------------------------------------------------------*/
         if (!res.second) {
             Logger::logError(ErrorType::REDEF_IDENT, lineNum, identName);
@@ -943,6 +948,9 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
                 }
             }
             // TODO: 生成将暂存值存入左值的代码
+            /*---------------------------------codegen------------------------------------*/
+            m_ctx.basicBlock->pushBackInst(new StoreInst(lValItem, lValItem->getIrValue(), ret->getIrValue(), ConstValue::get(0)));
+            /*----------------------------------------------------------------------------*/
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::BLOCK)) {
         m_table.pushScope(BlockScopeType::NORMAL);
@@ -971,15 +979,27 @@ SymbolTableItem* Visitor::lVal(std::shared_ptr<VNodeBase> node) {
             std::vector<size_t> targetDims = getArrayItemDimensions(finded);
             SymbolTableItem* lVal = makeTempItem(type);
 
-            std::vector<VarItem<IntType>*> pos;
+            std::vector<SymbolTableItem*> pos;
             node->nextChild(1, false); // jump IDENT
             while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
-                pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
+                pos.push_back(exp<IntType>(*node->getChildIter(1)));
                 if (!node->nextChild(3, false)) break; // jump '[pos]'
             }
+
             if (pos.size() != targetDims.size()) { // 如果维数不匹配则不是单个的数组元素，不能成为lVal
                 Logger::logError("Can not convert a array to variable!");
                 return nullptr;
+            } else {
+                std::vector<size_t> accDims = calAccDimensions(targetDims);
+                /*---------------------------------codegen------------------------------------*/
+                Inst* inst = nullptr;
+                Value* arr = finded->getIrValue();
+                for (int i = 0; i < targetDims.size(); i++) {
+                    inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(lVal, arr, pos[i]->getIrValue(), accDims[i]));
+                    arr = inst;
+                }
+                lVal->setIrValue(inst);
+                /*----------------------------------------------------------------------------*/
             }
             return lVal;
         }
@@ -1006,6 +1026,10 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
             auto type = finded->getType()->getValueTypeEnum();
             bool findedIsArray = finded->getType()->isArray();
             if (!findedIsArray) {
+                /*---------------------------------codegen------------------------------------*/
+                auto inst = m_ctx.basicBlock->pushBackInst(new LoadInst(finded, finded->getIrValue(), ConstValue::get(0)));
+                finded->setIrValue(inst);
+                /*----------------------------------------------------------------------------*/
                 return finded;
             } else {
                 // 符号表中存储的数组的维数
@@ -1013,25 +1037,51 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
                 std::vector<size_t> targetDims = getArrayItemDimensions(finded);
                 SymbolTableItem* ret = nullptr;
                 // 实际读取到的右值
-                std::vector<VarItem<IntType>*> pos;
+                std::vector<SymbolTableItem*> pos;
                 node->nextChild(1, false); // jump IDENT
                 while (expect(*node->getChildIter(), SymbolEnum::LBRACK) && expect(*node->getChildIter(2), SymbolEnum::RBRACK)) {
-                    pos.push_back(dynamic_cast<VarItem<IntType>*>(exp<IntType>(*node->getChildIter(1))));
+                    pos.push_back(exp<IntType>(*node->getChildIter(1)));
                     if (!node->nextChild(3, false)) break; // jump '[pos]'
                 }
-                int diff = targetDims.size() - pos.size();
-                if (diff > 0) { // 维数不匹配，需要剪裁成部分数组
-                    std::vector<size_t> sliceDims(targetDims.begin(), targetDims.begin() + diff);
-                    ret = makeTempItem(type, true, std::move(sliceDims));
-                    // TODO: 生成sliceArray的代码
-
-                } else if (diff == 0) { // 维数匹配，返回原数组的对应的元素
-                    ret = makeTempItem(type);
-                    // TODO: 生成返回一个元素的代码
+                // 没有指定ele直接返回数组本身
+                if (pos.empty()) {
+                    /*---------------------------------codegen------------------------------------*/
+                    auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(finded, finded->getIrValue(), ConstValue::get(0), 0));
+                    finded->setIrValue(inst);
+                    return finded;
+                    /*----------------------------------------------------------------------------*/
                 } else {
-                    Logger::logError("Variable dimension do not match!");
+                    int diff = targetDims.size() - pos.size();
+                    std::vector<size_t> accDims = calAccDimensions(targetDims);
+                    Inst* inst = nullptr;
+                    Value* arr = finded->getIrValue();
+                    if (diff > 0) { // 维数不匹配，需要剪裁成部分数组
+                        std::vector<size_t> sliceDims(targetDims.begin(), targetDims.begin() + diff);
+                        ret = makeTempItem(type, true, std::move(sliceDims));
+                        // TODO: 生成sliceArray的代码
+                        /*---------------------------------codegen------------------------------------*/
+                        for (int i = 0; i < sliceDims.size(); i++) {
+                            inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(finded, arr, pos[i]->getIrValue(), accDims[i]));
+                            arr = inst;
+                        }
+                        ret->setIrValue(inst);
+                        /*----------------------------------------------------------------------------*/
+                    } else if (diff == 0) { // 维数匹配，返回原数组的对应的元素
+                        ret = makeTempItem(type);
+                        // TODO: 生成返回一个元素的代码
+                        /*---------------------------------codegen------------------------------------*/
+                        for (int i = 0; i < targetDims.size(); i++) {
+                            inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(finded, arr, pos[i]->getIrValue(), accDims[i]));
+                            arr = inst;
+                        }
+                        inst = m_ctx.basicBlock->pushBackInst(new LoadInst(ret, arr, ConstValue::get(0)));
+                        ret->setIrValue(inst);
+                        /*----------------------------------------------------------------------------*/
+                    } else {
+                        Logger::logError("Variable dimension do not match!");
+                    }
+                    return ret;
                 }
-                return ret;
             }
         } else {
             Logger::logError(ErrorType::UNDECL_IDENT, lineNum, identName);

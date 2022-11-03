@@ -154,49 +154,34 @@ RBRACE }
 SEMICN ;
 <VarDecl>
 INTTK int
-<FuncType>
-IDENFR add
+MAINTK main
 LPARENT (
-INTTK int
-IDENFR a
-<FuncFParam>
-COMMA ,
-INTTK int
-IDENFR b
-<FuncFParam>
-COMMA ,
-INTTK int
-IDENFR c
-LBRACK [
-RBRACK ]
-<FuncFParam>
-<FuncFParams>
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR d
+    IDENFR var
     ASSIGN =
-    IDENFR a
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    IDENFR b
-    <LVal>
+    IDENFR arr
+    LBRACK [
+    INTCON 1
+    <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
-    IDENFR c
+    RBRACK ]
     LBRACK [
-    INTCON 0
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    LBRACK [
+    INTCON 1
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -205,39 +190,6 @@ RPARENT )
     <Exp>
     RBRACK ]
     <LVal>
-    ASSIGN =
-    IDENFR d
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    RETURNTK return
-    IDENFR d
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-MAINTK main
-LPARENT (
-RPARENT )
-  LBRACE {
-    INTTK int
-    IDENFR var
-    ASSIGN =
-    INTCON 1
-    <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -247,21 +199,6 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
-    CONSTTK const
-    INTTK int
-    IDENFR var2
-    ASSIGN =
-    INTCON 2
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <ConstExp>
-    <ConstInitVal>
-    <ConstDef>
-    SEMICN ;
-    <ConstDecl>
     PRINTFTK printf
     LPARENT (
     STRCON "%d"

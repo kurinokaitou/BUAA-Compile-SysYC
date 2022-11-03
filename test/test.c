@@ -1,7 +1,7 @@
 #include <stdio.h>
 int a = 1;
 const int c = 2;
-int arr[2][2][2] = {{{1, 2}, {3, 4}}, {{1, 2}, {3, 4}}};
+int arr[8] = {1, 2, 3, 4, 1, 2, 3, 4};
 
 int add(int a, int b, int c[]) {
     int d = a + b;
@@ -10,6 +10,6 @@ int add(int a, int b, int c[]) {
 }
 
 int main() {
-    int var = add(1, 2, arr[1][1]);
-    printf("%d", var);
+    int var = add(1, 2, arr);
+    printf("%d\n", var);
 }
