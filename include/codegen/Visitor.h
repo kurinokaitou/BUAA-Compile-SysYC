@@ -52,7 +52,7 @@ private:
     SymbolTableItem* lVal(std::shared_ptr<VNodeBase> node); // 左值
     template <typename Type>
     SymbolTableItem* rVal(std::shared_ptr<VNodeBase> node); // 右值（生成式中依然是左值，只不过是右值的功能）
-    void cond(std::shared_ptr<VNodeBase> node);             // 条件表达式
+    Value* cond(std::shared_ptr<VNodeBase> node);           // 条件表达式
     template <typename Type>
     ConstVarItem<Type>* number(std::shared_ptr<VNodeBase> node); // 数字
     template <typename Type>
@@ -69,9 +69,9 @@ private:
     template <typename Type>
     SymbolTableItem* eqExp(std::shared_ptr<VNodeBase> node); // 相等性表达式
     template <typename Type>
-    void lAndExp(std::shared_ptr<VNodeBase> node); // 逻辑与表达式
+    Value* lAndExp(std::shared_ptr<VNodeBase> node); // 逻辑与表达式
     template <typename Type>
-    void lOrExp(std::shared_ptr<VNodeBase> node);                                                            // 逻辑或表达式
+    Value* lOrExp(std::shared_ptr<VNodeBase> node);                                                          // 逻辑或表达式
     void funcDef(std::shared_ptr<VNodeBase> node);                                                           // 函数定义
     void mainFuncDef(std::shared_ptr<VNodeBase> node);                                                       // 主函数定义
     ValueTypeEnum funcType(std::shared_ptr<VNodeBase> node);                                                 // 函数类型

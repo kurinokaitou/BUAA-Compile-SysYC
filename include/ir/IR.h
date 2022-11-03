@@ -13,6 +13,19 @@
 static void printDimensions(std::ostream& os, std::vector<size_t>& dims);
 
 struct Use;
+/*
+declare i32 @getint()          ; 读取一个整数
+declare void @putint(i32)      ; 输出一个整数
+declare void @putch(i32)       ; 输出一个字符
+declare void @putstr(i8*)      ; 输出字符串
+*/
+constexpr static const int FUNC_NUM = 4;
+static const std::string BUILTIN_FUNCS[FUNC_NUM][3] = {
+    {"getint", "", "i32"},
+    {"putint", "i32", "void"},
+    {"putch", "i32", "void"},
+    {"putstr", "i8*", "void"},
+};
 
 constexpr static const char* LLVM_OPS[14] = {
     /* Add = */ "add",
@@ -31,18 +44,19 @@ constexpr static const char* LLVM_OPS[14] = {
     /* Or = */ "or",
 };
 
-constexpr static std::pair<IRType, IRType> swapableOperators[11] = {
-    {IRType::Add, IRType::Add},
-    {IRType::Sub, IRType::Rsb},
-    {IRType::Mul, IRType::Mul},
-    {IRType::Lt, IRType::Gt},
-    {IRType::Le, IRType::Ge},
-    {IRType::Gt, IRType::Lt},
-    {IRType::Ge, IRType::Le},
-    {IRType::Eq, IRType::Eq},
-    {IRType::Ne, IRType::Ne},
-    {IRType::And, IRType::And},
-    {IRType::Or, IRType::Or},
+constexpr static std::pair<IRType, IRType>
+    swapableOperators[11] = {
+        {IRType::Add, IRType::Add},
+        {IRType::Sub, IRType::Rsb},
+        {IRType::Mul, IRType::Mul},
+        {IRType::Lt, IRType::Gt},
+        {IRType::Le, IRType::Ge},
+        {IRType::Gt, IRType::Lt},
+        {IRType::Ge, IRType::Le},
+        {IRType::Eq, IRType::Eq},
+        {IRType::Ne, IRType::Ne},
+        {IRType::And, IRType::And},
+        {IRType::Or, IRType::Or},
 };
 
 template <class T>
@@ -88,7 +102,7 @@ protected:
     IRType m_type;
     std::vector<Use*> m_uses;
 };
-
+class BasicBlock;
 class Inst : public Value {
     friend class BasicBlock;
 
@@ -100,6 +114,9 @@ public:
     void printValue(std::ostream& os) override {
         Value::printValue(os);
     }
+
+protected:
+    BasicBlock* m_atBlock;
 };
 
 class BasicBlock {
@@ -110,6 +127,7 @@ public:
     std::vector<BasicBlock*>& getPreds() { return m_pred; }
     std::array<BasicBlock*, 2> getSuccs();
     Inst* pushBackInst(Inst* inst) {
+        inst->m_atBlock = this;
         m_insts.push_back(std::unique_ptr<Inst>(inst));
         return m_insts.back().get();
     };
@@ -124,9 +142,13 @@ public:
 };
 
 class Function {
+    friend class Module;
+
 public:
     explicit Function(FuncItem* funcItem) :
         m_funcItem(funcItem) {}
+    explicit Function(const std::string& funcName, const std::string& builtinArgType, const std::string& retType) :
+        m_isBuiltin(true), m_builtinName(funcName), m_builtinArgType(builtinArgType), m_retType(retType) {}
     BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
@@ -142,6 +164,9 @@ private:
     std::set<Function*> m_callee;
     std::set<Function*> m_caller;
     bool m_isBuiltin{false};
+    std::string m_builtinName;
+    std::string m_builtinArgType;
+    std::string m_retType;
 };
 
 class GlobalVariable : public Value {
@@ -172,6 +197,12 @@ private:
 
 class Module {
 public:
+    Module() {
+        for (int i = 0; i < FUNC_NUM; i++) {
+            s_builtinFuncs.insert({BUILTIN_FUNCS[i][0],
+                                   new Function(BUILTIN_FUNCS[i][0], BUILTIN_FUNCS[i][1], BUILTIN_FUNCS[i][2])});
+        }
+    }
     Function* addFunc(Function* func) {
         m_funcs.push_back(std::unique_ptr<Function>(func));
         return m_funcs.back().get();
@@ -181,8 +212,14 @@ public:
         m_globalVariables.push_back(std::unique_ptr<GlobalVariable>(new GlobalVariable(item)));
         return m_globalVariables.back().get();
     }
+    Function* getFunc(FuncItem* funcItem);
+    static Function* getBuiltinFunc(const std::string& funcName);
 
     void toCode(std::ostream& os);
+
+public:
+    static std::map<std::string, Function*> s_builtinFuncs;
+    static std::set<Function*> s_usedBuiltinFuncs;
 
 private:
     std::vector<std::unique_ptr<Function>> m_funcs;
@@ -381,8 +418,13 @@ private:
 
 class CallInst : public Inst {
 public:
-    explicit CallInst(Function* func) :
-        Inst(IRType::Call), m_func(func) {}
+    explicit CallInst(Function* func, std::vector<Value*> args) :
+        Inst(IRType::Call), m_func(func) {
+        m_args.reserve(args.size());
+        for (auto& arg : args) {
+            m_args.emplace_back(arg, this);
+        }
+    }
     virtual std::vector<Use*> getOperands() override {
         std::vector<Use*> usePtrs;
         usePtrs.reserve(m_args.size());
@@ -407,6 +449,33 @@ public:
 
 private:
     SymbolTableItem* m_sym;
+};
+
+class PhiInst : public Inst {
+public:
+    explicit PhiInst(BasicBlock* atBlock) :
+        Inst(IRType::Phi) {
+        m_atBlock = atBlock;
+        int predsNum = m_atBlock->getPreds().size();
+        m_incomingValues.reserve(predsNum);
+        for (int i = 0; i < predsNum; i++) {
+            // 在new PhiInst的时候还不知道它用到的value是什么，先填nullptr，后面再用Use::set填上
+            m_incomingValues.emplace_back(nullptr, this);
+        }
+    }
+    std::vector<Use>& getIncomingValues() { return m_incomingValues; }
+    virtual std::vector<Use*> getOperands() override {
+        std::vector<Use*> usePtrs;
+        usePtrs.reserve(m_incomingValues.size());
+        for (auto& use : m_incomingValues) {
+            usePtrs.push_back(&use);
+        }
+        return usePtrs;
+    };
+    virtual void toCode(std::ostream& os) override;
+
+private:
+    std::vector<Use> m_incomingValues;
 };
 
 struct CodeContext {

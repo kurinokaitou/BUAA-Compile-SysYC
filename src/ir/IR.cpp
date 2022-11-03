@@ -3,6 +3,8 @@
 IndexMapper<Value> Value::s_valueMapper;
 IndexMapper<BasicBlock> BasicBlock::s_bbMapper;
 std::map<int, ConstValue*> ConstValue::POOL;
+std::map<std::string, Function*> Module::s_builtinFuncs;
+std::set<Function*> Module::s_usedBuiltinFuncs;
 
 std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
     auto& lastInst = m_insts.back();
@@ -31,6 +33,12 @@ void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
 }
 
 void Module::toCode(std::ostream& os) {
+    for (auto& builtinFunc : s_usedBuiltinFuncs) {
+        builtinFunc->toCode(os);
+    }
+    if (!s_usedBuiltinFuncs.empty()) {
+        os << std::endl;
+    }
     for (auto& var : m_globalVariables) {
         os << "@" << var.get()->m_globalItem->getName() << " = ";
         if (var.get()->m_globalItem->isChangble()) {
@@ -49,34 +57,70 @@ void Module::toCode(std::ostream& os) {
         }
         os << std::endl;
     }
-    os << std::endl;
+    if (!m_globalVariables.empty()) {
+        os << std::endl;
+    }
     for (auto& func : m_funcs) {
+        for (auto& bb : func->m_basicBlocks) {
+            bb->getPreds().clear();
+        }
+        for (auto& bb : func->m_basicBlocks) {
+            bb->getPreds().clear();
+            for (auto* x : bb->getSuccs()) {
+                if (x) x->getPreds().push_back(bb.get());
+            }
+        }
         func->toCode(os);
     }
+}
+
+Function* Module::getFunc(FuncItem* funcItem) {
+    for (auto& func : m_funcs) {
+        if (func->getFuncItem() == funcItem) {
+            return func.get();
+        }
+    }
+    return nullptr;
+}
+
+Function* Module::getBuiltinFunc(const std::string& funcName) {
+    Function* func = s_builtinFuncs.at(funcName);
+    s_usedBuiltinFuncs.insert(func);
+    return func;
 }
 
 void Function::toCode(std::ostream& os) {
     Value::s_valueMapper.reset();
     BasicBlock::s_bbMapper.reset();
     std::string decl = m_isBuiltin ? "declare" : "define";
-    std::string ret = m_funcItem->getReturnValueType() == ValueTypeEnum::INT_TYPE ? "i32" : "void";
+    std::string ret;
+    if (m_isBuiltin) {
+        ret = m_retType;
+    } else {
+        ret = m_funcItem->getReturnValueType() == ValueTypeEnum::INT_TYPE ? "i32" : "void";
+    }
     os << decl << " " << ret << " @";
     os << m_funcItem->getName() << "(";
-    for (auto p : m_funcItem->getParams()) {
-        auto dims = getArrayItemDimensions(p);
-        if (dims.size() == 0) {
-            // simple case
-            os << "i32 ";
-        } else {
-            // array arg
-            os << "i32 * ";
-        }
-        os << "%" << p->getName();
-        if (p != m_funcItem->getParams().back()) {
-            // not last element
-            os << ", ";
+    if (m_isBuiltin) {
+        os << m_builtinArgType << " ";
+    } else {
+        for (auto p : m_funcItem->getParams()) {
+            auto dims = getArrayItemDimensions(p);
+            if (dims.size() == 0) {
+                // simple case
+                os << "i32 ";
+            } else {
+                // array arg
+                os << "i32 * ";
+            }
+            os << "%" << p->getName();
+            if (p != m_funcItem->getParams().back()) {
+                // not last element
+                os << ", ";
+            }
         }
     }
+
     os << ") #0";
     if (m_isBuiltin) {
         os << std::endl;
@@ -87,10 +131,10 @@ void Function::toCode(std::ostream& os) {
         }
         for (auto& bb : m_basicBlocks) {
             int index = BasicBlock::s_bbMapper.get(bb.get());
-            os << "_" << index << ": ; preds = ";
+            os << "b" << index << ": ; preds = ";
             for (int i = 0; i < bb->m_pred.size(); ++i) {
                 if (i != 0) os << ", ";
-                os << "%_" << BasicBlock::s_bbMapper.get(bb->m_pred[i]);
+                os << "%b" << BasicBlock::s_bbMapper.get(bb->m_pred[i]);
             }
             os << std::endl;
             for (auto& inst : bb->m_insts) {
@@ -98,8 +142,10 @@ void Function::toCode(std::ostream& os) {
                 inst->toCode(os);
             }
         }
-        os << "}" << std::endl
-           << std::endl;
+        os << "}" << std::endl;
+        if (!m_isBuiltin) {
+            os << std::endl;
+        }
     }
 }
 
@@ -227,20 +273,20 @@ void BinaryInst::toCode(std::ostream& os) {
 }
 
 void JumpInst::toCode(std::ostream& os) {
-    os << "br label %_" << BasicBlock::s_bbMapper.get(m_next) << std::endl;
+    os << "br label %b" << BasicBlock::s_bbMapper.get(m_next) << std::endl;
 }
 
 void BranchInst::toCode(std::ostream& os) {
     // add comment
     os << "; if ";
     m_cond.value->printValue(os);
-    os << " then _" << BasicBlock::s_bbMapper.get(m_left) << " else _"
+    os << " then b" << BasicBlock::s_bbMapper.get(m_left) << " else b"
        << BasicBlock::s_bbMapper.get(m_right) << std::endl;
-    int temp = BasicBlock::s_bbMapper.alloc();
+    int temp = Value::s_valueMapper.alloc();
     os << "\t%t" << temp << " = icmp ne i32 ";
     m_cond.value->printValue(os);
     os << ", 0" << std::endl;
-    os << "\tbr i1 %t" << temp << ", label %_" << BasicBlock::s_bbMapper.get(m_left) << ", label %_"
+    os << "\tbr i1 %t" << temp << ", label %b" << BasicBlock::s_bbMapper.get(m_left) << ", label %b"
        << BasicBlock::s_bbMapper.get(m_right) << std::endl;
 }
 
@@ -282,4 +328,16 @@ void CallInst::toCode(std::ostream& os) {
         }
     }
     os << ")" << std::endl;
+}
+
+void PhiInst::toCode(std::ostream& os) {
+    printValue(os);
+    os << " = phi i32 ";
+    for (int i = 0; i < m_incomingValues.size(); ++i) {
+        if (i != 0) os << ", ";
+        os << "[";
+        m_incomingValues[i].value->printValue(os);
+        os << ", %b" << BasicBlock::s_bbMapper.get(m_atBlock->getPreds()[i]) << "]";
+    }
+    os << std::endl;
 }

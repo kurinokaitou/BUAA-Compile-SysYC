@@ -1,15 +1,10 @@
-int a = 1;
-const int c = 2;
-int arr[2][2][2] = {{{1, 2}, {3, 4}}, {{1, 2}, {3, 4}}};
-/*
-int add(int a, int b, int c[]) {
-    int d = a + b;
-    c[0] = d;
-    return d;
-}
-*/
-
 int main() {
-    int var = arr[1][1][1];
-    printf("%d", var);
+    int a = 1;
+    int b = 1;
+    if(a == 1 && b == 1){
+        printf("%d", a);
+    } else{
+        printf("%d", b);
+    }
+    return 0;
 }

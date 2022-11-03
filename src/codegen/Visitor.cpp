@@ -130,14 +130,18 @@ SymbolTableItem* Visitor::addExp(std::shared_ptr<VNodeBase> node) {
             node->nextChild();
             auto mul = mulExp<Type>(*node->getChildIter());
             auto ret = MAKE_VAR();
+            /*---------------------------------codegen------------------------------------*/
+            Value* inst = nullptr;
             if (op == SymbolEnum::PLUS) {
-                // 生成加法的代码
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Add, add->getIrValue(), mul->getIrValue()));
             } else if (op == SymbolEnum::MINU) {
-                // 生成减法的代码
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Sub, add->getIrValue(), mul->getIrValue()));
             } else {
-                DBG_ERROR("Add expression only accept '+' & '-'!");
+                DBG_ERROR("Add expression only accept '+' & '-'");
                 return nullptr;
             }
+            ret->setIrValue(inst);
+            /*----------------------------------------------------------------------------*/
             return ret;
         }
     }
@@ -160,17 +164,21 @@ SymbolTableItem* Visitor::mulExp(std::shared_ptr<VNodeBase> node) {
             SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of plus or minus
             node->nextChild();
             auto unary = unaryExp<Type>(*node->getChildIter());
-            auto ret = m_table.makeItem<VarItem<Type>>({});
+            auto ret = MAKE_VAR();
+            /*---------------------------------codegen------------------------------------*/
+            Value* inst = nullptr;
             if (op == SymbolEnum::MULT) {
-                // 生成乘法的代码
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Add, mul->getIrValue(), unary->getIrValue()));
             } else if (op == SymbolEnum::DIV) {
-                // 生成除法的代码
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Sub, mul->getIrValue(), unary->getIrValue()));
             } else if (op == SymbolEnum::MOD) {
-                // 生成取余的代码
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Mod, mul->getIrValue(), unary->getIrValue()));
             } else {
                 DBG_ERROR("Mul expression only accept '*' & '/' & '%'!");
                 return nullptr;
             }
+            ret->setIrValue(inst);
+            /*----------------------------------------------------------------------------*/
             return ret;
         }
     }
@@ -216,7 +224,15 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
             } else {
                 ret = MAKE_VOID_VAR();
             }
-
+            /*---------------------------------codegen------------------------------------*/
+            std::vector<Value*> args;
+            args.reserve(realParams.size());
+            for (auto param : realParams) {
+                args.push_back(param->getIrValue());
+            }
+            auto function = m_ctx.module.getFunc(func);
+            auto inst = m_ctx.basicBlock->pushBackInst(new CallInst(function, args));
+            /*----------------------------------------------------------------------------*/
             // 生成函数调用，复制参数的代码，ret为返回值
             return ret;
         } else if (expect(*node->getChildIter(), VNodeEnum::UNARYOP)) {
@@ -224,9 +240,17 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
             node->nextChild();
             auto ret = unaryExp<Type>(*node->getChildIter());
             // 生成处理'-'和'!'的代码
+
+            /*---------------------------------codegen------------------------------------*/
+            Value* inst = nullptr;
             if (op == SymbolEnum::MINU) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Sub, ConstValue::get(0), ret->getIrValue()));
             } else if (op == SymbolEnum::NOT) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Eq, ret->getIrValue(), ConstValue::get(0)));
             }
+            ret->setIrValue(inst);
+            /*----------------------------------------------------------------------------*/
+
             return ret;
         } else {
             DBG_ERROR("Unary exppression can not handle input!");
@@ -305,7 +329,9 @@ template <typename Type>
 SymbolTableItem* Visitor::primaryExp(std::shared_ptr<VNodeBase> node) {
     auto res = calConstExp<Type>(node);
     if (res.second) {
-        return m_table.makeItem<ConstVarItem<Type>>(res.first);
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
         node->resetIter();
         if (expect(*node->getChildIter(), SymbolEnum::LPARENT)) {
@@ -856,6 +882,15 @@ void Visitor::blockItem(std::shared_ptr<VNodeBase> node) {
 void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
     if (expect(*node->getChildIter(), SymbolEnum::IFTK)) { // if
         node->nextChild(2);                                // jump  IFTK & '('
+
+        /*---------------------------------codegen------------------------------------*/
+        auto then = new BasicBlock();
+        BasicBlock* els = nullptr;
+        if (expect(*node->getChildIter(3), SymbolEnum::ELSETK)) {
+            els = new BasicBlock();
+        }
+        auto end = new BasicBlock();
+        /*----------------------------------------------------------------------------*/
         cond(*node->getChildIter());
         node->nextChild(2); // jump COND ')'
         m_table.pushScope(BlockScopeType::BRANCH);
@@ -871,6 +906,10 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         }
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
         node->nextChild(2); // jump WHILE & '('
+        auto cnd = new BasicBlock();
+        auto loop = new BasicBlock();
+        auto end = new BasicBlock();
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(cnd);
         cond(*node->getChildIter());
         node->nextChild(2);
         m_table.pushScope(BlockScopeType::LOOP);
@@ -940,6 +979,10 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
             if (expect(*node->getChildIter(), SymbolEnum::GETINTTK)) {
                 ret = MAKE_INT_VAR();
                 // TODO: 生成将此通过getint获取值的代码
+                /*---------------------------------codegen------------------------------------*/
+                auto inst = m_ctx.basicBlock->pushBackInst(new CallInst(Module::getBuiltinFunc("getint"), {}));
+                ret->setIrValue(inst);
+                /*----------------------------------------------------------------------------*/
             } else {
                 if (type == ValueTypeEnum::INT_TYPE) {
                     ret = exp<IntType>(*node->getChildIter());
@@ -1090,22 +1133,38 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
     }
 }
 
-void Visitor::cond(std::shared_ptr<VNodeBase> node) {
-    lOrExp<IntType>(*node->getChildIter());
+Value* Visitor::cond(std::shared_ptr<VNodeBase> node) {
+    return lOrExp<IntType>(*node->getChildIter());
 }
 
 template <typename Type>
-void Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
+Value* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
     if (expect(*node->getChildIter(), VNodeEnum::LANDEXP)) {
-        lAndExp<Type>(*node->getChildIter());
+        return lAndExp<Type>(*node->getChildIter());
     } else {
-        lOrExp<Type>(*node->getChildIter());
+        auto lhs = lOrExp<Type>(*node->getChildIter());
+        Value* rhs = nullptr;
         node->nextChild();
         SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of or
         node->nextChild();
-        lAndExp<Type>(*node->getChildIter());
+
         if (op == SymbolEnum::OR) {
-            // 生成或的代码
+            /*---------------------------------codegen------------------------------------*/
+            auto rhsBB = new BasicBlock();
+            auto afterBB = new BasicBlock();
+            auto inv = new BinaryInst(IRType::Eq, lhs, ConstValue::get(0));
+            m_ctx.basicBlock->pushBackInst(new BranchInst(inv, rhsBB, afterBB));
+            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(rhsBB);
+            rhs = lAndExp<Type>(*node->getChildIter());
+            afterBB->getPreds().resize(2);
+            m_ctx.basicBlock->pushBackInst(new JumpInst(afterBB));
+            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(afterBB);
+            auto phi = new PhiInst(afterBB);
+            phi->getIncomingValues()[0].set(lhs);
+            phi->getIncomingValues()[1].set(rhs);
+            auto inst = m_ctx.basicBlock->pushBackInst(phi);
+            return inst;
+            /*----------------------------------------------------------------------------*/
         } else {
             DBG_ERROR("lOr expression only accept '||'!");
         }
@@ -1113,72 +1172,114 @@ void Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
 }
 
 template <typename Type>
-void Visitor::lAndExp(std::shared_ptr<VNodeBase> node) {
+Value* Visitor::lAndExp(std::shared_ptr<VNodeBase> node) {
     if (expect(*node->getChildIter(), VNodeEnum::EQEXP)) {
         auto eq = eqExp<Type>(*node->getChildIter());
+        return eq->getIrValue();
         // TODO: 生成condition的代码
     } else {
-        lAndExp<Type>(*node->getChildIter());
+        auto lhs = lAndExp<Type>(*node->getChildIter());
+        Value* rhs = nullptr;
         node->nextChild();
         SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol and
         node->nextChild();
-        auto eq = eqExp<Type>(*node->getChildIter());
+
         // TODO: 生成condition的代码
         if (op == SymbolEnum::AND) {
-            // 生成且的代码
+            /*---------------------------------codegen------------------------------------*/
+            auto rhsBB = new BasicBlock();
+            auto afterBB = new BasicBlock();
+            m_ctx.basicBlock->pushBackInst(new BranchInst(lhs, rhsBB, afterBB));
+            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(rhsBB);
+            auto eq = eqExp<Type>(*node->getChildIter());
+            rhs = eq->getIrValue();
+            afterBB->getPreds().resize(2);
+            m_ctx.basicBlock->pushBackInst(new JumpInst(afterBB));
+            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(afterBB);
+            auto phi = new PhiInst(afterBB);
+            phi->getIncomingValues()[0].set(lhs);
+            phi->getIncomingValues()[1].set(rhs);
+            auto inst = m_ctx.basicBlock->pushBackInst(phi);
+            return inst;
+            /*----------------------------------------------------------------------------*/
         } else {
             DBG_ERROR("lAnd expression only accept '&&'!");
+            return nullptr;
         }
     }
 }
 
 template <typename Type>
 SymbolTableItem* Visitor::eqExp(std::shared_ptr<VNodeBase> node) {
-    if (expect(*node->getChildIter(), VNodeEnum::RELEXP)) {
-        return relExp<Type>(*node->getChildIter());
+    auto res = calConstExp<Type>(node);
+    if (res.second) {
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
-        auto eq = eqExp<Type>(*node->getChildIter());
-        node->nextChild();
-        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of eql or neq
-        node->nextChild();
-        auto rel = relExp<Type>(*node->getChildIter());
-        auto ret = MAKE_VAR();
-        if (op == SymbolEnum::EQL) {
-            // 生成相等的代码
-        } else if (op == SymbolEnum::NEQ) {
-            // 生成不等的代码
+        node->resetIter();
+        if (expect(*node->getChildIter(), VNodeEnum::RELEXP)) {
+            return relExp<Type>(*node->getChildIter());
         } else {
-            DBG_ERROR("Equal expression only accept '==' & '!='!");
-            return nullptr;
+            auto eq = eqExp<Type>(*node->getChildIter());
+            node->nextChild();
+            SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of eql or neq
+            node->nextChild();
+            auto rel = relExp<Type>(*node->getChildIter());
+            auto ret = MAKE_VAR();
+            /*---------------------------------codegen------------------------------------*/
+            Value* inst = nullptr;
+            if (op == SymbolEnum::EQL) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Eq, eq->getIrValue(), rel->getIrValue()));
+            } else if (op == SymbolEnum::NEQ) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Ne, eq->getIrValue(), rel->getIrValue()));
+            } else {
+                DBG_ERROR("Equal expression only accept '==' & '!='!");
+                return nullptr;
+            }
+            ret->setIrValue(inst);
+            /*----------------------------------------------------------------------------*/
+            return ret;
         }
-        return ret;
     }
 }
 
 template <typename Type>
 SymbolTableItem* Visitor::relExp(std::shared_ptr<VNodeBase> node) {
-    if (expect(*node->getChildIter(), VNodeEnum::ADDEXP)) {
-        return addExp<Type>(*node->getChildIter());
+    auto res = calConstExp<Type>(node);
+    if (res.second) {
+        auto item = m_table.makeItem<ConstVarItem<Type>>(res.first);
+        item->setIrValue(ConstValue::get(res.first));
+        return item;
     } else {
-        auto rel = relExp<Type>(*node->getChildIter());
-        node->nextChild();
-        SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of less and great
-        node->nextChild();
-        auto add = addExp<Type>(*node->getChildIter());
-        auto ret = MAKE_VAR();
-        if (op == SymbolEnum::LSS) {
-            // 生成小于的代码
-        } else if (op == SymbolEnum::GRE) {
-            // 生成大于的代码
-        } else if (op == SymbolEnum::LEQ) {
-            // 生成小于等于的代码
-        } else if (op == SymbolEnum::GEQ) {
-            // 生成大于等于的代码
+        node->resetIter();
+        if (expect(*node->getChildIter(), VNodeEnum::ADDEXP)) {
+            return addExp<Type>(*node->getChildIter());
         } else {
-            DBG_ERROR("Relation expression only accept '<' & '>' & '<=' & '>='!");
-            return nullptr;
+            auto rel = relExp<Type>(*node->getChildIter());
+            node->nextChild();
+            SymbolEnum op = (*node->getChildIter())->getSymbol(); // get symbol of less and great
+            node->nextChild();
+            auto add = addExp<Type>(*node->getChildIter());
+            auto ret = MAKE_VAR();
+            /*---------------------------------codegen------------------------------------*/
+            Value* inst = nullptr;
+            if (op == SymbolEnum::LSS) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Lt, rel->getIrValue(), add->getIrValue()));
+            } else if (op == SymbolEnum::GRE) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Gt, rel->getIrValue(), add->getIrValue()));
+            } else if (op == SymbolEnum::LEQ) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Le, rel->getIrValue(), add->getIrValue()));
+            } else if (op == SymbolEnum::GEQ) {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Ge, rel->getIrValue(), add->getIrValue()));
+            } else {
+                DBG_ERROR("Relation expression only accept '<' & '>' & '<=' & '>='!");
+                return nullptr;
+            }
+            ret->setIrValue(inst);
+            /*----------------------------------------------------------------------------*/
+            return ret;
         }
-        return ret;
     }
 }
 

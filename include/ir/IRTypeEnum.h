@@ -13,6 +13,7 @@ enum class IRType {
     Const,
     Global,
     Param,
+    Phi
 };
 
 #endif
