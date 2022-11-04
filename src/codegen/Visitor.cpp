@@ -890,42 +890,72 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
             els = new BasicBlock();
         }
         auto end = new BasicBlock();
-        /*----------------------------------------------------------------------------*/
-        cond(*node->getChildIter());
+        auto cnd = cond(*node->getChildIter());
+        m_ctx.basicBlock->pushBackInst(new BranchInst(cnd, then, els));
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(then);
         node->nextChild(2); // jump COND ')'
         m_table.pushScope(BlockScopeType::BRANCH);
         stmt(*node->getChildIter());
         m_table.popScope();
         node->nextChild(1, false); // jump STMT
+        if (!m_ctx.basicBlock->valid()) {
+            m_ctx.basicBlock->pushBackInst(new JumpInst(end));
+        }
         if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
+            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(els);
             node->nextChild(); // jump ELSETK
             m_table.pushScope(BlockScopeType::BRANCH);
             stmt(*node->getChildIter());
             m_table.popScope();
             node->nextChild(1, false); // jump STMT
+            if (!m_ctx.basicBlock->valid()) {
+                m_ctx.basicBlock->pushBackInst(new JumpInst(end));
+            }
+            /*----------------------------------------------------------------------------*/
         }
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(end);
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
         node->nextChild(2); // jump WHILE & '('
-        auto cnd = new BasicBlock();
+
+        /*---------------------------------codegen------------------------------------*/
+        auto cndBB = new BasicBlock();
         auto loop = new BasicBlock();
         auto end = new BasicBlock();
-        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(cnd);
-        cond(*node->getChildIter());
+        m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB)); // 跳转控制块
+        // cndBB
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(cndBB);
+        auto cnd = cond(*node->getChildIter());
+        m_ctx.basicBlock->pushBackInst(new BranchInst(cnd, loop, end)); // 跳转循环块
+        // loop
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(loop);
+        m_ctx.loopStk.emplace_back(cndBB, end); // continue, break
         node->nextChild(2);
         m_table.pushScope(BlockScopeType::LOOP);
         stmt(*node->getChildIter());
         m_table.popScope();
         node->nextChild(1, false); // jump STMT
+        m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB));
+        // end
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(end);
+        /*----------------------------------------------------------------------------*/
     } else if (expect(*node->getChildIter(), SymbolEnum::BREAKTK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         if (!m_table.getCurrentScope().isSubLoopScope()) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
+        } else {
+            /*---------------------------------codegen------------------------------------*/
+            m_ctx.basicBlock->pushBackInst(new JumpInst(m_ctx.loopStk.back().second));
+            /*----------------------------------------------------------------------------*/
         }
         node->nextChild(); // jump BREAKTK
     } else if (expect(*node->getChildIter(), SymbolEnum::CONTINUETK)) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         if (!m_table.getCurrentScope().isSubLoopScope()) {
             Logger::logError(ErrorType::BRK_CONT_NOT_IN_LOOP, leafNode->getToken().lineNum);
+        } else {
+            /*---------------------------------codegen------------------------------------*/
+            m_ctx.basicBlock->pushBackInst(new JumpInst(m_ctx.loopStk.back().first));
+            /*----------------------------------------------------------------------------*/
         }
         node->nextChild(); // jump CONTINUETK
     } else if (expect(*node->getChildIter(), SymbolEnum::RETURNTK)) {
@@ -937,16 +967,20 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
             ValueTypeEnum type = funcItem->getReturnValueType();
             auto& funcName = funcItem->getName();
             int lineNum = leafNode->getToken().lineNum;
+            Value* ret = nullptr;
             if (expect(*node->getChildIter(), VNodeEnum::EXP)) {
                 if (type == ValueTypeEnum::VOID_TYPE) {
                     Logger::logError(ErrorType::VOID_FUNC_HAVE_RETURNED, lineNum, funcName);
                 } else if (type == ValueTypeEnum::INT_TYPE) {
-                    exp<IntType>(*node->getChildIter());
+                    ret = exp<IntType>(*node->getChildIter())->getIrValue();
                 } else {
-                    exp<CharType>(*node->getChildIter());
+                    ret = exp<CharType>(*node->getChildIter())->getIrValue();
                 }
                 node->nextChild(); // jump EXP
             }
+            /*---------------------------------codegen------------------------------------*/
+            m_ctx.basicBlock->pushBackInst(new ReturnInst(ret));
+            /*----------------------------------------------------------------------------*/
         }
 
     } else if (expect(*node->getChildIter(), SymbolEnum::PRINTFTK)) {

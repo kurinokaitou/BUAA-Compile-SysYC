@@ -7,21 +7,33 @@ b0: ; preds =
 	%t3 = alloca i32, align 4
 	%x4 = getelementptr inbounds i32, i32* %t3, i32 0
 	; store 5
-	store i32 1, i32* %x4, align 4
+	store i32 0, i32* %x4, align 4
+	br label %b1
+b1: ; preds = %b0, %b4
 	%x6 = load i32, i32* %x1, align 4
-	%t7 = icmp eq i32 %x6, 1
+	%t7 = icmp slt i32 %x6, 10
 	%x8 = zext i1 %t7 to i32
-	; if %x8 then b1 else b2
+	; if %x8 then b2 else b3
 	%t9 = icmp ne i32 %x8, 0
-	br i1 %t9, label %b1, label %b2
-b1: ; preds = 
+	br i1 %t9, label %b2, label %b3
+b2: ; preds = %b1
 	%x10 = load i32, i32* %x4, align 4
-	%t11 = icmp eq i32 %x10, 1
+	%t11 = icmp slt i32 %x10, 100
 	%x12 = zext i1 %t11 to i32
-	br label %b2
-b2: ; preds = 
-	%x13 = phi i32 [%x8, %b0], [%x12, %b1]
-	%x14 = load i32, i32* %x6, align 4
+	br label %b3
+b3: ; preds = %b1, %b2
+	%x13 = phi i32 [%x8, %b1], [%x12, %b2]
+	; if %x13 then b4 else b5
+	%t14 = icmp ne i32 %x13, 0
+	br i1 %t14, label %b4, label %b5
+b4: ; preds = %b3
 	%x15 = load i32, i32* %x10, align 4
+	%x16 = add i32 %x15, 1
+	; store 17
+	store i32 %x16, i32* %x15, align 4
+	br label %b1
+b5: ; preds = %b3
+	%x18 = load i32, i32* %x15, align 4
+	ret i32 0
 }
 

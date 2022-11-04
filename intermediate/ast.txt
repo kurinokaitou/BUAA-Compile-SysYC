@@ -5,7 +5,7 @@ LPARENT (
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR a
+    IDENFR i
     ASSIGN =
     INTCON 1
     <Number>
@@ -19,9 +19,9 @@ RPARENT )
     SEMICN ;
     <VarDecl>
     INTTK int
-    IDENFR b
+    IDENFR cnt
     ASSIGN =
-    INTCON 1
+    INTCON 0
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -32,18 +32,17 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
-    IFTK if
+    WHILETK while
     LPARENT (
-    IDENFR a
+    IDENFR i
     <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <RelExp>
-    <EqExp>
-    EQL ==
-    INTCON 1
+    LSS <
+    INTCON 10
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -53,16 +52,15 @@ RPARENT )
     <EqExp>
     <LAndExp>
     AND &&
-    IDENFR b
+    IDENFR cnt
     <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <RelExp>
-    <EqExp>
-    EQL ==
-    INTCON 1
+    LSS <
+    INTCON 100
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -75,42 +73,42 @@ RPARENT )
     <Cond>
     RPARENT )
       LBRACE {
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d"
-        COMMA ,
-        IDENFR a
+        IDENFR cnt
+        <LVal>
+        ASSIGN =
+        IDENFR cnt
         <LVal>
         <PrimaryExp>
         <UnaryExp>
         <MulExp>
         <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-    ELSETK else
-      LBRACE {
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d"
-        COMMA ,
-        IDENFR b
-        <LVal>
+        PLUS +
+        INTCON 1
+        <Number>
         <PrimaryExp>
         <UnaryExp>
         <MulExp>
         <AddExp>
         <Exp>
-        RPARENT )
         SEMICN ;
         <Stmt>
       RBRACE }
       <Block>
     <Stmt>
+    <Stmt>
+    PRINTFTK printf
+    LPARENT (
+    STRCON "%d\n"
+    COMMA ,
+    IDENFR cnt
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RPARENT )
+    SEMICN ;
     <Stmt>
     RETURNTK return
     INTCON 0

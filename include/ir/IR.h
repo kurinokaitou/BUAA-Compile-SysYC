@@ -131,6 +131,7 @@ public:
         m_insts.push_back(std::unique_ptr<Inst>(inst));
         return m_insts.back().get();
     };
+    bool valid();
 
 private:
     std::vector<BasicBlock*> m_pred;
@@ -143,6 +144,7 @@ public:
 
 class Function {
     friend class Module;
+    friend class CallInst;
 
 public:
     explicit Function(FuncItem* funcItem) :
@@ -482,7 +484,7 @@ struct CodeContext {
     Module module;
     Function* function;
     BasicBlock* basicBlock;
-    std::vector<std::pair<BasicBlock*, BasicBlock*>> loop_stk; // <continue, break>
+    std::vector<std::pair<BasicBlock*, BasicBlock*>> loopStk; // <continue, break>
 };
 
 #endif

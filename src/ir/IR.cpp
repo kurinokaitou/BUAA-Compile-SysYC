@@ -20,6 +20,11 @@ std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
     }
 }
 
+bool BasicBlock::valid() {
+    auto& tail = m_insts.back();
+    return (!m_insts.empty()) && (dynamic_cast<ReturnInst*>(tail.get()) || dynamic_cast<JumpInst*>(tail.get()) || dynamic_cast<BranchInst*>(tail.get()));
+}
+
 void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
     if (dims.empty()) {
         os << "i32";
@@ -65,7 +70,7 @@ void Module::toCode(std::ostream& os) {
             bb->getPreds().clear();
         }
         for (auto& bb : func->m_basicBlocks) {
-            bb->getPreds().clear();
+            // bb->getPreds().clear();
             for (auto* x : bb->getSuccs()) {
                 if (x) x->getPreds().push_back(bb.get());
             }
@@ -100,7 +105,12 @@ void Function::toCode(std::ostream& os) {
         ret = m_funcItem->getReturnValueType() == ValueTypeEnum::INT_TYPE ? "i32" : "void";
     }
     os << decl << " " << ret << " @";
-    os << m_funcItem->getName() << "(";
+    if (m_isBuiltin) {
+        os << m_builtinName;
+    } else {
+        os << m_funcItem->getName();
+    }
+    os << "(";
     if (m_isBuiltin) {
         os << m_builtinArgType << " ";
     } else {
@@ -301,33 +311,48 @@ void ReturnInst::toCode(std::ostream& os) {
 }
 
 void CallInst::toCode(std::ostream& os) {
-    FuncItem* callee = m_func->getFuncItem();
-    if (callee->getReturnValueType() == ValueTypeEnum::INT_TYPE) {
-        printValue(os);
-        os << " = call i32";
-    } else {
-        os << "call void";
-    }
-    os << " @" << callee->getName() << "(";
-    for (int i = 0; i < m_args.size(); i++) {
-        // type
-        auto param = callee->getParams()[i];
-        auto dims = getArrayItemDimensions(param);
-        if (dims.empty()) {
-            // simple
-            os << "i32 ";
+    if (m_func->m_isBuiltin) {
+        if (m_func->m_retType == "void") {
+            os << "call void";
         } else {
-            // array param
-            os << "i32 * ";
+            printValue(os);
+            os << " = call " << m_func->m_retType;
         }
-        // arg
-        m_args[i].value->printValue(os);
-        if (i + 1 < m_args.size()) {
-            // not last element
-            os << ", ";
+        os << " @" << m_func->m_builtinName << "(";
+        if (!m_args.empty()) {
+            os << m_func->m_builtinArgType << " ";
+            m_args[0].value->printValue(os);
         }
+        os << ")" << std::endl;
+    } else {
+        FuncItem* callee = m_func->getFuncItem();
+        if (callee->getReturnValueType() == ValueTypeEnum::INT_TYPE) {
+            printValue(os);
+            os << " = call i32";
+        } else {
+            os << "call void";
+        }
+        os << " @" << callee->getName() << "(";
+        for (int i = 0; i < m_args.size(); i++) {
+            // type
+            auto param = callee->getParams()[i];
+            auto dims = getArrayItemDimensions(param);
+            if (dims.empty()) {
+                // simple
+                os << "i32 ";
+            } else {
+                // array param
+                os << "i32 * ";
+            }
+            // arg
+            m_args[i].value->printValue(os);
+            if (i + 1 < m_args.size()) {
+                // not last element
+                os << ", ";
+            }
+        }
+        os << ")" << std::endl;
     }
-    os << ")" << std::endl;
 }
 
 void PhiInst::toCode(std::ostream& os) {

@@ -1,10 +1,9 @@
 int main() {
-    int a = 1;
-    int b = 1;
-    if(a == 1 && b == 1){
-        printf("%d", a);
-    } else{
-        printf("%d", b);
+    int i = 1;
+    int cnt = 0;
+    while (i < 10 && cnt < 100) {
+        cnt = cnt + 1;
     }
+    printf("%d\n", cnt);
     return 0;
 }
