@@ -6,8 +6,7 @@ SymbolTable::SymbolTable() :
 
 std::pair<FuncItem*, bool> SymbolTable::insertFunc(const std::string& name, typename FuncItem::Data data) {
     if (std::is_base_of<SymbolTableItem, FuncItem>::value) {
-        auto pair = getGlobalScope().insertFunc(std::unique_ptr<FuncItem>(new FuncItem(name, data)));
-        return std::make_pair(dynamic_cast<FuncItem*>(pair.first), pair.second);
+        return getGlobalScope().insertFunc(std::unique_ptr<FuncItem>(new FuncItem(name, data)));
     } else {
         return std::make_pair(nullptr, false);
     }

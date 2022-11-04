@@ -9,6 +9,7 @@
 #include "IRTypeEnum.h"
 #include <symbol/SymbolTableItem.h>
 #include <symbol/ValueType.h>
+#include <Utils.h>
 
 static void printDimensions(std::ostream& os, std::vector<size_t>& dims);
 
@@ -84,6 +85,7 @@ class Value {
 public:
     explicit Value(IRType type) :
         m_type(type){};
+    virtual ~Value() {}
     void addUse(Use* use) { m_uses.push_back(use); };
     void removeUse(Use* use) {
         for (auto it = m_uses.begin(); it != m_uses.end(); it++) {
@@ -109,6 +111,7 @@ class Inst : public Value {
 public:
     Inst(IRType type) :
         Value(type){};
+    virtual ~Inst() {}
     virtual std::vector<Use*> getOperands() { return {}; };
     virtual void toCode(std::ostream& os) { os << "vacantInst"; };
     void printValue(std::ostream& os) override {
@@ -177,6 +180,7 @@ class GlobalVariable : public Value {
 public:
     explicit GlobalVariable(SymbolTableItem* globalItem) :
         Value(IRType::Global), m_globalItem(globalItem) {}
+    virtual ~GlobalVariable() {}
     void printValue(std::ostream& os) override {
         os << "@" << m_globalItem->getName();
     }
@@ -185,10 +189,35 @@ private:
     SymbolTableItem* m_globalItem;
 };
 
+class StringVariable : public Value {
+    friend class Module;
+
+public:
+    explicit StringVariable(std::string name, std::string str) :
+        Value(IRType::Global), m_name(name), m_str(str) {
+        replaceAll(m_str, "\"", "");
+        int num = replaceAll(m_str, "\\n", "\\0a");
+        m_len = m_str.size() - num * 2 + 1;
+        m_str += "\\00";
+    }
+    virtual ~StringVariable() {}
+    virtual void printValue(std::ostream& os) override {
+        os << "@" << m_name;
+    }
+    void printStrType(std::ostream& os);
+    void printString(std::ostream& os);
+
+private:
+    std::string m_name;
+    std::string m_str;
+    int m_len;
+};
+
 class ParamVariable : public Value {
 public:
     explicit ParamVariable(SymbolTableItem* paramItem) :
         Value(IRType::Param), m_paramItem(paramItem) {}
+    virtual ~ParamVariable() {}
     void printValue(std::ostream& os) override {
         os << "%" << m_paramItem->getName();
     }
@@ -214,6 +243,13 @@ public:
         m_globalVariables.push_back(std::unique_ptr<GlobalVariable>(new GlobalVariable(item)));
         return m_globalVariables.back().get();
     }
+
+    StringVariable* addStrVar(const std::string& str) {
+        std::string name = ".str" + std::to_string(m_strVariables.size() + 1);
+        m_strVariables.push_back(std::unique_ptr<StringVariable>(new StringVariable(name, str)));
+        return m_strVariables.back().get();
+    }
+
     Function* getFunc(FuncItem* funcItem);
     static Function* getBuiltinFunc(const std::string& funcName);
 
@@ -226,7 +262,7 @@ public:
 private:
     std::vector<std::unique_ptr<Function>> m_funcs;
     std::vector<std::unique_ptr<GlobalVariable>> m_globalVariables;
-    std::vector<std::string> m_strs;
+    std::vector<std::unique_ptr<StringVariable>> m_strVariables;
 };
 
 struct Use {
@@ -262,6 +298,7 @@ class BinaryInst : public Inst {
 public:
     BinaryInst(IRType type, Value* lhs, Value* rhs) :
         Inst(type), m_lhs(lhs, this), m_rhs(rhs, this) {}
+    virtual ~BinaryInst() {}
     bool rhsCanBeImm() {
         // Add, Sub, Rsb, Mul, Div, Mod, Lt, Le, Ge, Gt, Eq, Ne, And, Or
         return (m_type >= IRType::Add && m_type <= IRType::Rsb) || (m_type >= IRType::Lt && m_type <= IRType::Or);
@@ -303,6 +340,7 @@ public:
         if (inserted) it->second = new ConstValue(imm);
         return it->second;
     }
+    virtual ~ConstValue() {}
     const int getImm() const { return m_imm; }
     void printValue(std::ostream& os) override {
         os << m_imm;
@@ -323,6 +361,7 @@ struct BranchInst : public Inst {
 public:
     explicit BranchInst(Value* cond, BasicBlock* left, BasicBlock* right) :
         Inst(IRType::Branch), m_cond(cond, this), m_left(left), m_right(right) {}
+    virtual ~BranchInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_cond}; };
     virtual void toCode(std::ostream& os) override;
 
@@ -340,6 +379,7 @@ class JumpInst : public Inst {
 public:
     explicit JumpInst(BasicBlock* next) :
         Inst(IRType::Jump), m_next(next) {}
+    virtual ~JumpInst() {}
     virtual std::vector<Use*> getOperands() override { return {}; };
     virtual void toCode(std::ostream& os) override;
 
@@ -353,6 +393,7 @@ class ReturnInst : public Inst {
 public:
     explicit ReturnInst(Value* ret) :
         Inst(IRType::Return), m_ret(ret, this) {}
+    virtual ~ReturnInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_ret}; };
     virtual void toCode(std::ostream& os) override;
 
@@ -366,6 +407,7 @@ class AccessInst : public Inst {
 public:
     explicit AccessInst(IRType type, SymbolTableItem* lhs_sym, Value* arr, Value* index) :
         Inst(type), m_lhsSym(lhs_sym), m_arr(arr, this), m_index(index, this) {}
+    virtual ~AccessInst(){};
     virtual std::vector<Use*> getOperands() override { return {&m_arr, &m_index}; };
     virtual void toCode(std::ostream& os) override { Inst::toCode(os); }
     virtual void printValue(std::ostream& os) override { Inst::printValue(os); };
@@ -382,6 +424,7 @@ class GetElementPtrInst : public AccessInst {
 public:
     explicit GetElementPtrInst(SymbolTableItem* lhsSym, Value* arr, Value* index, int multiplier) :
         AccessInst(IRType::GetElementPtr, lhsSym, arr, index), m_multiplier(multiplier) {}
+    virtual ~GetElementPtrInst() {}
     virtual std::vector<Use*> getOperands() override { return AccessInst::getOperands(); };
     virtual void toCode(std::ostream& os) override;
 
@@ -395,6 +438,7 @@ class LoadInst : public AccessInst {
 public:
     explicit LoadInst(SymbolTableItem* lhsSym, Value* arr, Value* index) :
         AccessInst(IRType::Load, lhsSym, arr, index), m_memToken(nullptr, this) {}
+    virtual ~LoadInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_arr, &m_memToken}; };
     virtual void toCode(std::ostream& os) override;
 
@@ -408,6 +452,7 @@ class StoreInst : public AccessInst {
 public:
     explicit StoreInst(SymbolTableItem* lhsSym, Value* arr, Value* data, Value* index) :
         AccessInst(IRType::Store, lhsSym, arr, index), m_data(data, this) {}
+    virtual ~StoreInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_arr, &m_data}; };
     virtual void toCode(std::ostream& os) override;
     virtual void printValue(std::ostream& os) override {
@@ -427,6 +472,7 @@ public:
             m_args.emplace_back(arg, this);
         }
     }
+    virtual ~CallInst() {}
     virtual std::vector<Use*> getOperands() override {
         std::vector<Use*> usePtrs;
         usePtrs.reserve(m_args.size());
@@ -446,6 +492,7 @@ class AllocaInst : public Inst {
 public:
     AllocaInst(SymbolTableItem* sym) :
         Inst(IRType::Alloca), m_sym(sym) {}
+    virtual ~AllocaInst() {}
     virtual std::vector<Use*> getOperands() override { return {}; };
     virtual void toCode(std::ostream& os) override;
 
@@ -465,6 +512,7 @@ public:
             m_incomingValues.emplace_back(nullptr, this);
         }
     }
+    virtual ~PhiInst() {}
     std::vector<Use>& getIncomingValues() { return m_incomingValues; }
     virtual std::vector<Use*> getOperands() override {
         std::vector<Use*> usePtrs;
@@ -478,6 +526,36 @@ public:
 
 private:
     std::vector<Use> m_incomingValues;
+};
+
+class PrintInst : public Inst {
+public:
+    explicit PrintInst(const std::vector<StringVariable*>& strParts, std::vector<Value*> args) :
+        Inst(IRType::Print) {
+        m_args.reserve(args.size());
+        for (auto& arg : args) {
+            m_args.emplace_back(arg, this);
+        }
+        m_strParts.assign(strParts.begin(), strParts.end());
+    }
+    virtual ~PrintInst() {}
+    virtual std::vector<Use*> getOperands() override {
+        std::vector<Use*> usePtrs;
+        usePtrs.reserve(m_args.size());
+        for (auto& use : m_args) {
+            usePtrs.push_back(&use);
+        }
+        return usePtrs;
+    };
+    virtual void toCode(std::ostream& os) override;
+
+private:
+    void printPutInt(const Use& arg, std::ostream& os);
+    void printPutStr(StringVariable* strPart, std::ostream& os);
+
+private:
+    std::vector<Use> m_args;
+    std::vector<StringVariable*> m_strParts;
 };
 
 struct CodeContext {

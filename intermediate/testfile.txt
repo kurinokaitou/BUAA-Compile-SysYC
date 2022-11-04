@@ -1,26 +1,36 @@
-int a = 1;
-const int c = 2;
-int arr[8] = {1, 2, 3, 4, 1, 2, 3, 4};
-
-void putint(int n) {
-    // printf("%d", n);
+void func1(){
+    
 }
 
-/*
-int add(int a, int b, int c[]) {
-    //int d = a + b;
-   // c[0] = d;
-   // return d;
-}
-*/
+void func2(){
 
-int main() {
-    int i;
-    i = getint();
-    int cnt = 0;
-    while (i < 10 && cnt < 100) {
-        cnt = cnt + 1;
-    }
-    putint(cnt);
+}
+
+void func3(){
+
+}
+
+void func4(){
+
+}
+
+void func5(){
+
+}
+
+void func6(){
+
+}
+
+void func7(){
+
+}
+
+void func8(){
+
+}
+
+int main(){
+
     return 0;
 }

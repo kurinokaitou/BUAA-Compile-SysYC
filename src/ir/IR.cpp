@@ -38,8 +38,8 @@ void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
 }
 
 void Module::toCode(std::ostream& os) {
-    for (auto& builtinFunc : s_usedBuiltinFuncs) {
-        builtinFunc->toCode(os);
+    for (auto& builtinFunc : s_builtinFuncs) {
+        builtinFunc.second->toCode(os);
     }
     if (!s_usedBuiltinFuncs.empty()) {
         os << std::endl;
@@ -63,6 +63,17 @@ void Module::toCode(std::ostream& os) {
         os << std::endl;
     }
     if (!m_globalVariables.empty()) {
+        os << std::endl;
+    }
+    for (auto& str : m_strVariables) {
+        str->printValue(os);
+        os << " = constant ";
+        str->printStrType(os);
+        os << " ";
+        str->printString(os);
+        os << std::endl;
+    }
+    if (!m_strVariables.empty()) {
         os << std::endl;
     }
     for (auto& func : m_funcs) {
@@ -375,4 +386,62 @@ void PhiInst::toCode(std::ostream& os) {
         os << ", %b" << BasicBlock::s_bbMapper.get(m_atBlock->getPreds()[i]) << "]";
     }
     os << std::endl;
+}
+
+void PrintInst::printPutInt(const Use& arg, std::ostream& os) {
+    os << "call void @putint(i32 ";
+    arg.value->printValue(os);
+    os << ")" << std::endl;
+}
+
+void PrintInst::printPutStr(StringVariable* strPart, std::ostream& os) {
+    auto temp = Value::s_valueMapper.alloc();
+    os << "%t" << temp << " = getelementptr inbounds ";
+    strPart->printStrType(os);
+    os << ", ";
+    strPart->printStrType(os);
+    os << "* ";
+    strPart->printValue(os);
+    os << ", i32 0, i32 0" << std::endl;
+    os << "\tcall void @putstr(i8* "
+       << "%t" << temp << ")" << std::endl;
+}
+
+void PrintInst::toCode(std::ostream& os) {
+    int partsNum = m_strParts.size();
+    if (partsNum == 0) { // 只有 %d
+        Module::getBuiltinFunc("putint");
+        bool flag = true;
+        for (auto argIt = m_args.begin(); argIt != m_args.end(); argIt++) {
+            if (argIt != m_args.begin()) {
+                os << "\t";
+            }
+            printPutInt(*argIt, os);
+        }
+    } else if (partsNum == 1) { // 只有 "str"
+        Module::getBuiltinFunc("putstr");
+        printPutStr(m_strParts[0], os);
+    } else {
+        Module::getBuiltinFunc("putint");
+        Module::getBuiltinFunc("putstr");
+        int argCnt = 0;
+        for (auto it = m_strParts.begin(); it != m_strParts.end(); it++) {
+            if (it != m_strParts.begin()) {
+                os << "\t";
+            }
+            if (*it) {
+                printPutStr(*it, os);
+            } else {
+                printPutInt(m_args[argCnt++], os);
+            }
+        }
+    }
+}
+
+void StringVariable::printStrType(std::ostream& os) {
+    os << "[" << m_len << " x i8]";
+}
+
+void StringVariable::printString(std::ostream& os) {
+    os << "c\"" << m_str << "\"";
 }

@@ -1,4 +1,5 @@
 #include <codegen/Visitor.h>
+#include <Utils.h>
 
 #ifndef NDEBUG
 #define DBG_PROBE_BRANCH(name) auto name = (*node->getChildIter())->getNodeEnum()
@@ -168,9 +169,9 @@ SymbolTableItem* Visitor::mulExp(std::shared_ptr<VNodeBase> node) {
             /*---------------------------------codegen------------------------------------*/
             Value* inst = nullptr;
             if (op == SymbolEnum::MULT) {
-                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Add, mul->getIrValue(), unary->getIrValue()));
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Mul, mul->getIrValue(), unary->getIrValue()));
             } else if (op == SymbolEnum::DIV) {
-                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Sub, mul->getIrValue(), unary->getIrValue()));
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Div, mul->getIrValue(), unary->getIrValue()));
             } else if (op == SymbolEnum::MOD) {
                 inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Mod, mul->getIrValue(), unary->getIrValue()));
             } else {
@@ -232,6 +233,7 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
             }
             auto function = m_ctx.module.getFunc(func);
             auto inst = m_ctx.basicBlock->pushBackInst(new CallInst(function, args));
+            ret->setIrValue(inst);
             /*----------------------------------------------------------------------------*/
             // 生成函数调用，复制参数的代码，ret为返回值
             return ret;
@@ -621,6 +623,7 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
                 m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(k++)));
             }
         }
+        res.first->setIrValue(inst);
     } else {
         auto glob = m_ctx.module.addGlobalVar(res.first);
         res.first->setIrValue(glob);
@@ -775,15 +778,25 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     node->nextChild(2); // jump IDENT '('
     m_table.pushScope(BlockScopeType::FUNC);
     m_table.getCurrentScope().setFuncItem(res.first);
-    /*---------------------------------codegen------------------------------------*/
-    m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
-    m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
-    /*----------------------------------------------------------------------------*/
+
     std::vector<SymbolTableItem*> params;
     if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
         params = funcFParams(*node->getChildIter());
         node->nextChild();
     }
+    /*---------------------------------codegen------------------------------------*/
+    m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
+    m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
+    for (auto& param : params) {
+        if (!param->getType()->isArray()) {
+            auto inst = m_ctx.basicBlock->pushBackInst(new AllocaInst(param));
+            param->setIrValue(inst);
+            m_ctx.basicBlock->pushBackInst(new StoreInst(param, inst, new ParamVariable(param), ConstValue::get(0)));
+        } else {
+            param->setIrValue(new ParamVariable(param));
+        }
+    }
+    /*----------------------------------------------------------------------------*/
     res.first->setParams(std::move(params));
     node->nextChild(); // jump ')'
     block(*node->getChildIter());
@@ -886,7 +899,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         /*---------------------------------codegen------------------------------------*/
         auto then = new BasicBlock();
         BasicBlock* els = nullptr;
-        if (expect(*node->getChildIter(3), SymbolEnum::ELSETK)) {
+        if (node->getChildrenNum() > 5) {
             els = new BasicBlock();
         }
         auto end = new BasicBlock();
@@ -995,6 +1008,9 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
              offset = formatStr.find(sub, offset + 2)) {
             count++;
         }
+        std::vector<std::string> parts;
+        std::vector<bool> place;
+        splitFormatString(formatStr, parts, place);
         std::vector<SymbolTableItem*> items;
         while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
             node->nextChild();                                    // jump ','
@@ -1003,6 +1019,25 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         }
         if (items.size() != count) {
             Logger::logError(ErrorType::PRINTF_UMATCHED, lineNum, std::to_string(items.size()), std::to_string(count));
+        } else {
+            /*---------------------------------codegen------------------------------------*/
+            std::vector<StringVariable*> strParts;
+            std::vector<Value*> args;
+            strParts.reserve(place.size());
+            args.reserve(items.size());
+            int strCnt = 0;
+            for (auto isStr : place) {
+                if (isStr) {
+                    strParts.push_back(m_ctx.module.addStrVar(parts[strCnt++]));
+                } else {
+                    strParts.push_back(nullptr);
+                }
+            }
+            for (auto& item : items) {
+                args.push_back(item->getIrValue());
+            }
+            m_ctx.basicBlock->pushBackInst(new PrintInst(strParts, args));
+            /*----------------------------------------------------------------------------*/
         }
     } else if (expect(*node->getChildIter(), VNodeEnum::LVAL)) {
         auto lValItem = lVal(*node->getChildIter());
@@ -1105,9 +1140,10 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
             if (!findedIsArray) {
                 /*---------------------------------codegen------------------------------------*/
                 auto inst = m_ctx.basicBlock->pushBackInst(new LoadInst(finded, finded->getIrValue(), ConstValue::get(0)));
-                finded->setIrValue(inst);
+                auto temp = makeTempItem(type);
+                temp->setIrValue(inst);
                 /*----------------------------------------------------------------------------*/
-                return finded;
+                return temp;
             } else {
                 // 符号表中存储的数组的维数
 
@@ -1124,8 +1160,9 @@ SymbolTableItem* Visitor::rVal(std::shared_ptr<VNodeBase> node) {
                 if (pos.empty()) {
                     /*---------------------------------codegen------------------------------------*/
                     auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(finded, finded->getIrValue(), ConstValue::get(0), 0));
-                    finded->setIrValue(inst);
-                    return finded;
+                    auto temp = makeTempItem(type, true, std::move(targetDims));
+                    temp->setIrValue(inst);
+                    return temp;
                     /*----------------------------------------------------------------------------*/
                 } else {
                     int diff = targetDims.size() - pos.size();

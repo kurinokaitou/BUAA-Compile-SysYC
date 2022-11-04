@@ -110,7 +110,6 @@ private:
 };
 
 class IntType;
-class Function;
 class FuncItem : public SymbolTableItem {
 public:
     using Data = ValueTypeEnum;
