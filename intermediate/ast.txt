@@ -1,23 +1,153 @@
 <CompUnit>
 INTTK int
+IDENFR a
+ASSIGN =
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+CONSTTK const
+INTTK int
+IDENFR c
+ASSIGN =
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+<ConstInitVal>
+<ConstDef>
+SEMICN ;
+<ConstDecl>
+INTTK int
+IDENFR arr
+LBRACK [
+INTCON 8
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+ASSIGN =
+LBRACE {
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 3
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 4
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 3
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+COMMA ,
+INTCON 4
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+RBRACE }
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+VOIDTK void
+<FuncType>
+IDENFR putint
+LPARENT (
+INTTK int
+IDENFR n
+<FuncFParam>
+<FuncFParams>
+RPARENT )
+  LBRACE {
+  RBRACE }
+  <Block>
+<FuncDef>
+INTTK int
 MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
     INTTK int
     IDENFR i
-    ASSIGN =
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
     <VarDef>
     SEMICN ;
     <VarDecl>
+    IDENFR i
+    <LVal>
+    ASSIGN =
+    GETINTTK getint
+    LPARENT (
+    RPARENT )
+    SEMICN ;
+    <Stmt>
     INTTK int
     IDENFR cnt
     ASSIGN =
@@ -96,10 +226,8 @@ RPARENT )
       <Block>
     <Stmt>
     <Stmt>
-    PRINTFTK printf
+    IDENFR putint
     LPARENT (
-    STRCON "%d\n"
-    COMMA ,
     IDENFR cnt
     <LVal>
     <PrimaryExp>
@@ -107,7 +235,12 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
+    <FuncRParams>
     RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
     SEMICN ;
     <Stmt>
     RETURNTK return

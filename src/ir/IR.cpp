@@ -7,17 +7,17 @@ std::map<std::string, Function*> Module::s_builtinFuncs;
 std::set<Function*> Module::s_usedBuiltinFuncs;
 
 std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
-    auto& lastInst = m_insts.back();
-    if (auto branchInst = dynamic_cast<BranchInst*>(lastInst.get())) {
-        return {branchInst->m_left, branchInst->m_right};
-    } else if (auto jumpInst = dynamic_cast<JumpInst*>(lastInst.get())) {
-        return {jumpInst->m_next, nullptr};
-    } else if (auto returnInst = dynamic_cast<ReturnInst*>(lastInst.get())) {
-        return {nullptr, nullptr};
-    } else {
-        // Log error;
-        return {nullptr, nullptr};
+    if (!m_insts.empty()) {
+        auto& lastInst = m_insts.back();
+        if (auto branchInst = dynamic_cast<BranchInst*>(lastInst.get())) {
+            return {branchInst->m_left, branchInst->m_right};
+        } else if (auto jumpInst = dynamic_cast<JumpInst*>(lastInst.get())) {
+            return {jumpInst->m_next, nullptr};
+        } else if (auto returnInst = dynamic_cast<ReturnInst*>(lastInst.get())) {
+            return {nullptr, nullptr};
+        }
     }
+    return {nullptr, nullptr};
 }
 
 bool BasicBlock::valid() {
@@ -139,6 +139,14 @@ void Function::toCode(std::ostream& os) {
         for (auto& bb : m_basicBlocks) { // 按顺序标号
             BasicBlock::s_bbMapper.get(bb.get());
         }
+        auto& lastBlock = m_basicBlocks.back();
+        if (!lastBlock->valid()) {
+            if (m_funcItem->getReturnValueType() == ValueTypeEnum::VOID_TYPE) {
+                lastBlock->pushBackInst(new ReturnInst(nullptr));
+            } else {
+                lastBlock->pushBackInst(new ReturnInst(ConstValue::get(0)));
+            }
+        }
         for (auto& bb : m_basicBlocks) {
             int index = BasicBlock::s_bbMapper.get(bb.get());
             os << "b" << index << ": ; preds = ";
@@ -247,7 +255,9 @@ void LoadInst::toCode(std::ostream& os) {
     } else {
         printValue(os);
         os << " = load i32, i32* ";
-        m_arr.value->printValue(os);
+        if (m_arr.value) {
+            m_arr.value->printValue(os);
+        }
         os << ", align 4" << std::endl;
     }
 }
