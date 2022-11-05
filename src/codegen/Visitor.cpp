@@ -449,6 +449,7 @@ std::pair<typename Type::InternalType, bool> Visitor::calConstExp(std::shared_pt
             }
             break;
         case VNodeEnum::LVAL: {
+            node->resetIter();
             auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
             auto item = m_table.findItem(leafNode->getToken().literal);
             if (item != nullptr) {
@@ -1015,6 +1016,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         node->nextChild(); // jump STRCON
         const std::string& formatStr = leafNode->getToken().literal;
+        if (formatStr == "\"\"\"\"") return;
         int lineNum = leafNode->getToken().lineNum;
         int count = 0;
         std::string sub = "%d";

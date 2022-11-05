@@ -1,0 +1,16 @@
+declare i32 @getint( ) #0
+declare void @putch(i32 ) #0
+declare void @putint(i32 ) #0
+declare void @putstr(i8* ) #0
+@.str1 = constant [3 x i8] c"12\00"
+@.str2 = constant [6 x i8] c"hello\00"
+
+define i32 @main() #0 {
+_b0: ; preds = 
+	%_t0 = getelementptr inbounds [3 x i8], [3 x i8]* @.str1, i32 0, i32 0
+	call void @putstr(i8* %_t0)
+	%_t1 = getelementptr inbounds [6 x i8], [6 x i8]* @.str2, i32 0, i32 0
+	call void @putstr(i8* %_t1)
+	ret i32 0
+}
+

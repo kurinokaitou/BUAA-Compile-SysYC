@@ -96,7 +96,7 @@ public:
         }
     };
     virtual void printValue(std::ostream& os) {
-        os << "%x" << s_valueMapper.get(this);
+        os << "%_x" << s_valueMapper.get(this);
     };
     virtual bool isGlob() { return false; }
     static IndexMapper<Value> s_valueMapper;

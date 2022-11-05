@@ -124,6 +124,9 @@ void Tokenizer::checkFormatChar() {
             }
             m_tokenStr += m_currChar;
             //unextractChar();
+        } else if (m_currChar == '"') {
+            m_tokenStr += m_currChar;
+            unextractChar();
         } else {
             Logger::logError(ErrorType::ILLEGAL_SYMBOL, m_currLine, std::string(1, m_currChar));
         }

@@ -1,4 +1,5 @@
 #include <symbol/SymbolTable.h>
+#include <Log.h>
 SymbolTable::SymbolTable() :
     m_currScopeHandle(BlockScopeHandle(0)) {
     m_blockScopes.emplace_back(*this, BlockScopeType::GLOBAL, 0, BlockScopeHandle());
@@ -18,10 +19,16 @@ void SymbolTable::initSymbolTable() {
 }
 
 BlockScope& SymbolTable::getBlockScope(BlockScopeHandle handle) {
+    if (handle.index >= m_blockScopes.size()) {
+        DBG_ERROR("handle index out of range:" + std::to_string(handle.index) + "\n");
+    }
     return m_blockScopes.at(handle.index);
 }
 
 BlockScope& SymbolTable::getCurrentScope() {
+    if (m_currScopeHandle.index >= m_blockScopes.size()) {
+        DBG_ERROR("current handle index out of range:" + std::to_string(m_currScopeHandle.index) + "\n");
+    }
     return m_blockScopes.at(m_currScopeHandle.index);
 }
 
@@ -35,10 +42,10 @@ BlockScopeHandle SymbolTable::getCurrentScopeHandle() {
 
 void SymbolTable::pushScope(BlockScopeType type) {
     auto& currentScope = getCurrentScope();
-    m_blockScopes.emplace_back(*this, type, currentScope.getLevel() + 1, m_currScopeHandle);
-    BlockScopeHandle child(m_blockScopes.size() - 1);
-    currentScope.addChildScope(child);
-    m_currScopeHandle = child;
+    auto parentHandle = m_currScopeHandle;
+    m_currScopeHandle = BlockScopeHandle(m_blockScopes.size());
+    currentScope.addChildScope(m_currScopeHandle);
+    m_blockScopes.push_back(BlockScope(*this, type, currentScope.getLevel() + 1, parentHandle));
 }
 
 void SymbolTable::popScope() {

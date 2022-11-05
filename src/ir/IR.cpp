@@ -160,10 +160,10 @@ void Function::toCode(std::ostream& os) {
         }
         for (auto& bb : m_basicBlocks) {
             int index = BasicBlock::s_bbMapper.get(bb.get());
-            os << "b" << index << ": ; preds = ";
+            os << "_b" << index << ": ; preds = ";
             for (int i = 0; i < bb->m_pred.size(); ++i) {
                 if (i != 0) os << ", ";
-                os << "%b" << BasicBlock::s_bbMapper.get(bb->m_pred[i]);
+                os << "%_b" << BasicBlock::s_bbMapper.get(bb->m_pred[i]);
             }
             os << std::endl;
             for (auto& inst : bb->m_insts) {
@@ -180,7 +180,7 @@ void Function::toCode(std::ostream& os) {
 
 void AllocaInst::toCode(std::ostream& os) {
     auto temp = Value::s_valueMapper.alloc();
-    os << "%t" << temp << " = alloca ";
+    os << "%_t" << temp << " = alloca ";
     auto dims = getArrayItemDimensions(m_sym);
     printDimensions(os, dims);
     os << ", align 4" << std::endl;
@@ -190,7 +190,7 @@ void AllocaInst::toCode(std::ostream& os) {
     printDimensions(os, dims);
     os << ", ";
     printDimensions(os, dims);
-    os << "* %t" << temp;
+    os << "* %_t" << temp;
     if (dims.empty()) {
         os << ", i32 0" << std::endl;
     } else {
@@ -226,14 +226,14 @@ void GetElementPtrInst::toCode(std::ostream& os) {
         os << ", i32 " << res << std::endl;
     } else {
         int temp = Value::s_valueMapper.alloc();
-        os << "%t" << temp << " = mul i32 ";
+        os << "%_t" << temp << " = mul i32 ";
         m_index.value->printValue(os);
         os << ", " << m_multiplier << std::endl;
         os << "\t";
         printValue(os);
         os << " = getelementptr inbounds i32, i32* ";
         m_arr.value->printValue(os);
-        os << ", i32 %t" << temp << std::endl;
+        os << ", i32 %_t" << temp << std::endl;
     }
 }
 
@@ -243,7 +243,7 @@ void StoreInst::toCode(std::ostream& os) {
     // temp ptr
     if (dynamic_cast<ConstValue*>(m_index.value)->getImm() != 0) {
         int temp = Value::s_valueMapper.alloc();
-        os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
+        os << "%_t" << temp << " = getelementptr inbounds i32, i32* ";
         m_arr.value->printValue(os);
         os << ", i32 ";
         m_index.value->printValue(os);
@@ -252,7 +252,7 @@ void StoreInst::toCode(std::ostream& os) {
         if (m_data.value) {
             m_data.value->printValue(os);
         }
-        os << ", i32* %t" << temp << ", align 4" << std::endl;
+        os << ", i32* %_t" << temp << ", align 4" << std::endl;
     } else {
         os << "store i32 ";
         if (m_data.value) {
@@ -268,7 +268,7 @@ void LoadInst::toCode(std::ostream& os) {
     // temp ptr
     if (dynamic_cast<ConstValue*>(m_index.value)->getImm() != 0) {
         int temp = Value::s_valueMapper.alloc();
-        os << "%t" << temp << " = getelementptr inbounds i32, i32* ";
+        os << "%_t" << temp << " = getelementptr inbounds i32, i32* ";
         if (m_arr.value) {
             m_arr.value->printValue(os);
         }
@@ -277,7 +277,7 @@ void LoadInst::toCode(std::ostream& os) {
         os << std::endl;
         os << "\t";
         printValue(os);
-        os << " = load i32, i32* %t" << temp << ", align 4" << std::endl;
+        os << " = load i32, i32* %_t" << temp << ", align 4" << std::endl;
     } else {
         printValue(os);
         os << " = load i32, i32* ";
@@ -293,14 +293,14 @@ void BinaryInst::toCode(std::ostream& os) {
     bool conversion = IRType::Lt <= m_type && m_type <= IRType::Ne;
     if (conversion) {
         int temp = Value::s_valueMapper.alloc();
-        os << "%t" << temp << " = " << op_name << " i32 ";
+        os << "%_t" << temp << " = " << op_name << " i32 ";
         m_lhs.value->printValue(os);
         os << ", ";
         m_rhs.value->printValue(os);
         os << std::endl;
         os << "\t";
         printValue(os);
-        os << " = zext i1 %t" << temp << " to i32" << std::endl;
+        os << " = zext i1 %_t" << temp << " to i32" << std::endl;
     } else if (m_type == IRType::Rsb) {
         printValue(os);
         os << " = sub i32 ";
@@ -319,20 +319,20 @@ void BinaryInst::toCode(std::ostream& os) {
 }
 
 void JumpInst::toCode(std::ostream& os) {
-    os << "br label %b" << BasicBlock::s_bbMapper.get(m_next) << std::endl;
+    os << "br label %_b" << BasicBlock::s_bbMapper.get(m_next) << std::endl;
 }
 
 void BranchInst::toCode(std::ostream& os) {
     // add comment
     os << "; if ";
     m_cond.value->printValue(os);
-    os << " then b" << BasicBlock::s_bbMapper.get(m_left) << " else b"
+    os << " then _b" << BasicBlock::s_bbMapper.get(m_left) << " else _b"
        << BasicBlock::s_bbMapper.get(m_right) << std::endl;
     int temp = Value::s_valueMapper.alloc();
-    os << "\t%t" << temp << " = icmp ne i32 ";
+    os << "\t%_t" << temp << " = icmp ne i32 ";
     m_cond.value->printValue(os);
     os << ", 0" << std::endl;
-    os << "\tbr i1 %t" << temp << ", label %b" << BasicBlock::s_bbMapper.get(m_left) << ", label %b"
+    os << "\tbr i1 %_t" << temp << ", label %_b" << BasicBlock::s_bbMapper.get(m_left) << ", label %_b"
        << BasicBlock::s_bbMapper.get(m_right) << std::endl;
 }
 
@@ -398,7 +398,7 @@ void PhiInst::toCode(std::ostream& os) {
         if (i != 0) os << ", ";
         os << "[";
         m_incomingValues[i].value->printValue(os);
-        os << ", %b" << BasicBlock::s_bbMapper.get(m_atBlock->getPreds()[i]) << "]";
+        os << ", %_b" << BasicBlock::s_bbMapper.get(m_atBlock->getPreds()[i]) << "]";
     }
     os << std::endl;
 }
@@ -411,7 +411,7 @@ void PrintInst::printPutInt(const Use& arg, std::ostream& os) {
 
 void PrintInst::printPutStr(StringVariable* strPart, std::ostream& os) {
     auto temp = Value::s_valueMapper.alloc();
-    os << "%t" << temp << " = getelementptr inbounds ";
+    os << "%_t" << temp << " = getelementptr inbounds ";
     strPart->printStrType(os);
     os << ", ";
     strPart->printStrType(os);
@@ -419,7 +419,7 @@ void PrintInst::printPutStr(StringVariable* strPart, std::ostream& os) {
     strPart->printValue(os);
     os << ", i32 0, i32 0" << std::endl;
     os << "\tcall void @putstr(i8* "
-       << "%t" << temp << ")" << std::endl;
+       << "%_t" << temp << ")" << std::endl;
 }
 
 void PrintInst::toCode(std::ostream& os) {

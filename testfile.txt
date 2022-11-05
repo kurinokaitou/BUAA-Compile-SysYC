@@ -1,0 +1,7 @@
+int main()
+{
+    printf("");
+    printf("12");
+    printf("hello");
+    return 0;
+}
