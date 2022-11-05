@@ -16,7 +16,7 @@ public:
     virtual VType getType() const = 0;
     virtual void addChild(std::shared_ptr<VNodeBase>&& child) = 0;
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const = 0;
-    virtual ChidrenIter getChildIter(int offset = 0) const = 0;
+    virtual ChidrenIter getChildIter(int offset = 0, bool enableDbg = true) const = 0;
     virtual void resetIter() = 0;
     virtual size_t getChildrenNum() const = 0;
     virtual bool nextChild(int offset = 1, bool enableDbg = true) = 0;
@@ -58,8 +58,10 @@ public:
         static const std::vector<std::shared_ptr<VNodeBase>> dummy;
         return dummy;
     };
-    virtual ChidrenIter getChildIter(int offset = 0) const override {
-        DBG_ERROR("Try to get childIter from a leaf node!");
+    virtual ChidrenIter getChildIter(int offset = 0, bool enableDbg = true) const override {
+        if (enableDbg) {
+            DBG_ERROR("Try to get childIter from a leaf node!");
+        }
         return ChidrenIter();
     }
     virtual void resetIter() override {
@@ -104,7 +106,16 @@ public:
         os << "<" << getVNodeEnumText(m_nodeEnum) << ">\n";
     }
     virtual const std::vector<std::shared_ptr<VNodeBase>>& getChildren(int offset = 0) const override { return m_childrenNodes; };
-    virtual ChidrenIter getChildIter(int offset = 0) const override { return m_currentChild + offset; }
+    virtual ChidrenIter getChildIter(int offset = 0, bool enableDbg = true) const override {
+        if (m_currentChild + offset < m_childrenNodes.end()) {
+            return m_currentChild + offset;
+        } else {
+            if (enableDbg) {
+                DBG_LOG("Iterator out of range!");
+            }
+            return m_currentChild;
+        }
+    }
     virtual void resetIter() override {
         m_currentChild = m_childrenNodes.begin();
         for (auto& child : m_childrenNodes) {

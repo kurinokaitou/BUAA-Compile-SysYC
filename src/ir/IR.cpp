@@ -204,8 +204,23 @@ void GetElementPtrInst::toCode(std::ostream& os) {
     if (auto index = dynamic_cast<ConstValue*>(m_index.value)) {
         int res = index->getImm() * m_multiplier;
         printValue(os);
-        os << " = getelementptr inbounds i32, i32* ";
+        os << " = getelementptr inbounds ";
         if (m_arr.value) {
+            if (m_arr.value->isGlob()) {
+                auto globItem = dynamic_cast<GlobalVariable*>(m_arr.value)->getGlobalItem();
+                auto dims = getArrayItemDimensions(globItem);
+                printDimensions(os, dims);
+                os << ", ";
+                printDimensions(os, dims);
+                os << "* ";
+                if (!dims.empty()) {
+                    m_arr.value->printValue(os);
+                    os << ", i32 0, i32 0" << std::endl;
+                    return;
+                }
+            } else {
+                os << "i32, i32* ";
+            }
             m_arr.value->printValue(os);
         }
         os << ", i32 " << res << std::endl;

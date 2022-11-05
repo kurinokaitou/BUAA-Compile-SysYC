@@ -249,6 +249,8 @@ SymbolTableItem* Visitor::unaryExp(std::shared_ptr<VNodeBase> node) {
                 inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Sub, ConstValue::get(0), ret->getIrValue()));
             } else if (op == SymbolEnum::NOT) {
                 inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Eq, ret->getIrValue(), ConstValue::get(0)));
+            } else {
+                inst = m_ctx.basicBlock->pushBackInst(new BinaryInst(IRType::Add, ret->getIrValue(), ConstValue::get(0)));
             }
             ret->setIrValue(inst);
             /*----------------------------------------------------------------------------*/
@@ -752,13 +754,20 @@ void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
     /*---------------------------------codegen------------------------------------*/
     m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
+    for (auto& var : m_ctx.module.getGlobalVariables()) {
+        auto globItem = var->getGlobalItem();
+        if (globItem->getType()->isArray()) {
+            auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
+            globItem->setIrValue(inst);
+        }
+    }
     /*----------------------------------------------------------------------------*/
     std::vector<SymbolTableItem*> params;
     if (expect(*node->getChildIter(), VNodeEnum::FUNCFPARAMS)) {
         params = funcFParams(*node->getChildIter());
         node->nextChild();
     }
-    res.first->setParams(std::move(params));
+    res.first->setParams(params);
     node->nextChild(); // jump ')'
     block(*node->getChildIter());
     m_table.popScope();
@@ -787,6 +796,13 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     /*---------------------------------codegen------------------------------------*/
     m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
+    for (auto& var : m_ctx.module.getGlobalVariables()) {
+        auto globItem = var->getGlobalItem();
+        if (globItem->getType()->isArray()) {
+            auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
+            globItem->setIrValue(inst);
+        }
+    }
     for (auto& param : params) {
         if (!param->getType()->isArray()) {
             auto inst = m_ctx.basicBlock->pushBackInst(new AllocaInst(param));
@@ -797,7 +813,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
         }
     }
     /*----------------------------------------------------------------------------*/
-    res.first->setParams(std::move(params));
+    res.first->setParams(params);
     node->nextChild(); // jump ')'
     block(*node->getChildIter());
     m_table.popScope(); // pop from func
@@ -898,10 +914,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
 
         /*---------------------------------codegen------------------------------------*/
         auto then = new BasicBlock();
-        BasicBlock* els = nullptr;
-        if (node->getChildrenNum() > 5) {
-            els = new BasicBlock();
-        }
+        auto els = new BasicBlock();
         auto end = new BasicBlock();
         auto cnd = cond(*node->getChildIter());
         m_ctx.basicBlock->pushBackInst(new BranchInst(cnd, then, els));
@@ -914,17 +927,18 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         if (!m_ctx.basicBlock->valid()) {
             m_ctx.basicBlock->pushBackInst(new JumpInst(end));
         }
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(els);
         if (expect(*node->getChildIter(), SymbolEnum::ELSETK)) {
-            m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(els);
             node->nextChild(); // jump ELSETK
             m_table.pushScope(BlockScopeType::BRANCH);
             stmt(*node->getChildIter());
             m_table.popScope();
             node->nextChild(1, false); // jump STMT
-            if (!m_ctx.basicBlock->valid()) {
-                m_ctx.basicBlock->pushBackInst(new JumpInst(end));
-            }
+
             /*----------------------------------------------------------------------------*/
+        }
+        if (!m_ctx.basicBlock->valid()) {
+            m_ctx.basicBlock->pushBackInst(new JumpInst(end));
         }
         m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(end);
     } else if (expect(*node->getChildIter(), SymbolEnum::WHILETK)) {
@@ -1224,6 +1238,7 @@ Value* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
             auto rhsBB = new BasicBlock();
             auto afterBB = new BasicBlock();
             auto inv = new BinaryInst(IRType::Eq, lhs, ConstValue::get(0));
+            m_ctx.basicBlock->pushBackInst(inv);
             m_ctx.basicBlock->pushBackInst(new BranchInst(inv, rhsBB, afterBB));
             m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(rhsBB);
             rhs = lAndExp<Type>(*node->getChildIter());

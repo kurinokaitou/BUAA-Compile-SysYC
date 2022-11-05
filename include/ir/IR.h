@@ -98,6 +98,7 @@ public:
     virtual void printValue(std::ostream& os) {
         os << "%x" << s_valueMapper.get(this);
     };
+    virtual bool isGlob() { return false; }
     static IndexMapper<Value> s_valueMapper;
 
 protected:
@@ -181,9 +182,11 @@ public:
     explicit GlobalVariable(SymbolTableItem* globalItem) :
         Value(IRType::Global), m_globalItem(globalItem) {}
     virtual ~GlobalVariable() {}
-    void printValue(std::ostream& os) override {
+    virtual bool isGlob() override { return true; }
+    virtual void printValue(std::ostream& os) override {
         os << "@" << m_globalItem->getName();
     }
+    SymbolTableItem* getGlobalItem() { return m_globalItem; }
 
 private:
     SymbolTableItem* m_globalItem;
@@ -252,7 +255,7 @@ public:
 
     Function* getFunc(FuncItem* funcItem);
     static Function* getBuiltinFunc(const std::string& funcName);
-
+    std::vector<std::unique_ptr<GlobalVariable>>& getGlobalVariables() { return m_globalVariables; }
     void toCode(std::ostream& os);
 
 public:

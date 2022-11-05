@@ -132,7 +132,7 @@ public:
     }
     virtual bool isChangble() override { return false; }
     virtual ValueType* getType() override { return nullptr; };
-    void setParams(std::vector<SymbolTableItem*>&& params) {
+    void setParams(std::vector<SymbolTableItem*>& params) {
         m_params.assign(params.begin(), params.end());
     }
 
@@ -140,7 +140,6 @@ public:
 
 private:
     std::vector<SymbolTableItem*> m_params;
-    VarItem<IntType>* m_retValItem;
     ValueTypeEnum m_retType;
 };
 #endif
