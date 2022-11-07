@@ -6,17 +6,17 @@
 #include <symbol/SymbolTable.h>
 #include <codegen/CodeGenerator.h>
 
-static std::string s_sourcePath = "testfile.txt";
+static std::string s_sourcePath = "intermediate/testfile.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
-static std::string s_dumpIrPath = "llvm_ir.txt";
+static std::string s_dumpIrPath = "intermediate/llvm_ir.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
-static bool s_dumpIr = true;
+static bool s_dumpIr = false;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
