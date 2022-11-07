@@ -960,6 +960,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         node->nextChild(2);
         m_table.pushScope(BlockScopeType::LOOP);
         stmt(*node->getChildIter());
+        m_ctx.loopStk.pop_back();
         m_table.popScope();
         node->nextChild(1, false); // jump STMT
         m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB));
