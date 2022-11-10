@@ -4,8 +4,8 @@
 IndexMapper<Value> Value::s_valueMapper;
 IndexMapper<BasicBlock> BasicBlock::s_bbMapper;
 std::map<int, ConstValue*> ConstValue::POOL;
-std::map<std::string, Function*> Module::s_builtinFuncs;
-std::set<Function*> Module::s_usedBuiltinFuncs;
+std::map<std::string, IrFunc*> IrModule::s_builtinFuncs;
+std::set<IrFunc*> IrModule::s_usedBuiltinFuncs;
 
 std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
     if (!m_insts.empty()) {
@@ -38,7 +38,7 @@ void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
     }
 }
 
-void Module::toCode(std::ostream& os, bool isTest) {
+void IrModule::toCode(std::ostream& os, bool isTest) {
     if (isTest) {
         os << s_rawPrintfCode << std::endl;
     } else {
@@ -95,7 +95,7 @@ void Module::toCode(std::ostream& os, bool isTest) {
     }
 }
 
-Function* Module::getFunc(FuncItem* funcItem) {
+IrFunc* IrModule::getFunc(FuncItem* funcItem) {
     for (auto& func : m_funcs) {
         if (func->getFuncItem() == funcItem) {
             return func.get();
@@ -104,13 +104,13 @@ Function* Module::getFunc(FuncItem* funcItem) {
     return nullptr;
 }
 
-Function* Module::getBuiltinFunc(const std::string& funcName) {
-    Function* func = s_builtinFuncs.at(funcName);
+IrFunc* IrModule::getBuiltinFunc(const std::string& funcName) {
+    IrFunc* func = s_builtinFuncs.at(funcName);
     s_usedBuiltinFuncs.insert(func);
     return func;
 }
 
-void Function::toCode(std::ostream& os) {
+void IrFunc::toCode(std::ostream& os) {
     Value::s_valueMapper.reset();
     BasicBlock::s_bbMapper.reset();
     std::string decl = m_isBuiltin ? "declare" : "define";
@@ -430,7 +430,7 @@ void PrintInst::printPutStr(StringVariable* strPart, std::ostream& os) {
 void PrintInst::toCode(std::ostream& os) {
     int partsNum = m_strParts.size();
     if (partsNum == 0) { // 只有 %d
-        Module::getBuiltinFunc("putint");
+        IrModule::getBuiltinFunc("putint");
         bool flag = true;
         for (auto argIt = m_args.begin(); argIt != m_args.end(); argIt++) {
             if (argIt != m_args.begin()) {
@@ -439,11 +439,11 @@ void PrintInst::toCode(std::ostream& os) {
             printPutInt(*argIt, os);
         }
     } else if (partsNum == 1) { // 只有 "str"
-        Module::getBuiltinFunc("putstr");
+        IrModule::getBuiltinFunc("putstr");
         printPutStr(m_strParts[0], os);
     } else {
-        Module::getBuiltinFunc("putint");
-        Module::getBuiltinFunc("putstr");
+        IrModule::getBuiltinFunc("putint");
+        IrModule::getBuiltinFunc("putstr");
         int argCnt = 0;
         for (auto it = m_strParts.begin(); it != m_strParts.end(); it++) {
             if (it != m_strParts.begin()) {

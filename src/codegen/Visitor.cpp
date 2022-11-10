@@ -753,7 +753,7 @@ void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
     m_table.pushScope(BlockScopeType::FUNC);
     m_table.getCurrentScope().setFuncItem(res.first);
     /*---------------------------------codegen------------------------------------*/
-    m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
+    m_ctx.function = m_ctx.module.addFunc(new IrFunc(res.first));
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
     for (auto& var : m_ctx.module.getGlobalVariables()) {
         auto globItem = var->getGlobalItem();
@@ -795,7 +795,7 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
         node->nextChild();
     }
     /*---------------------------------codegen------------------------------------*/
-    m_ctx.function = m_ctx.module.addFunc(new Function(res.first));
+    m_ctx.function = m_ctx.module.addFunc(new IrFunc(res.first));
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
     for (auto& var : m_ctx.module.getGlobalVariables()) {
         auto globItem = var->getGlobalItem();
@@ -1066,7 +1066,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
                 ret = MAKE_INT_VAR();
                 // TODO: 生成将此通过getint获取值的代码
                 /*---------------------------------codegen------------------------------------*/
-                auto inst = m_ctx.basicBlock->pushBackInst(new CallInst(Module::getBuiltinFunc("getint"), {}));
+                auto inst = m_ctx.basicBlock->pushBackInst(new CallInst(IrModule::getBuiltinFunc("getint"), {}));
                 ret->setIrValue(inst);
                 /*----------------------------------------------------------------------------*/
             } else {

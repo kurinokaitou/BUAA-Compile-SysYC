@@ -1,6 +1,7 @@
 #ifndef IR_H
 #define IR_H
 #include <vector>
+#include <list>
 #include <cassert>
 #include <memory>
 #include <set>
@@ -124,7 +125,7 @@ protected:
 };
 
 class BasicBlock {
-    friend class Function;
+    friend class IrFunc;
 
 public:
     BasicBlock() = default;
@@ -135,40 +136,50 @@ public:
         m_insts.push_back(std::unique_ptr<Inst>(inst));
         return m_insts.back().get();
     };
+    void removeInst(Inst* inst) {
+        m_insts.remove_if([inst](std::unique_ptr<Inst>& in) {
+            return inst == in.get();
+        });
+    }
+    Inst* insertFrontInst(Inst* inst) {
+        inst->m_atBlock = this;
+        m_insts.push_front(std::unique_ptr<Inst>(inst));
+        return m_insts.front().get();
+    }
     bool valid();
 
 private:
     std::vector<BasicBlock*> m_pred;
     bool m_vis{false};
-    std::vector<std::unique_ptr<Inst>> m_insts;
+    std::list<std::unique_ptr<Inst>> m_insts;
 
 public:
     static IndexMapper<BasicBlock> s_bbMapper;
 };
 
-class Function {
-    friend class Module;
+class IrFunc {
+    friend class IrModule;
     friend class CallInst;
 
 public:
-    explicit Function(FuncItem* funcItem) :
+    explicit IrFunc(FuncItem* funcItem) :
         m_funcItem(funcItem) {}
-    explicit Function(const std::string& funcName, const std::string& builtinArgType, const std::string& retType) :
+    explicit IrFunc(const std::string& funcName, const std::string& builtinArgType, const std::string& retType) :
         m_isBuiltin(true), m_builtinName(funcName), m_builtinArgType(builtinArgType), m_retType(retType) {}
     BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
     }
-    void addCallee(Function* func) { m_callee.insert(func); }
-    void addCaller(Function* func) { m_caller.insert(func); }
+    void addCallee(IrFunc* func) { m_callee.insert(func); }
+    void addCaller(IrFunc* func) { m_caller.insert(func); }
     FuncItem* getFuncItem() { return m_funcItem; }
     void toCode(std::ostream& os);
 
 private:
     FuncItem* m_funcItem{nullptr};
     std::vector<std::unique_ptr<BasicBlock>> m_basicBlocks;
-    std::set<Function*> m_callee;
-    std::set<Function*> m_caller;
+    std::set<IrFunc*> m_callee;
+    std::set<IrFunc*> m_caller;
     bool m_isBuiltin{false};
     std::string m_builtinName;
     std::string m_builtinArgType;
@@ -176,7 +187,7 @@ private:
 };
 
 class GlobalVariable : public Value {
-    friend class Module;
+    friend class IrModule;
 
 public:
     explicit GlobalVariable(SymbolTableItem* globalItem) :
@@ -193,7 +204,7 @@ private:
 };
 
 class StringVariable : public Value {
-    friend class Module;
+    friend class IrModule;
 
 public:
     explicit StringVariable(std::string name, std::string str) :
@@ -229,16 +240,16 @@ private:
     SymbolTableItem* m_paramItem;
 };
 
-class Module {
+class IrModule {
 public:
-    Module() {
+    IrModule() {
         for (int i = 0; i < FUNC_NUM; i++) {
             s_builtinFuncs.insert({BUILTIN_FUNCS[i][0],
-                                   new Function(BUILTIN_FUNCS[i][0], BUILTIN_FUNCS[i][1], BUILTIN_FUNCS[i][2])});
+                                   new IrFunc(BUILTIN_FUNCS[i][0], BUILTIN_FUNCS[i][1], BUILTIN_FUNCS[i][2])});
         }
     }
-    Function* addFunc(Function* func) {
-        m_funcs.push_back(std::unique_ptr<Function>(func));
+    IrFunc* addFunc(IrFunc* func) {
+        m_funcs.push_back(std::unique_ptr<IrFunc>(func));
         return m_funcs.back().get();
     }
 
@@ -253,17 +264,17 @@ public:
         return m_strVariables.back().get();
     }
 
-    Function* getFunc(FuncItem* funcItem);
-    static Function* getBuiltinFunc(const std::string& funcName);
+    IrFunc* getFunc(FuncItem* funcItem);
+    static IrFunc* getBuiltinFunc(const std::string& funcName);
     std::vector<std::unique_ptr<GlobalVariable>>& getGlobalVariables() { return m_globalVariables; }
     void toCode(std::ostream& os, bool isTest);
 
 public:
-    static std::map<std::string, Function*> s_builtinFuncs;
-    static std::set<Function*> s_usedBuiltinFuncs;
+    static std::map<std::string, IrFunc*> s_builtinFuncs;
+    static std::set<IrFunc*> s_usedBuiltinFuncs;
 
 private:
-    std::vector<std::unique_ptr<Function>> m_funcs;
+    std::vector<std::unique_ptr<IrFunc>> m_funcs;
     std::vector<std::unique_ptr<GlobalVariable>> m_globalVariables;
     std::vector<std::unique_ptr<StringVariable>> m_strVariables;
 };
@@ -468,7 +479,7 @@ private:
 
 class CallInst : public Inst {
 public:
-    explicit CallInst(Function* func, std::vector<Value*> args) :
+    explicit CallInst(IrFunc* func, std::vector<Value*> args) :
         Inst(IRType::Call), m_func(func) {
         m_args.reserve(args.size());
         for (auto& arg : args) {
@@ -487,7 +498,7 @@ public:
     virtual void toCode(std::ostream& os) override;
 
 private:
-    Function* m_func;
+    IrFunc* m_func;
     std::vector<Use> m_args;
 };
 
@@ -562,8 +573,8 @@ private:
 };
 
 struct CodeContext {
-    Module module;
-    Function* function;
+    IrModule module;
+    IrFunc* function;
     BasicBlock* basicBlock;
     std::vector<std::pair<BasicBlock*, BasicBlock*>> loopStk; // <continue, break>
 };
