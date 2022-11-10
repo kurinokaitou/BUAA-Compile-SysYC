@@ -256,7 +256,7 @@ public:
     Function* getFunc(FuncItem* funcItem);
     static Function* getBuiltinFunc(const std::string& funcName);
     std::vector<std::unique_ptr<GlobalVariable>>& getGlobalVariables() { return m_globalVariables; }
-    void toCode(std::ostream& os);
+    void toCode(std::ostream& os, bool isTest);
 
 public:
     static std::map<std::string, Function*> s_builtinFuncs;

@@ -13,7 +13,7 @@ void CodeGenerator::dumpTable(std::filebuf& file) {
     m_table.dumpTable(os);
 }
 
-void CodeGenerator::dumpIr(std::filebuf& file) {
+void CodeGenerator::dumpIr(std::filebuf& file, bool isTest) {
     std::ostream os(&file);
-    m_ctx.module.toCode(os);
+    m_ctx.module.toCode(os, isTest);
 }

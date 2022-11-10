@@ -23,7 +23,7 @@ bool Compiler::firstPass(std::filebuf& file) {
         m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
         m_generator->generate();
         if (s_dumpIr) {
-            dumpIr(ir);
+            dumpIr(ir, s_isTest);
             ir.close();
         }
         if (s_dumpTable) {
@@ -78,11 +78,11 @@ void Compiler::dumpError(std::filebuf& file) {
     }
 }
 
-void Compiler::dumpIr(std::filebuf& file) {
+void Compiler::dumpIr(std::filebuf& file, bool isTest) {
     if (!file.open(s_dumpIrPath, std::ios::out)) {
         throw std::runtime_error("Fail to open the ir file!");
     }
-    m_generator->dumpIr(file);
+    m_generator->dumpIr(file, isTest);
 }
 
 int main(int argc, char** argv) {

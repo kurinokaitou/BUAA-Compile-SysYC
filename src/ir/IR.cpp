@@ -1,4 +1,5 @@
 #include <ir/IR.h>
+#include <ir/Printf.h>
 
 IndexMapper<Value> Value::s_valueMapper;
 IndexMapper<BasicBlock> BasicBlock::s_bbMapper;
@@ -37,9 +38,13 @@ void printDimensions(std::ostream& os, std::vector<size_t>& dims) {
     }
 }
 
-void Module::toCode(std::ostream& os) {
-    for (auto& builtinFunc : s_builtinFuncs) {
-        builtinFunc.second->toCode(os);
+void Module::toCode(std::ostream& os, bool isTest) {
+    if (isTest) {
+        os << s_rawPrintfCode << std::endl;
+    } else {
+        for (auto& builtinFunc : s_builtinFuncs) {
+            builtinFunc.second->toCode(os);
+        }
     }
     if (!s_usedBuiltinFuncs.empty()) {
         os << std::endl;
