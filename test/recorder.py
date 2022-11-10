@@ -10,8 +10,11 @@ class Recorder:
         self.results[id] = result
         self.result &= result
 
+    def addTestTime(self, time):
+        self.testTime = time
+
     def writeToLog(self):
-        f = open("./testlog/"+"testlog.txt","w")
+        f = open("./testlog/"+"testlog "+ self.time +".txt","w")
         s = "test time: "+self.time
         f.write(s +'\n')
         print(s)
@@ -36,4 +39,7 @@ class Recorder:
             f.write(s+'\n')  
             print(s)
         f.write('\n')    
+        s = "total test time: " + str(self.testTime) + "ms\n"
+        print(s)
+        f.write(s);
         f.close()                 

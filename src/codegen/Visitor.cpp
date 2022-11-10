@@ -1256,6 +1256,7 @@ Value* Visitor::lOrExp(std::shared_ptr<VNodeBase> node) {
             /*----------------------------------------------------------------------------*/
         } else {
             DBG_ERROR("lOr expression only accept '||'!");
+            return nullptr;
         }
     }
 }

@@ -138,11 +138,10 @@ void testIO(){
 }
 
 int testRecurrence(int n){
-	// 变速下降的递归函数 
 	if (n==0){
 		return 1;
 	}
-	int temp;  // 递归函数里的临时变量 
+	int temp;
 	if (n==1){
 		temp = 1;
 	}else{
@@ -229,12 +228,12 @@ int main(){
 	int nnn1 = 1 ,nnn2 = 2,nnn3 = 3;
 	printf("line%d is:%d;line%d is : %d;  line%d is : %d;\n",nnn1,temp0,nnn2,temp,nnn3,temp1);
 	
-	printf("%d+2=3\n",1); // 符合语法
+	printf("%d+2=3\n",1);
 
-	//printf("%d+%d=%d\n",1,2,3);  // 不符合语法
+	//printf("%d+%d=%d\n",1,2,3);
 
 	int p1 = 1,p2 = 2,p3 = 3;
-	printf("%d+%d=%d\n",p1,p2,p3);  // 符合语法
+	printf("%d+%d=%d\n",p1,p2,p3);
 
 	int remain = 1;
 	int remain_index = 0;

@@ -1,6 +1,6 @@
 from runner import Runner
 from recorder import Recorder
-
+import time
 # CONFIG
 TEST_ID_RANGE = [1,27] #【修改】测试样例id范围
 TESTCASE_DIR = "./testfile/"
@@ -12,6 +12,7 @@ RUN_LLVM = True #【修改】是否运行lli
 
 recorder = Recorder()
 
+start = time.time()
 for id in range(TEST_ID_RANGE[0], TEST_ID_RANGE[1]+1):
     testPath = TESTCASE_DIR +  "testfile" + str(id) + ".txt"
     outputPath = TEST_OUTPUT_DIR +  "output" + str(id) + ".txt"
@@ -26,5 +27,7 @@ for id in range(TEST_ID_RANGE[0], TEST_ID_RANGE[1]+1):
         break
     print("testing "+str(id) + '/' + str(TEST_ID_RANGE[1]),end='\r')
 
+end = time.time();
+recorder.addTestTime((end - start)*1000)
 recorder.writeToLog()       
       
