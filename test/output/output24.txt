@@ -1,9 +1,10 @@
-19373063
-1.localVirable1 = 11,localVirable2 = 10 
-2.
-[2][0]:10|10 , [2]:-7|30
-[1][0]:8|8 , [1]:-8|20
-[0][0]:6|6 , [0]:-9|10
-9?
-3.function of kinds of parameters testified
-4.non exp testified
+20373737
+result is 102334155
+front 1 is 63245986
+front 2 is 39088169
+front 3 is 24157817
+front 4 is 14930352
+front 5 is 9227465
+front 6 is 5702887
+front 7 is 3524578
+front 8 is 2178309

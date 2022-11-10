@@ -1,117 +1,78 @@
-const int normal_const_1 = 114514;
-const int normal_const_2 = 1919810;
-const int normal_const_3 = 18, normal_const_4 = 37, normal_const_5 = 51, normal_const_6 = 82;
-const int array_const_1[2] = {114514, 1919810};
-const int array_const_2[2][2] = {{18, 37}, {51, 82}};
+const int MAT1[2] = {1, 10};
+int MAT2[3];
+int MAT3[2] = {1 + 1, 4};
 
-int normal_out_1 = 114514;
-int normal_out_2 = 415411;
-int normal_out_3 = 18, normal_out_4 = 37, normal_out_5 = 51, normal_out_6 = 82;
-int normal_out_7;
-int array_out_1[4];
-int array_out_2[2][2];
-int array_out_3[4] = {81, 73, 15, 28};
-int array_out_4[2][2] = {{81, 73}, {15, 28}};
+const int DMAT1[2][2] = {{1, 2}, {2, 3}};
+int DMAT2[2][2];
+int DMAT3[2][2] = {{4, 3}, {9, 9}};
 
-void do_nothing() {}
-
-void do_nothing_but_return() {
-	return;
+int getVal6() {
+	return 6;
 }
 
-int reverse_something(int to_be_reversed) {
-	int reverse_finished = 0;
-	int i;
-	while (to_be_reversed > 0) {
-		reverse_finished = reverse_finished * 10;
-		i = to_be_reversed % 10;
-		reverse_finished = reverse_finished + i;
-		to_be_reversed = to_be_reversed / 10;
-	}
-	return reverse_finished;
-} 
-
-void reverse_all_and_printf(int normal, int array_1[], int array_2[][2]) {
-	printf("%d", reverse_something(normal));
-	int i = 0;
-	while(i < 4) {
-		printf("%d", reverse_something(array_1[i]));
-		i = i + 1;
-		continue;
-	}
-	int m = 2, n = 0;
-	while (m > 0) {
-		while (n < 2) {
-			printf("%d", reverse_something(array_2[2 - m][n]));
-			n = n + 1;
-		}
-		n = 0;
-		m = m - 1;
-	}
+int getValDouble(int a) {
+	return a + a;
 }
 
-int main() {
-	int get_normal;
-	get_normal = getint();
-	printf("18375182");
-	int normal_1;
-	int normal_2;
-	int normal_3;
-	int normal_4;
-	int array_1[4];
-	int array_2[2][2];
-	normal_1 = 18375182;
-	normal_2 = reverse_something(normal_out_2);
-	normal_3 = 0;
-	normal_4 = 0;
-	array_1[0] = 81;
-	array_1[1] = 73;
-	array_1[2] = 15;
-	array_1[3] = 28;
-	array_2[0][0] = 81;
-	array_2[0][1] = 73;
-	array_2[1][0] = 15;
-	array_2[1][1] = 28;
-	reverse_all_and_printf(array_1[0], array_out_3, array_out_4);
-	if (1 == 1) ;
-	normal_1 / normal_2;
-	if (normal_2 == normal_1) {
-		normal_3 = 189191;
-	}else{
-		normal_3 = 1919810;
-	}
-	if (normal_3 != normal_const_2) {
-		normal_3 = 189191;
-	}
-	if(normal_3 > normal_2) {
-		normal_3;
-	} 
-	if(normal_3 < normal_2) {
-		normal_3;
-	}
-	if(normal_3 >= normal_2) {
-		normal_3;
-	}
-	if(normal_3 <= normal_2) {
-		normal_3;
-	}
-	if (!normal_4) {
-		printf("18375182");
-	}
-	normal_2 / normal_3;
-	normal_3 * 2;
-	normal_2 % normal_3;
-	(normal_2 % normal_3) + 1;
-	-+normal_3;
+int getAddVal(int a, int b) {
+	return a + b;
+}
+
+int otherPrint(int lis[]) {
 	int i = 0;
-	while (i < 5) {
-		if (i == 2) {
-			break;
-		}
-		i = i + 1;
-	}
+	printf("%d %d %d %d %d\n", lis[0], lis[1],  MAT1[0], MAT2[0], MAT3[0]);
 	return 0;
 }
 
+void DotherPrint(int lis[][2]) {
+	int i = 0;
+	printf("%d %d %d %d\n", lis[0][0], lis[0][1],  lis[1][0], lis[1][1]);
+	printf("%d %d %d %d\n", DMAT2[0][0], DMAT2[0][1],  DMAT2[1][0], DMAT2[1][1]);
+	return;
+}
 
-
+int main() {
+	int i = +1;
+	printf("20376131\n");
+	;
+	1 + 1;
+	while (i != 2) {
+		i = i + 1;
+	}
+	{
+		i = MAT1[1];
+	}
+	i = (i + 1);
+	i = -i;
+	printf("i: %d\n", i);
+	i = getVal6();
+	i = i * +-4 / -2 % 7;
+	if (!i) {
+		i + 2;
+	}
+	if (i > 0) {
+		DMAT2[0][0] = 2;
+		DMAT2[0][1] = getValDouble(DMAT2[0][0]);
+		DMAT2[1][0] = DMAT2[0][1] * -+-2;
+		DMAT2[1][1] = getValDouble(getAddVal(DMAT2[0][1], DMAT2[0][1]));
+	} else {
+		i + 2;
+	}
+	if (i == 5) {
+		printf("i == 5 is True!\n");
+	}
+	int j = 2; 
+	i = getValDouble(MAT1[1]);
+	j = (-+-getValDouble(j)) + 2 * -2;
+	printf("i: %d, j: %d\n", i, j);	
+	
+	MAT2[0] = 1; MAT2[1] = 3;
+	otherPrint(MAT3);
+	printf("i: %d, j: %d\n", DMAT1[1][1], DMAT1[0][0]);	
+	DotherPrint(DMAT3);
+	DMAT2[0][1] = 520;
+	printf("%d\n", DMAT2[0][1]);
+	DMAT2[1][0] = 1314;
+	printf("%d\n", DMAT2[1][0]);
+	return 0;
+}

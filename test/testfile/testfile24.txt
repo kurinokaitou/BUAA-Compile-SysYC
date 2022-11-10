@@ -1,50 +1,56 @@
-const int globalConst1 = 11,  globalConst2 = 22;
-const int globalConstArray2[3][2] = {{6,7},{8,9},{10,11}}; 
-const int globalConstArray1[3] = {10,20,30};
-int globalVirable1 = 111, globalVirable2;
-void assignmentArray(int n,int array1[], int array2[][2]){
-    int i = 0;
-    int j = i;
-    int m = n - 1;
-    while(i<3 && i<=m){
-        array1[i] = globalConstArray1[i] / 10 - 10;
+const int globalA[2] = {20, 373};
+int globalVa[2];
+int globalVb[2] = {3, 737};
+int findElement(int a[], int index) {
+    if(a[index] != 0) {
+        return a[index];
+    } else {
+        return 0;
+    }
+    return 0;
+}
+int writeElement(int a[], int index, int num) {
+    a[index] = num;
+    return 1;
+}
+int f(int a[], int x) {
+    if (x < 3) {
+        return 1;
+    }
+    int t = findElement(a, x);
+    if (t != 0) {
+        return t;
+    } else {
+        writeElement(a, x-1, f(a, x-1));
+        writeElement(a, x-2, f(a, x-2));
+        return f(a, x-1) + f(a, x-2);
+    }
+    return 0;
+}
+int printStudentId(int year, int college, int iter) {
+    printf("%d%d%d\n",year, college, iter);
+    return 1;
+}
+int main() {
+    int n, i;
+    int result;
+    int c[41];
+    int d[41];
+    i = 0;
+    while (i < 41)
+    {
+        d[i] = 0;
         i = i + 1;
     }
-    i = i - 1;
-    while(i>=0){
-        array1[i] = globalConstArray1[i] / 10 - 10;
-        while(1){
-            if(j < 2){
-                array2[i][j] = globalConstArray2[i][j] % 6 + 6; 
-                j = j + 1;
-                continue;
-            }
-            else{
-                j = 0;
-                printf("[%d][%d]:%d|%d , [%d]:%d|%d\n",i,j,array2[i][j],globalConstArray2[i][j],i,array1[i],globalConstArray1[i]);
-                break;
-            }
-        }
-        i = i - 1;
-    }
-    return;
-}
-int main(){
-    printf("19373063\n");
-    int localVirable1 = globalConst1;
-    int localVirableArray1[3],localVirableArray2[3][2];
-    int localVirable2 = globalConstArray2[2][0];
-    int n = 3;
-    printf("1.localVirable1 = %d,localVirable2 = %d \n2.\n",localVirable1, localVirable2);
-    
-    assignmentArray(n,localVirableArray1, localVirableArray2);
-    printf("%d?\n",localVirableArray2[1][1]);
-    printf("3.function of kinds of parameters testified\n");
-    ;
-    if(1>0)
+    n = getint();
+    result = f(d, n);
+    printStudentId(globalA[0], globalA[1], globalVb[1]);
+    printf("result is %d\n", result);
+    i = 0;
+    while (i < 8)
     {
-
+        printf("front %d is %d\n", i + 1, d[n - i - 1]);
+        i = i + 1;
     }
-    printf("4.non exp testified\n");
     return 0;
 }

@@ -1,10 +1,10 @@
-19373611
-19373611
-19373611
-Please input base number a:
-Please input base number b:
-The No.0 number is -4.
-The No.1 number is 0.
-The No.2 number is 5.
-The No.3 number is 14.
-The No.4 number is 45.
+20373608
+1
+1
+this is outside g1 4
+this is inside g1 3
+this is outside g1 5 agsin
+a9[0] is 4
+a13[0][1] is 6
+a13[0][2] is 3
+a12[9][9] is 1

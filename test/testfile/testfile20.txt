@@ -1,97 +1,94 @@
-int val_L = 0;
-const int const_a = 1 - 2 + (-3)*4 + 5/(2+3) - 6 % 4, const_b =((5-10)*(-4) + 4)/6 * (3%6/3);
-const int const_array1_a[2] = {1, 1};
-const int const_array2_a[2][2] = { {1, 1}, {1, 1} }, const_array2_b[2][2] = { {1, 1}, {1, 1} };
-int var_array1_a[2] = {0, 0};
-int var_array2_a[2][2] = { {1, 1}, {1, 1} };
+const int SingleDecl = 0;
+const int DoubleDecl1 = 0, DoubleDecl2 = 1;
+const int TripleDecl1 = 2, TripleDecl2 = 3, TripleDecl3 = 4;
+const int OneDConstArr[2] = {1, 2};
+const int TwoDConstArr[2][2] = {{1, 2}, {3, 4}};
 
-void check_LandEq() {
-    val_L = 0;
-    if (!0) {
-        val_L = val_L + 1;
-    }
-    if (1 != 0) {
-        val_L = val_L + 1;
-    }
-    if (val_L == 2) {
-        printf("L and Eq is ok (no params)\n");
-    } else {
-        printf("sth wrong with L and Eq (no params)\n");
-    }
-}
+int SingleVal;
+int SingleValWithInitVal = 1;
+int DoubleVal1, DoubleVal2;
+int TripleVal1, TripleVal2, TripleVal3;
+int OneDArr[10];
+int OneDArrWithInitVal[2] = {1, 2};
+int TwoDArr[2][2];
+int TwoDArrWithInitVal[2][2] = {{1, 2}, {3, 4}};
 
-int check_Rel(int a, int b, int c) {
-    int val_Rel = 0;
-    if (a >= 1) {
-        val_Rel = val_Rel + 1;
-    }
-    if (a <= 2) {
-        val_Rel = val_Rel + 1;
-    }
-    if (1 < b) {
-        val_Rel = val_Rel + 1;
-    }
-    if (b > 2) {
-        val_Rel = val_Rel + 1;
-    }
-    if (c == 2) {
-        val_Rel = val_Rel + 1;
-    }
-    if (c != 3) {
-        val_Rel = val_Rel + 1;
-    }
-    return val_Rel;
-}
+int function0Param() { return 0; }
 
-void check_Add(int x) {
-    if (const_a == x) {
-        printf("Add is ok1\n");
-    }
-    if (const_b == 4) {
-        printf("Add is ok2\n");
-    }
-}
+int function1Param(int p1) { return 1; }
 
-void check_block(int a2, int b2[], int c2[][2]) {
-    int tmp0 = -1;
-    int tmp1 = 1;
-    if( a2 > 0 ) {
-        while(tmp1 > 0) {
-            tmp1 = tmp1 - 2;
-            if (b2[1] == 0) {
-                break;
-            }
-            tmp1 = tmp1 - 2;
+int function2Param(int p1, int p2) { return 2; }
+
+int function3Param(int p1, int p2, int p3) { return 3; }
+
+int function1dArrParam(int a[]) { return 0; }
+
+int function2dArrParam(int a2[][2]) { return 0; }
+
+void functionNoRetStmt() {}
+
+void functionNoRetVal() { return; }
+
+int main()
+{
+    int local;
+    int localWithInitVal = 0;
+    int localDouble1, localDouble2;
+    int localTriple1, localTriple2, localTriple3;
+    int localArr[5];
+    int localArrWithInitVal[5] = {1, 2, 3, 4, 5};
+    int local2dArr[2][2];
+    int local2dArrWithInitVal[2][2] = {{1, 2}, {3, 4}};
+    local = getint();
+    local = 1;
+    local = SingleDecl;
+    local = OneDConstArr[0];
+    local = TwoDConstArr[0][0];
+    local = 1 + 1;
+    local = 1 - 1;
+    local = 1 * 1;
+    local = 1 / 1;
+    local = 1 % 1;
+    local = 1 + 1 * (1 / 1);
+    local = +1;
+    local = -1;
+    localArr[0] = 1;
+    local2dArr[0][0] = 1;
+    local = function0Param();
+    local = function1Param(local);
+    local = function2Param(local, local);
+    local = function3Param(local, local, local);
+    local = function1Param(localArr[0]);
+    local = function1dArrParam(localArr);
+    local = function2dArrParam(local2dArr);
+    functionNoRetStmt();
+    ; // null stmt
+    {
+    } // null block
+    if (local == 0)
+    {
+        local = 1;
+    }
+    else
+    {
+        local = 0;
+    }
+    if (local > 0)
+    {
+        local = 0;
+    }
+
+    while (local > 0)
+    {
+        local = local - 1;
+        if (local < 0)
+        {
+            break;
         }
-    } else {
-        while(tmp0 < 0) {
-            tmp0 = tmp0 + 2;
-            if (c2[1][1] == 1) {
-                continue;
-            }
-            tmp0 = tmp0 + 2;
-        }
+        continue;
     }
-    ;
-    printf("%d\n",tmp0);
-    printf("%d\n",tmp1);
-    return;
-}
 
-
-int main() {
-    int a, val_Rel;
-    printf("19373408 all weak points\n");
-    check_LandEq();
-    val_Rel = check_Rel(1, 6, 2);
-    if (val_Rel == 6) {
-        printf("Rel is ok (with params)\n");
-    } else {
-        printf("sth wrong with Rel (no params)\n");
-    }
-    check_Add(-14);
-    a = getint();//1
-    check_block(a, var_array1_a, var_array2_a);
-    check_block(-1, var_array1_a, var_array2_a);
+    printf("20373866\n");
+    printf("output with formatted String: local=%d", local);
     return 0;
 }

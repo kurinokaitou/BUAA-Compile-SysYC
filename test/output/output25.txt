@@ -1,10 +1,15 @@
-19373341
-m = 6, n = 23, mm = 26, nn = 353
-max of mm and nn: 353; min of mm and nn: 26
-mainConst1 = 10
-Sum of normalConst: 35
-23 is odd!
-Sum of array: 6
-sum of array: 24
-array contains 4 even number!
-All even!
+20373743
+
+prime_count:17
+prime less or equal than 47 are belows:
+2, 3, 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, 37, 41, 43, 47
+
+prime_count:31
+prime less or equal than 100 are belows:
+2, 3, 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, 37, 41, 43, 47, 53, 55, 59, 61, 65, 67, 71, 73, 79, 83, 85, 89, 95, 97
+
+the prime division of 8990 are:
+2, 5, 29, 31
+
+the prime division of 1000001 are:
+101, 9901

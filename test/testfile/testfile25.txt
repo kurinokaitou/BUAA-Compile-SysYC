@@ -1,150 +1,116 @@
+const int MAX = 100010;
+int p[100010];
 
-const int normalConst1 = 10;
-const int normalConst2 = 12, normalConst3 = 13;
-const int array1DConst1[3] = {1, 2, 3};
-const int array2DConst1[3][2] = {{1, 3}, {3, 5}, {5, 7}};
-
-int normalVar1 = 21;
-int normalVar2 = 22, normalVar3 = 23;
-int array1DVar1[4] = {1, 2, 3, 4}; 
-int array2DVar1[2][3]; 
-int sum;
-
-void outputInt(int n) {
-	printf("%d\n", n);
-	return ;
+int judge_prime(int num, int prime_count) {
+    int i = 1;
+    if (num != 2) {
+        if (num % 2 == 0)
+            return 0;
+    }
+    while (i < prime_count) {
+        if ((p[i] * p[i]) > num)
+            break;
+        if (num % p[i] != 0) {
+            i = (i + 2);
+        } else {
+            return 0;
+        }
+    }
+    return 1;
 }
 
-int getArraySum(int num[], int size) { // size < 3
-	int temp = 0;
-	int ans = 0;
-	while (temp < size) {
-		ans = ans + num[temp];
-		temp = temp + 1;
-	}
-	return ans;
+int cal_prime(int m) {
+    int prime_count = 1;
+    if (m < 2)
+        return 0;
+    if (m == 2)
+        return prime_count;
+    else {
+        int potential_prime = +3;
+        while (potential_prime <= m) {
+            if (judge_prime(potential_prime, prime_count)) {
+                p[prime_count] = potential_prime;
+                prime_count = prime_count + 1;
+            }
+            potential_prime = potential_prime + 2;
+            if (prime_count > MAX) {
+                printf("prime count reaches maximum: %d\n", MAX);
+                break;
+            }
+        }
+        return prime_count;
+    }
+    return prime_count;
 }
 
-void judgeEvenOdd(int n) {
-	if (n % 2 == 0) {
-		printf("%d is even!\n", n);
-	} else {
-		printf("%d is odd!\n", n);
-	}
-	return ;
+void print_prime(int upper_bound) {
+    int i = 0;
+    int prime_count;
+    prime_count = cal_prime(upper_bound);
+    printf("\nprime_count:%d\n", prime_count);
+    printf("prime less or equal than %d are belows:\n", upper_bound);
+    while (i < prime_count) {
+        printf("%d", p[i]);
+        if (i != prime_count - 1)
+            printf(", ");
+        else
+            printf("\n");
+        i = i + 1;
+    }
+    return;
 }
 
-void judgeArrayAllEven(int para3[][3], int row) {
-	int i = 0, j = 0, flag = 0, temp;
-	while (i < row) {
-		j = 0;
-		while (j < 3) {
-			if (para3[i][j] % 2 == 0) {
-				j = j + 1;
-				continue;
-			} else {
-				temp = para3[i][j];
-				flag = 1;
-				break;
-			}
-		}
-		if (flag == 1) {
-			break;
-		}
-		i = i + 1;
-	}
-	if (!flag) {
-		printf("All even!\n");
-	} else {
-		printf("Contains odd! %d\n", temp);
-	}
-	return ;
+int prime_div(int num, int p[]) {
+    int len = 0, i = 2, prime_count = 0;
+    if (num < 2)
+        return 0;
+    while (i <= num) {
+        while (num % i == 0) {
+            num = num / i;
+            p[prime_count] = i;
+            prime_count = prime_count + 1;
+        }
+
+        if (i == 2)
+            i = 3;
+        else 
+            i = i + 2;
+        
+        if (i * i > num) {
+            p[prime_count] = num;
+            prime_count = prime_count + 1;
+            break;
+        }
+    }
+    return prime_count;
 }
 
-int cntEvenNum(int para1[], int size) {
-	int i = 0, cnt = 0;
-	while (i <= size - 1) {
-		if (para1[i] % 2 != 0) {
-			i = i + 1;
-			continue;
-		}
-		cnt = cnt + 1;
-		i = i + 1;
-	}
-	printf("array contains %d even number!\n", cnt);
-	return cnt; 
-}
-
-int get2Max(int m, int n) {
-	int ans = m;
-	if (m > n) {
-		ans = m;
-	} else {
-		ans = n;
-	}
-	return ans;
-}
-
-int get2Min(int m, int n) {
-	int ans = m;
-	if (m >= n) {
-		ans = n;
-	} else {
-		ans = m;
-	}
-	return ans;
+void print_prime_div(int num) {
+    int a[40], i = 0;
+    int prime_count = prime_div(num, a);
+    printf("\nthe prime division of %d are:\n", num);
+    while (prime_count >= i + 1) {
+        if (prime_count > i + 1) {
+            printf("%d, ", a[i]);
+        } else {
+            printf("%d\n", a[i]);
+        }
+        i = i + 1;
+    }
+    return;
 }
 
 int main() {
-	printf("19373341\n");
-	int i = 0, j = 0;
-	int n;
-	n = getint();
-	int mm;
-	mm = getint();
-	int nn;
-	nn = getint();
-	int max;
-	max = get2Max(mm, nn);
-	int min;
-	min = get2Min(mm, nn);
-	while (i < 4) {
-		array1DVar1[i] = i * i / 2;
-		i = i + 1;
-	}
-	int m;
-	m = getArraySum(array1DVar1, 4);
-	printf("m = %d, n = %d, mm = %d, nn = %d\n", m, n, mm, nn);
-	printf("max of mm and nn: %d; min of mm and nn: %d\n", max, min);
-	const int mainConst1 = 10;
-	printf("mainConst1 = %d\n", mainConst1);
-	printf("Sum of normalConst: %d\n", normalConst1 + normalConst2 + normalConst3);
-	judgeEvenOdd(n);
-	printf("Sum of array: %d\n", m);
-	i = 0;
-	while (i < 2) {
-		j = 0;
-		while (j < 3) {
-			array2DVar1[i][j] = 10 * i - j;
-			sum = sum + array2DVar1[i][j];
-			j = j + 1;
-		}
-		i = i + 1;
-	}
-	printf("sum of array: %d\n", sum);
-	i = 0;
-	while (i < 2) {
-		j = 0;
-		while (j < 3) {
-			array2DVar1[i][j] = 4 * i * j / 2 + 4 - 2;
-			j = j + 1;
-		}
-		i = i + 1;
-	}
-	cntEvenNum(array1DVar1, 4);
-	judgeArrayAllEven(array2DVar1, 2);
-	if (0) {
-		judgeEvenOdd(array2DVar1[0][0]);
-	}
-	return 0;
+    printf("20373743\n");
+    p[0] = 2;
+    int upper_bound;
+    upper_bound = getint();
+    print_prime(upper_bound);
+    print_prime(100);
+
+    int x;
+    x = getint();
+    print_prime_div(x);
+    print_prime_div(1000001);
+    return 0;
 }

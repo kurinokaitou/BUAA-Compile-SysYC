@@ -1,73 +1,94 @@
-int array[100][2];
-int len = 0;
-
-void swap(int i, int j) {
-    printf("swap <%d %d> <-> <%d %d>\n", array[i][0], array[i][1], array[j][0], array[j][1]);
-    int tmp[2] = {array[i][0], array[i][1]};
-    array[i][0] = array[j][0];
-    array[i][1] = array[j][1];
-    array[j][0] = tmp[0];
-    array[j][1] = tmp[1];
-    return;
+//		FuncDef
+void funa() {
 }
 
-void sort() {
-    int i, j;
-    i = 0;
-    while (i < len - 1) {
-        int f = 0;
-        j = i + 1;
-        while (j < len) {
-            if (array[i][1] < array[j][1]) {
-                swap(i, j);
-                f = 1;
-            } else if (array[i][1] == array[j][1]) {
-                if (array[i][0] > array[j][0]) {
-                    swap(i, j);
-                    f = 1;
-                }
-            }
-            j = j + 1;
-        }
-        if (!f) {
-            printf("%d\n", i);
-            return;
-        }
-        i = i + 1;
-    }
-    printf("%d\n", i);
-    return;
+int funb(int a) {
+	return a;
 }
 
+void func(int a, int b[], int c[][2]) {
+	return;
+}
+
+
+int if_else_fun(int x) {
+	int a, ret = 2;
+	a = x;
+	
+	;
+	a;
+	
+	if (a == 1) ret = 1;
+	if (a == 1 + 1) ;
+	else {
+		ret = 4;
+	}
+	
+	return ret;
+}
+
+int while_fun(int x) {
+	int ret = 1;
+	int a = x;
+	while (a > 0) {
+		if (1) a = a - 1;
+		if (a % 2 != 1) continue;
+		if (a <= x / 2) break;
+	}
+	return a;
+}
+
+//		MainFuncDef
 int main() {
-    len = getint();
-    int i;
-    printf("19373372\n");
-    i = 0;
-    {
-        int i = 100;
-    }
-    while (i < len) {
-        int x;
-        x = getint();
-        int y;
-        y = getint();
-        printf("input > %d %d\n", x, y);
-        array[i][0] = x;
-        array[i][1] = y;
-        i = i + 1;
-    }
-    i = 0;
-    while (i < len) {
-        printf("%d -> %d\n", array[i][0], array[i][1]);
-        i = i + 1;
-    }
-    sort();
-    i = 0;
-    while (i < len) {
-        printf("%d -> %d\n", array[i][0], array[i][1]);
-        i = i + 1;
-    }
-    printf("");printf("");printf("");printf("");printf("");
-    return 0;
+	printf("20373380\n");
+	
+	const int cona = 1;
+	const int conb[2] = {1, 2}, conc[2][2] = {{1, 2}, {3, 4}};
+	const int conx = 1, cony = 2, conz = 3;	
+	int vara = 1;
+	int varb[2] = {1, 2}, varc[2][2] = {{1, 2}, {3, 4}};
+	
+	int x, a, b[2], c[2][2];
+	x = getint();
+	a = cona;
+	b[1] = conb[1];
+	c[1][1] = conc[1][1];
+	
+	funa();
+	funb(a);
+	func(a, b, c);
+	
+	int f[20];
+	f[0] = 1;
+	f[1] = 1+2;
+	f[2] = 1-2;
+	f[3] = 1*2;
+	f[4] = 1/2;
+	f[5] = 1%2;
+	f[6] = +1;
+	f[7] = -1;
+	f[8] = a;
+	f[9] = -a;
+	f[10] = 0;
+	if (1 < 2) f[11] = 1;
+	else f[11] = 0;
+	if (1 > 2) f[12] = 1;
+	else f[12] = 0;
+	if (1 <= 2) f[13] = 1;
+	else f[13] = 0;
+	if (1 >= 2) f[14] = 1;
+	else f[14] = 0;
+	
+	printf("2\n");
+	printf("3\n");
+	printf("4\n");
+	printf("5\n");
+	printf("6\n");
+	printf("7\n");
+	printf("8\n");
+	printf("9\n");
+	printf("10\n");
+	
+	
+	return 0;
 }

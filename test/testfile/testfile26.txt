@@ -1,149 +1,111 @@
-
-int normalVar1 = 21;
-int normalVar2 = 22, normalVar3 = 23;
-int array1DVar1[4] = {1, 2, 3, 4};
-int array2DVar1[2][3]; 
-int sum;
-
-void outputInt(int n) {
-	printf("%d\n", n);
+int m1[5],f3[3],i2[2][2] = {{9,8},{7,6}};
+const int s1[3] = {1,2,3};
+const int c1 = 3;
+const int c2 = 0,c3 = 1,c4 = 5;
+const int s2[2][2] = {{1,2}, {3,4}};
+const int a0 = 1;
+const int b0 = 2, c0 = 3;
+int q1,q2,q3,q4;
+int q55 = 1,q65 = 2;
+int q5=1,q6=2,q7=4,q8=5;
+int r1,r3,r4,r5= 0;
+int fun(int x[], int y[]) {
+	int tempp;
+	tempp = x[0] + y[0];
+	return tempp;
+}
+int fun2(int c[][3]) {
+	return 1;
+}
+void fun3(int d[][3])
+{
 	return ;
 }
-
-int getArraySum(int num[], int size) { // size < 3
-	int temp = 0;
-	int ans = 0;
-	while (temp <= size - 1) {
-		ans = ans + num[temp];
-		temp = temp + 1;
-	}
-	return ans;
-}
-
-void judgeEvenOdd(int n) {
-	if (n >= 0) {
-		if (n % 2 == 0) {
-			printf("%d is even!\n", n);
-		} else {
-			printf("%d is odd!\n", n);
-		}
-	} else {
-		printf("%d < 0\n", n);
-	}
+void fun4(int m[],int d[][3])
+{
 	return ;
 }
-
-void judgeArrayAllEven(int para3[][3], int row) {
-	int i = 0, j = 0, flag = 0, temp;
-	while (i < row) {
-		j = 0;
-		while (j < 3) {
-			if (para3[i][j] % 2 == 0) {
-				j = j + 1;
-				continue;
-			} else {
-				temp = para3[i][j];
-				flag = 1;
-				break;
-			}
-		}
-		if (flag == 1) {
-			break;
-		}
-		i = i + 1;
-	}
-	if (!flag) {
-		printf("All even!\n");
-	} else {
-		printf("Contains odd! %d\n", temp);
-	}
-	return ;
+void fun5(int m,int m11[],int m111[][3]) {
+	return;
 }
-
-int cntEvenNum(int para1[], int size) {
-	int i = 0, cnt = 0;
-	while (i < size) {
-		if (para1[i] % 2 != 0) {
-			i = i + 1;
-			continue;
-		}
-		i = i + 1;
-		cnt = cnt + 1;
+int main()
+{
+	int f = 4;
+	int h1 = 1;
+	int f2[3] = {1,2,3};
+	int m3[2][3] = {{i2[0][0],2,i2[0][1]},{2,i2[1][0],5}};
+	int t;
+	int j1,j2,j3,j4 = 5;
+	int j7,j8,j9,j10;
+	int j11 = -1,j12 = 1;
+	int t5;
+	t5 = -1;
+	t5 = +1;
+	t5 = fun2(m3);
+	fun3(m3);
+	fun4(f2,m3);
+	fun5(h1,f2,m3);
+	t = fun(i2[0],m3[1]);
+	int bian = 10;
+	t = m3[0][1] + m3[1][2] + 1;
+	while(bian > 0) {
+	printf("20373869\n");
+	bian = bian - 1;
 	}
-	printf("array contains %d even number!\n", cnt);
-	return cnt; 
-}
-
-int get2Max(int m, int n) {
-	int ans = m;
-	if (m <= n) {
-		ans = n;
-	} else {
-		ans = m;
+	bian = (bian + 3) *2;
+	bian = bian+bian-1;
+	bian = 3;
+	int v_4 = 1,v_5 = 3,v_3 = 2,v_1 = 1,v_6 = 1;
+	v_4 = (1 + 1) *1;
+	v_4 = (v_5 - 1) /1;
+	
+	v_3 = 1 + 1 - 1;
+	v_5 = v_4 + v_3;
+	v_4 = (1 + 1) * 1 %1;
+	v_4 = (1 - 1) * v_3 %1;
+	v_5 = 1/1;
+	v_3 = v_4 * v_6 / v_5 % v_1;
+	if (bian >= 0) {
+		
 	}
-	return ans;
-}
-
-int get2Min(int m, int n) {
-	int ans = m;
-	if (m >= n) {
-		ans = n;
-	} else {
-		ans = m;
+	if (bian >0) {
+		
 	}
-	return ans;
-}
-
-int main() {
-	printf("19373341\n");
-	int i = 0, j = 0;
-	int n;
-	n = getint();
-	int mm;
-	mm = getint();
-	int nn;
-	nn = getint();
-	int max;
-	max = get2Max(mm, nn);
-	int min;
-	min = get2Min(mm, nn);
-	while (i < 4) {
-		array1DVar1[i] = i * i / 4;
-		i = i + 1;
+	if (bian <0) {
+		
 	}
-	int m;
-	m = getArraySum(array1DVar1, 4);
-	printf("m = %d, n = %d, mm = %d, nn = %d\n", m, n, mm, nn);
-	printf("max of mm and nn: %d; min of mm and nn: %d\n", max, min);
-	const int mainConst1 = 10;
-	printf("mainConst1 = %d\n", mainConst1);
-	printf("Sum of normalConst: %d\n", normalVar1 + normalVar2 + normalVar3);
-	judgeEvenOdd(n);
-	printf("Sum of array: %d\n", m);
-	i = 0;
-	while (i < 2) {
-		j = 0;
-		while (j < 3) {
-			array2DVar1[i][j] = 10 * i - j;
-			sum = sum + array2DVar1[i][j];
-			j = j + 1;
-		}
-		i = i + 1;
+	if (bian <= 0){
+		
 	}
-	printf("sum of array: %d\n", sum);
-	i = 0;
-	while (i < 2) {
-		j = 0;
-		while (j < 3) {
-			array2DVar1[i][j] = 4 * i * j / 2 + 4 - 2;
-			j = j + 1;
-		}
-		i = i + 1;
+	if (bian + 1 > 0) {
+		
 	}
-	cntEvenNum(array1DVar1, 4);
-	judgeArrayAllEven(array2DVar1, 2);
-	if (0) {
-		judgeEvenOdd(array2DVar1[0][0]);
+	if (bian - 1 > 0) {
+		
+	}
+	while(bian > 0) {
+	t = t + 1;
+	bian = bian - 1;
+	}
+	v_5 = 0;
+	while (v_5 != 1) {
+		v_5 = 1;
+		break;
+	}
+	while(v_5) {
+		v_5 = 0;
+		continue;
+	}
+	while(!v_5) {
+		v_5= 1;
+	}
+	{
+		
+	}
+	{
+		int c = 1;
+		c = c*1 + 2;
+		
 	}
 	return 0;
 }

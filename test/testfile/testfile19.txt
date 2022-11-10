@@ -1,126 +1,89 @@
-/*cover yellow, focus on Stmt*/
-const int g_const_1 = 2;
-const int g_const_2[2] = {1, g_const_1};
-const int g_const_3[2][2] = {{1+1, g_const_1-1}, {g_const_1*1, 1/1}};
-const int g_const_4[2] = {0,0};
-const int g_const_5[2] = {1,0};
-const int g_const_6[2][2] = {{0,0},{0,0}};
-const int g_const_7[2][2] = {{1,0}, {1,0}};
-int g_var_1 = 2;
-int g_var_2[2] = {1, g_const_1};
-int g_var_3[2][2] = {{1+1, g_const_1-1}, {g_const_1*1, 1/1}};
-int g_var_4[2] = {1, 1+1};
-int g_var_5[2] = {1, 1};
-int g_var_6[2][2] = {{1, 1}, {1, 1}};
-int g_var_7[2][2] = {{1, 1}, {1+1, 2}};
-int g_var_8;
-int g_var_9[2];
-int g_var_10[2][2];
-int fun_int_1(){
-	return 1;
-}
-int fun_int_2(int a, int b[], int c[][2]){
-	return 1;
-}
-int fun_int_3(int a){
-	return a;
-}
-void fun_void_1(){
-	return;
-}
-void fun_void_2(int a, int b[], int c[][2]){
-	return;
-}
-void fun_void_3(int a){
-	printf("test func, should be 2: %d\n", a);
-	return;
+// 常量声明
+// 常数定义
+const int simple_const_a = 6 / 4;
+const int arr_1d_a[5] = {2, 3, 4, 5, 6};
+const int arr_2d_a[2][2] = {{7, 8}, {9, 10}}, arr_2d_b[3][2] = {{44, 55}, {66, 77}, {88, 99}};
+const int simple_cosnt_b = 11, arr_1d_b[9] = {11, 22, 33, 44, 55, 66, 77, 88, 99};
+// 变量声明
+int simple_var_c = 327;
+int simple_var_d;
+int arr_1d_c[2] = {896, 1}, arr_1d_d[10];
+int arr_2d_c[3][3], arr_2d_d[2][2] = {{3, 56}, {45, 16}}, arr_2d_e[10][10];
+
+void empty_func() {}
+
+void para_only(int a, int b[], int c[][2]) {
+    printf("Successfully call a function with 3 types of paras.\n");
+    return;
 }
 
-//Exp
-void test_Exp(int a, int b){
-	int c = a + b - a * b / 2 % 3;
-	;
-	printf("test Exp, should be 5: %d\n", c);
-	return;
+void put_stu_id() {
+    printf("20373453\n\n");
+    return;
 }
 
-//Block
-void test_Block(int a){
-	{printf("test Block, should be 2: %d\n", a);}
-	return;
+int sum_arr_1d(int arr[], int length) {
+    int i = 0, sum = 0;
+    while (i <= length - 1) {
+        sum = sum + arr[i];
+        i = i + 1;
+    }
+    return sum;
 }
 
-//if
-void test_if(int a, int b){
-	int c = 0;
-	if(!c){
-		if (a != a+b){
-			if (a == b){
-				printf("test if, should be 2, 2: %d, %d\n", a, b);
-			}
-		}
-	}
-	return;
+int get_then_print() {
+    const int const_tmp[2] = {66, 88};
+    int tmp, ans;
+    int ret[2][3];
+
+    tmp = getint();
+    if (tmp > 100) {
+        printf("\nJust get a number [%d] (greater than 100).\n", tmp);
+    } else {
+        printf("\nJust get a number [%d] (smaller than or equal to 100).\n", tmp);
+    }
+    ret[0][0] = tmp;
+    ret[0][1] = tmp + (const_tmp[0] / 2);
+    ret[0][2] = const_tmp[0] * const_tmp[1];
+    ans = sum_arr_1d(ret[0], 3);
+    return ans;
 }
 
-//while
-void test_while(int i, int len){
-	int count = i;
-	while(count <= len){
-		count = count + 1;
-	}
-	printf("test while, should be 6: %d\n", count);
-	return;
+void put_global_simple_var_c() {
+    printf("GLOBAL simple_var_c: %d\n", simple_var_c);
+    ;
+    return;
 }
 
-//break continue
-void test_break_continue(){
-	int i = 0, j = 1;
-	while(i == 0 && j == 1){
-		j = 0;
-		continue;
-		i = 1;
-	}
-	while(j == 0){
-		j = j + 1;
-		break;
-	}
-	printf("test break continue, should be 0, 1: %d, %d\n", 0, 1);
-	return;
-}
-
-//printf
-void test_printf(int a){
-	printf("test printf, should be 2: %d\n", a);
-	return;
-}
-
-//getint
-void test_getint(){
-	int a;
-	a = getint();
-	printf("test getint, should be 1: %d", a);
-	return;
-}
-
-
-int main(){
-	printf("19373135\n");
-	printf("test func, should be 2: %d\n", fun_int_3(g_var_3[0][0]));
-	fun_void_3(g_var_3[0][0]);
-	//Exp
-	test_Exp(2, 3);
-	//Block
-	test_Block(2);
-	//if
-	test_if(2, 2);
-	//while
-	test_while(0, 5);
-	//break continue
-	test_break_continue();
-	//printf
-	test_printf(2);
-	//getint
-	test_getint();
-	return 0; 
+int main() {
+    int n, ans[10];
+    int t = 10;
+    put_stu_id();
+    empty_func();
+    simple_var_d = arr_1d_b[0] / arr_1d_a[2];
+    para_only(simple_var_d, arr_1d_c, arr_2d_d);
+    while (t) {
+        t = t - 1;
+        n = get_then_print() % 10 + 10;
+        if (n >= 10) n = n - 10;
+        printf("lucky number: %d\n", n);
+        int simple_var_c = 0;
+        int index = 0;
+        while (simple_var_c < 8) {
+            if (simple_var_c == 2) {
+                simple_var_c = simple_var_c + 1;
+                continue;
+            } else {
+                if (n + 1 <= simple_var_c) break;
+            } 
+            printf("(%d)%d\n", simple_var_c, arr_1d_b[simple_var_c]);
+            ans[index] = arr_1d_b[simple_var_c];
+            index = index + 1;
+            simple_var_c = simple_var_c + 1;
+        }
+        if (n + 1 != simple_var_c)
+            printf("The ones digit of the lucky number is greater than 7.\n");
+    }
+    put_global_simple_var_c();
+    return 0;
 }

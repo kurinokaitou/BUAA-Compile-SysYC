@@ -1,9 +1,10 @@
-19373479
-print int : 2
-print int : 2
-print int : 0
-print int : 41
-print int : 61
-print int : 4884
-print int : -45015
-print int : 10432
+20373361
+1 ia-2 aa-21--2-19 ab-1-40-6-5
+2147483647 1 7 97 -616 10 10 -10 -10
+in in block i_a = 200
+in block i_a = 100
+out block i_a = 2147483647
+t
+t
+t
+t

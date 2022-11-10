@@ -2,7 +2,7 @@ from runner import Runner
 from recorder import Recorder
 import time
 # CONFIG
-TEST_ID_RANGE = [1,27] #【修改】测试样例id范围
+TEST_ID_RANGE = [1,30] #【修改】测试样例id范围
 TESTCASE_DIR = "./testfile/"
 TEST_INPUT_DIR = "./input/"
 TEST_OUTPUT_DIR = "./output/"
