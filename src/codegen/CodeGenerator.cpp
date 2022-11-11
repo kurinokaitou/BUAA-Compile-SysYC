@@ -18,3 +18,8 @@ void CodeGenerator::dumpIr(std::filebuf& file, bool isTest) {
     std::ostream os(&file);
     m_irCtx.module.toCode(os, isTest);
 }
+
+void CodeGenerator::dumpMips(std::filebuf& file) {
+    std::ostream os(&file);
+    m_mipsCtx.m_module.toCode(os);
+}

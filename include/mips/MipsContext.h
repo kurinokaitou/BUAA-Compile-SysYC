@@ -4,8 +4,10 @@
 
 #include "MipsCode.h"
 class MipsContext {
+    friend class CodeGenerator;
+
 public:
-    MipsModule& convertMipsCode(IrModule& irModule);
+    void convertMipsCode(IrModule& irModule);
 
 private:
     void mapBasicBlocks();

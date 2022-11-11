@@ -97,6 +97,7 @@ public:
         m_funcs.push_back(std::unique_ptr<MipsFunc>(func));
         return m_funcs.back().get();
     }
+    void toCode(std::ostream& os);
 
 private:
     std::vector<std::unique_ptr<MipsFunc>> m_funcs;

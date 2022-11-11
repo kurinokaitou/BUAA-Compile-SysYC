@@ -6,6 +6,7 @@ bool Compiler::firstPass(std::filebuf& file) {
     std::filebuf table;
     std::filebuf error;
     std::filebuf ir;
+    std::filebuf mips;
     try {
         m_tokenizer = std::unique_ptr<Tokenizer>(new Tokenizer(file));
         m_tokenList = m_tokenizer->tokenize();
@@ -33,6 +34,10 @@ bool Compiler::firstPass(std::filebuf& file) {
         if (s_dumpError) {
             dumpError(error);
             error.close();
+        }
+        if (s_dumpMips) {
+            dumpMips(mips);
+            mips.close();
         }
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
@@ -83,6 +88,13 @@ void Compiler::dumpIr(std::filebuf& file, bool isTest) {
         throw std::runtime_error("Fail to open the ir file!");
     }
     m_generator->dumpIr(file, isTest);
+}
+
+void Compiler::dumpMips(std::filebuf& file) {
+    if (!file.open(s_dumpMipsPath, std::ios::out)) {
+        throw std::runtime_error("Fail to open the mips file!");
+    }
+    m_generator->dumpMips(file);
 }
 
 int main(int argc, char** argv) {

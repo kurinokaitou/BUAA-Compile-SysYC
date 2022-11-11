@@ -9,6 +9,7 @@ public:
     void generate();
     void dumpTable(std::filebuf& file);
     void dumpIr(std::filebuf& file, bool isTest);
+    void dumpMips(std::filebuf& file);
 
 private:
     std::unique_ptr<Visitor> m_visitor;

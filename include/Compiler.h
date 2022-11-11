@@ -12,20 +12,22 @@ static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
 static std::string s_dumpIrPath = "intermediate/llvm_ir.txt";
+static std::string s_dumpMipsPath = "intermediate/mips.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
 static bool s_dumpIr = false;
+static bool s_dumpMips = false;
 static bool s_isTest = true;
 
 static bool takeArg(char* arg) {
-    static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table"};
+    static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table", "--dump-error", "--dump-ir", "--dump-mips"};
     return x.count(std::string(arg));
 }
 
 static void usage(int status) {
-    std::cerr << "usage: sysyc [--dump-token <path>] [--dump-ast <path>] [ -o <path> ] <path>\n";
+    std::cerr << "usage: sysyc [--dump-token <path>] [--dump-ast <path>] [--dump-table <path>] [--dump-error <path>] [--dump-ir <path>] [--dump-mips <path>] [ -o <path> ] <path>\n";
     std::cerr << "usage: sysyc [--test]\n";
     exit(status);
 }
@@ -64,6 +66,11 @@ static void parseArgs(int argc, char** argv) {
             s_dumpIr = true;
             continue;
         }
+        if (argv[i] == std::string("--dump-mips")) {
+            s_dumpMipsPath = argv[++i];
+            s_dumpMips = true;
+            continue;
+        }
         if (argv[i] == std::string("--test")) {
             s_isTest = true;
             s_dumpToken = true;
@@ -71,6 +78,7 @@ static void parseArgs(int argc, char** argv) {
             s_dumpTable = true;
             s_dumpError = true;
             s_dumpIr = true;
+            s_dumpMips = true;
             break;
         }
         s_sourcePath = std::string(argv[i]);
@@ -87,6 +95,7 @@ public:
     void dumpTable(std::filebuf& file);
     static void dumpError(std::filebuf& file);
     void dumpIr(std::filebuf& file, bool isTest);
+    void dumpMips(std::filebuf& file);
 
 private:
     std::unique_ptr<Tokenizer> m_tokenizer;

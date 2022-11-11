@@ -1,6 +1,6 @@
 #include <mips/MipsContext.h>
 
-MipsModule& MipsContext::convertMipsCode(IrModule& irModule) {
+void MipsContext::convertMipsCode(IrModule& irModule) {
     for (auto& irFunc : irModule.m_funcs) {
         m_bbMap.clear();
         m_valMap.clear();
@@ -32,8 +32,6 @@ MipsModule& MipsContext::convertMipsCode(IrModule& irModule) {
         }
         m_mipsFunc->setVirtualMax(m_virtualMax);
     }
-
-    return m_module;
 }
 
 MipsOperand MipsContext::genNewVirtualReg() {
