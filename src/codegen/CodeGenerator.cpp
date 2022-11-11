@@ -1,11 +1,12 @@
 #include <codegen/CodeGenerator.h>
 
 CodeGenerator::CodeGenerator(std::shared_ptr<VNodeBase> astRoot) {
-    m_visitor = std::unique_ptr<Visitor>(new Visitor(std::move(astRoot), m_table, m_ctx));
+    m_visitor = std::unique_ptr<Visitor>(new Visitor(std::move(astRoot), m_table, m_irCtx));
 }
 
 void CodeGenerator::generate() {
     m_visitor->visit();
+    m_mipsCtx.convertMipsCode(m_irCtx.module);
 }
 
 void CodeGenerator::dumpTable(std::filebuf& file) {
@@ -15,5 +16,5 @@ void CodeGenerator::dumpTable(std::filebuf& file) {
 
 void CodeGenerator::dumpIr(std::filebuf& file, bool isTest) {
     std::ostream os(&file);
-    m_ctx.module.toCode(os, isTest);
+    m_irCtx.module.toCode(os, isTest);
 }

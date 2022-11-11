@@ -12,9 +12,9 @@
 #include "MipsCodeTypeEnum.h"
 #include "MipsRegEnum.h"
 
-struct MipsFunc;
-struct MipsBasicBlock;
-struct MipsInst;
+class MipsFunc;
+class MipsBasicBlock;
+class MipsInst;
 struct MipsOperand;
 
 enum class MipsCond { Any,
@@ -72,60 +72,125 @@ inline std::ostream& operator<<(std::ostream& os, const MipsShift& shift) {
 
 inline std::ostream& operator<<(std::ostream& os, const MipsCond& cond) {
     if (cond == MipsCond::Eq) {
-        os << "eq";
+        os << "beq";
     } else if (cond == MipsCond::Ne) {
-        os << "ne";
+        os << "bne";
     } else if (cond == MipsCond::Any) {
         os << "";
     } else if (cond == MipsCond::Gt) {
-        os << "gt";
+        os << "sgt";
     } else if (cond == MipsCond::Ge) {
-        os << "ge";
+        os << "sge";
     } else if (cond == MipsCond::Lt) {
-        os << "lt";
+        os << "slt";
     } else if (cond == MipsCond::Le) {
-        os << "le";
+        os << "sle";
     }
     return os;
 }
 
-struct MipsProgram {
-    std::vector<MipsFunc> func;
-    friend std::ostream& operator<<(std::ostream& os, const MipsProgram& dt);
+class MipsModule {
+    friend class IrModule;
+
+public:
+    MipsFunc* addFunc(MipsFunc* func) {
+        m_funcs.push_back(std::unique_ptr<MipsFunc>(func));
+        return m_funcs.back().get();
+    }
+
+private:
+    std::vector<std::unique_ptr<MipsFunc>> m_funcs;
 };
 
-std::ostream& operator<<(std::ostream& os, const MipsProgram& dt);
+class MipsFunc {
+public:
+    explicit MipsFunc(IrFunc* irFunc) :
+        m_irFunc(irFunc) {}
+    MipsBasicBlock* pushBackBasicBlock(MipsBasicBlock* basicBlock) {
+        m_basicBlocks.push_back(std::unique_ptr<MipsBasicBlock>(basicBlock));
+        return m_basicBlocks.back().get();
+    }
+    MipsBasicBlock* getFirstBasicBlock() { return m_basicBlocks.front().get(); }
+    IrFunc* getIrFunc() { return m_irFunc; }
+    std::vector<MipsInst*>& getSpArgFixup() { return m_spArgFixup; }
+    void setVirtualMax(int virtualMax) { m_virtualMax = virtualMax; }
 
-struct MipsFunc {
-    std::vector<MipsBasicBlock> bb;
-    IrFunc* func;
+private:
+    std::vector<std::unique_ptr<MipsBasicBlock>> m_basicBlocks;
+    IrFunc* m_irFunc;
     // number of virtual registers allocated
-    int virtual_max = 0;
+    int m_virtualMax = 0;
     // size of stack allocated for local alloca and spilled registers
-    int stack_size = 0;
+    int m_stackSize = 0;
     // set of callee saved registers used
-    std::set<MipsReg> used_callee_saved_regs;
+    std::set<MipsReg> m_usedCalleeSavedRegs;
     // whether lr is allocated
-    bool use_lr = false;
+    bool m_useLr = false;
     // offset += stack_size + saved_regs * 4;
-    std::vector<MipsInst*> sp_arg_fixup;
+    std::vector<MipsInst*> m_spArgFixup;
+};
+class MipsInst {
+    friend class MipsBasicBlock;
+
+public:
+    MipsInst(MipsCodeType type) :
+        m_type(type) {}
+
+protected:
+    MipsBasicBlock* m_atBlock;
+    MipsCodeType m_type;
 };
 
-struct MipsBasicBlock {
-    BasicBlock* bb;
-    std::list<std::unique_ptr<MipsInst>> insts;
+class MipsBasicBlock {
+public:
+    explicit MipsBasicBlock(BasicBlock* irbb) :
+        m_irBasicBlock(irbb) {}
+    std::vector<MipsBasicBlock*>& getPreds() { return m_pred; }
+    std::array<MipsBasicBlock*, 2>& getSuccs() { return m_succ; };
+
+    MipsInst* pushBackInst(MipsInst* inst) {
+        inst->m_atBlock = this;
+        m_insts.push_back(std::unique_ptr<MipsInst>(inst));
+        return m_insts.back().get();
+    };
+
+    MipsInst* insertBeforeInst(MipsInst* insertBefore, MipsInst* inst) {
+        inst->m_atBlock = this;
+        auto finded = std::find_if(m_insts.begin(), m_insts.end(), [insertBefore](std::unique_ptr<MipsInst>& in) {
+            return insertBefore == in.get();
+        });
+        if (finded != m_insts.end()) {
+            return m_insts.insert(finded, std::unique_ptr<MipsInst>(inst))->get();
+        } else {
+            return nullptr;
+        }
+    }
+    void removeInst(MipsInst* inst) {
+        m_insts.remove_if([inst](std::unique_ptr<MipsInst>& in) {
+            return inst == in.get();
+        });
+    }
+    MipsInst* insertFrontInst(MipsInst* inst) {
+        inst->m_atBlock = this;
+        m_insts.push_front(std::unique_ptr<MipsInst>(inst));
+        return m_insts.front().get();
+    }
+
+private:
+    BasicBlock* m_irBasicBlock;
+    std::list<std::unique_ptr<MipsInst>> m_insts;
     // predecessor and successor
-    std::vector<MipsBasicBlock*> pred;
-    std::array<MipsBasicBlock*, 2> succ;
+    std::vector<MipsBasicBlock*> m_pred;
+    std::array<MipsBasicBlock*, 2> m_succ;
     // branch is translated into multiple instructions
     // points to the first one
-    MipsInst* control_transfer_inst = nullptr;
+    MipsInst* m_controlTransferInst = nullptr;
     // liveness analysis
     // maybe we should use bitset when performance is bad
-    std::set<MipsOperand> liveuse;
-    std::set<MipsOperand> def;
-    std::set<MipsOperand> livein;
-    std::set<MipsOperand> liveout;
+    std::set<MipsOperand> m_liveuse;
+    std::set<MipsOperand> m_def;
+    std::set<MipsOperand> m_livein;
+    std::set<MipsOperand> m_liveout;
 };
 
 struct MipsOperand {
@@ -148,7 +213,7 @@ struct MipsOperand {
     inline static MipsOperand I(int imm) { return MipsOperand{State::Immediate, imm}; }
 
     // both are PreColored or Allocated, and has the same value
-    bool is_equiv(const MipsOperand& other) const {
+    bool isEquiv(const MipsOperand& other) const {
         return (state == State::PreColored || state == State::Allocated) && (other.state == State::PreColored || other.state == State::Allocated) && value == other.value;
     }
 
@@ -212,16 +277,6 @@ struct hash<std::pair<MipsOperand, MipsOperand>> {
 };
 } // namespace std
 
-class MipsInst {
-public:
-    MipsInst(MipsCodeType type) :
-        m_type(type) {}
-
-protected:
-    MipsBasicBlock* m_bb;
-    MipsCodeType m_type;
-};
-
 class MipsBinary : public MipsInst {
 public:
     MipsBinary(MipsCodeType type) :
@@ -231,7 +286,7 @@ public:
         switch (m_type) {
         case MipsCodeType::Add:
         case MipsCodeType::Sub:
-            return m_dst.is_equiv(m_lhs) && m_rhs == MipsOperand::I(0) && m_shift.type == MipsShift::None;
+            return m_dst.isEquiv(m_lhs) && m_rhs == MipsOperand::I(0) && m_shift.type == MipsShift::None;
         default:
             return false;
         }
@@ -246,27 +301,13 @@ private:
 };
 
 class MipsMove : public MipsInst {
-    friend class MipsMoveCompare;
-
 public:
-    MipsMove() :
-        MipsInst(MipsCodeType::Move), m_cond(MipsCond::Any) {}
-    bool isSimple() { return m_cond == MipsCond::Any && m_shift.type == MipsShift::None; }
+    MipsMove(MipsOperand dst, MipsOperand rhs) :
+        MipsInst(MipsCodeType::Move), m_dst(dst), m_rhs(rhs) {}
 
 private:
-    MipsCond m_cond;
     MipsOperand m_dst;
     MipsOperand m_rhs;
-    MipsShift m_shift;
-};
-
-struct MipsMoveCompare {
-    bool operator()(MipsMove* const& lhs, const MipsMove* const& rhs) const {
-        if (lhs->m_cond != rhs->m_cond) return lhs->m_cond < rhs->m_cond;
-        if (lhs->m_dst != rhs->m_dst) return lhs->m_dst < rhs->m_dst;
-        if (lhs->m_rhs != rhs->m_rhs) return lhs->m_rhs < rhs->m_rhs;
-        return false;
-    }
 };
 
 class MipsBranch : public MipsInst {
@@ -296,26 +337,18 @@ public:
 
 class MipsAccess : public MipsInst {
 public:
-    enum class Mode {
-        Offset,
-        Prefix,
-        Postfix,
-    };
-    MipsAccess(MipsCodeType type) :
-        MipsInst(type), m_cond(MipsCond::Any) {}
+    MipsAccess(MipsCodeType type, MipsOperand addr, MipsOperand offset) :
+        MipsInst(type), m_addr(addr), m_offset(offset) {}
 
 private:
     MipsOperand m_addr;
     MipsOperand m_offset;
-    int m_shift;
-    MipsCond m_cond;
-    Mode m_mode;
 };
 
 class MipsLoad : public MipsAccess {
 public:
-    MipsLoad() :
-        MipsAccess(MipsCodeType::Load) {}
+    MipsLoad(MipsOperand dst, MipsOperand addr, MipsOperand offset) :
+        MipsAccess(MipsCodeType::Load, addr, offset), m_dst(dst) {}
 
 private:
     MipsOperand m_dst;
@@ -323,8 +356,8 @@ private:
 
 class MipsStore : public MipsAccess {
 public:
-    explicit MipsStore() :
-        MipsAccess(MipsCodeType::Store) {}
+    explicit MipsStore(MipsOperand data, MipsOperand addr, MipsOperand offset) :
+        MipsAccess(MipsCodeType::Store, addr, offset), m_data(data) {}
 
 private:
     MipsOperand m_data;
@@ -351,8 +384,8 @@ private:
 
 class MipsGlobal : public MipsInst {
 public:
-    MipsGlobal(SymbolTableItem* sym) :
-        MipsInst(MipsCodeType::Global), m_sym(sym) {}
+    MipsGlobal(SymbolTableItem* sym, MipsOperand dst) :
+        MipsInst(MipsCodeType::Global), m_sym(sym), m_dst(dst) {}
 
 private:
     MipsOperand m_dst;

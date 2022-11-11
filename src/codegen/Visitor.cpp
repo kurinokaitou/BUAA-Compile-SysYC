@@ -11,7 +11,7 @@
 #define DBG_PROBE_VAL(val, expr)
 #endif
 
-Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, CodeContext& ctx) :
+Visitor::Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, IrContext& ctx) :
     m_astRoot(astRoot), m_table(table), m_ctx(ctx) {}
 
 void Visitor::visit() {

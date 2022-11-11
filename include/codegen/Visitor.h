@@ -15,7 +15,7 @@
 
 class Visitor {
 public:
-    explicit Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, CodeContext& ctx);
+    explicit Visitor(std::shared_ptr<VNodeBase> astRoot, SymbolTable& table, IrContext& ctx);
     void visit();
 
 private:
@@ -91,7 +91,7 @@ private:
 
 private:
     SymbolTable& m_table;
-    CodeContext& m_ctx;
+    IrContext& m_ctx;
     std::shared_ptr<VNodeBase> m_astRoot;
 };
 

@@ -96,6 +96,7 @@ public:
             }
         }
     };
+    IRType getIrType() const { return m_type; }
     virtual void printValue(std::ostream& os) {
         os << "%_x" << s_valueMapper.get(this);
     };
@@ -126,6 +127,7 @@ protected:
 
 class BasicBlock {
     friend class IrFunc;
+    friend class MipsContext;
 
 public:
     BasicBlock() = default;
@@ -160,6 +162,7 @@ public:
 class IrFunc {
     friend class IrModule;
     friend class CallInst;
+    friend class MipsContext;
 
 public:
     explicit IrFunc(FuncItem* funcItem) :
@@ -235,12 +238,16 @@ public:
     void printValue(std::ostream& os) override {
         os << "%" << m_paramItem->getName();
     }
+    SymbolTableItem* getParamItem() { return m_paramItem; }
 
 private:
     SymbolTableItem* m_paramItem;
 };
 
 class IrModule {
+    friend class MipsModule;
+    friend class MipsContext;
+
 public:
     IrModule() {
         for (int i = 0; i < FUNC_NUM; i++) {
@@ -572,7 +579,7 @@ private:
     std::vector<StringVariable*> m_strParts;
 };
 
-struct CodeContext {
+struct IrContext {
     IrModule module;
     IrFunc* function;
     BasicBlock* basicBlock;

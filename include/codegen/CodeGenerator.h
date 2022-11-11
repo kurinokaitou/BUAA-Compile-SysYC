@@ -1,6 +1,7 @@
 #ifndef CODE_GENERATOR_H
 #define CODE_GENERATOR_H
 #include "Visitor.h"
+#include <mips/MipsContext.h>
 
 class CodeGenerator {
 public:
@@ -12,6 +13,7 @@ public:
 private:
     std::unique_ptr<Visitor> m_visitor;
     SymbolTable m_table;
-    CodeContext m_ctx;
+    IrContext m_irCtx;
+    MipsContext m_mipsCtx;
 };
 #endif
