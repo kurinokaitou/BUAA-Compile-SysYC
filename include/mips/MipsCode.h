@@ -25,6 +25,26 @@ enum class MipsCond { Any,
                       Le,
                       Lt };
 
+inline MipsCond transferCond(IRType type) {
+    MipsCond cond;
+    if (type == IRType::Gt) {
+        cond = MipsCond::Gt;
+    } else if (type == IRType::Ge) {
+        cond = MipsCond::Ge;
+    } else if (type == IRType::Le) {
+        cond = MipsCond::Le;
+    } else if (type == IRType::Lt) {
+        cond = MipsCond::Lt;
+    } else if (type == IRType::Eq) {
+        cond = MipsCond::Eq;
+    } else if (type == IRType::Ne) {
+        cond = MipsCond::Ne;
+    } else {
+        cond = MipsCond::Any;
+    }
+    return cond;
+}
+
 inline MipsCond oppositeCond(MipsCond c) {
     constexpr static MipsCond OPPOSITE[] = {MipsCond::Any, MipsCond::Ne, MipsCond::Eq, MipsCond::Lt,
                                             MipsCond::Le, MipsCond::Gt, MipsCond::Ge};
@@ -115,6 +135,8 @@ public:
     IrFunc* getIrFunc() { return m_irFunc; }
     std::vector<MipsInst*>& getSpArgFixup() { return m_spArgFixup; }
     void setVirtualMax(int virtualMax) { m_virtualMax = virtualMax; }
+    int getStackSize() { return m_stackSize; }
+    void addStackSize(int addStackSize) { m_stackSize += addStackSize; }
 
 private:
     std::vector<std::unique_ptr<MipsBasicBlock>> m_basicBlocks;
@@ -176,6 +198,7 @@ public:
         m_insts.push_front(std::unique_ptr<MipsInst>(inst));
         return m_insts.front().get();
     }
+    void setControlTransferInst(MipsInst* inst) { m_controlTransferInst = inst; }
 
 private:
     BasicBlock* m_irBasicBlock;
@@ -280,14 +303,14 @@ struct hash<std::pair<MipsOperand, MipsOperand>> {
 
 class MipsBinary : public MipsInst {
 public:
-    MipsBinary(MipsCodeType type) :
-        MipsInst(type) {}
+    MipsBinary(MipsCodeType type, MipsOperand dst, MipsOperand lhs, MipsOperand rhs) :
+        MipsInst(type), m_dst(dst), m_lhs(lhs), m_rhs(rhs) {}
 
     bool isIdentity() {
         switch (m_type) {
         case MipsCodeType::Add:
         case MipsCodeType::Sub:
-            return m_dst.isEquiv(m_lhs) && m_rhs == MipsOperand::I(0) && m_shift.type == MipsShift::None;
+            return m_dst.isEquiv(m_lhs) && m_rhs == MipsOperand::I(0);
         default:
             return false;
         }
@@ -298,7 +321,6 @@ private:
     MipsOperand m_dst;
     MipsOperand m_lhs;
     MipsOperand m_rhs;
-    MipsShift m_shift;
 };
 
 class MipsMove : public MipsInst {
@@ -313,11 +335,12 @@ private:
 
 class MipsBranch : public MipsInst {
 public:
-    MipsBranch() :
-        MipsInst(MipsCodeType::Branch) {}
+    MipsBranch(MipsOperand lhs, MipsOperand rhs, MipsBasicBlock* target) :
+        MipsInst(MipsCodeType::Branch), m_lhs(lhs), m_rhs(rhs), m_target(target) {}
 
 private:
-    MipsCond m_cond;
+    MipsOperand m_lhs;
+    MipsOperand m_rhs;
     MipsBasicBlock* m_target;
 };
 
@@ -338,17 +361,17 @@ public:
 
 class MipsAccess : public MipsInst {
 public:
-    MipsAccess(MipsCodeType type, MipsOperand addr, MipsOperand offset) :
+    MipsAccess(MipsCodeType type, MipsOperand addr, int offset) :
         MipsInst(type), m_addr(addr), m_offset(offset) {}
 
 private:
     MipsOperand m_addr;
-    MipsOperand m_offset;
+    int m_offset;
 };
 
 class MipsLoad : public MipsAccess {
 public:
-    MipsLoad(MipsOperand dst, MipsOperand addr, MipsOperand offset) :
+    MipsLoad(MipsOperand dst, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Load, addr, offset), m_dst(dst) {}
 
 private:
@@ -357,7 +380,7 @@ private:
 
 class MipsStore : public MipsAccess {
 public:
-    explicit MipsStore(MipsOperand data, MipsOperand addr, MipsOperand offset) :
+    explicit MipsStore(MipsOperand data, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Store, addr, offset), m_data(data) {}
 
 private:
@@ -366,18 +389,20 @@ private:
 
 class MipsCompare : public MipsInst {
 public:
-    explicit MipsCompare() :
-        MipsInst(MipsCodeType::Compare) {}
+    explicit MipsCompare(MipsCond cond, MipsOperand dst, MipsOperand lhs, MipsOperand rhs) :
+        MipsInst(MipsCodeType::Compare), m_cond(cond), m_dst(dst), m_lhs(lhs), m_rhs(rhs) {}
 
 private:
+    MipsCond m_cond;
+    MipsOperand m_dst;
     MipsOperand m_lhs;
     MipsOperand m_rhs;
 };
 
 class MipsCall : public MipsInst {
 public:
-    explicit MipsCall() :
-        MipsInst(MipsCodeType::Call) {}
+    explicit MipsCall(FuncItem* func) :
+        MipsInst(MipsCodeType::Call), m_func(func) {}
 
 private:
     FuncItem* m_func;

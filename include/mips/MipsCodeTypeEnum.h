@@ -1,7 +1,7 @@
 #ifndef MIPS_CODE_TYPE_ENUM_H
 #define MIPS_CODE_TYPE_ENUM_H
 enum class MipsCodeType {
-#include <ir/IR.inc>
+#include <ir/Op.inc>
     // Binary
     Move,
     Branch,

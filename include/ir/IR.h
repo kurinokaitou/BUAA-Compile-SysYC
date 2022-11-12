@@ -96,6 +96,7 @@ public:
             }
         }
     };
+    std::vector<Use*>& getUses() { return m_uses; }
     IRType getIrType() const { return m_type; }
     virtual void printValue(std::ostream& os) {
         os << "%_x" << s_valueMapper.get(this);
@@ -148,6 +149,17 @@ public:
         m_insts.push_front(std::unique_ptr<Inst>(inst));
         return m_insts.front().get();
     }
+    Inst* nextInst(Inst* inst) {
+        auto finded = std::find(m_insts.begin(), m_insts.end(), [inst](std::unique_ptr<Inst>& in) {
+            return in.get() == inst;
+        });
+        if (finded != m_insts.end() && finded != std::prev(m_insts.end())) {
+            return std::next(finded)->get();
+        } else {
+            DBG_ERROR("Can not find next inst of current inst!");
+            return inst;
+        }
+    }
     bool valid();
 
 private:
@@ -172,6 +184,17 @@ public:
     BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
+    }
+    BasicBlock* nextBasicBlock(BasicBlock* block) {
+        auto finded = std::find(m_basicBlocks.begin(), m_basicBlocks.end(), [block](std::unique_ptr<BasicBlock>& b) {
+            return b.get() == block;
+        });
+        if (finded != m_basicBlocks.end() && finded != std::prev(m_basicBlocks.end())) {
+            return std::next(finded)->get();
+        } else {
+            DBG_ERROR("Can not find next block of current block!");
+            return block;
+        }
     }
     void addCallee(IrFunc* func) { m_callee.insert(func); }
     void addCaller(IrFunc* func) { m_caller.insert(func); }
@@ -345,8 +368,9 @@ public:
 
     virtual std::vector<Use*> getOperands() override { return {&m_lhs, &m_rhs}; };
     virtual void toCode(std::ostream& os) override;
-    // operands
-    // loop unroll pass里用到了lhs和rhs的摆放顺序，不要随便修改
+    Value* getLhsValue() { return m_lhs.value; }
+    Value* getRhsValue() { return m_rhs.value; }
+
 private:
     Use m_lhs;
     Use m_rhs;
@@ -385,6 +409,9 @@ public:
     virtual ~BranchInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_cond}; };
     virtual void toCode(std::ostream& os) override;
+    Value* getCondValue() { return m_cond.value; };
+    BasicBlock* getTrueBasicBlock() { return m_left; }
+    BasicBlock* getFalseBasicBlock() { return m_right; }
 
 private:
     Use m_cond;
@@ -403,6 +430,7 @@ public:
     virtual ~JumpInst() {}
     virtual std::vector<Use*> getOperands() override { return {}; };
     virtual void toCode(std::ostream& os) override;
+    BasicBlock* getNextBasicBlock() { return m_next; }
 
 private:
     BasicBlock* m_next;
@@ -417,6 +445,7 @@ public:
     virtual ~ReturnInst() {}
     virtual std::vector<Use*> getOperands() override { return {&m_ret}; };
     virtual void toCode(std::ostream& os) override;
+    Value* getReturnValue() { return m_ret.value; }
 
 private:
     Use m_ret;
@@ -432,6 +461,9 @@ public:
     virtual std::vector<Use*> getOperands() override { return {&m_arr, &m_index}; };
     virtual void toCode(std::ostream& os) override { Inst::toCode(os); }
     virtual void printValue(std::ostream& os) override { Inst::printValue(os); };
+    SymbolTableItem* getLhsSym() { return m_lhsSym; }
+    Value* getArrValue() { return m_arr.value; }
+    Value* getIndexValue() { return m_index.value; }
 
 protected:
     SymbolTableItem* m_lhsSym;
@@ -448,6 +480,7 @@ public:
     virtual ~GetElementPtrInst() {}
     virtual std::vector<Use*> getOperands() override { return AccessInst::getOperands(); };
     virtual void toCode(std::ostream& os) override;
+    int getMultiplier() { return m_multiplier; }
 
 private:
     int m_multiplier;
@@ -479,6 +512,7 @@ public:
     virtual void printValue(std::ostream& os) override {
         os << "store" << s_valueMapper.get(this);
     }
+    Value* getDataValue() { return m_data.value; }
 
 private:
     Use m_data;
@@ -504,6 +538,16 @@ public:
     };
     virtual void toCode(std::ostream& os) override;
 
+    IrFunc* getIrFunc() { return m_func; }
+    std::vector<Value*> getArgsValue() {
+        std::vector<Value*> values;
+        values.reserve(m_args.size());
+        for (auto& arg : m_args) {
+            values.push_back(arg.value);
+        }
+        return values;
+    }
+
 private:
     IrFunc* m_func;
     std::vector<Use> m_args;
@@ -516,6 +560,7 @@ public:
     virtual ~AllocaInst() {}
     virtual std::vector<Use*> getOperands() override { return {}; };
     virtual void toCode(std::ostream& os) override;
+    SymbolTableItem* getSym() { return m_sym; }
 
 private:
     SymbolTableItem* m_sym;

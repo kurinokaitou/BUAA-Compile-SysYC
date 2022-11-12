@@ -180,6 +180,18 @@ static std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item) {
     }
 }
 
+static size_t calArrayDimsSize(std::vector<size_t>& dims) {
+    size_t size = 1;
+    if (dims.empty()) {
+        return 0;
+    } else {
+        for (auto dim : dims) {
+            size *= dim;
+        }
+        return size;
+    }
+}
+
 static std::vector<size_t> calAccDimensions(std::vector<size_t>& dims) {
     std::vector<size_t> accDims;
     accDims.reserve(dims.size());

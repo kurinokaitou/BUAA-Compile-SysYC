@@ -1,7 +1,7 @@
 #ifndef IR_TYPE_ENUM_H
 #define IR_TYPE_ENUM_H
 enum class IRType {
-#include "IR.inc"
+#include "Op.inc"
     Branch,
     Jump,
     Return, // Control flow
