@@ -42,6 +42,10 @@ private:
     std::map<ParamVariable*, MipsOperand> m_paramMap;
     // map use to simplify branch cond
     std::map<Value*, std::pair<MipsInst*, MipsOperand>> m_condMap;
+    // (lhs, vreg) assignments
+    std::vector<std::pair<MipsOperand, MipsOperand>> m_lhs;
+    // each bb has a list of (vreg, rhs) parallel moves
+    std::map<BasicBlock*, std::vector<std::pair<MipsOperand, MipsOperand>>> m_mv;
     // virtual registers
     int m_virtualMax = 0;
 };

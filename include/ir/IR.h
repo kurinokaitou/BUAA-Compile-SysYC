@@ -121,6 +121,7 @@ public:
     void printValue(std::ostream& os) override {
         Value::printValue(os);
     }
+    BasicBlock* getAtBlock() { return m_atBlock; }
 
 protected:
     BasicBlock* m_atBlock;
@@ -150,7 +151,7 @@ public:
         return m_insts.front().get();
     }
     Inst* nextInst(Inst* inst) {
-        auto finded = std::find(m_insts.begin(), m_insts.end(), [inst](std::unique_ptr<Inst>& in) {
+        auto finded = std::find_if(m_insts.begin(), m_insts.end(), [inst](std::unique_ptr<Inst>& in) {
             return in.get() == inst;
         });
         if (finded != m_insts.end() && finded != std::prev(m_insts.end())) {
@@ -186,7 +187,7 @@ public:
         return m_basicBlocks.back().get();
     }
     BasicBlock* nextBasicBlock(BasicBlock* block) {
-        auto finded = std::find(m_basicBlocks.begin(), m_basicBlocks.end(), [block](std::unique_ptr<BasicBlock>& b) {
+        auto finded = std::find_if(m_basicBlocks.begin(), m_basicBlocks.end(), [block](std::unique_ptr<BasicBlock>& b) {
             return b.get() == block;
         });
         if (finded != m_basicBlocks.end() && finded != std::prev(m_basicBlocks.end())) {

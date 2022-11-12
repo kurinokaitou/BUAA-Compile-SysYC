@@ -3,8 +3,6 @@
 #pragma once
 
 #include <cassert>
-#include <iomanip>
-#include <iostream>
 #include <set>
 #include <vector>
 
@@ -158,6 +156,7 @@ class MipsInst {
 public:
     MipsInst(MipsCodeType type) :
         m_type(type) {}
+    MipsBasicBlock* getAtBlock() { return m_atBlock; }
 
 protected:
     MipsBasicBlock* m_atBlock;
@@ -198,7 +197,9 @@ public:
         m_insts.push_front(std::unique_ptr<MipsInst>(inst));
         return m_insts.front().get();
     }
+    MipsInst* getFrontInst() { return m_insts.front().get(); }
     void setControlTransferInst(MipsInst* inst) { m_controlTransferInst = inst; }
+    MipsInst* getControlTransferInst() { return m_controlTransferInst; }
 
 private:
     BasicBlock* m_irBasicBlock;

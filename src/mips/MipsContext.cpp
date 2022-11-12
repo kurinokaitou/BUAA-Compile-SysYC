@@ -1,6 +1,14 @@
 #include <mips/MipsContext.h>
 #include <Log.h>
 
+static inline void insertParallelMv(std::vector<std::pair<MipsOperand, MipsOperand>>& movs, MipsInst* insertBefore) {
+    // serialization in any order is okay
+    for (auto& pair : movs) {
+        auto moveInst = new MipsMove(pair.first, pair.second);
+        insertBefore->getAtBlock()->insertBeforeInst(insertBefore, moveInst);
+    }
+}
+
 void MipsContext::convertMipsCode(IrModule& irModule) {
     for (auto& irFunc : irModule.m_funcs) {
         m_bbMap.clear();
@@ -29,6 +37,12 @@ void MipsContext::convertMipsCode(IrModule& irModule) {
                 } else {
                     break;
                 }
+            }
+            // insert parallel mv at the beginning of current mbb
+            insertParallelMv(m_lhs, m_mipsBasicBlock->getFrontInst());
+            for (auto& pair : m_mv) {
+                auto mbb = m_bbMap[pair.first];
+                insertParallelMv(pair.second, mbb->getControlTransferInst());
             }
         }
         m_mipsFunc->setVirtualMax(m_virtualMax);
@@ -340,4 +354,21 @@ void MipsContext::convertBinaryInst(BinaryInst* inst) {
 }
 
 void MipsContext::convertPhiInst(PhiInst* inst) {
+    // for each phi:
+    // lhs = phi [r1 bb1], [r2 bb2] ...
+    // 1. create vreg for each inst
+    // 2. add parallel mv (lhs1, ...) = (vreg1, ...)
+    // 3. add parallel mv in each bb: (vreg1, ...) = (r1, ...)
+    auto vreg = genNewVirtualReg();
+    m_lhs.emplace_back(resolveValue(inst), vreg);
+    auto incomingValues = inst->getIncomingValues();
+    auto predBBs = inst->getAtBlock()->getPreds();
+    for (int i = 0; i < incomingValues.size(); i++) {
+        auto predBB = predBBs[i];
+        auto currBB = m_mipsBasicBlock;
+        m_mipsBasicBlock = m_bbMap.at(predBB);
+        auto val = resolveValue(incomingValues[i].value);
+        m_mipsBasicBlock = currBB;
+        m_mv.at(predBB).emplace_back(vreg, val);
+    }
 }
