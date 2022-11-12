@@ -27,15 +27,35 @@ define dso_local void @putstr(i8* %0) #0 {
   %4 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i8* %3)
   ret void
 }
-@.str1 = constant [2 x i8] c"1\00"
-@.str2 = constant [2 x i8] c"\0a\00"
+@a = global i32 1
+
+define i32 @add(i32 %a, i32 %b) #0 {
+_b0: ; preds = 
+	%_t0 = alloca i32, align 4
+	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
+	; store 2
+	store i32 %a, i32* %_x1, align 4
+	%_t3 = alloca i32, align 4
+	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
+	; store 5
+	store i32 %b, i32* %_x4, align 4
+	%_x6 = load i32, i32* %_x1, align 4
+	%_x7 = load i32, i32* %_x4, align 4
+	%_x8 = add i32 %_x6, %_x7
+	ret i32 %_x8
+}
 
 define i32 @main() #0 {
 _b0: ; preds = 
-	%_t0 = getelementptr inbounds [2 x i8], [2 x i8]* @.str1, i32 0, i32 0
-	call void @putstr(i8* %_t0)
-	%_t1 = getelementptr inbounds [2 x i8], [2 x i8]* @.str2, i32 0, i32 0
-	call void @putstr(i8* %_t1)
+	%_t0 = alloca i32, align 4
+	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
+	; store 2
+	store i32 1, i32* %_x1, align 4
+	%_x3 = load i32, i32* @a, align 4
+	%_x4 = load i32, i32* %_x1, align 4
+	%_x5 = call i32 @add(i32 %_x3, i32 %_x4)
+	; store 6
+	store i32 %_x5, i32* @a, align 4
 	ret i32 0
 }
 

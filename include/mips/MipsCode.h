@@ -15,13 +15,15 @@ class MipsBasicBlock;
 class MipsInst;
 struct MipsOperand;
 
-enum class MipsCond { Any,
-                      Eq,
-                      Ne,
-                      Ge,
-                      Gt,
-                      Le,
-                      Lt };
+enum class MipsCond {
+    Any,
+    Eq,
+    Ne,
+    Ge,
+    Gt,
+    Le,
+    Lt
+};
 
 inline MipsCond transferCond(IRType type) {
     MipsCond cond;
@@ -135,6 +137,7 @@ public:
     void setVirtualMax(int virtualMax) { m_virtualMax = virtualMax; }
     int getStackSize() { return m_stackSize; }
     void addStackSize(int addStackSize) { m_stackSize += addStackSize; }
+    void toCode(std::ostream& os);
 
 private:
     std::vector<std::unique_ptr<MipsBasicBlock>> m_basicBlocks;
@@ -157,6 +160,7 @@ public:
     MipsInst(MipsCodeType type) :
         m_type(type) {}
     MipsBasicBlock* getAtBlock() { return m_atBlock; }
+    virtual void toCode(std::ostream& os) = 0;
 
 protected:
     MipsBasicBlock* m_atBlock;
@@ -200,6 +204,7 @@ public:
     MipsInst* getFrontInst() { return m_insts.front().get(); }
     void setControlTransferInst(MipsInst* inst) { m_controlTransferInst = inst; }
     MipsInst* getControlTransferInst() { return m_controlTransferInst; }
+    void toCode(std::ostream& os);
 
 private:
     BasicBlock* m_irBasicBlock;
@@ -229,7 +234,7 @@ struct MipsOperand {
 
     inline static MipsOperand R(MipsReg r) {
         auto n = (int)r;
-        assert(n >= int(MipsReg::zero) && n <= int(MipsReg::t9));
+        assert(n >= int(MipsReg::zero) && n <= int(MipsReg::ra));
         return MipsOperand{State::PreColored, n};
     }
 
@@ -316,6 +321,7 @@ public:
             return false;
         }
     }
+    void toCode(std::ostream& os) override;
 
 private:
     // Add, Sub, Rsb, Mul, Div, Mod, Lt, Le, Ge, Gt, Eq, Ne, And, Or
@@ -328,6 +334,7 @@ class MipsMove : public MipsInst {
 public:
     MipsMove(MipsOperand dst, MipsOperand rhs) :
         MipsInst(MipsCodeType::Move), m_dst(dst), m_rhs(rhs) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsOperand m_dst;
@@ -338,6 +345,7 @@ class MipsBranch : public MipsInst {
 public:
     MipsBranch(MipsOperand lhs, MipsOperand rhs, MipsBasicBlock* target) :
         MipsInst(MipsCodeType::Branch), m_lhs(lhs), m_rhs(rhs), m_target(target) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsOperand m_lhs;
@@ -349,6 +357,7 @@ class MipsJump : public MipsInst {
 public:
     MipsJump(MipsBasicBlock* target) :
         MipsInst(MipsCodeType::Jump), m_target(target) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsBasicBlock* m_target;
@@ -358,12 +367,14 @@ class MipsReturn : public MipsInst {
 public:
     MipsReturn() :
         MipsInst(MipsCodeType::Return) {}
+    virtual void toCode(std::ostream& os) override;
 };
 
 class MipsAccess : public MipsInst {
 public:
     MipsAccess(MipsCodeType type, MipsOperand addr, int offset) :
         MipsInst(type), m_addr(addr), m_offset(offset) {}
+    virtual void toCode(std::ostream& os) override{};
 
 private:
     MipsOperand m_addr;
@@ -374,6 +385,7 @@ class MipsLoad : public MipsAccess {
 public:
     MipsLoad(MipsOperand dst, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Load, addr, offset), m_dst(dst) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsOperand m_dst;
@@ -383,6 +395,7 @@ class MipsStore : public MipsAccess {
 public:
     explicit MipsStore(MipsOperand data, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Store, addr, offset), m_data(data) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsOperand m_data;
@@ -392,6 +405,7 @@ class MipsCompare : public MipsInst {
 public:
     explicit MipsCompare(MipsCond cond, MipsOperand dst, MipsOperand lhs, MipsOperand rhs) :
         MipsInst(MipsCodeType::Compare), m_cond(cond), m_dst(dst), m_lhs(lhs), m_rhs(rhs) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsCond m_cond;
@@ -404,6 +418,7 @@ class MipsCall : public MipsInst {
 public:
     explicit MipsCall(FuncItem* func) :
         MipsInst(MipsCodeType::Call), m_func(func) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     FuncItem* m_func;
@@ -413,19 +428,11 @@ class MipsGlobal : public MipsInst {
 public:
     MipsGlobal(SymbolTableItem* sym, MipsOperand dst) :
         MipsInst(MipsCodeType::Global), m_sym(sym), m_dst(dst) {}
+    virtual void toCode(std::ostream& os) override;
 
 private:
     MipsOperand m_dst;
     SymbolTableItem* m_sym;
-};
-
-class MipsComment : public MipsInst {
-public:
-    MipsComment(const std::string& content) :
-        MipsInst(MipsCodeType::Comment), m_content(content) {}
-
-private:
-    std::string m_content;
 };
 
 #endif
