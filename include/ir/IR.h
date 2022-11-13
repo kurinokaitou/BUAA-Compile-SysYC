@@ -22,12 +22,13 @@ declare void @putch(i32)       ; 输出一个字符
 declare void @putstr(i8*)      ; 输出字符串
 */
 constexpr static const int FUNC_NUM = 4;
-static const std::string BUILTIN_FUNCS[FUNC_NUM][3] = {
-    {"getint", "", "i32"},
-    {"putint", "i32", "void"},
-    {"putch", "i32", "void"},
-    {"putstr", "i8*", "void"},
+static const std::string BUILTIN_FUNCS[FUNC_NUM][2] = {
+    {"getint", ""},
+    {"putint", "i32"},
+    {"putch", "i32"},
+    {"putstr", "i8*"},
 };
+static const ValueTypeEnum BUILTIN_FUNCS_RETURN_TYPE[FUNC_NUM] = {ValueTypeEnum::INT_TYPE, ValueTypeEnum::VOID_TYPE, ValueTypeEnum::VOID_TYPE, ValueTypeEnum::VOID_TYPE};
 
 constexpr static const char* LLVM_OPS[14] = {
     /* Add = */ "add",
@@ -180,8 +181,10 @@ class IrFunc {
 public:
     explicit IrFunc(FuncItem* funcItem) :
         m_funcItem(funcItem) {}
-    explicit IrFunc(const std::string& funcName, const std::string& builtinArgType, const std::string& retType) :
-        m_isBuiltin(true), m_builtinName(funcName), m_builtinArgType(builtinArgType), m_retType(retType) {}
+    explicit IrFunc(const std::string& funcName, const std::string& builtinArgType, ValueTypeEnum retType) :
+        m_isBuiltin(true), m_builtinArgType(builtinArgType) {
+        m_funcItem = new FuncItem(funcName, retType);
+    }
     BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
@@ -200,6 +203,7 @@ public:
     void addCallee(IrFunc* func) { m_callee.insert(func); }
     void addCaller(IrFunc* func) { m_caller.insert(func); }
     FuncItem* getFuncItem() { return m_funcItem; }
+    bool hasReturn() { return m_funcItem->getReturnValueType() != ValueTypeEnum::VOID_TYPE; }
     void toCode(std::ostream& os);
 
 private:
@@ -208,9 +212,7 @@ private:
     std::set<IrFunc*> m_callee;
     std::set<IrFunc*> m_caller;
     bool m_isBuiltin{false};
-    std::string m_builtinName;
     std::string m_builtinArgType;
-    std::string m_retType;
 };
 
 class GlobalVariable : public Value {
@@ -275,8 +277,7 @@ class IrModule {
 public:
     IrModule() {
         for (int i = 0; i < FUNC_NUM; i++) {
-            s_builtinFuncs.insert({BUILTIN_FUNCS[i][0],
-                                   new IrFunc(BUILTIN_FUNCS[i][0], BUILTIN_FUNCS[i][1], BUILTIN_FUNCS[i][2])});
+            s_builtinFuncs.insert({BUILTIN_FUNCS[i][0], new IrFunc(BUILTIN_FUNCS[i][0], BUILTIN_FUNCS[i][1], BUILTIN_FUNCS_RETURN_TYPE[i])});
         }
     }
     IrFunc* addFunc(IrFunc* func) {

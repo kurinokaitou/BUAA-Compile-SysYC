@@ -180,6 +180,9 @@ void MipsContext::convertInst(Inst* inst) {
     case IRType::Add... IRType::Or:
         convertBinaryInst(dynamic_cast<BinaryInst*>(inst));
         break;
+    case IRType::Print:
+        // TODO: convert print inst
+        break;
     default:
         DBG_ERROR("Can't convert this type of ir instruction!");
         break;
