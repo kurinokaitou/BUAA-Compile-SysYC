@@ -10,6 +10,9 @@ static inline void insertParallelMv(std::vector<std::pair<MipsOperand, MipsOpera
 }
 
 void MipsContext::convertMipsCode(IrModule& irModule) {
+    for (auto& glob : irModule.m_globalVariables) {
+        m_module.addGlob(glob.get());
+    }
     for (auto& irFunc : irModule.m_funcs) {
         m_bbMap.clear();
         m_valMap.clear();

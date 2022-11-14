@@ -180,6 +180,42 @@ static std::vector<size_t> getArrayItemDimensions(SymbolTableItem* item) {
     }
 }
 
+template <typename Type>
+static std::vector<typename Type::InternalType> getItemValues(SymbolTableItem* item) {
+    if (item->isChangble()) {
+        auto lValArray = dynamic_cast<VarItem<ArrayType<Type>>*>(item);
+        if (lValArray) {
+            return lValArray->getVar().getValues();
+        } else {
+            auto lVal = dynamic_cast<VarItem<Type>*>(item);
+            return {lVal->getVar()};
+        }
+
+    } else {
+        auto lValArray = dynamic_cast<ConstVarItem<ArrayType<Type>>*>(item);
+        if (lValArray) {
+            return lValArray->getConstVar().getValues();
+        } else {
+            auto lVal = dynamic_cast<ConstVarItem<Type>*>(item);
+            return {lVal->getConstVar()};
+        }
+    }
+}
+
+static std::vector<int> getItemValues(SymbolTableItem* item) {
+    if (item->getType()->getValueTypeEnum() == ValueTypeEnum::INT_TYPE) {
+        return getItemValues<IntType>(item);
+    } else {
+        std::vector<int> res;
+        auto vars = getItemValues<CharType>(item);
+        res.reserve(vars.size());
+        for (auto& var : vars) {
+            res.push_back(static_cast<int>(var));
+        }
+        return res;
+    }
+}
+
 static size_t calArrayDimsSize(std::vector<size_t>& dims) {
     size_t size = 1;
     if (dims.empty()) {

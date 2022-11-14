@@ -173,6 +173,7 @@ public:
     static IndexMapper<BasicBlock> s_bbMapper;
 };
 
+class IrModule;
 class IrFunc {
     friend class IrModule;
     friend class CallInst;
@@ -205,9 +206,11 @@ public:
     FuncItem* getFuncItem() { return m_funcItem; }
     bool hasReturn() { return m_funcItem->getReturnValueType() != ValueTypeEnum::VOID_TYPE; }
     void toCode(std::ostream& os);
+    IrModule* getFromModule() { return m_fromModule; }
 
 private:
     FuncItem* m_funcItem{nullptr};
+    IrModule* m_fromModule{nullptr};
     std::vector<std::unique_ptr<BasicBlock>> m_basicBlocks;
     std::set<IrFunc*> m_callee;
     std::set<IrFunc*> m_caller;
@@ -224,7 +227,7 @@ public:
     virtual ~GlobalVariable() {}
     virtual bool isGlob() override { return true; }
     virtual void printValue(std::ostream& os) override {
-        os << "@" << m_globalItem->getName();
+        os << "%g_" << m_globalItem->getName();
     }
     SymbolTableItem* getGlobalItem() { return m_globalItem; }
 
@@ -282,6 +285,7 @@ public:
     }
     IrFunc* addFunc(IrFunc* func) {
         m_funcs.push_back(std::unique_ptr<IrFunc>(func));
+        func->m_fromModule = this;
         return m_funcs.back().get();
     }
 

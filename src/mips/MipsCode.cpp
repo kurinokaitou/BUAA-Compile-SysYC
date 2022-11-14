@@ -1,6 +1,19 @@
 #include <mips/MipsCode.h>
+IndexMapper<MipsBasicBlock> MipsBasicBlock::s_bbMapper;
+
 void MipsModule::toCode(std::ostream& os) {
     int size = 0;
+    os << ".data" << std::endl;
+    for (auto& glob : m_globs) {
+        auto globItem = glob->getGlobalItem();
+        auto values = getItemValues(globItem);
+        os << globItem->getName() << ":" << std::endl;
+        for (auto& value : values) {
+            os << "\t.word " << value << "\n";
+        }
+        os << std::endl;
+    }
+    os << ".text" << std::endl;
     for (auto& func : m_funcs) {
         func->toCode(os);
     }
@@ -8,6 +21,7 @@ void MipsModule::toCode(std::ostream& os) {
 }
 
 void MipsFunc::toCode(std::ostream& os) {
+    os << m_irFunc->getFuncItem()->getName() << ":" << std::endl;
     for (auto& mbb : m_basicBlocks) {
         mbb->toCode(os);
     }
@@ -15,6 +29,7 @@ void MipsFunc::toCode(std::ostream& os) {
 }
 
 void MipsBasicBlock::toCode(std::ostream& os) {
+    os << "_b" << MipsBasicBlock::s_bbMapper.get(this) << ":" << std::endl;
     for (auto& inst : m_insts) {
         inst->toCode(os);
     }
@@ -22,7 +37,7 @@ void MipsBasicBlock::toCode(std::ostream& os) {
 }
 
 void MipsGlobal::toCode(std::ostream& os) {
-    os << "global" << std::endl;
+    os << "# load global variable addr" << m_sym->getName() << std::endl;
 }
 
 void MipsMove::toCode(std::ostream& os) {

@@ -102,6 +102,7 @@ public:
     virtual bool isChangble() override { return true; }
     virtual bool hasInit() const override { return m_hasInit; }
     const typename Type::InternalItem& getVarItem() const { return m_varItem; }
+    typename Type::InternalType& getVar() { return m_var; }
 
 private:
     typename Type::InternalItem m_varItem;

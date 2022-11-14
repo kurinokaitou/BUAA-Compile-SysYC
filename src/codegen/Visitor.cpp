@@ -757,10 +757,9 @@ void Visitor::mainFuncDef(std::shared_ptr<VNodeBase> node) {
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
     for (auto& var : m_ctx.module.getGlobalVariables()) {
         auto globItem = var->getGlobalItem();
-        if (globItem->getType()->isArray()) {
-            auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
-            globItem->setIrValue(inst);
-        }
+        //auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
+        auto globVar = new GlobalVariable(globItem);
+        globItem->setIrValue(globVar);
     }
     /*----------------------------------------------------------------------------*/
     std::vector<SymbolTableItem*> params;
@@ -799,10 +798,9 @@ void Visitor::funcDef(std::shared_ptr<VNodeBase> node) {
     m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(new BasicBlock());
     for (auto& var : m_ctx.module.getGlobalVariables()) {
         auto globItem = var->getGlobalItem();
-        if (globItem->getType()->isArray()) {
-            auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
-            globItem->setIrValue(inst);
-        }
+        //auto inst = m_ctx.basicBlock->pushBackInst(new GetElementPtrInst(globItem, var.get(), ConstValue::get(0), 0));
+        auto globVar = new GlobalVariable(globItem);
+        globItem->setIrValue(globVar);
     }
     for (auto& param : params) {
         if (!param->getType()->isArray()) {

@@ -117,10 +117,15 @@ public:
         m_funcs.push_back(std::unique_ptr<MipsFunc>(func));
         return m_funcs.back().get();
     }
+    GlobalVariable* addGlob(GlobalVariable* glob) {
+        m_globs.push_back(glob);
+        return m_globs.back();
+    }
     void toCode(std::ostream& os);
 
 private:
     std::vector<std::unique_ptr<MipsFunc>> m_funcs;
+    std::vector<GlobalVariable*> m_globs;
 };
 
 class MipsFunc {
@@ -205,6 +210,9 @@ public:
     void setControlTransferInst(MipsInst* inst) { m_controlTransferInst = inst; }
     MipsInst* getControlTransferInst() { return m_controlTransferInst; }
     void toCode(std::ostream& os);
+
+public:
+    static IndexMapper<MipsBasicBlock> s_bbMapper;
 
 private:
     BasicBlock* m_irBasicBlock;

@@ -143,6 +143,22 @@ void IrFunc::toCode(std::ostream& os) {
         os << std::endl;
     } else {
         os << " {" << std::endl;
+        os << "_entry:" << std::endl;
+        for (auto& glob : m_fromModule->getGlobalVariables()) {
+            auto globItem = glob->getGlobalItem();
+            auto dims = getArrayItemDimensions(globItem);
+            os << "\t%g_" << globItem->getName() << " = getelementptr inbounds ";
+            printDimensions(os, dims);
+            os << ", ";
+            printDimensions(os, dims);
+            os << "* @" << globItem->getName();
+            if (dims.empty()) {
+                os << ", i32 0" << std::endl;
+            } else {
+                os << ", i32 0, i32 0" << std::endl;
+            }
+        }
+        os << "\tbr label %_b0" << std::endl;
         for (auto& bb : m_basicBlocks) { // 按顺序标号
             BasicBlock::s_bbMapper.get(bb.get());
         }
@@ -202,21 +218,7 @@ void GetElementPtrInst::toCode(std::ostream& os) {
         printValue(os);
         os << " = getelementptr inbounds ";
         if (m_arr.value) {
-            if (m_arr.value->isGlob()) {
-                auto globItem = dynamic_cast<GlobalVariable*>(m_arr.value)->getGlobalItem();
-                auto dims = getArrayItemDimensions(globItem);
-                printDimensions(os, dims);
-                os << ", ";
-                printDimensions(os, dims);
-                os << "* ";
-                if (!dims.empty()) {
-                    m_arr.value->printValue(os);
-                    os << ", i32 0, i32 0" << std::endl;
-                    return;
-                }
-            } else {
-                os << "i32, i32* ";
-            }
+            os << "i32, i32* ";
             m_arr.value->printValue(os);
         }
         os << ", i32 " << res << std::endl;
