@@ -27,35 +27,48 @@ define dso_local void @putstr(i8* %0) #0 {
   %4 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i8* %3)
   ret void
 }
-@a = global i32 1
-
-define i32 @add(i32 %a, i32 %b) #0 {
-_b0: ; preds = 
-	%_t0 = alloca i32, align 4
-	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
-	; store 2
-	store i32 %a, i32* %_x1, align 4
-	%_t3 = alloca i32, align 4
-	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
-	; store 5
-	store i32 %b, i32* %_x4, align 4
-	%_x6 = load i32, i32* %_x1, align 4
-	%_x7 = load i32, i32* %_x4, align 4
-	%_x8 = add i32 %_x6, %_x7
-	ret i32 %_x8
-}
+@arr = global [4 x i32] zeroinitializer
 
 define i32 @main() #0 {
+_entry:
+	%g_arr = getelementptr inbounds [4 x i32], [4 x i32]* @arr, i32 0, i32 0
+	br label %_b0
 _b0: ; preds = 
 	%_t0 = alloca i32, align 4
 	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
 	; store 2
 	store i32 1, i32* %_x1, align 4
-	%_x3 = load i32, i32* @a, align 4
-	%_x4 = load i32, i32* %_x1, align 4
-	%_x5 = call i32 @add(i32 %_x3, i32 %_x4)
-	; store 6
-	store i32 %_x5, i32* @a, align 4
+	%_t3 = alloca i32, align 4
+	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
+	; store 5
+	store i32 2, i32* %_x4, align 4
+	%_t6 = alloca i32, align 4
+	%_x7 = getelementptr inbounds i32, i32* %_t6, i32 0
+	%_x8 = load i32, i32* %_x1, align 4
+	%_t9 = icmp eq i32 %_x8, 1
+	%_x10 = zext i1 %_t9 to i32
+	; if %_x10 then _b1 else _b2
+	%_t11 = icmp ne i32 %_x10, 0
+	br i1 %_t11, label %_b1, label %_b2
+_b1: ; preds = %_b0
+	%_x12 = load i32, i32* %_x4, align 4
+	%_t13 = icmp sle i32 %_x12, 1
+	%_x14 = zext i1 %_t13 to i32
+	br label %_b2
+_b2: ; preds = %_b0, %_b1
+	%_x15 = phi i32 [%_x10, %_b0], [%_x14, %_b1]
+	; if %_x15 then _b3 else _b4
+	%_t16 = icmp ne i32 %_x15, 0
+	br i1 %_t16, label %_b3, label %_b4
+_b3: ; preds = %_b2
+	; store 17
+	store i32 0, i32* %_x7, align 4
+	br label %_b5
+_b4: ; preds = %_b2
+	; store 18
+	store i32 1, i32* %_x7, align 4
+	br label %_b5
+_b5: ; preds = %_b3, %_b4
 	ret i32 0
 }
 

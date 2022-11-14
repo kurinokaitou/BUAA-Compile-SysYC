@@ -8,10 +8,10 @@ void MipsModule::toCode(std::ostream& os) {
         auto globItem = glob->getGlobalItem();
         auto values = getItemValues(globItem);
         os << globItem->getName() << ":" << std::endl;
+        bool hasInit = globItem->hasInit();
         for (auto& value : values) {
-            os << "\t.word " << value << "\n";
+            os << "\t.word " << (hasInit ? value : 0) << "\n";
         }
-        os << std::endl;
     }
     os << ".text" << std::endl;
     for (auto& func : m_funcs) {
@@ -31,39 +31,46 @@ void MipsFunc::toCode(std::ostream& os) {
 void MipsBasicBlock::toCode(std::ostream& os) {
     os << "_b" << MipsBasicBlock::s_bbMapper.get(this) << ":" << std::endl;
     for (auto& inst : m_insts) {
+        os << "\t";
         inst->toCode(os);
     }
     os << std::endl;
 }
 
 void MipsGlobal::toCode(std::ostream& os) {
-    os << "# load global variable addr" << m_sym->getName() << std::endl;
+    os << "la " << m_dst << ", " << m_sym->getName() << std::endl;
 }
 
 void MipsMove::toCode(std::ostream& os) {
-    os << "move" << std::endl;
+    if (m_rhs.isImm()) {
+        os << "li " << m_dst << ", " << m_rhs << std::endl;
+    } else {
+        os << "move " << m_dst << ", " << m_rhs << std::endl;
+    }
 }
 void MipsBranch::toCode(std::ostream& os) {
-    os << "beq" << std::endl;
+    os << "beq " << m_lhs << ", " << m_rhs << ", "
+       << "_b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
 }
 void MipsJump::toCode(std::ostream& os) {
-    os << "j" << std::endl;
+    os << "j "
+       << "_b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
 }
 void MipsReturn::toCode(std::ostream& os) {
-    os << "jr" << std::endl;
+    os << "jr %ra" << std::endl;
 }
 void MipsLoad::toCode(std::ostream& os) {
-    os << "lw" << std::endl;
+    os << "lw " << m_dst << ", " << m_offset << "(" << m_addr << ")" << std::endl;
 }
 void MipsStore::toCode(std::ostream& os) {
-    os << "sw" << std::endl;
+    os << "sw " << m_data << ", " << m_offset << "(" << m_addr << ")" << std::endl;
 }
 void MipsCompare::toCode(std::ostream& os) {
-    os << "cmp" << std::endl;
+    os << m_cond << " " << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;
 }
 void MipsCall::toCode(std::ostream& os) {
-    os << "jal" << std::endl;
+    os << "jal " << m_func->getName() << std::endl;
 }
 void MipsBinary::toCode(std::ostream& os) {
-    os << "binary" << std::endl;
+    os << instString() << " " << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;
 }

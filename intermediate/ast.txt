@@ -1,59 +1,34 @@
 <CompUnit>
 INTTK int
-IDENFR a
-ASSIGN =
-INTCON 1
+IDENFR arr
+LBRACK [
+INTCON 2
 <Number>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
-<Exp>
-<InitVal>
+<ConstExp>
+RBRACK ]
+LBRACK [
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
 <VarDef>
 SEMICN ;
 <VarDecl>
-INTTK int
-<FuncType>
-IDENFR add
-LPARENT (
-INTTK int
-IDENFR a
-<FuncFParam>
-COMMA ,
-INTTK int
-IDENFR b
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    RETURNTK return
-    IDENFR a
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    IDENFR b
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
 INTTK int
 MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR b
+    IDENFR a
     ASSIGN =
     INTCON 1
     <Number>
@@ -66,10 +41,26 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
-    IDENFR a
-    <LVal>
+    INTTK int
+    IDENFR b
     ASSIGN =
-    IDENFR add
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR c
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    IFTK if
     LPARENT (
     IDENFR a
     <LVal>
@@ -77,22 +68,72 @@ RPARENT )
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <Exp>
-    COMMA ,
+    <RelExp>
+    <EqExp>
+    EQL ==
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    AND &&
     IDENFR b
     <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <Exp>
-    <FuncRParams>
-    RPARENT )
+    <RelExp>
+    LEQ <=
+    INTCON 1
+    <Number>
+    <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <Exp>
-    SEMICN ;
+    <RelExp>
+    <EqExp>
+    <LAndExp>
+    <LOrExp>
+    <Cond>
+    RPARENT )
+      LBRACE {
+        IDENFR c
+        <LVal>
+        ASSIGN =
+        INTCON 0
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
+    ELSETK else
+      LBRACE {
+        IDENFR c
+        <LVal>
+        ASSIGN =
+        INTCON 1
+        <Number>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
+        SEMICN ;
+        <Stmt>
+      RBRACE }
+      <Block>
+    <Stmt>
     <Stmt>
     RETURNTK return
     INTCON 0

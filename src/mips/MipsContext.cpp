@@ -33,6 +33,8 @@ void MipsContext::convertMipsCode(IrModule& irModule) {
         for (auto& basicBlock : m_irFunc->m_basicBlocks) {
             m_basicBlock = basicBlock.get();
             m_mipsBasicBlock = m_bbMap.at(m_basicBlock);
+            m_lhs.clear();
+            m_mv.clear();
             for (auto& inst : m_basicBlock->m_insts) {
                 // phi insts must appear at the beginning of bb
                 if (auto phiInst = dynamic_cast<PhiInst*>(inst.get())) {
@@ -75,11 +77,12 @@ MipsOperand MipsContext::resolveValue(Value* value) {
                         // a0-a3
                         // copy param to vreg in entry bb
                         auto firstBlock = m_mipsFunc->getFirstBasicBlock();
-                        firstBlock->insertFrontInst(new MipsMove(MipsOperand::R((MipsReg)i), res));
+                        firstBlock->insertFrontInst(new MipsMove(res, MipsOperand::R(MipsReg((int)MipsReg::a0 + i))));
                     } else {
                         // read from sp + (i-4)*4 in entry bb
                         // will be fixed up in later pass
-                        m_mipsBasicBlock->insertFrontInst(new MipsLoad(res, MipsOperand::R(MipsReg::sp), (i - 4) * 4));
+                        auto loadInst = m_mipsBasicBlock->insertFrontInst(new MipsLoad(res, MipsOperand::R(MipsReg::sp), (i - 4) * 4));
+                        m_mipsFunc->getSpArgFixup().push_back(loadInst);
                     }
                     break;
                 }
@@ -186,6 +189,8 @@ void MipsContext::convertInst(Inst* inst) {
     case IRType::Print:
         // TODO: convert print inst
         break;
+    case IRType::Phi:
+        break;
     default:
         DBG_ERROR("Can't convert this type of ir instruction!");
         break;
@@ -215,7 +220,7 @@ void MipsContext::convertStoreInst(StoreInst* inst) {
     auto data = resolveNoImm(inst->getDataValue());
     auto index = resolveValue(inst->getIndexValue());
     if (index.isImm()) {
-        m_mipsBasicBlock->pushBackInst(new MipsStore(data, arr, index.value));
+        m_mipsBasicBlock->pushBackInst(new MipsStore(data, arr, index.value << 2));
     } else {
         auto vreg = genNewVirtualReg();
         auto addInst = m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Add, vreg, arr, index));
@@ -295,7 +300,7 @@ void MipsContext::convertCallInst(CallInst* inst) {
         } else {
             // store to sp-(n-i)*4
             auto rhs = resolveNoImm(args[i]);
-            auto st_inst = new MipsStore(rhs, MipsOperand::R(MipsReg::sp), (-(n - i)) << 2);
+            m_mipsBasicBlock->pushBackInst(new MipsStore(rhs, MipsOperand::R(MipsReg::sp), (-(n - i)) << 2));
         }
     }
 
@@ -375,6 +380,6 @@ void MipsContext::convertPhiInst(PhiInst* inst) {
         m_mipsBasicBlock = m_bbMap.at(predBB);
         auto val = resolveValue(incomingValues[i].value);
         m_mipsBasicBlock = currBB;
-        m_mv.at(predBB).emplace_back(vreg, val);
+        m_mv[predBB].emplace_back(vreg, val);
     }
 }

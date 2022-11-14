@@ -82,15 +82,6 @@ void IrModule::toCode(std::ostream& os, bool isTest) {
         os << std::endl;
     }
     for (auto& func : m_funcs) {
-        for (auto& bb : func->m_basicBlocks) {
-            bb->getPreds().clear();
-        }
-        for (auto& bb : func->m_basicBlocks) {
-            // bb->getPreds().clear();
-            for (auto* x : bb->getSuccs()) {
-                if (x) x->getPreds().push_back(bb.get());
-            }
-        }
         func->toCode(os);
     }
 }
@@ -102,6 +93,22 @@ IrFunc* IrModule::getFunc(FuncItem* funcItem) {
         }
     }
     return nullptr;
+}
+
+void IrModule::calPredSucc() {
+    for (auto& func : m_funcs) {
+        for (auto& bb : func->m_basicBlocks) {
+            bb->getPreds().clear();
+        }
+        for (auto& bb : func->m_basicBlocks) {
+            // bb->getPreds().clear();
+            for (auto* x : bb->getSuccs()) {
+                if (x) {
+                    x->getPreds().push_back(bb.get());
+                }
+            }
+        }
+    }
 }
 
 IrFunc* IrModule::getBuiltinFunc(const std::string& funcName) {

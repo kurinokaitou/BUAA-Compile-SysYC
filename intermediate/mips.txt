@@ -1,27 +1,43 @@
-move
-move
-binary
-sw
-binary
-sw
-lw
-lw
-binary
-jr
+.data
+arr:
+.text
+main:
+_b0:
+	addu v0, %29, 0
+	li v1, 1
+	sw v1, 0(v0)
+	addu v2, %29, 4
+	li v3, 2
+	sw v3, 0(v2)
+	addu v4, %29, 8
+	lw v5, 0(v0)
+	move v13, v6
+	seq v6, v5, 1
+	beq v6, 0, _b1
 
+_b2:
+	lw v7, 0(v2)
+	sle v8, v7, 1
+	move v13, v8
+	j _b1
 
-global
-binary
-move
-sw
-lw
-lw
-move
-move
-jal
-move
-sw
-jr
+_b1:
+	move v9, v13
+	sne v10, v9, 0
+	beq v10, 0, _b3
+
+_b4:
+	li v11, 0
+	sw v11, 0(v4)
+	j _b5
+
+_b3:
+	li v12, 1
+	sw v12, 0(v4)
+	j _b5
+
+_b5:
+	jr %ra
 
 
 

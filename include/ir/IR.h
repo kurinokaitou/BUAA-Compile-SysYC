@@ -300,6 +300,8 @@ public:
         return m_strVariables.back().get();
     }
 
+    void calPredSucc();
+
     IrFunc* getFunc(FuncItem* funcItem);
     static IrFunc* getBuiltinFunc(const std::string& funcName);
     std::vector<std::unique_ptr<GlobalVariable>>& getGlobalVariables() { return m_globalVariables; }

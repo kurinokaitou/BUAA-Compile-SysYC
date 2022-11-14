@@ -92,11 +92,11 @@ inline std::ostream& operator<<(std::ostream& os, const MipsShift& shift) {
 
 inline std::ostream& operator<<(std::ostream& os, const MipsCond& cond) {
     if (cond == MipsCond::Eq) {
-        os << "beq";
+        os << "seq";
     } else if (cond == MipsCond::Ne) {
-        os << "bne";
+        os << "sne";
     } else if (cond == MipsCond::Any) {
-        os << "";
+        os << "cmp";
     } else if (cond == MipsCond::Gt) {
         os << "sgt";
     } else if (cond == MipsCond::Ge) {
@@ -274,17 +274,16 @@ struct MipsOperand {
     bool needsColor() const { return state == State::Virtual || state == State::PreColored; }
 
     explicit operator std::string() const {
-        char prefix = '?';
+        std::string prefix = "";
         switch (this->state) {
         case State::PreColored:
         case State::Allocated:
-            prefix = 'r';
+            prefix = "%";
             break;
         case State::Virtual:
-            prefix = 'v';
+            prefix = "v";
             break;
         case State::Immediate:
-            prefix = '#';
             break;
         }
         return prefix + std::to_string(this->value);
@@ -330,6 +329,17 @@ public:
         }
     }
     void toCode(std::ostream& os) override;
+    std::string instString() {
+        switch (m_type) {
+        case MipsCodeType::Add: return "addu";
+        case MipsCodeType::Sub: return "subu";
+        case MipsCodeType::Rsb: return "subu";
+        case MipsCodeType::Mul: return "mulu";
+        case MipsCodeType::Div: return "divu";
+        case MipsCodeType::Mod: return "remu";
+        default: return "invalid";
+        }
+    }
 
 private:
     // Add, Sub, Rsb, Mul, Div, Mod, Lt, Le, Ge, Gt, Eq, Ne, And, Or
@@ -384,7 +394,7 @@ public:
         MipsInst(type), m_addr(addr), m_offset(offset) {}
     virtual void toCode(std::ostream& os) override{};
 
-private:
+protected:
     MipsOperand m_addr;
     int m_offset;
 };

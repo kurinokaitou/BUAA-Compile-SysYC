@@ -6,6 +6,7 @@ CodeGenerator::CodeGenerator(std::shared_ptr<VNodeBase> astRoot) {
 
 void CodeGenerator::generate() {
     m_visitor->visit();
+    m_irCtx.module.calPredSucc();
     m_mipsCtx.convertMipsCode(m_irCtx.module);
 }
 
