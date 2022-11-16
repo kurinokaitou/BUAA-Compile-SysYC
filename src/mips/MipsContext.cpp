@@ -1,5 +1,8 @@
 #include <mips/MipsContext.h>
 #include <Log.h>
+#include <optimize/mips/AllocateRegister.h>
+
+std::vector<std::function<void(MipsModule&)>> MipsContext::s_mipsPasses{allocateRegister};
 
 static inline void insertParallelMv(std::vector<std::pair<MipsOperand, MipsOperand>>& movs, MipsInst* insertBefore) {
     // serialization in any order is okay
@@ -55,7 +58,7 @@ void MipsContext::convertMipsCode(IrModule& irModule) {
 }
 
 void MipsContext::optimizeMipsCode(int optLevel) {
-    for (auto& pass : m_mipsPasses) {
+    for (auto& pass : s_mipsPasses) {
         pass(m_module);
     }
 }

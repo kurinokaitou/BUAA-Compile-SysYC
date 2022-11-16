@@ -111,7 +111,7 @@ inline std::ostream& operator<<(std::ostream& os, const MipsCond& cond) {
 
 class MipsModule {
     friend class IrModule;
-    friend void allocateRegister(MipsModule* module);
+    friend void allocateRegister(MipsModule& module);
 
 public:
     MipsFunc* addFunc(MipsFunc* func) {
@@ -131,7 +131,6 @@ private:
 
 class MipsFunc {
     friend void livenessAnalysis(MipsFunc* f);
-    //friend void allocateRegister(MipsModule* module);
 
 public:
     explicit MipsFunc(IrFunc* irFunc, bool isMainFunc = false) :
@@ -144,9 +143,11 @@ public:
     IrFunc* getIrFunc() { return m_irFunc; }
     std::vector<MipsInst*>& getSpArgFixup() { return m_spArgFixup; }
     void setVirtualMax(int virtualMax) { m_virtualMax = virtualMax; }
+    int getVirtualMax() { return m_virtualMax; }
     int getStackSize() { return m_stackSize; }
     void addStackSize(int addStackSize) { m_stackSize += addStackSize; }
     void toCode(std::ostream& os);
+    std::vector<std::unique_ptr<MipsBasicBlock>>& getMipsBasicBlocks() { return m_basicBlocks; }
 
 private:
     std::vector<std::unique_ptr<MipsBasicBlock>> m_basicBlocks;
@@ -203,6 +204,19 @@ public:
             return nullptr;
         }
     }
+
+    MipsInst* insertAfterInst(MipsInst* insertAfter, MipsInst* inst) {
+        inst->m_atBlock = this;
+        auto finded = std::find_if(m_insts.begin(), m_insts.end(), [insertAfter](std::unique_ptr<MipsInst>& in) {
+            return insertAfter == in.get();
+        });
+        if (finded != m_insts.end()) {
+            return m_insts.insert(std::next(finded), std::unique_ptr<MipsInst>(inst))->get();
+        } else {
+            return nullptr;
+        }
+    }
+
     void removeInst(MipsInst* inst) {
         m_insts.remove_if([inst](std::unique_ptr<MipsInst>& in) {
             return inst == in.get();
@@ -217,6 +231,8 @@ public:
     void setControlTransferInst(MipsInst* inst) { m_controlTransferInst = inst; }
     MipsInst* getControlTransferInst() { return m_controlTransferInst; }
     void toCode(std::ostream& os);
+    std::list<std::unique_ptr<MipsInst>>& getMipsInsts() { return m_insts; }
+    BasicBlock* getIrBasicBlock() { return m_irBasicBlock; }
 
 public:
     static IndexMapper<MipsBasicBlock> s_bbMapper;
@@ -232,10 +248,11 @@ private:
     MipsInst* m_controlTransferInst = nullptr;
     // liveness analysis
     // maybe we should use bitset when performance is bad
-    std::set<MipsOperand> m_liveuse;
-    std::set<MipsOperand> m_def;
-    std::set<MipsOperand> m_livein;
-    std::set<MipsOperand> m_liveout;
+public:
+    std::set<MipsOperand> liveuse;
+    std::set<MipsOperand> def;
+    std::set<MipsOperand> livein;
+    std::set<MipsOperand> liveout;
 };
 
 struct MipsOperand {
@@ -367,6 +384,8 @@ public:
     MipsMove(MipsOperand dst, MipsOperand rhs) :
         MipsInst(MipsCodeType::Move), m_dst(dst), m_rhs(rhs) {}
     virtual void toCode(std::ostream& os) override;
+    MipsOperand getDst() { return m_dst; }
+    MipsOperand getRhs() { return m_rhs; }
 
 private:
     MipsOperand m_dst;
@@ -505,4 +524,6 @@ private:
     SymbolTableItem* m_sym;
 };
 
+std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
 #endif

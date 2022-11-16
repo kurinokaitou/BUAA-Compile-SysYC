@@ -122,3 +122,64 @@ void MipsCall::toCode(std::ostream& os) {
 void MipsBinary::toCode(std::ostream& os) {
     os << instString() << " " << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;
 }
+
+std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst) {
+    std::vector<MipsOperand> def;
+    std::vector<MipsOperand> use;
+
+    if (auto x = dynamic_cast<MipsBinary*>(inst)) {
+        def = {x->m_dst};
+        use = {x->m_lhs, x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsMove*>(inst)) {
+        def = {x->m_dst};
+        use = {x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsLoad*>(inst)) {
+        def = {x->m_dst};
+        use = {x->m_addr};
+    } else if (auto x = dynamic_cast<MipsStore*>(inst)) {
+        use = {x->m_data, x->m_addr};
+    } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
+        use = {x->m_lhs, x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsCall*>(inst)) {
+        // args (also caller save)
+        for (int i = (int)MipsReg::a0; i < (int)MipsReg::a0 + std::min(x->m_func->getParams().size(), (size_t)4); ++i) {
+            use.push_back(MipsOperand::R((MipsReg)i));
+        }
+        for (int i = (int)MipsReg::a0; i <= (int)MipsReg::a3; i++) {
+            def.push_back(MipsOperand::R((MipsReg)i));
+        }
+        def.push_back(MipsOperand::R(MipsReg::sp));
+        //def.push_back(MipsOperand::R(MipsReg::ip));
+    } else if (auto x = dynamic_cast<MipsGlobal*>(inst)) {
+        def = {x->m_dst};
+    } else if (dynamic_cast<MipsReturn*>(inst)) {
+        // ret
+        use.push_back(MipsOperand::R(MipsReg::v0));
+    }
+    return {def, use};
+}
+
+std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst) {
+    MipsOperand* def = nullptr;
+    std::vector<MipsOperand*> use;
+
+    if (auto x = dynamic_cast<MipsBinary*>(inst)) {
+        def = &x->m_dst;
+        use = {&x->m_lhs, &x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsMove*>(inst)) {
+        def = &x->m_dst;
+        use = {&x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsLoad*>(inst)) {
+        def = &x->m_dst;
+        use = {&x->m_addr};
+    } else if (auto x = dynamic_cast<MipsStore*>(inst)) {
+        use = {&x->m_data, &x->m_addr};
+    } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
+        use = {&x->m_lhs, &x->m_rhs};
+    } else if (dynamic_cast<MipsCall*>(inst)) {
+        // intentionally blank
+    } else if (auto x = dynamic_cast<MipsGlobal*>(inst)) {
+        def = {&x->m_dst};
+    }
+    return {def, use};
+}

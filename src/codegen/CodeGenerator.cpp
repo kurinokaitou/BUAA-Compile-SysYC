@@ -8,6 +8,7 @@ void CodeGenerator::generate() {
     m_visitor->visit();
     m_irCtx.module.calPredSucc();
     m_mipsCtx.convertMipsCode(m_irCtx.module);
+    m_mipsCtx.optimizeMipsCode(0);
 }
 
 void CodeGenerator::dumpTable(std::filebuf& file) {

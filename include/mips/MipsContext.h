@@ -51,7 +51,8 @@ private:
     // virtual registers
     int m_virtualMax = 0;
     // optimize passes
-    std::vector<std::function<void(MipsModule&)>> m_mipsPasses;
+public:
+    static std::vector<std::function<void(MipsModule&)>> s_mipsPasses;
 };
 
 #endif

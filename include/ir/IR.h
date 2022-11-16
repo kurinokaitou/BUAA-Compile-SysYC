@@ -5,6 +5,7 @@
 #include <cassert>
 #include <memory>
 #include <set>
+#include <unordered_set>
 #include <map>
 
 #include "IRTypeEnum.h"
@@ -170,6 +171,11 @@ private:
     std::list<std::unique_ptr<Inst>> m_insts;
 
 public:
+    BasicBlock* idom;
+    std::unordered_set<BasicBlock*> domBy; // 支配它的节点集
+    std::vector<BasicBlock*> doms;         // 它支配的节点集
+    int domLevel;                          // dom树中的深度，根深度为0
+    bool vis;
     static IndexMapper<BasicBlock> s_bbMapper;
 };
 
@@ -186,6 +192,9 @@ public:
         m_isBuiltin(true), m_builtinArgType(builtinArgType) {
         m_funcItem = new FuncItem(funcName, retType);
     }
+    BasicBlock* firstBasicBlock() {
+        return m_basicBlocks.front().get();
+    }
     BasicBlock* pushBackBasicBlock(BasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<BasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
@@ -201,21 +210,27 @@ public:
             return block;
         }
     }
-    void addCallee(IrFunc* func) { m_callee.insert(func); }
-    void addCaller(IrFunc* func) { m_caller.insert(func); }
+    std::vector<std::unique_ptr<BasicBlock>>& getBasicBlocks() { return m_basicBlocks; }
     FuncItem* getFuncItem() { return m_funcItem; }
     bool hasReturn() { return m_funcItem->getReturnValueType() != ValueTypeEnum::VOID_TYPE; }
     void toCode(std::ostream& os);
     IrModule* getFromModule() { return m_fromModule; }
+    void clearAllVisitFlag() {
+        for (auto& bb : m_basicBlocks) {
+            bb->vis = false;
+        }
+    }
 
 private:
     FuncItem* m_funcItem{nullptr};
     IrModule* m_fromModule{nullptr};
     std::vector<std::unique_ptr<BasicBlock>> m_basicBlocks;
-    std::set<IrFunc*> m_callee;
-    std::set<IrFunc*> m_caller;
     bool m_isBuiltin{false};
     std::string m_builtinArgType;
+
+public:
+    std::set<IrFunc*> callee;
+    std::set<IrFunc*> caller;
 };
 
 class GlobalVariable : public Value {
