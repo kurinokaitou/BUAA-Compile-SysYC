@@ -1,6 +1,7 @@
 #ifndef MIPS_CONTEXT_H
 #define MIPS_CONTEXT_H
 #include <map>
+#include <functional>
 
 #include "MipsCode.h"
 class MipsContext {
@@ -8,6 +9,7 @@ class MipsContext {
 
 public:
     void convertMipsCode(IrModule& irModule);
+    void optimizeMipsCode(int optLevel);
 
 private:
     void mapBasicBlocks();
@@ -48,6 +50,8 @@ private:
     std::map<BasicBlock*, std::vector<std::pair<MipsOperand, MipsOperand>>> m_mv;
     // virtual registers
     int m_virtualMax = 0;
+    // optimize passes
+    std::vector<std::function<void(MipsModule&)>> m_mipsPasses;
 };
 
 #endif

@@ -28,10 +28,45 @@ define dso_local void @putstr(i8* %0) #0 {
   ret void
 }
 @arr = global [4 x i32] zeroinitializer
+@a = global i32 zeroinitializer
+@n = global i32 1
+@c = constant i32 10
+
+define i32 @func() #0 {
+_entry:
+	%g_arr = getelementptr inbounds [4 x i32], [4 x i32]* @arr, i32 0, i32 0
+	%g_a = getelementptr inbounds i32, i32* @a, i32 0
+	%g_n = getelementptr inbounds i32, i32* @n, i32 0
+	%g_c = getelementptr inbounds i32, i32* @c, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_x0 = load i32, i32* %g_a, align 4
+	ret i32 %_x0
+}
+
+define i32 @func1(i32 %a) #0 {
+_entry:
+	%g_arr = getelementptr inbounds [4 x i32], [4 x i32]* @arr, i32 0, i32 0
+	%g_a = getelementptr inbounds i32, i32* @a, i32 0
+	%g_n = getelementptr inbounds i32, i32* @n, i32 0
+	%g_c = getelementptr inbounds i32, i32* @c, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_t0 = alloca i32, align 4
+	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
+	; store 2
+	store i32 %a, i32* %_x1, align 4
+	%_x3 = load i32, i32* %_x1, align 4
+	%_x4 = add i32 %_x3, 1
+	ret i32 %_x4
+}
 
 define i32 @main() #0 {
 _entry:
 	%g_arr = getelementptr inbounds [4 x i32], [4 x i32]* @arr, i32 0, i32 0
+	%g_a = getelementptr inbounds i32, i32* @a, i32 0
+	%g_n = getelementptr inbounds i32, i32* @n, i32 0
+	%g_c = getelementptr inbounds i32, i32* @c, i32 0
 	br label %_b0
 _b0: ; preds = 
 	%_t0 = alloca i32, align 4

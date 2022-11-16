@@ -1,5 +1,10 @@
 #include <mips/MipsCode.h>
+#include <ir/Printf.h>
 IndexMapper<MipsBasicBlock> MipsBasicBlock::s_bbMapper;
+
+static void moveStack(bool enter, int offset, std::ostream& os, bool hasTab = false) {
+    os << (hasTab ? "\t" : "") << (enter ? "subu " : "addu ") << "$29, $29, " << offset << std::endl;
+}
 
 void MipsModule::toCode(std::ostream& os) {
     int size = 0;
@@ -7,21 +12,55 @@ void MipsModule::toCode(std::ostream& os) {
     for (auto& glob : m_globs) {
         auto globItem = glob->getGlobalItem();
         auto values = getItemValues(globItem);
+        auto dims = getArrayItemDimensions(globItem);
+        auto dimsSize = calArrayDimsSize(dims);
         os << globItem->getName() << ":" << std::endl;
         bool hasInit = globItem->hasInit();
+        int i = 0;
         for (auto& value : values) {
             os << "\t.word " << (hasInit ? value : 0) << "\n";
+            i++;
+        }
+        for (; i < dimsSize; i++) {
+            os << "\t.word " << 0 << "\n";
         }
     }
     os << ".text" << std::endl;
+    MipsFunc* mainFunc = nullptr;
     for (auto& func : m_funcs) {
-        func->toCode(os);
+        if (func->getIrFunc()->getFuncItem()->getName() == "main") {
+            mainFunc = func.get();
+            break;
+        }
     }
-    os << std::endl;
+    mainFunc->toCode(os);
+    for (auto& func : m_funcs) {
+        if (func.get() != mainFunc) {
+            func->toCode(os);
+        }
+    }
+    os << s_rawMipsPrint << std::endl;
 }
 
 void MipsFunc::toCode(std::ostream& os) {
     os << m_irFunc->getFuncItem()->getName() << ":" << std::endl;
+    if (!m_isMainFunc) {
+        auto savedRegSize = m_usedCalleeSavedRegs.size();
+        if (savedRegSize) {
+            os << "\tsubu $29, $29, " << savedRegSize * 4 << "\n";
+            int lastStack = savedRegSize * 4;
+            for (auto& used : m_usedCalleeSavedRegs) {
+                lastStack -= 4;
+                os << "\tsw " << MipsOperand::R(used) << ", " << lastStack << "($sp)\n";
+            }
+        }
+        if (m_stackSize != 0) {
+            moveStack(true, m_stackSize, os, true);
+        }
+    }
+    for (auto& mbb : m_basicBlocks) {
+        MipsBasicBlock::s_bbMapper.get(mbb.get());
+    }
     for (auto& mbb : m_basicBlocks) {
         mbb->toCode(os);
     }
@@ -57,7 +96,16 @@ void MipsJump::toCode(std::ostream& os) {
        << "_b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
 }
 void MipsReturn::toCode(std::ostream& os) {
-    os << "jr %ra" << std::endl;
+    if (m_retFunc->getIrFunc()->getFuncItem()->getName() == "main") {
+        os << "li $v0, 10\n"
+           << "\tsyscall\n";
+    } else {
+        if (m_retFunc->getStackSize() != 0) {
+            moveStack(false, m_retFunc->getStackSize(), os);
+            os << "\t";
+        }
+        os << "jr $ra" << std::endl;
+    }
 }
 void MipsLoad::toCode(std::ostream& os) {
     os << "lw " << m_dst << ", " << m_offset << "(" << m_addr << ")" << std::endl;

@@ -54,6 +54,12 @@ void MipsContext::convertMipsCode(IrModule& irModule) {
     }
 }
 
+void MipsContext::optimizeMipsCode(int optLevel) {
+    for (auto& pass : m_mipsPasses) {
+        pass(m_module);
+    }
+}
+
 MipsOperand MipsContext::genNewVirtualReg() {
     return MipsOperand::V(m_virtualMax++);
 }
@@ -259,10 +265,10 @@ void MipsContext::convertReturnInst(ReturnInst* inst) {
         auto val = resolveValue(inst->getReturnValue());
         // move val to v0
         auto mvInst = new MipsMove(MipsOperand::R(MipsReg::v0), val);
-        auto returnInst = m_mipsBasicBlock->pushBackInst(new MipsReturn());
+        auto returnInst = m_mipsBasicBlock->pushBackInst(new MipsReturn(m_mipsFunc));
         m_mipsBasicBlock->setControlTransferInst(mvInst);
     } else {
-        auto returnInst = m_mipsBasicBlock->pushBackInst(new MipsReturn());
+        auto returnInst = m_mipsBasicBlock->pushBackInst(new MipsReturn(m_mipsFunc));
         m_mipsBasicBlock->setControlTransferInst(returnInst);
     }
 }
@@ -271,21 +277,22 @@ void MipsContext::convertBranchInst(BranchInst* inst) {
     MipsOperand compareRes{};
     auto it = m_condMap.find(inst->getCondValue());
     if (it != m_condMap.end()) {
-        m_mipsBasicBlock->setControlTransferInst(it->second.first);
+        //m_mipsBasicBlock->setControlTransferInst(it->second.first);
         compareRes = it->second.second;
     } else {
         auto cond = resolveNoImm(inst->getCondValue());
         compareRes = genNewVirtualReg();
         auto cmpInst = m_mipsBasicBlock->pushBackInst(new MipsCompare(MipsCond::Ne, compareRes, cond, MipsOperand::I(0)));
-        m_mipsBasicBlock->setControlTransferInst(cmpInst);
+        //m_mipsBasicBlock->setControlTransferInst(cmpInst);
     }
-
+    MipsInst* branch = nullptr;
     if (inst->getTrueBasicBlock() == m_irFunc->nextBasicBlock(m_basicBlock)) {
-        m_mipsBasicBlock->pushBackInst(new MipsBranch(compareRes, MipsOperand::I(0), m_bbMap.at(inst->getFalseBasicBlock())));
+        branch = m_mipsBasicBlock->pushBackInst(new MipsBranch(compareRes, MipsOperand::I(0), m_bbMap.at(inst->getFalseBasicBlock())));
     } else {
-        m_mipsBasicBlock->pushBackInst(new MipsBranch(compareRes, MipsOperand::I(1), m_bbMap.at(inst->getTrueBasicBlock())));
+        branch = m_mipsBasicBlock->pushBackInst(new MipsBranch(compareRes, MipsOperand::I(1), m_bbMap.at(inst->getTrueBasicBlock())));
         m_mipsBasicBlock->pushBackInst(new MipsJump(m_bbMap.at(inst->getFalseBasicBlock())));
     }
+    m_mipsBasicBlock->setControlTransferInst(branch);
 }
 
 void MipsContext::convertCallInst(CallInst* inst) {

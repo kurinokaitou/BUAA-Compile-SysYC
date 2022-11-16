@@ -111,6 +111,7 @@ inline std::ostream& operator<<(std::ostream& os, const MipsCond& cond) {
 
 class MipsModule {
     friend class IrModule;
+    friend void allocateRegister(MipsModule* module);
 
 public:
     MipsFunc* addFunc(MipsFunc* func) {
@@ -129,9 +130,12 @@ private:
 };
 
 class MipsFunc {
+    friend void livenessAnalysis(MipsFunc* f);
+    //friend void allocateRegister(MipsModule* module);
+
 public:
-    explicit MipsFunc(IrFunc* irFunc) :
-        m_irFunc(irFunc) {}
+    explicit MipsFunc(IrFunc* irFunc, bool isMainFunc = false) :
+        m_irFunc(irFunc), m_isMainFunc(isMainFunc) {}
     MipsBasicBlock* pushBackBasicBlock(MipsBasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<MipsBasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
@@ -157,6 +161,7 @@ private:
     bool m_useLr = false;
     // offset += stack_size + saved_regs * 4;
     std::vector<MipsInst*> m_spArgFixup;
+    bool m_isMainFunc{false};
 };
 class MipsInst {
     friend class MipsBasicBlock;
@@ -173,6 +178,8 @@ protected:
 };
 
 class MipsBasicBlock {
+    friend void livenessAnalysis(MipsFunc* f);
+
 public:
     explicit MipsBasicBlock(BasicBlock* irbb) :
         m_irBasicBlock(irbb) {}
@@ -278,7 +285,7 @@ struct MipsOperand {
         switch (this->state) {
         case State::PreColored:
         case State::Allocated:
-            prefix = "%";
+            prefix = "$";
             break;
         case State::Virtual:
             prefix = "v";
@@ -315,6 +322,9 @@ struct hash<std::pair<MipsOperand, MipsOperand>> {
 } // namespace std
 
 class MipsBinary : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsBinary(MipsCodeType type, MipsOperand dst, MipsOperand lhs, MipsOperand rhs) :
         MipsInst(type), m_dst(dst), m_lhs(lhs), m_rhs(rhs) {}
@@ -349,6 +359,10 @@ private:
 };
 
 class MipsMove : public MipsInst {
+    friend struct MipsMoveCompare;
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsMove(MipsOperand dst, MipsOperand rhs) :
         MipsInst(MipsCodeType::Move), m_dst(dst), m_rhs(rhs) {}
@@ -359,7 +373,18 @@ private:
     MipsOperand m_rhs;
 };
 
+struct MipsMoveCompare {
+    bool operator()(MipsMove* const& lhs, const MipsMove* const& rhs) const {
+        if (lhs->m_dst != rhs->m_dst) return lhs->m_dst < rhs->m_dst;
+        if (lhs->m_rhs != rhs->m_rhs) return lhs->m_rhs < rhs->m_rhs;
+        return false;
+    }
+};
+
 class MipsBranch : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsBranch(MipsOperand lhs, MipsOperand rhs, MipsBasicBlock* target) :
         MipsInst(MipsCodeType::Branch), m_lhs(lhs), m_rhs(rhs), m_target(target) {}
@@ -372,6 +397,9 @@ private:
 };
 
 class MipsJump : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsJump(MipsBasicBlock* target) :
         MipsInst(MipsCodeType::Jump), m_target(target) {}
@@ -382,13 +410,22 @@ private:
 };
 
 class MipsReturn : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
-    MipsReturn() :
-        MipsInst(MipsCodeType::Return) {}
+    MipsReturn(MipsFunc* func) :
+        MipsInst(MipsCodeType::Return), m_retFunc(func) {}
     virtual void toCode(std::ostream& os) override;
+
+private:
+    MipsFunc* m_retFunc;
 };
 
 class MipsAccess : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsAccess(MipsCodeType type, MipsOperand addr, int offset) :
         MipsInst(type), m_addr(addr), m_offset(offset) {}
@@ -400,6 +437,9 @@ protected:
 };
 
 class MipsLoad : public MipsAccess {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsLoad(MipsOperand dst, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Load, addr, offset), m_dst(dst) {}
@@ -410,6 +450,9 @@ private:
 };
 
 class MipsStore : public MipsAccess {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     explicit MipsStore(MipsOperand data, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Store, addr, offset), m_data(data) {}
@@ -420,6 +463,9 @@ private:
 };
 
 class MipsCompare : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     explicit MipsCompare(MipsCond cond, MipsOperand dst, MipsOperand lhs, MipsOperand rhs) :
         MipsInst(MipsCodeType::Compare), m_cond(cond), m_dst(dst), m_lhs(lhs), m_rhs(rhs) {}
@@ -433,6 +479,9 @@ private:
 };
 
 class MipsCall : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     explicit MipsCall(FuncItem* func) :
         MipsInst(MipsCodeType::Call), m_func(func) {}
@@ -443,6 +492,9 @@ private:
 };
 
 class MipsGlobal : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
 public:
     MipsGlobal(SymbolTableItem* sym, MipsOperand dst) :
         MipsInst(MipsCodeType::Global), m_sym(sym), m_dst(dst) {}

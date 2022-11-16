@@ -1,4 +1,15 @@
 int arr[2][2];
+int a;
+int n =1;
+const int c = 10;
+
+int func(){
+    return a;
+}
+
+int func1(int a){
+    return a + 1;
+}
 int main()
 {
     int a = 1;

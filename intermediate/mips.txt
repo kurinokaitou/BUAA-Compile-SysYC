@@ -1,43 +1,89 @@
 .data
 arr:
+	.word 0
+	.word 0
+	.word 0
+	.word 0
+a:
+	.word 0
+n:
+	.word 1
+c:
+	.word 10
 .text
 main:
+	subu $29, $29, 12
 _b0:
-	addu v0, %29, 0
+	addu v0, $29, 0
 	li v1, 1
 	sw v1, 0(v0)
-	addu v2, %29, 4
+	addu v2, $29, 4
 	li v3, 2
 	sw v3, 0(v2)
-	addu v4, %29, 8
+	addu v4, $29, 8
 	lw v5, 0(v0)
-	move v13, v6
 	seq v6, v5, 1
-	beq v6, 0, _b1
+	move v13, v6
+	beq v6, 0, _b2
 
-_b2:
+_b1:
 	lw v7, 0(v2)
 	sle v8, v7, 1
 	move v13, v8
-	j _b1
+	j _b2
 
-_b1:
+_b2:
 	move v9, v13
 	sne v10, v9, 0
-	beq v10, 0, _b3
+	beq v10, 0, _b4
 
-_b4:
+_b3:
 	li v11, 0
 	sw v11, 0(v4)
 	j _b5
 
-_b3:
+_b4:
 	li v12, 1
 	sw v12, 0(v4)
 	j _b5
 
 _b5:
-	jr %ra
+	li $v0, 10
+	syscall
 
 
+func:
+_b6:
+	la v0, a
+	lw v1, 0(v0)
+	jr $ra
+
+
+func1:
+	subu $29, $29, 4
+_b7:
+	move v1, $4
+	addu v0, $29, 0
+	sw v1, 0(v0)
+	lw v2, 0(v0)
+	addu v3, v2, 1
+	addu $29, $29, 4
+	jr $ra
+
+
+
+getint:
+	li $v0,5
+	syscall
+	jr $ra
+
+putint:
+	li $v0,1
+	syscall
+	jr $ra
+
+putstr:
+	li $v0,4
+	syscall
+	jr $ra
 
