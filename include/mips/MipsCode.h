@@ -112,6 +112,7 @@ inline std::ostream& operator<<(std::ostream& os, const MipsCond& cond) {
 class MipsModule {
     friend class IrModule;
     friend void allocateRegister(MipsModule& module);
+    friend void computeStackInfo(MipsModule& module);
 
 public:
     MipsFunc* addFunc(MipsFunc* func) {
@@ -133,15 +134,16 @@ class MipsFunc {
     friend void livenessAnalysis(MipsFunc* f);
 
 public:
-    explicit MipsFunc(IrFunc* irFunc, bool isMainFunc = false) :
-        m_irFunc(irFunc), m_isMainFunc(isMainFunc) {}
+    explicit MipsFunc(IrFunc* irFunc) :
+        m_irFunc(irFunc) {
+        m_isMainFunc = irFunc->getFuncItem()->getName() == "main";
+    }
     MipsBasicBlock* pushBackBasicBlock(MipsBasicBlock* basicBlock) {
         m_basicBlocks.push_back(std::unique_ptr<MipsBasicBlock>(basicBlock));
         return m_basicBlocks.back().get();
     }
     MipsBasicBlock* getFirstBasicBlock() { return m_basicBlocks.front().get(); }
     IrFunc* getIrFunc() { return m_irFunc; }
-    std::vector<MipsInst*>& getSpArgFixup() { return m_spArgFixup; }
     void setVirtualMax(int virtualMax) { m_virtualMax = virtualMax; }
     int getVirtualMax() { return m_virtualMax; }
     int getStackSize() { return m_stackSize; }
@@ -156,13 +158,14 @@ private:
     int m_virtualMax = 0;
     // size of stack allocated for local alloca and spilled registers
     int m_stackSize = 0;
-    // set of callee saved registers used
-    std::set<MipsReg> m_usedCalleeSavedRegs;
-    // whether lr is allocated
-    bool m_useLr = false;
     // offset += stack_size + saved_regs * 4;
-    std::vector<MipsInst*> m_spArgFixup;
+
     bool m_isMainFunc{false};
+
+public:
+    // set of callee saved registers used
+    std::set<MipsReg> usedCalleeSavedRegs;
+    std::vector<MipsInst*> spArgFixup;
 };
 class MipsInst {
     friend class MipsBasicBlock;
@@ -246,9 +249,10 @@ private:
     // branch is translated into multiple instructions
     // points to the first one
     MipsInst* m_controlTransferInst = nullptr;
+
+public:
     // liveness analysis
     // maybe we should use bitset when performance is bad
-public:
     std::set<MipsOperand> liveuse;
     std::set<MipsOperand> def;
     std::set<MipsOperand> livein;

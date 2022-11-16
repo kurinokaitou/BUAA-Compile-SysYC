@@ -1,8 +1,9 @@
 #include <mips/MipsContext.h>
 #include <Log.h>
 #include <optimize/mips/AllocateRegister.h>
+#include <optimize/mips/ComputeStackInfo.h>
 
-std::vector<std::function<void(MipsModule&)>> MipsContext::s_mipsPasses{allocateRegister};
+std::vector<std::function<void(MipsModule&)>> MipsContext::s_mipsPasses{allocateRegister, computeStackInfo};
 
 static inline void insertParallelMv(std::vector<std::pair<MipsOperand, MipsOperand>>& movs, MipsInst* insertBefore) {
     // serialization in any order is okay
@@ -91,7 +92,7 @@ MipsOperand MipsContext::resolveValue(Value* value) {
                         // read from sp + (i-4)*4 in entry bb
                         // will be fixed up in later pass
                         auto loadInst = m_mipsBasicBlock->insertFrontInst(new MipsLoad(res, MipsOperand::R(MipsReg::sp), (i - 4) * 4));
-                        m_mipsFunc->getSpArgFixup().push_back(loadInst);
+                        m_mipsFunc->spArgFixup.push_back(loadInst);
                     }
                     break;
                 }

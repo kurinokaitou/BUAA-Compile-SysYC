@@ -1,37 +1,26 @@
-const int CONSTANT = 100;
+int max(int a[], int len) {
+    int i = 1;
+    int result = a[0];
+    while (i < len) {
+        if (a[i] < result)
+            result = a[i];
+        i = i+1;
+    }
+    return result;
+}
 
-int fun(int arr[][CONSTANT]) {
-    return 0;
+void dummy(int a[][2]) {
+    return;
 }
 
 int main() {
-    printf("20373898\n");
-    int a = 0;
-    {
-        int a = 1;
-        printf("%d\n", a);
-    }
-    {
-        int arr[5];
-        int brr[3][2];
-        arr[3] = 1;
-        brr[1][1] = 1;
-        brr[2][1] = 2;
-        printf("%d\n", arr[3]);
-        printf("%d\n", brr[1][1]);
-        int i = 1;
-        printf("%d\n%d\n", arr[i + 2], brr[i + 1][i]);
-    }
-    int i = 1;
-    while (i != 3) {
-        printf("%d\n", i);
-        i = i + 1;
-    }
-    int crr[5][CONSTANT];
-    int y = i + a + 1 + fun(crr);
-    printf("%d\n", y);
-    {
-        printf("%d !()*+,-./0:;<?@[]~^`\n", y);
-    }
+    printf("21210109\n");
+    const int a[2] = {1,1+1}, b[2][2] = {{1,1+1},{1+2,4}};
+    int c[2] = {1,1+1}, d[2][2] = {{1,1+1},{1+2,4}};
+    printf("%d, %d\n", max(c,2), max(d[1],2));
+    dummy(d);
+    c[0] = 100;
+    d[0][0] = 1000;
+    printf("%d, %d\n", c[0], d[0][0]);
     return 0;
 }

@@ -3,7 +3,7 @@
 IndexMapper<MipsBasicBlock> MipsBasicBlock::s_bbMapper;
 
 static void moveStack(bool enter, int offset, std::ostream& os, bool hasTab = false) {
-    os << (hasTab ? "\t" : "") << (enter ? "subu " : "addu ") << "$29, $29, " << offset << std::endl;
+    os << (hasTab ? "\t" : "") << (enter ? "subu " : "addu ") << "$sp, $sp, " << offset << std::endl;
 }
 
 void MipsModule::toCode(std::ostream& os) {
@@ -45,11 +45,11 @@ void MipsModule::toCode(std::ostream& os) {
 void MipsFunc::toCode(std::ostream& os) {
     os << m_irFunc->getFuncItem()->getName() << ":" << std::endl;
     if (!m_isMainFunc) {
-        auto savedRegSize = m_usedCalleeSavedRegs.size();
+        auto savedRegSize = usedCalleeSavedRegs.size();
         if (savedRegSize) {
-            os << "\tsubu $29, $29, " << savedRegSize * 4 << "\n";
+            os << "\tsubu $sp, $sp, " << savedRegSize * 4 << "\n";
             int lastStack = savedRegSize * 4;
-            for (auto& used : m_usedCalleeSavedRegs) {
+            for (auto& used : usedCalleeSavedRegs) {
                 lastStack -= 4;
                 os << "\tsw " << MipsOperand::R(used) << ", " << lastStack << "($sp)\n";
             }
@@ -102,7 +102,16 @@ void MipsReturn::toCode(std::ostream& os) {
     } else {
         if (m_retFunc->getStackSize() != 0) {
             moveStack(false, m_retFunc->getStackSize(), os);
-            os << "\t";
+        }
+        auto savedRegSize = m_retFunc->usedCalleeSavedRegs.size();
+        if (savedRegSize) {
+            int lastStack = 0;
+            for (auto iter = m_retFunc->usedCalleeSavedRegs.rbegin(); iter != m_retFunc->usedCalleeSavedRegs.rend(); iter++) {
+                auto& used = *iter;
+                os << "\tlw " << MipsOperand::R(used) << ", " << lastStack << "($sp)\n";
+                lastStack += 4;
+            }
+            os << "\taddu $sp, $sp, " << savedRegSize * 4 << "\n\t";
         }
         os << "jr $ra" << std::endl;
     }

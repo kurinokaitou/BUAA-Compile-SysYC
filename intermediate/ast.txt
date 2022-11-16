@@ -1,68 +1,24 @@
 <CompUnit>
-CONSTTK const
-INTTK int
-IDENFR CONSTANT
-ASSIGN =
-INTCON 100
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-<ConstInitVal>
-<ConstDef>
-SEMICN ;
-<ConstDecl>
 INTTK int
 <FuncType>
-IDENFR fun
+IDENFR max
 LPARENT (
 INTTK int
-IDENFR arr
+IDENFR a
 LBRACK [
 RBRACK ]
-LBRACK [
-IDENFR CONSTANT
-<LVal>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
+<FuncFParam>
+COMMA ,
+INTTK int
+IDENFR len
 <FuncFParam>
 <FuncFParams>
 RPARENT )
   LBRACE {
-    RETURNTK return
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-MAINTK main
-LPARENT (
-RPARENT )
-  LBRACE {
-    PRINTFTK printf
-    LPARENT (
-    STRCON "20373898\n"
-    RPARENT )
-    SEMICN ;
-    <Stmt>
     INTTK int
-    IDENFR a
+    IDENFR i
     ASSIGN =
-    INTCON 0
+    INTCON 1
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -73,297 +29,20 @@ RPARENT )
     <VarDef>
     SEMICN ;
     <VarDecl>
-      LBRACE {
-        INTTK int
-        IDENFR a
-        ASSIGN =
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        <InitVal>
-        <VarDef>
-        SEMICN ;
-        <VarDecl>
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d\n"
-        COMMA ,
-        IDENFR a
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-      LBRACE {
-        INTTK int
-        IDENFR arr
-        LBRACK [
-        INTCON 5
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <ConstExp>
-        RBRACK ]
-        <VarDef>
-        SEMICN ;
-        <VarDecl>
-        INTTK int
-        IDENFR brr
-        LBRACK [
-        INTCON 3
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <ConstExp>
-        RBRACK ]
-        LBRACK [
-        INTCON 2
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <ConstExp>
-        RBRACK ]
-        <VarDef>
-        SEMICN ;
-        <VarDecl>
-        IDENFR arr
-        LBRACK [
-        INTCON 3
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR brr
-        LBRACK [
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        LBRACK [
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR brr
-        LBRACK [
-        INTCON 2
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        LBRACK [
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        INTCON 2
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d\n"
-        COMMA ,
-        IDENFR arr
-        LBRACK [
-        INTCON 3
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d\n"
-        COMMA ,
-        IDENFR brr
-        LBRACK [
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        LBRACK [
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-        INTTK int
-        IDENFR i
-        ASSIGN =
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        <InitVal>
-        <VarDef>
-        SEMICN ;
-        <VarDecl>
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d\n%d\n"
-        COMMA ,
-        IDENFR arr
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 2
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        COMMA ,
-        IDENFR brr
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
     INTTK int
-    IDENFR i
+    IDENFR result
     ASSIGN =
-    INTCON 1
+    IDENFR a
+    LBRACK [
+    INTCON 0
     <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -382,10 +61,9 @@ RPARENT )
     <MulExp>
     <AddExp>
     <RelExp>
-    <EqExp>
-    NEQ !=
-    INTCON 3
-    <Number>
+    LSS <
+    IDENFR len
+    <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -397,10 +75,10 @@ RPARENT )
     <Cond>
     RPARENT )
       LBRACE {
-        PRINTFTK printf
+        IFTK if
         LPARENT (
-        STRCON "%d\n"
-        COMMA ,
+        IDENFR a
+        LBRACK [
         IDENFR i
         <LVal>
         <PrimaryExp>
@@ -408,8 +86,47 @@ RPARENT )
         <MulExp>
         <AddExp>
         <Exp>
+        RBRACK ]
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        LSS <
+        IDENFR result
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <RelExp>
+        <EqExp>
+        <LAndExp>
+        <LOrExp>
+        <Cond>
         RPARENT )
+        IDENFR result
+        <LVal>
+        ASSIGN =
+        IDENFR a
+        LBRACK [
+        IDENFR i
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
+        RBRACK ]
+        <LVal>
+        <PrimaryExp>
+        <UnaryExp>
+        <MulExp>
+        <AddExp>
+        <Exp>
         SEMICN ;
+        <Stmt>
         <Stmt>
         IDENFR i
         <LVal>
@@ -434,10 +151,62 @@ RPARENT )
       <Block>
     <Stmt>
     <Stmt>
+    RETURNTK return
+    IDENFR result
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+  RBRACE }
+  <Block>
+<FuncDef>
+VOIDTK void
+<FuncType>
+IDENFR dummy
+LPARENT (
+INTTK int
+IDENFR a
+LBRACK [
+RBRACK ]
+LBRACK [
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<ConstExp>
+RBRACK ]
+<FuncFParam>
+<FuncFParams>
+RPARENT )
+  LBRACE {
+    RETURNTK return
+    SEMICN ;
+    <Stmt>
+  RBRACE }
+  <Block>
+<FuncDef>
+INTTK int
+MAINTK main
+LPARENT (
+RPARENT )
+  LBRACE {
+    PRINTFTK printf
+    LPARENT (
+    STRCON "21210109\n"
+    RPARENT )
+    SEMICN ;
+    <Stmt>
+    CONSTTK const
     INTTK int
-    IDENFR crr
+    IDENFR a
     LBRACK [
-    INTCON 5
+    INTCON 2
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -445,30 +214,19 @@ RPARENT )
     <AddExp>
     <ConstExp>
     RBRACK ]
-    LBRACK [
-    IDENFR CONSTANT
-    <LVal>
+    ASSIGN =
+    LBRACE {
+    INTCON 1
+    <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
     <ConstExp>
-    RBRACK ]
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
-    INTTK int
-    IDENFR y
-    ASSIGN =
-    IDENFR i
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    IDENFR a
-    <LVal>
+    <ConstInitVal>
+    COMMA ,
+    INTCON 1
+    <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -480,10 +238,281 @@ RPARENT )
     <UnaryExp>
     <MulExp>
     <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    <ConstDef>
+    COMMA ,
+    IDENFR b
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    ASSIGN =
+    LBRACE {
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    COMMA ,
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
     PLUS +
-    IDENFR fun
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    COMMA ,
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    COMMA ,
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    RBRACE }
+    <ConstInitVal>
+    <ConstDef>
+    SEMICN ;
+    <ConstDecl>
+    INTTK int
+    IDENFR c
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    ASSIGN =
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    COMMA ,
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    RBRACE }
+    <InitVal>
+    <VarDef>
+    COMMA ,
+    IDENFR d
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    LBRACK [
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <ConstExp>
+    RBRACK ]
+    ASSIGN =
+    LBRACE {
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    COMMA ,
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    RBRACE }
+    <InitVal>
+    COMMA ,
+    LBRACE {
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    COMMA ,
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <InitVal>
+    RBRACE }
+    <InitVal>
+    RBRACE }
+    <InitVal>
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    PRINTFTK printf
     LPARENT (
-    IDENFR crr
+    STRCON "%d, %d\n"
+    COMMA ,
+    IDENFR max
+    LPARENT (
+    IDENFR c
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    IDENFR max
+    LPARENT (
+    IDENFR d
+    LBRACK [
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    <FuncRParams>
+    RPARENT )
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RPARENT )
+    SEMICN ;
+    <Stmt>
+    IDENFR dummy
+    LPARENT (
+    IDENFR d
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -496,15 +525,99 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
     SEMICN ;
-    <VarDecl>
+    <Stmt>
+    IDENFR c
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    ASSIGN =
+    INTCON 100
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    ASSIGN =
+    INTCON 1000
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
     PRINTFTK printf
     LPARENT (
-    STRCON "%d\n"
+    STRCON "%d, %d\n"
     COMMA ,
-    IDENFR y
+    IDENFR c
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    IDENFR d
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
+    LBRACK [
+    INTCON 0
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    RBRACK ]
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -513,24 +626,6 @@ RPARENT )
     <Exp>
     RPARENT )
     SEMICN ;
-    <Stmt>
-      LBRACE {
-        PRINTFTK printf
-        LPARENT (
-        STRCON "%d !()*+,-./0:;<?@[]~^`\n"
-        COMMA ,
-        IDENFR y
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
     <Stmt>
     RETURNTK return
     INTCON 0
