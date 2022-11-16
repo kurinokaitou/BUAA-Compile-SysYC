@@ -322,6 +322,7 @@ public:
     }
 
     void calPredSucc();
+    void addImplicitReturn();
 
     IrFunc* getFunc(FuncItem* funcItem);
     static IrFunc* getBuiltinFunc(const std::string& funcName);

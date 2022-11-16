@@ -51,14 +51,14 @@ void livenessAnalysis(MipsFunc* f) {
             if (newOut != bb->liveout) {
                 changed = true;
                 bb->liveout = newOut;
-                std::set<MipsOperand> new_in = bb->liveuse;
+                std::set<MipsOperand> newIn = bb->liveuse;
                 for (auto& e : bb->liveout) {
                     if (bb->def.find(e) == bb->def.end()) {
-                        new_in.insert(e);
+                        newIn.insert(e);
                     }
                 }
 
-                bb->livein = new_in;
+                bb->livein = newIn;
             }
         }
     };
@@ -100,11 +100,13 @@ void allocateRegister(MipsModule& module) {
             // allocatable registers: t0 to t9
             constexpr int k = (int)MipsReg::t9 - (int)MipsReg::t0 + 1; //+ 1;
             // init degree for pre colored nodes
-            for (int i = (int)MipsReg::zero; i <= (int)MipsReg::ra; i++) {
+            for (int i = (int)MipsReg::v0; i <= (int)MipsReg::a3; i++) {
                 auto op = MipsOperand::R((MipsReg)i);
                 // very large
                 degree[op] = 0x40000000;
             }
+            degree[MipsOperand::R(MipsReg::sp)] = 0x40000000;
+            degree[MipsOperand::R(MipsReg::ra)] = 0x40000000;
 
             // procedure AddEdge(u, v)
             auto addEdge = [&](MipsOperand u, MipsOperand v) {
@@ -178,7 +180,8 @@ void allocateRegister(MipsModule& module) {
             auto adjacent = [&](MipsOperand n) {
                 std::set<MipsOperand> res = adjList[n];
                 for (auto it = res.begin(); it != res.end();) {
-                    if (std::find(selectStack.begin(), selectStack.end(), *it) == selectStack.end() && std::find(coalescedNodes.begin(), coalescedNodes.end(), *it) == coalescedNodes.end()) {
+                    if (std::find(selectStack.begin(), selectStack.end(), *it) == selectStack.end()
+                        && std::find(coalescedNodes.begin(), coalescedNodes.end(), *it) == coalescedNodes.end()) {
                         it++;
                     } else {
                         it = res.erase(it);
@@ -278,7 +281,7 @@ void allocateRegister(MipsModule& module) {
                 return degree[t] < k || t.isPrecolored() || adjSet.find({t, r}) != adjSet.end();
             };
 
-            auto adj_ok = [&](MipsOperand v, MipsOperand u) {
+            auto adjOk = [&](MipsOperand v, MipsOperand u) {
                 for (auto t : adjacent(v)) {
                     if (!ok(t, u)) {
                         return false;
@@ -314,13 +317,13 @@ void allocateRegister(MipsModule& module) {
                 }
             };
 
-            auto conservative = [&](std::set<MipsOperand> adj_u, std::set<MipsOperand> adj_v) {
+            auto conservative = [&](std::set<MipsOperand> adjU, std::set<MipsOperand> adjV) {
                 int count = 0;
                 // set union
-                for (auto n : adj_v) {
-                    adj_u.insert(n);
+                for (auto n : adjV) {
+                    adjU.insert(n);
                 }
-                for (auto n : adj_u) {
+                for (auto n : adjU) {
                     if (degree[n] >= k) {
                         count++;
                     }
@@ -349,7 +352,7 @@ void allocateRegister(MipsModule& module) {
                     constrainedMoves.insert(m);
                     addWorkList(u);
                     addWorkList(v);
-                } else if ((u.isPrecolored() && adj_ok(v, u)) || (!u.isPrecolored() && conservative(adjacent(u), adjacent(v)))) {
+                } else if ((u.isPrecolored() && adjOk(v, u)) || (!u.isPrecolored() && conservative(adjacent(u), adjacent(v)))) {
                     coalescedMoves.insert(m);
                     combine(u, v);
                     addWorkList(u);

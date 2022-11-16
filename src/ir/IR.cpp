@@ -112,6 +112,19 @@ void IrModule::calPredSucc() {
     }
 }
 
+void IrModule::addImplicitReturn() {
+    for (auto& func : m_funcs) {
+        auto& lastBlock = func->m_basicBlocks.back();
+        if (!lastBlock->valid()) {
+            if (func->m_funcItem->getReturnValueType() == ValueTypeEnum::VOID_TYPE) {
+                lastBlock->pushBackInst(new ReturnInst(nullptr));
+            } else {
+                lastBlock->pushBackInst(new ReturnInst(ConstValue::get(0)));
+            }
+        }
+    }
+}
+
 IrFunc* IrModule::getBuiltinFunc(const std::string& funcName) {
     IrFunc* func = s_builtinFuncs.at(funcName);
     s_usedBuiltinFuncs.insert(func);
@@ -169,14 +182,6 @@ void IrFunc::toCode(std::ostream& os) {
         os << "\tbr label %_b0" << std::endl;
         for (auto& bb : m_basicBlocks) { // 按顺序标号
             BasicBlock::s_bbMapper.get(bb.get());
-        }
-        auto& lastBlock = m_basicBlocks.back();
-        if (!lastBlock->valid()) {
-            if (m_funcItem->getReturnValueType() == ValueTypeEnum::VOID_TYPE) {
-                lastBlock->pushBackInst(new ReturnInst(nullptr));
-            } else {
-                lastBlock->pushBackInst(new ReturnInst(ConstValue::get(0)));
-            }
         }
         for (auto& bb : m_basicBlocks) {
             int index = BasicBlock::s_bbMapper.get(bb.get());

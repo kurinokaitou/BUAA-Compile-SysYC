@@ -4,6 +4,10 @@
 void computeStackInfo(MipsModule& module) {
     for (auto& f : module.m_funcs) {
         f->usedCalleeSavedRegs.insert(MipsReg::ra);
+        // auto argsNum = f->getIrFunc()->getFuncItem()->getParams().size();
+        // for (int i = 0; i < argsNum; i++) {
+        //     f->usedCalleeSavedRegs.insert({MipsReg((int)MipsReg::a0 + i)});
+        // }
         for (auto& bb : f->getMipsBasicBlocks()) {
             auto& insts = bb->getMipsInsts();
             for (auto& inst : insts) {

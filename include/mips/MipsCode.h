@@ -372,12 +372,12 @@ public:
     void toCode(std::ostream& os) override;
     std::string instString() {
         switch (m_type) {
-        case MipsCodeType::Add: return "addu";
-        case MipsCodeType::Sub: return "subu";
-        case MipsCodeType::Rsb: return "subu";
-        case MipsCodeType::Mul: return "mulu";
-        case MipsCodeType::Div: return "divu";
-        case MipsCodeType::Mod: return "remu";
+        case MipsCodeType::Add: return "add";
+        case MipsCodeType::Sub: return "sub";
+        case MipsCodeType::Rsb: return "sub";
+        case MipsCodeType::Mul: return "mul";
+        case MipsCodeType::Div: return "div";
+        case MipsCodeType::Mod: return "rem";
         default: return "invalid";
         }
     }

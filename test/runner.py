@@ -93,7 +93,7 @@ class Runner:
         self.writeToTestFile()
         self.writeToOutputFile()
         self.writeToInputFile()
-        cmd = ['../../dist/sysyc', '--dump-ir', 'llvm_ir.txt', '--dump-mips', 'mips.txt' 'testfile.txt']   
+        cmd = ['../../dist/sysyc', '--dump-ir', 'llvm_ir.txt', '--dump-mips', 'mips.txt', 'testfile.txt']   
         cwd = INTERMEDIATE_DIR
         process = subprocess.run(args=cmd,
                                     cwd=cwd,

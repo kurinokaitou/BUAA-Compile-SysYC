@@ -28,71 +28,370 @@ define dso_local void @putstr(i8* %0) #0 {
   ret void
 }
 
-@aaa = constant i32 1
-@bbb = constant i32 2
-@ccc = constant i32 3
-@ggg = constant i32 3
-@hhh = constant i32 -1
-@iii = constant i32 2
-@arr1 = constant [2 x i32] [i32 0, i32 1]
-@arr2 = constant [1 x i32] [i32 0]
-@arr3 = constant [4 x i32] [i32 1, i32 2, i32 3, i32 4]
+@SIZE = constant i32 1000
+@qpow_MOD = constant i32 10089
+@arr = global [1002 x i32] zeroinitializer
+@temp = global [1002 x i32] zeroinitializer
 
-@.str1 = constant [10 x i8] c"19231240\0a\00"
-@.str2 = constant [2 x i8] c"\0a\00"
-@.str3 = constant [2 x i8] c"\0a\00"
-@.str4 = constant [2 x i8] c"\0a\00"
-@.str5 = constant [2 x i8] c"\0a\00"
-@.str6 = constant [2 x i8] c"\0a\00"
-@.str7 = constant [2 x i8] c"\0a\00"
+@.str1 = constant [10 x i8] c"20373649\0a\00"
+@.str2 = constant [33 x i8] c"The hash of the sorted array is \00"
+@.str3 = constant [3 x i8] c".\0a\00"
+@.str4 = constant [29 x i8] c"The answer of quick_pow is: \00"
+@.str5 = constant [2 x i8] c" \00"
+@.str6 = constant [2 x i8] c" \00"
+@.str7 = constant [2 x i8] c" \00"
+@.str8 = constant [3 x i8] c".\0a\00"
+@.str9 = constant [28 x i8] c"a < b and b < c are equal.\0a\00"
+@.str10 = constant [21 x i8] c"The num I input is: \00"
+@.str11 = constant [2 x i8] c"\0a\00"
+@.str12 = constant [34 x i8] c"After a complex calculation: d = \00"
+@.str13 = constant [2 x i8] c"\0a\00"
 
-define void @nothing() #0 {
+define void @divide_and_conquer_sort(i32 %n, i32 * %a, i32 %s) #0 {
 _entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
-	br label %_b0
-_b0: ; preds = 
-	ret void
-}
-
-define void @nothing1(i32 %a) #0 {
-_entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
+	%g_SIZE = getelementptr inbounds i32, i32* @SIZE, i32 0
+	%g_qpow_MOD = getelementptr inbounds i32, i32* @qpow_MOD, i32 0
+	%g_arr = getelementptr inbounds [1002 x i32], [1002 x i32]* @arr, i32 0, i32 0
+	%g_temp = getelementptr inbounds [1002 x i32], [1002 x i32]* @temp, i32 0, i32 0
 	br label %_b0
 _b0: ; preds = 
 	%_t0 = alloca i32, align 4
 	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
 	; store 2
-	store i32 %a, i32* %_x1, align 4
+	store i32 %n, i32* %_x1, align 4
+	%_t3 = alloca i32, align 4
+	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
+	; store 5
+	store i32 %s, i32* %_x4, align 4
+	%_x6 = load i32, i32* %_x1, align 4
+	%_t7 = icmp eq i32 %_x6, 1
+	%_x8 = zext i1 %_t7 to i32
+	; if %_x8 then _b1 else _b2
+	%_t9 = icmp ne i32 %_x8, 0
+	br i1 %_t9, label %_b1, label %_b2
+_b1: ; preds = %_b0
+	ret void
+_b2: ; preds = %_b0
+	%_x10 = load i32, i32* %_x1, align 4
+	%_t11 = icmp eq i32 %_x10, 2
+	%_x12 = zext i1 %_t11 to i32
+	; if %_x12 then _b3 else _b7
+	%_t13 = icmp ne i32 %_x12, 0
+	br i1 %_t13, label %_b3, label %_b7
+_b3: ; preds = %_b2
+	%_x14 = load i32, i32* %_x4, align 4
+	%_x15 = add i32 %_x14, 0
+	; getelementptr 16
+	%_t17 = mul i32 %_x15, 1
+	%_x16 = getelementptr inbounds i32, i32* %a, i32 %_t17
+	%_x18 = load i32, i32* %_x16, align 4
+	%_x19 = load i32, i32* %_x4, align 4
+	%_x20 = add i32 %_x19, 1
+	; getelementptr 21
+	%_t22 = mul i32 %_x20, 1
+	%_x21 = getelementptr inbounds i32, i32* %a, i32 %_t22
+	%_x23 = load i32, i32* %_x21, align 4
+	%_t24 = icmp sgt i32 %_x18, %_x23
+	%_x25 = zext i1 %_t24 to i32
+	; if %_x25 then _b4 else _b5
+	%_t26 = icmp ne i32 %_x25, 0
+	br i1 %_t26, label %_b4, label %_b5
+_b4: ; preds = %_b3
+	%_x27 = load i32, i32* %_x4, align 4
+	%_x28 = add i32 %_x27, 0
+	; getelementptr 29
+	%_t30 = mul i32 %_x28, 1
+	%_x29 = getelementptr inbounds i32, i32* %a, i32 %_t30
+	%_x31 = load i32, i32* %_x29, align 4
+	%_t32 = alloca i32, align 4
+	%_x33 = getelementptr inbounds i32, i32* %_t32, i32 0
+	; store 34
+	store i32 %_x31, i32* %_x33, align 4
+	%_x35 = load i32, i32* %_x4, align 4
+	%_x36 = add i32 %_x35, 0
+	; getelementptr 37
+	%_t38 = mul i32 %_x36, 1
+	%_x37 = getelementptr inbounds i32, i32* %a, i32 %_t38
+	%_x39 = load i32, i32* %_x4, align 4
+	%_x40 = add i32 %_x39, 1
+	; getelementptr 41
+	%_t42 = mul i32 %_x40, 1
+	%_x41 = getelementptr inbounds i32, i32* %a, i32 %_t42
+	%_x43 = load i32, i32* %_x41, align 4
+	; store 44
+	store i32 %_x43, i32* %_x37, align 4
+	%_x45 = load i32, i32* %_x4, align 4
+	%_x46 = add i32 %_x45, 1
+	; getelementptr 47
+	%_t48 = mul i32 %_x46, 1
+	%_x47 = getelementptr inbounds i32, i32* %a, i32 %_t48
+	%_x49 = load i32, i32* %_x33, align 4
+	; store 50
+	store i32 %_x49, i32* %_x47, align 4
+	br label %_b6
+_b5: ; preds = %_b3
+	br label %_b6
+_b6: ; preds = %_b4, %_b5
+	br label %_b29
+_b7: ; preds = %_b2
+	%_x51 = load i32, i32* %_x1, align 4
+	%_x52 = sdiv i32 %_x51, 2
+	%_t53 = alloca i32, align 4
+	%_x54 = getelementptr inbounds i32, i32* %_t53, i32 0
+	; store 55
+	store i32 %_x52, i32* %_x54, align 4
+	%_x56 = load i32, i32* %_x1, align 4
+	%_x57 = load i32, i32* %_x54, align 4
+	%_x58 = sub i32 %_x56, %_x57
+	%_t59 = alloca i32, align 4
+	%_x60 = getelementptr inbounds i32, i32* %_t59, i32 0
+	; store 61
+	store i32 %_x58, i32* %_x60, align 4
+	%_x62 = load i32, i32* %_x54, align 4
+	; getelementptr 63
+	%_x63 = getelementptr inbounds i32, i32* %a, i32 0
+	%_x64 = load i32, i32* %_x4, align 4
+	call void @divide_and_conquer_sort(i32 %_x62, i32 * %_x63, i32 %_x64)
+	%_x65 = load i32, i32* %_x60, align 4
+	; getelementptr 66
+	%_x66 = getelementptr inbounds i32, i32* %a, i32 0
+	%_x67 = load i32, i32* %_x4, align 4
+	%_x68 = load i32, i32* %_x54, align 4
+	%_x69 = add i32 %_x67, %_x68
+	call void @divide_and_conquer_sort(i32 %_x65, i32 * %_x66, i32 %_x69)
+	%_t70 = alloca i32, align 4
+	%_x71 = getelementptr inbounds i32, i32* %_t70, i32 0
+	; store 72
+	store i32 0, i32* %_x71, align 4
+	%_t73 = alloca i32, align 4
+	%_x74 = getelementptr inbounds i32, i32* %_t73, i32 0
+	; store 75
+	store i32 0, i32* %_x74, align 4
+	%_t76 = alloca i32, align 4
+	%_x77 = getelementptr inbounds i32, i32* %_t76, i32 0
+	; store 78
+	store i32 0, i32* %_x77, align 4
+	%_x79 = load i32, i32* %_x4, align 4
+	%_x80 = load i32, i32* %_x54, align 4
+	%_x81 = add i32 %_x79, %_x80
+	%_t82 = alloca i32, align 4
+	%_x83 = getelementptr inbounds i32, i32* %_t82, i32 0
+	; store 84
+	store i32 %_x81, i32* %_x83, align 4
+	br label %_b8
+_b8: ; preds = %_b7, %_b24
+	; if 1 then _b9 else _b25
+	%_t85 = icmp ne i32 1, 0
+	br i1 %_t85, label %_b9, label %_b25
+_b9: ; preds = %_b8
+	%_x86 = load i32, i32* %_x74, align 4
+	%_x87 = load i32, i32* %_x54, align 4
+	%_x88 = sub i32 %_x87, 1
+	%_t89 = icmp eq i32 %_x86, %_x88
+	%_x90 = zext i1 %_t89 to i32
+	; if %_x90 then _b10 else _b14
+	%_t91 = icmp ne i32 %_x90, 0
+	br i1 %_t91, label %_b10, label %_b14
+_b10: ; preds = %_b9
+	%_x92 = load i32, i32* %_x77, align 4
+	%_x93 = load i32, i32* %_x60, align 4
+	%_x94 = sub i32 %_x93, 1
+	%_t95 = icmp eq i32 %_x92, %_x94
+	%_x96 = zext i1 %_t95 to i32
+	; if %_x96 then _b11 else _b12
+	%_t97 = icmp ne i32 %_x96, 0
+	br i1 %_t97, label %_b11, label %_b12
+_b11: ; preds = %_b10
+	br label %_b25
+_b12: ; preds = %_b10
+	br label %_b13
+_b13: ; preds = %_b12
+	br label %_b15
+_b14: ; preds = %_b9
+	br label %_b15
+_b15: ; preds = %_b13, %_b14
+	%_x98 = load i32, i32* %_x74, align 4
+	%_x99 = load i32, i32* %_x54, align 4
+	%_x100 = sub i32 %_x99, 1
+	%_t101 = icmp eq i32 %_x98, %_x100
+	%_x102 = zext i1 %_t101 to i32
+	; if %_x102 then _b16 else _b17
+	%_t103 = icmp ne i32 %_x102, 0
+	br i1 %_t103, label %_b16, label %_b17
+_b16: ; preds = %_b15
+	%_x104 = load i32, i32* %_x71, align 4
+	; getelementptr 105
+	%_t106 = mul i32 %_x104, 1
+	%_x105 = getelementptr inbounds i32, i32* %g_temp, i32 %_t106
+	%_x107 = load i32, i32* %_x83, align 4
+	%_x108 = load i32, i32* %_x77, align 4
+	%_x109 = add i32 %_x107, %_x108
+	; getelementptr 110
+	%_t111 = mul i32 %_x109, 1
+	%_x110 = getelementptr inbounds i32, i32* %a, i32 %_t111
+	%_x112 = load i32, i32* %_x110, align 4
+	; store 113
+	store i32 %_x112, i32* %_x105, align 4
+	%_x114 = load i32, i32* %_x71, align 4
+	%_x115 = add i32 %_x114, 1
+	; store 116
+	store i32 %_x115, i32* %_x71, align 4
+	%_x117 = load i32, i32* %_x77, align 4
+	%_x118 = add i32 %_x117, 1
+	; store 119
+	store i32 %_x118, i32* %_x77, align 4
+	br label %_b24
+_b17: ; preds = %_b15
+	%_x120 = load i32, i32* %_x77, align 4
+	%_x121 = load i32, i32* %_x60, align 4
+	%_x122 = sub i32 %_x121, 1
+	%_t123 = icmp eq i32 %_x120, %_x122
+	%_x124 = zext i1 %_t123 to i32
+	; if %_x124 then _b18 else _b19
+	%_t125 = icmp ne i32 %_x124, 0
+	br i1 %_t125, label %_b18, label %_b19
+_b18: ; preds = %_b17
+	%_x126 = load i32, i32* %_x71, align 4
+	; getelementptr 127
+	%_t128 = mul i32 %_x126, 1
+	%_x127 = getelementptr inbounds i32, i32* %g_temp, i32 %_t128
+	%_x129 = load i32, i32* %_x4, align 4
+	%_x130 = load i32, i32* %_x74, align 4
+	%_x131 = add i32 %_x129, %_x130
+	; getelementptr 132
+	%_t133 = mul i32 %_x131, 1
+	%_x132 = getelementptr inbounds i32, i32* %a, i32 %_t133
+	%_x134 = load i32, i32* %_x132, align 4
+	; store 135
+	store i32 %_x134, i32* %_x127, align 4
+	%_x136 = load i32, i32* %_x71, align 4
+	%_x137 = add i32 %_x136, 1
+	; store 138
+	store i32 %_x137, i32* %_x71, align 4
+	%_x139 = load i32, i32* %_x74, align 4
+	%_x140 = add i32 %_x139, 1
+	; store 141
+	store i32 %_x140, i32* %_x74, align 4
+	br label %_b23
+_b19: ; preds = %_b17
+	%_x142 = load i32, i32* %_x4, align 4
+	%_x143 = load i32, i32* %_x74, align 4
+	%_x144 = add i32 %_x142, %_x143
+	; getelementptr 145
+	%_t146 = mul i32 %_x144, 1
+	%_x145 = getelementptr inbounds i32, i32* %a, i32 %_t146
+	%_x147 = load i32, i32* %_x145, align 4
+	%_x148 = load i32, i32* %_x83, align 4
+	%_x149 = load i32, i32* %_x77, align 4
+	%_x150 = add i32 %_x148, %_x149
+	; getelementptr 151
+	%_t152 = mul i32 %_x150, 1
+	%_x151 = getelementptr inbounds i32, i32* %a, i32 %_t152
+	%_x153 = load i32, i32* %_x151, align 4
+	%_t154 = icmp slt i32 %_x147, %_x153
+	%_x155 = zext i1 %_t154 to i32
+	; if %_x155 then _b20 else _b21
+	%_t156 = icmp ne i32 %_x155, 0
+	br i1 %_t156, label %_b20, label %_b21
+_b20: ; preds = %_b19
+	%_x157 = load i32, i32* %_x71, align 4
+	; getelementptr 158
+	%_t159 = mul i32 %_x157, 1
+	%_x158 = getelementptr inbounds i32, i32* %g_temp, i32 %_t159
+	%_x160 = load i32, i32* %_x4, align 4
+	%_x161 = load i32, i32* %_x74, align 4
+	%_x162 = add i32 %_x160, %_x161
+	; getelementptr 163
+	%_t164 = mul i32 %_x162, 1
+	%_x163 = getelementptr inbounds i32, i32* %a, i32 %_t164
+	%_x165 = load i32, i32* %_x163, align 4
+	; store 166
+	store i32 %_x165, i32* %_x158, align 4
+	%_x167 = load i32, i32* %_x71, align 4
+	%_x168 = add i32 %_x167, 1
+	; store 169
+	store i32 %_x168, i32* %_x71, align 4
+	%_x170 = load i32, i32* %_x74, align 4
+	%_x171 = add i32 %_x170, 1
+	; store 172
+	store i32 %_x171, i32* %_x74, align 4
+	br label %_b22
+_b21: ; preds = %_b19
+	%_x173 = load i32, i32* %_x71, align 4
+	; getelementptr 174
+	%_t175 = mul i32 %_x173, 1
+	%_x174 = getelementptr inbounds i32, i32* %g_temp, i32 %_t175
+	%_x176 = load i32, i32* %_x83, align 4
+	%_x177 = load i32, i32* %_x77, align 4
+	%_x178 = add i32 %_x176, %_x177
+	; getelementptr 179
+	%_t180 = mul i32 %_x178, 1
+	%_x179 = getelementptr inbounds i32, i32* %a, i32 %_t180
+	%_x181 = load i32, i32* %_x179, align 4
+	; store 182
+	store i32 %_x181, i32* %_x174, align 4
+	%_x183 = load i32, i32* %_x71, align 4
+	%_x184 = add i32 %_x183, 1
+	; store 185
+	store i32 %_x184, i32* %_x71, align 4
+	%_x186 = load i32, i32* %_x77, align 4
+	%_x187 = add i32 %_x186, 1
+	; store 188
+	store i32 %_x187, i32* %_x77, align 4
+	br label %_b22
+_b22: ; preds = %_b20, %_b21
+	br label %_b23
+_b23: ; preds = %_b18, %_b22
+	br label %_b24
+_b24: ; preds = %_b16, %_b23
+	br label %_b8
+_b25: ; preds = %_b8, %_b11
+	%_t189 = alloca i32, align 4
+	%_x190 = getelementptr inbounds i32, i32* %_t189, i32 0
+	; store 191
+	store i32 0, i32* %_x190, align 4
+	br label %_b26
+_b26: ; preds = %_b25, %_b27
+	%_x192 = load i32, i32* %_x190, align 4
+	%_x193 = load i32, i32* %_x1, align 4
+	%_t194 = icmp ne i32 %_x192, %_x193
+	%_x195 = zext i1 %_t194 to i32
+	; if %_x195 then _b27 else _b28
+	%_t196 = icmp ne i32 %_x195, 0
+	br i1 %_t196, label %_b27, label %_b28
+_b27: ; preds = %_b26
+	%_x197 = load i32, i32* %_x4, align 4
+	%_x198 = load i32, i32* %_x190, align 4
+	%_x199 = add i32 %_x197, %_x198
+	; getelementptr 200
+	%_t201 = mul i32 %_x199, 1
+	%_x200 = getelementptr inbounds i32, i32* %a, i32 %_t201
+	%_x202 = load i32, i32* %_x190, align 4
+	; getelementptr 203
+	%_t204 = mul i32 %_x202, 1
+	%_x203 = getelementptr inbounds i32, i32* %g_temp, i32 %_t204
+	%_x205 = load i32, i32* %_x203, align 4
+	; store 206
+	store i32 %_x205, i32* %_x200, align 4
+	%_x207 = load i32, i32* %_x190, align 4
+	%_x208 = add i32 %_x207, 1
+	; store 209
+	store i32 %_x208, i32* %_x190, align 4
+	br label %_b26
+_b28: ; preds = %_b26
+	br label %_b29
+_b29: ; preds = %_b6, %_b28
+	br label %_b30
+_b30: ; preds = %_b29
 	ret void
 }
 
-define void @nothing2(i32 %a, i32 %b, i32 %c) #0 {
+define i32 @quick_pow(i32 %a, i32 %p, i32 %mod) #0 {
 _entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
+	%g_SIZE = getelementptr inbounds i32, i32* @SIZE, i32 0
+	%g_qpow_MOD = getelementptr inbounds i32, i32* @qpow_MOD, i32 0
+	%g_arr = getelementptr inbounds [1002 x i32], [1002 x i32]* @arr, i32 0, i32 0
+	%g_temp = getelementptr inbounds [1002 x i32], [1002 x i32]* @temp, i32 0, i32 0
 	br label %_b0
 _b0: ; preds = 
 	%_t0 = alloca i32, align 4
@@ -102,352 +401,325 @@ _b0: ; preds =
 	%_t3 = alloca i32, align 4
 	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
 	; store 5
-	store i32 %b, i32* %_x4, align 4
+	store i32 %p, i32* %_x4, align 4
 	%_t6 = alloca i32, align 4
 	%_x7 = getelementptr inbounds i32, i32* %_t6, i32 0
 	; store 8
-	store i32 %c, i32* %_x7, align 4
-	ret void
+	store i32 %mod, i32* %_x7, align 4
+	%_x9 = load i32, i32* %_x4, align 4
+	%_t10 = alloca i32, align 4
+	%_x11 = getelementptr inbounds i32, i32* %_t10, i32 0
+	; store 12
+	store i32 %_x9, i32* %_x11, align 4
+	%_x13 = load i32, i32* %_x1, align 4
+	%_t14 = alloca i32, align 4
+	%_x15 = getelementptr inbounds i32, i32* %_t14, i32 0
+	; store 16
+	store i32 %_x13, i32* %_x15, align 4
+	%_t17 = alloca i32, align 4
+	%_x18 = getelementptr inbounds i32, i32* %_t17, i32 0
+	; store 19
+	store i32 1, i32* %_x18, align 4
+	br label %_b1
+_b1: ; preds = %_b0, %_b5
+	%_x20 = load i32, i32* %_x11, align 4
+	%_t21 = icmp ne i32 %_x20, 0
+	%_x22 = zext i1 %_t21 to i32
+	; if %_x22 then _b2 else _b6
+	%_t23 = icmp ne i32 %_x22, 0
+	br i1 %_t23, label %_b2, label %_b6
+_b2: ; preds = %_b1
+	%_x24 = load i32, i32* %_x11, align 4
+	%_x25 = srem i32 %_x24, 2
+	%_t26 = icmp eq i32 %_x25, 1
+	%_x27 = zext i1 %_t26 to i32
+	; if %_x27 then _b3 else _b4
+	%_t28 = icmp ne i32 %_x27, 0
+	br i1 %_t28, label %_b3, label %_b4
+_b3: ; preds = %_b2
+	%_x29 = load i32, i32* %_x18, align 4
+	%_x30 = load i32, i32* %_x15, align 4
+	%_x31 = mul i32 %_x29, %_x30
+	%_x32 = load i32, i32* %_x7, align 4
+	%_x33 = srem i32 %_x31, %_x32
+	; store 34
+	store i32 %_x33, i32* %_x18, align 4
+	br label %_b5
+_b4: ; preds = %_b2
+	br label %_b5
+_b5: ; preds = %_b3, %_b4
+	%_x35 = load i32, i32* %_x15, align 4
+	%_x36 = load i32, i32* %_x15, align 4
+	%_x37 = mul i32 %_x35, %_x36
+	%_x38 = load i32, i32* %_x7, align 4
+	%_x39 = srem i32 %_x37, %_x38
+	; store 40
+	store i32 %_x39, i32* %_x15, align 4
+	%_x41 = load i32, i32* %_x11, align 4
+	%_x42 = sdiv i32 %_x41, 2
+	; store 43
+	store i32 %_x42, i32* %_x11, align 4
+	br label %_b1
+_b6: ; preds = %_b1
+	%_x44 = load i32, i32* %_x18, align 4
+	ret i32 %_x44
 }
 
-define void @nothing3(i32 * %a, i32 * %b) #0 {
+define i32 @hash(i32 %n, i32 * %a) #0 {
 _entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
-	br label %_b0
-_b0: ; preds = 
-	ret void
-}
-
-define i32 @zero() #0 {
-_entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
-	br label %_b0
-_b0: ; preds = 
-	ret i32 0
-}
-
-define i32 @main() #0 {
-_entry:
-	%g_aaa = getelementptr inbounds i32, i32* @aaa, i32 0
-	%g_bbb = getelementptr inbounds i32, i32* @bbb, i32 0
-	%g_ccc = getelementptr inbounds i32, i32* @ccc, i32 0
-	%g_ggg = getelementptr inbounds i32, i32* @ggg, i32 0
-	%g_hhh = getelementptr inbounds i32, i32* @hhh, i32 0
-	%g_iii = getelementptr inbounds i32, i32* @iii, i32 0
-	%g_arr1 = getelementptr inbounds [2 x i32], [2 x i32]* @arr1, i32 0, i32 0
-	%g_arr2 = getelementptr inbounds [1 x i32], [1 x i32]* @arr2, i32 0, i32 0
-	%g_arr3 = getelementptr inbounds [4 x i32], [4 x i32]* @arr3, i32 0, i32 0
+	%g_SIZE = getelementptr inbounds i32, i32* @SIZE, i32 0
+	%g_qpow_MOD = getelementptr inbounds i32, i32* @qpow_MOD, i32 0
+	%g_arr = getelementptr inbounds [1002 x i32], [1002 x i32]* @arr, i32 0, i32 0
+	%g_temp = getelementptr inbounds [1002 x i32], [1002 x i32]* @temp, i32 0, i32 0
 	br label %_b0
 _b0: ; preds = 
 	%_t0 = alloca i32, align 4
 	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
-	%_t2 = alloca [3 x i32], align 4
-	%_x3 = getelementptr inbounds [3 x i32], [3 x i32]* %_t2, i32 0, i32 0
-	; store 4
-	store i32 0, i32* %_x3, align 4
+	; store 2
+	store i32 %n, i32* %_x1, align 4
+	%_t3 = alloca i32, align 4
+	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
 	; store 5
-	%_t6 = getelementptr inbounds i32, i32* %_x3, i32 1
-	store i32 1, i32* %_t6, align 4
-	; store 7
-	%_t8 = getelementptr inbounds i32, i32* %_x3, i32 2
-	store i32 2, i32* %_t8, align 4
-	%_t9 = alloca [4 x i32], align 4
-	%_x10 = getelementptr inbounds [4 x i32], [4 x i32]* %_t9, i32 0, i32 0
+	store i32 53, i32* %_x4, align 4
+	%_t6 = alloca i32, align 4
+	%_x7 = getelementptr inbounds i32, i32* %_t6, i32 0
+	; store 8
+	store i32 9999973, i32* %_x7, align 4
+	%_t9 = alloca i32, align 4
+	%_x10 = getelementptr inbounds i32, i32* %_t9, i32 0
 	; store 11
-	store i32 1, i32* %_x10, align 4
-	; store 12
-	%_t13 = getelementptr inbounds i32, i32* %_x10, i32 1
-	store i32 2, i32* %_t13, align 4
+	store i32 0, i32* %_x10, align 4
+	%_t12 = alloca i32, align 4
+	%_x13 = getelementptr inbounds i32, i32* %_t12, i32 0
 	; store 14
-	%_t15 = getelementptr inbounds i32, i32* %_x10, i32 2
-	store i32 3, i32* %_t15, align 4
-	; store 16
-	%_t17 = getelementptr inbounds i32, i32* %_x10, i32 3
-	store i32 4, i32* %_t17, align 4
-	%_t18 = alloca i32, align 4
-	%_x19 = getelementptr inbounds i32, i32* %_t18, i32 0
-	; store 20
-	store i32 2, i32* %_x19, align 4
-	%_t21 = alloca i32, align 4
-	%_x22 = getelementptr inbounds i32, i32* %_t21, i32 0
-	; store 23
-	store i32 3, i32* %_x22, align 4
-	%_x24 = load i32, i32* %_x19, align 4
-	%_x25 = load i32, i32* %_x22, align 4
-	%_x26 = add i32 %_x24, %_x25
-	%_t27 = alloca i32, align 4
-	%_x28 = getelementptr inbounds i32, i32* %_t27, i32 0
-	; store 29
-	store i32 %_x26, i32* %_x28, align 4
-	%_t30 = alloca i32, align 4
-	%_x31 = getelementptr inbounds i32, i32* %_t30, i32 0
-	; store 32
-	store i32 0, i32* %_x31, align 4
+	store i32 0, i32* %_x13, align 4
 	br label %_b1
-_b1: ; preds = %_b0, %_b4, %_b5
-	; if 0 then _b2 else _b6
-	%_t33 = icmp ne i32 0, 0
-	br i1 %_t33, label %_b2, label %_b6
+_b1: ; preds = %_b0, %_b2
+	%_x15 = load i32, i32* %_x13, align 4
+	%_x16 = load i32, i32* %_x1, align 4
+	%_t17 = icmp ne i32 %_x15, %_x16
+	%_x18 = zext i1 %_t17 to i32
+	; if %_x18 then _b2 else _b3
+	%_t19 = icmp ne i32 %_x18, 0
+	br i1 %_t19, label %_b2, label %_b3
 _b2: ; preds = %_b1
-	%_x34 = load i32, i32* %_x31, align 4
-	; getelementptr 35
-	%_t36 = mul i32 %_x34, 1
-	%_x35 = getelementptr inbounds i32, i32* %_x3, i32 %_t36
-	%_x37 = load i32, i32* %_x35, align 4
-	%_t38 = icmp eq i32 %_x37, 3
-	%_x39 = zext i1 %_t38 to i32
-	; if %_x39 then _b3 else _b4
-	%_t40 = icmp ne i32 %_x39, 0
-	br i1 %_t40, label %_b3, label %_b4
-_b3: ; preds = %_b2
-	br label %_b6
-_b4: ; preds = %_b2
+	%_x20 = load i32, i32* %_x10, align 4
+	%_x21 = mul i32 %_x20, 53
+	%_x22 = load i32, i32* %_x13, align 4
+	; getelementptr 23
+	%_t24 = mul i32 %_x22, 1
+	%_x23 = getelementptr inbounds i32, i32* %a, i32 %_t24
+	%_x25 = load i32, i32* %_x23, align 4
+	%_x26 = add i32 %_x21, %_x25
+	%_x27 = srem i32 %_x26, 9999973
+	; store 28
+	store i32 %_x27, i32* %_x10, align 4
+	%_x29 = load i32, i32* %_x13, align 4
+	%_x30 = add i32 %_x29, 1
+	; store 31
+	store i32 %_x30, i32* %_x13, align 4
 	br label %_b1
-_b5: ; preds = 
-	%_x41 = load i32, i32* %_x31, align 4
-	; getelementptr 42
-	%_t43 = mul i32 %_x41, 1
-	%_x42 = getelementptr inbounds i32, i32* %_x3, i32 %_t43
-	; store 44
-	store i32 1, i32* %_x42, align 4
-	%_x45 = load i32, i32* %_x31, align 4
-	%_x46 = add i32 %_x45, 1
-	; store 47
-	store i32 %_x46, i32* %_x31, align 4
+_b3: ; preds = %_b1
+	%_x32 = load i32, i32* %_x10, align 4
+	ret i32 %_x32
+}
+
+define i32 @main() #0 {
+_entry:
+	%g_SIZE = getelementptr inbounds i32, i32* @SIZE, i32 0
+	%g_qpow_MOD = getelementptr inbounds i32, i32* @qpow_MOD, i32 0
+	%g_arr = getelementptr inbounds [1002 x i32], [1002 x i32]* @arr, i32 0, i32 0
+	%g_temp = getelementptr inbounds [1002 x i32], [1002 x i32]* @temp, i32 0, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_t0 = getelementptr inbounds [10 x i8], [10 x i8]* @.str1, i32 0, i32 0
+	call void @putstr(i8* %_t0)
+	%_t1 = alloca i32, align 4
+	%_x2 = getelementptr inbounds i32, i32* %_t1, i32 0
+	; store 3
+	store i32 0, i32* %_x2, align 4
 	br label %_b1
-_b6: ; preds = %_b1, %_b3
-	; getelementptr 48
-	%_x48 = getelementptr inbounds i32, i32* %_x10, i32 2
+_b1: ; preds = %_b0, %_b5
+	%_x4 = load i32, i32* %_x2, align 4
+	%_t5 = icmp ne i32 %_x4, 5
+	%_x6 = zext i1 %_t5 to i32
+	; if %_x6 then _b2 else _b6
+	%_t7 = icmp ne i32 %_x6, 0
+	br i1 %_t7, label %_b2, label %_b6
+_b2: ; preds = %_b1
+	%_t8 = alloca i32, align 4
+	%_x9 = getelementptr inbounds i32, i32* %_t8, i32 0
+	%_x10 = call i32 @getint()
+	; store 11
+	store i32 %_x10, i32* %_x9, align 4
+	%_t12 = alloca i32, align 4
+	%_x13 = getelementptr inbounds i32, i32* %_t12, i32 0
+	; store 14
+	store i32 0, i32* %_x13, align 4
+	br label %_b3
+_b3: ; preds = %_b2, %_b4
+	%_x15 = load i32, i32* %_x13, align 4
+	%_x16 = load i32, i32* %_x9, align 4
+	%_t17 = icmp ne i32 %_x15, %_x16
+	%_x18 = zext i1 %_t17 to i32
+	; if %_x18 then _b4 else _b5
+	%_t19 = icmp ne i32 %_x18, 0
+	br i1 %_t19, label %_b4, label %_b5
+_b4: ; preds = %_b3
+	%_x20 = load i32, i32* %_x13, align 4
+	; getelementptr 21
+	%_t22 = mul i32 %_x20, 1
+	%_x21 = getelementptr inbounds i32, i32* %g_arr, i32 %_t22
+	%_x23 = call i32 @getint()
+	; store 24
+	store i32 %_x23, i32* %_x21, align 4
+	%_x25 = load i32, i32* %_x13, align 4
+	%_x26 = add i32 %_x25, 1
+	; store 27
+	store i32 %_x26, i32* %_x13, align 4
+	br label %_b3
+_b5: ; preds = %_b3
+	%_x28 = load i32, i32* %_x9, align 4
+	; getelementptr 29
+	%_x29 = getelementptr inbounds i32, i32* %g_arr, i32 0
+	call void @divide_and_conquer_sort(i32 %_x28, i32 * %_x29, i32 0)
+	%_x30 = load i32, i32* %_x9, align 4
+	; getelementptr 31
+	%_x31 = getelementptr inbounds i32, i32* %g_arr, i32 0
+	%_x32 = call i32 @hash(i32 %_x30, i32 * %_x31)
+	%_t33 = getelementptr inbounds [33 x i8], [33 x i8]* @.str2, i32 0, i32 0
+	call void @putstr(i8* %_t33)
+	call void @putint(i32 %_x32)
+	%_t34 = getelementptr inbounds [3 x i8], [3 x i8]* @.str3, i32 0, i32 0
+	call void @putstr(i8* %_t34)
+	%_x35 = load i32, i32* %_x2, align 4
+	%_x36 = add i32 %_x35, 1
+	; store 37
+	store i32 %_x36, i32* %_x2, align 4
+	br label %_b1
+_b6: ; preds = %_b1
+	%_t38 = alloca [4 x i32], align 4
+	%_x39 = getelementptr inbounds [4 x i32], [4 x i32]* %_t38, i32 0, i32 0
+	; getelementptr 40
+	%_x40 = getelementptr inbounds i32, i32* %_x39, i32 0
+	%_x41 = call i32 @quick_pow(i32 34, i32 89, i32 10089)
+	; store 42
+	store i32 %_x41, i32* %_x40, align 4
+	; getelementptr 43
+	%_x43 = getelementptr inbounds i32, i32* %_x39, i32 1
+	%_x44 = call i32 @quick_pow(i32 59, i32 122, i32 10089)
+	; store 45
+	store i32 %_x44, i32* %_x43, align 4
+	; getelementptr 46
+	%_x46 = getelementptr inbounds i32, i32* %_x39, i32 2
+	%_x47 = call i32 @quick_pow(i32 13, i32 3444, i32 10089)
+	; store 48
+	store i32 %_x47, i32* %_x46, align 4
 	; getelementptr 49
-	%_x49 = getelementptr inbounds i32, i32* %_x48, i32 1
-	; getelementptr 50
-	%_x50 = getelementptr inbounds i32, i32* %_x3, i32 1
-	%_x51 = load i32, i32* %_x50, align 4
-	; store 52
-	store i32 %_x51, i32* %_x49, align 4
-	; getelementptr 53
-	%_x53 = getelementptr inbounds i32, i32* %_x10, i32 2
+	%_x49 = getelementptr inbounds i32, i32* %_x39, i32 3
+	%_x50 = call i32 @quick_pow(i32 11, i32 987, i32 10089)
+	; store 51
+	store i32 %_x50, i32* %_x49, align 4
+	; getelementptr 52
+	%_x52 = getelementptr inbounds i32, i32* %_x39, i32 0
+	%_x53 = load i32, i32* %_x52, align 4
 	; getelementptr 54
-	%_x54 = getelementptr inbounds i32, i32* %_x53, i32 1
+	%_x54 = getelementptr inbounds i32, i32* %_x39, i32 1
 	%_x55 = load i32, i32* %_x54, align 4
-	%_t56 = icmp eq i32 %_x55, 1
-	%_x57 = zext i1 %_t56 to i32
-	; if %_x57 then _b7 else _b8
-	%_t58 = icmp ne i32 %_x57, 0
-	br i1 %_t58, label %_b7, label %_b8
+	; getelementptr 56
+	%_x56 = getelementptr inbounds i32, i32* %_x39, i32 2
+	%_x57 = load i32, i32* %_x56, align 4
+	; getelementptr 58
+	%_x58 = getelementptr inbounds i32, i32* %_x39, i32 3
+	%_x59 = load i32, i32* %_x58, align 4
+	%_t60 = getelementptr inbounds [29 x i8], [29 x i8]* @.str4, i32 0, i32 0
+	call void @putstr(i8* %_t60)
+	call void @putint(i32 %_x53)
+	%_t61 = getelementptr inbounds [2 x i8], [2 x i8]* @.str5, i32 0, i32 0
+	call void @putstr(i8* %_t61)
+	call void @putint(i32 %_x55)
+	%_t62 = getelementptr inbounds [2 x i8], [2 x i8]* @.str6, i32 0, i32 0
+	call void @putstr(i8* %_t62)
+	call void @putint(i32 %_x57)
+	%_t63 = getelementptr inbounds [2 x i8], [2 x i8]* @.str7, i32 0, i32 0
+	call void @putstr(i8* %_t63)
+	call void @putint(i32 %_x59)
+	%_t64 = getelementptr inbounds [3 x i8], [3 x i8]* @.str8, i32 0, i32 0
+	call void @putstr(i8* %_t64)
+	%_t65 = alloca i32, align 4
+	%_x66 = getelementptr inbounds i32, i32* %_t65, i32 0
+	%_x67 = call i32 @getint()
+	; store 68
+	store i32 %_x67, i32* %_x66, align 4
+	%_t69 = alloca i32, align 4
+	%_x70 = getelementptr inbounds i32, i32* %_t69, i32 0
+	%_x71 = call i32 @getint()
+	; store 72
+	store i32 %_x71, i32* %_x70, align 4
+	%_t73 = alloca i32, align 4
+	%_x74 = getelementptr inbounds i32, i32* %_t73, i32 0
+	%_x75 = call i32 @getint()
+	; store 76
+	store i32 %_x75, i32* %_x74, align 4
+	%_x77 = load i32, i32* %_x66, align 4
+	%_x78 = load i32, i32* %_x70, align 4
+	%_t79 = icmp slt i32 %_x77, %_x78
+	%_x80 = zext i1 %_t79 to i32
+	%_x81 = load i32, i32* %_x70, align 4
+	%_x82 = load i32, i32* %_x74, align 4
+	%_t83 = icmp slt i32 %_x81, %_x82
+	%_x84 = zext i1 %_t83 to i32
+	%_t85 = icmp eq i32 %_x80, %_x84
+	%_x86 = zext i1 %_t85 to i32
+	; if %_x86 then _b7 else _b8
+	%_t87 = icmp ne i32 %_x86, 0
+	br i1 %_t87, label %_b7, label %_b8
 _b7: ; preds = %_b6
-	; getelementptr 59
-	%_x59 = getelementptr inbounds i32, i32* %_x10, i32 2
-	; getelementptr 60
-	%_x60 = getelementptr inbounds i32, i32* %_x59, i32 1
-	; store 61
-	store i32 1, i32* %_x60, align 4
+	%_t88 = getelementptr inbounds [28 x i8], [28 x i8]* @.str9, i32 0, i32 0
+	call void @putstr(i8* %_t88)
 	br label %_b9
 _b8: ; preds = %_b6
-	; getelementptr 62
-	%_x62 = getelementptr inbounds i32, i32* %_x10, i32 2
-	; getelementptr 63
-	%_x63 = getelementptr inbounds i32, i32* %_x62, i32 1
-	; store 64
-	store i32 0, i32* %_x63, align 4
 	br label %_b9
 _b9: ; preds = %_b7, %_b8
-	%_x65 = call i32 @getint()
-	; store 66
-	store i32 %_x65, i32* %_x1, align 4
-	%_x67 = load i32, i32* %_x22, align 4
-	%_x68 = load i32, i32* %_x28, align 4
-	%_x69 = add i32 %_x67, %_x68
-	; store 70
-	store i32 %_x69, i32* %_x19, align 4
-	%_x71 = load i32, i32* %_x22, align 4
-	%_x72 = load i32, i32* %_x28, align 4
-	%_x73 = mul i32 %_x71, %_x72
-	; store 74
-	store i32 %_x73, i32* %_x19, align 4
-	%_x75 = load i32, i32* %_x22, align 4
-	%_x76 = load i32, i32* %_x28, align 4
-	%_x77 = sub i32 %_x75, %_x76
-	; store 78
-	store i32 %_x77, i32* %_x19, align 4
-	%_x79 = load i32, i32* %_x22, align 4
-	%_x80 = load i32, i32* %_x28, align 4
-	%_x81 = add i32 %_x79, %_x80
-	%_x82 = load i32, i32* %_x28, align 4
-	%_x83 = add i32 %_x81, %_x82
-	; store 84
-	store i32 %_x83, i32* %_x19, align 4
-	%_x85 = load i32, i32* %_x22, align 4
-	%_x86 = sdiv i32 %_x85, 1
-	; store 87
-	store i32 %_x86, i32* %_x19, align 4
-	; store 88
-	store i32 1, i32* %_x28, align 4
-	%_x89 = load i32, i32* %_x22, align 4
-	%_x90 = sdiv i32 %_x89, 1
-	; store 91
-	store i32 %_x90, i32* %_x19, align 4
-	%_x92 = load i32, i32* %_x22, align 4
-	%_x93 = srem i32 %_x92, 1
-	; store 94
-	store i32 %_x93, i32* %_x19, align 4
-	%_t95 = alloca i32, align 4
-	%_x96 = getelementptr inbounds i32, i32* %_t95, i32 0
+	%_t89 = alloca i32, align 4
+	%_x90 = getelementptr inbounds i32, i32* %_t89, i32 0
+	%_x91 = call i32 @getint()
+	; store 92
+	store i32 %_x91, i32* %_x90, align 4
+	%_x93 = load i32, i32* %_x90, align 4
+	%_x94 = mul i32 %_x93, 8
+	%_x95 = mul i32 %_x94, 16
+	%_x96 = mul i32 %_x95, 256
 	; store 97
-	store i32 1, i32* %_x96, align 4
-	%_t98 = alloca i32, align 4
-	%_x99 = getelementptr inbounds i32, i32* %_t98, i32 0
-	; store 100
-	store i32 0, i32* %_x99, align 4
-	%_t101 = alloca i32, align 4
-	%_x102 = getelementptr inbounds i32, i32* %_t101, i32 0
-	%_x103 = load i32, i32* %_x96, align 4
-	%_x104 = load i32, i32* %_x99, align 4
-	%_x105 = add i32 %_x103, %_x104
-	; if %_x105 then _b10 else _b11
-	%_t106 = icmp ne i32 %_x105, 0
-	br i1 %_t106, label %_b10, label %_b11
-_b10: ; preds = %_b9
-	; store 107
-	store i32 1, i32* %_x96, align 4
-	br label %_b12
-_b11: ; preds = %_b9
-	br label %_b12
-_b12: ; preds = %_b10, %_b11
-	%_x108 = load i32, i32* %_x99, align 4
-	%_t109 = icmp eq i32 %_x108, 0
-	%_x110 = zext i1 %_t109 to i32
-	; if %_x110 then _b13 else _b14
-	%_t111 = icmp ne i32 %_x110, 0
-	br i1 %_t111, label %_b13, label %_b14
-_b13: ; preds = %_b12
-	; store 112
-	store i32 1, i32* %_x96, align 4
-	br label %_b15
-_b14: ; preds = %_b12
-	br label %_b15
-_b15: ; preds = %_b13, %_b14
-	%_x113 = load i32, i32* %_x96, align 4
-	%_x114 = load i32, i32* %_x99, align 4
-	%_x115 = sub i32 %_x113, %_x114
-	; if %_x115 then _b16 else _b17
-	%_t116 = icmp ne i32 %_x115, 0
-	br i1 %_t116, label %_b16, label %_b17
-_b16: ; preds = %_b15
-	; store 117
-	store i32 1, i32* %_x96, align 4
-	br label %_b18
-_b17: ; preds = %_b15
-	br label %_b18
-_b18: ; preds = %_b16, %_b17
-	%_x118 = load i32, i32* %_x96, align 4
-	%_x119 = load i32, i32* %_x99, align 4
-	%_t120 = icmp slt i32 %_x118, %_x119
-	%_x121 = zext i1 %_t120 to i32
-	; if %_x121 then _b19 else _b20
-	%_t122 = icmp ne i32 %_x121, 0
-	br i1 %_t122, label %_b19, label %_b20
-_b19: ; preds = %_b18
-	; store 123
-	store i32 1, i32* %_x96, align 4
-	br label %_b21
-_b20: ; preds = %_b18
-	br label %_b21
-_b21: ; preds = %_b19, %_b20
-	%_x124 = load i32, i32* %_x96, align 4
-	%_x125 = load i32, i32* %_x99, align 4
-	%_t126 = icmp sle i32 %_x124, %_x125
-	%_x127 = zext i1 %_t126 to i32
-	; if %_x127 then _b22 else _b23
-	%_t128 = icmp ne i32 %_x127, 0
-	br i1 %_t128, label %_b22, label %_b23
-_b22: ; preds = %_b21
-	; store 129
-	store i32 1, i32* %_x96, align 4
-	br label %_b24
-_b23: ; preds = %_b21
-	br label %_b24
-_b24: ; preds = %_b22, %_b23
-	%_x130 = load i32, i32* %_x96, align 4
-	%_x131 = load i32, i32* %_x99, align 4
-	%_t132 = icmp sge i32 %_x130, %_x131
-	%_x133 = zext i1 %_t132 to i32
-	; if %_x133 then _b25 else _b26
-	%_t134 = icmp ne i32 %_x133, 0
-	br i1 %_t134, label %_b25, label %_b26
-_b25: ; preds = %_b24
-	; store 135
-	store i32 1, i32* %_x96, align 4
-	br label %_b27
-_b26: ; preds = %_b24
-	br label %_b27
-_b27: ; preds = %_b25, %_b26
-	%_x136 = load i32, i32* %_x96, align 4
-	%_x137 = load i32, i32* %_x99, align 4
-	%_t138 = icmp ne i32 %_x136, %_x137
-	%_x139 = zext i1 %_t138 to i32
-	; if %_x139 then _b28 else _b29
-	%_t140 = icmp ne i32 %_x139, 0
-	br i1 %_t140, label %_b28, label %_b29
-_b28: ; preds = %_b27
-	; store 141
-	store i32 1, i32* %_x96, align 4
-	br label %_b30
-_b29: ; preds = %_b27
-	br label %_b30
-_b30: ; preds = %_b28, %_b29
-	%_t142 = getelementptr inbounds [10 x i8], [10 x i8]* @.str1, i32 0, i32 0
-	call void @putstr(i8* %_t142)
-	%_x143 = load i32, i32* %_x1, align 4
-	call void @putint(i32 %_x143)
-	%_t144 = getelementptr inbounds [2 x i8], [2 x i8]* @.str2, i32 0, i32 0
-	call void @putstr(i8* %_t144)
-	; getelementptr 145
-	%_x145 = getelementptr inbounds i32, i32* %_x3, i32 0
-	%_x146 = load i32, i32* %_x145, align 4
-	call void @putint(i32 %_x146)
-	%_t147 = getelementptr inbounds [2 x i8], [2 x i8]* @.str3, i32 0, i32 0
-	call void @putstr(i8* %_t147)
-	; getelementptr 148
-	%_x148 = getelementptr inbounds i32, i32* %_x3, i32 0
-	%_x149 = load i32, i32* %_x148, align 4
-	call void @putint(i32 %_x149)
-	%_t150 = getelementptr inbounds [2 x i8], [2 x i8]* @.str4, i32 0, i32 0
-	call void @putstr(i8* %_t150)
-	; getelementptr 151
-	%_x151 = getelementptr inbounds i32, i32* %_x3, i32 0
-	%_x152 = load i32, i32* %_x151, align 4
-	call void @putint(i32 %_x152)
-	%_t153 = getelementptr inbounds [2 x i8], [2 x i8]* @.str5, i32 0, i32 0
-	call void @putstr(i8* %_t153)
-	; getelementptr 154
-	%_x154 = getelementptr inbounds i32, i32* %_x3, i32 0
-	%_x155 = load i32, i32* %_x154, align 4
-	call void @putint(i32 %_x155)
-	%_t156 = getelementptr inbounds [2 x i8], [2 x i8]* @.str6, i32 0, i32 0
-	call void @putstr(i8* %_t156)
-	; getelementptr 157
-	%_x157 = getelementptr inbounds i32, i32* %_x3, i32 0
-	%_x158 = load i32, i32* %_x157, align 4
-	call void @putint(i32 %_x158)
-	%_t159 = getelementptr inbounds [2 x i8], [2 x i8]* @.str7, i32 0, i32 0
-	call void @putstr(i8* %_t159)
+	store i32 %_x96, i32* %_x90, align 4
+	%_x98 = load i32, i32* %_x90, align 4
+	%_x99 = sdiv i32 %_x98, 8
+	%_x100 = sdiv i32 %_x99, 16
+	%_x101 = sdiv i32 %_x100, 256
+	%_t102 = getelementptr inbounds [21 x i8], [21 x i8]* @.str10, i32 0, i32 0
+	call void @putstr(i8* %_t102)
+	call void @putint(i32 %_x101)
+	%_t103 = getelementptr inbounds [2 x i8], [2 x i8]* @.str11, i32 0, i32 0
+	call void @putstr(i8* %_t103)
+	%_x104 = load i32, i32* %_x90, align 4
+	%_x105 = mul i32 12, %_x104
+	%_x106 = sdiv i32 %_x105, 7
+	%_x107 = mul i32 %_x106, 23
+	%_x108 = sub i32 %_x107, 2222
+	%_x109 = add i32 %_x108, 34
+	%_x110 = srem i32 %_x109, 6
+	%_x111 = mul i32 %_x110, 999
+	%_x112 = sub i32 %_x111, 1222
+	%_t113 = alloca i32, align 4
+	%_x114 = getelementptr inbounds i32, i32* %_t113, i32 0
+	; store 115
+	store i32 %_x112, i32* %_x114, align 4
+	%_x116 = load i32, i32* %_x114, align 4
+	%_t117 = getelementptr inbounds [34 x i8], [34 x i8]* @.str12, i32 0, i32 0
+	call void @putstr(i8* %_t117)
+	call void @putint(i32 %_x116)
+	%_t118 = getelementptr inbounds [2 x i8], [2 x i8]* @.str13, i32 0, i32 0
+	call void @putstr(i8* %_t118)
 	ret i32 0
 }
 

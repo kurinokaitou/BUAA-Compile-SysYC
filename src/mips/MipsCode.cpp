@@ -72,7 +72,7 @@ void MipsFunc::toCode(std::ostream& os) {
 }
 
 void MipsBasicBlock::toCode(std::ostream& os) {
-    os << "_b" << MipsBasicBlock::s_bbMapper.get(this) << ":" << std::endl;
+    os << ".b" << MipsBasicBlock::s_bbMapper.get(this) << ":" << std::endl;
     for (auto& inst : m_insts) {
         os << "\t";
         inst->toCode(os);
@@ -97,11 +97,11 @@ void MipsMove::toCode(std::ostream& os) {
 }
 void MipsBranch::toCode(std::ostream& os) {
     os << "beq " << m_lhs << ", " << m_rhs << ", "
-       << "_b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
+       << ".b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
 }
 void MipsJump::toCode(std::ostream& os) {
     os << "j "
-       << "_b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
+       << ".b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
 }
 void MipsReturn::toCode(std::ostream& os) {
     if (m_retFunc->getIrFunc()->getFuncItem()->getName() == "main") {
@@ -131,7 +131,11 @@ void MipsStore::toCode(std::ostream& os) {
     os << "sw " << m_data << ", " << m_offset << "(" << m_addr << ")" << std::endl;
 }
 void MipsCompare::toCode(std::ostream& os) {
-    os << m_cond << " " << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;
+    std::string imm = " ";
+    if (m_rhs.isImm() && m_cond == MipsCond::Lt) { // slti
+        imm = "i ";
+    }
+    os << m_cond << imm << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;
 }
 void MipsCall::toCode(std::ostream& os) {
     os << "jal " << m_func->getName() << std::endl;

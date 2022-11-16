@@ -21,9 +21,11 @@ int f(int a[], int x) {
     if (t != 0) {
         return t;
     } else {
-        writeElement(a, x-1, f(a, x-1));
-        writeElement(a, x-2, f(a, x-2));
-        return f(a, x-1) + f(a, x-2);
+        int l = f(a, x-1);
+        int r = f(a, x-2);
+        writeElement(a, x-1, l);
+        writeElement(a, x-2, r);
+        return l + r;
     }
     return 0;
 }
