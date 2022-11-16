@@ -1,18 +1,19 @@
-i32 
-i32 1431993065
-i32 1
-i32 10
+i32 100
 
-int func()
-int func1(i32 0)
+int fun(i32 )
 int main()
+i32 
+
+i32 0
+i32 0
+i32 
+i32 0
 
 i32 0
 
+i32 
+i32 
 i32 0
-i32 0
-i32 0
-
 
 
 

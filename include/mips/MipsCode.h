@@ -293,6 +293,7 @@ struct MipsOperand {
 
     bool isVirtual() const { return state == State::Virtual; }
     bool isImm() const { return state == State::Immediate; }
+    bool isAllocated() const { return state == State::Allocated; }
     bool isPrecolored() const { return state == State::PreColored; }
     bool isReg() const { return state == State::PreColored || state == State::Allocated || state == State::Virtual; }
     bool needsColor() const { return state == State::Virtual || state == State::PreColored; }
@@ -314,7 +315,11 @@ struct MipsOperand {
     }
 
     friend std::ostream& operator<<(std::ostream& os, const MipsOperand& op) {
-        os << std::string(op);
+        if (op.isAllocated() || op.isPrecolored()) {
+            os << s_realRegMap[(MipsReg)op.value];
+        } else {
+            os << std::string(op);
+        }
         return os;
     }
 };

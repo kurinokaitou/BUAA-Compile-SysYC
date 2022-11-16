@@ -1,73 +1,94 @@
 .data
-arr:
-	.word 0
-	.word 0
-	.word 0
-	.word 0
-a:
-	.word 0
-n:
-	.word 1
-c:
-	.word 10
+CONSTANT:
+	.word 100
 .text
 main:
-	subu $29, $29, 12
+	subu $29, $29, 2064
 _b0:
-	addu $11, $29, 0
-	li $8, 1
-	sw $8, 0($11)
-	addu $10, $29, 4
-	li $8, 2
-	sw $8, 0($10)
-	addu $9, $29, 8
-	lw $8, 0($11)
-	seq $8, $8, 1
-	move $8, $8
-	beq $8, 0, _b2
+	addu $t5, $sp, 0
+	li $t0, 0
+	sw $t0, 0($t5)
+	addu $t1, $sp, 4
+	li $t0, 1
+	sw $t0, 0($t1)
+	lw $t0, 0($t1)
+	addu $t4, $sp, 8
+	addu $t1, $sp, 28
+	addu $t2, $t4, 12
+	li $t0, 1
+	sw $t0, 0($t2)
+	addu $t0, $t1, 8
+	addu $t2, $t0, 4
+	li $t0, 1
+	sw $t0, 0($t2)
+	addu $t0, $t1, 16
+	addu $t2, $t0, 4
+	li $t0, 2
+	sw $t0, 0($t2)
+	addu $t0, $t4, 12
+	lw $t0, 0($t0)
+	addu $t0, $t1, 8
+	addu $t0, $t0, 4
+	lw $t0, 0($t0)
+	addu $t3, $sp, 52
+	li $t0, 1
+	sw $t0, 0($t3)
+	lw $t0, 0($t3)
+	addu $t0, $t0, 2
+	move $t2, $t4
+	mulu $t0, $t0, 4
+	addu $t2, $t0, $t2
+	lw $t0, 0($t2)
+	lw $t0, 0($t3)
+	addu $t0, $t0, 1
+	lw $t2, 0($t3)
+	move $t1, $t1
+	mulu $t0, $t0, 8
+	addu $t1, $t0, $t1
+	move $t1, $t1
+	mulu $t0, $t2, 4
+	addu $t1, $t0, $t1
+	lw $t0, 0($t1)
+	addu $t1, $sp, 56
+	li $t0, 1
+	sw $t0, 0($t1)
+	j _b1
 
 _b1:
-	lw $8, 0($10)
-	sle $8, $8, 1
-	move $8, $8
-	j _b2
+	lw $t0, 0($t1)
+	sne $t0, $t0, 3
+	beq $t0, 0, _b3
 
 _b2:
-	move $8, $8
-	sne $8, $8, 0
-	beq $8, 0, _b4
+	lw $t0, 0($t1)
+	lw $t0, 0($t1)
+	addu $t0, $t0, 1
+	sw $t0, 0($t1)
+	j _b1
 
 _b3:
-	li $8, 0
-	sw $8, 0($9)
-	j _b5
-
-_b4:
-	li $8, 1
-	sw $8, 0($9)
-	j _b5
-
-_b5:
+	addu $a0, $sp, 60
+	lw $t1, 0($t1)
+	lw $t0, 0($t5)
+	addu $t0, $t1, $t0
+	addu $t1, $t0, 1
+	move $a0, $a0
+	move $a0, $a0
+	jal fun
+	move $t0, $v0
+	addu $t0, $t1, $t0
+	addu $t1, $sp, 2060
+	sw $t0, 0($t1)
+	lw $t0, 0($t1)
+	lw $t0, 0($t1)
+	li $v0, 0
 	li $v0, 10
 	syscall
 
 
-func:
-_b6:
-	la $8, a
-	lw $8, 0($8)
-	jr $ra
-
-
-func1:
-	subu $29, $29, 4
-_b7:
-	move $4, $4
-	addu $8, $29, 0
-	sw $4, 0($8)
-	lw $8, 0($8)
-	addu $8, $8, 1
-	addu $29, $29, 4
+fun:
+_b4:
+	li $v0, 0
 	jr $ra
 
 

@@ -267,7 +267,7 @@ void MipsContext::convertReturnInst(ReturnInst* inst) {
     if (inst->getReturnValue()) {
         auto val = resolveValue(inst->getReturnValue());
         // move val to v0
-        auto mvInst = new MipsMove(MipsOperand::R(MipsReg::v0), val);
+        auto mvInst = m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), val));
         auto returnInst = m_mipsBasicBlock->pushBackInst(new MipsReturn(m_mipsFunc));
         m_mipsBasicBlock->setControlTransferInst(mvInst);
     } else {
