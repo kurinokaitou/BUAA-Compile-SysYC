@@ -12,6 +12,6 @@ enum class MipsCodeType {
     Compare,
     Call,
     Global,
-    Comment, // for printing comments
+    Print, // for printing
 };
 #endif

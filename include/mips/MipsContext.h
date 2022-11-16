@@ -27,6 +27,7 @@ private:
     void convertCallInst(CallInst* inst);
     void convertAllocaInst(AllocaInst* inst);
     void convertPhiInst(PhiInst* inst);
+    void convertPrintInst(PrintInst* inst);
 
 private:
     MipsModule m_module;

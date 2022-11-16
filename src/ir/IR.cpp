@@ -6,6 +6,7 @@ IndexMapper<BasicBlock> BasicBlock::s_bbMapper;
 std::map<int, ConstValue*> ConstValue::POOL;
 std::map<std::string, IrFunc*> IrModule::s_builtinFuncs;
 std::set<IrFunc*> IrModule::s_usedBuiltinFuncs;
+std::map<std::string, FuncItem*> IrFunc::s_builtinFuncItemsMap;
 
 std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
     if (!m_insts.empty()) {
@@ -422,7 +423,6 @@ void PrintInst::printPutStr(StringVariable* strPart, std::ostream& os) {
 void PrintInst::toCode(std::ostream& os) {
     int partsNum = m_strParts.size();
     if (partsNum == 0) { // 只有 %d
-        IrModule::getBuiltinFunc("putint");
         bool flag = true;
         for (auto argIt = m_args.begin(); argIt != m_args.end(); argIt++) {
             if (argIt != m_args.begin()) {
@@ -430,12 +430,13 @@ void PrintInst::toCode(std::ostream& os) {
             }
             printPutInt(*argIt, os);
         }
-    } else if (partsNum == 1) { // 只有 "str"
-        IrModule::getBuiltinFunc("putstr");
-        printPutStr(m_strParts[0], os);
+    } else if (partsNum == 1) { // "%d" pr "str"
+        if (m_strParts[0]) {
+            printPutStr(m_strParts[0], os);
+        } else {
+            printPutInt(m_args[0], os);
+        }
     } else {
-        IrModule::getBuiltinFunc("putint");
-        IrModule::getBuiltinFunc("putstr");
         int argCnt = 0;
         for (auto it = m_strParts.begin(); it != m_strParts.end(); it++) {
             if (it != m_strParts.begin()) {

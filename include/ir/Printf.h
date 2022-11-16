@@ -33,17 +33,17 @@ define dso_local void @putstr(i8* %0) #0 {
 
 static const std::string s_rawMipsPrint = R"(
 getint:
-	li $v0,5
+	li $v0, 5
 	syscall
 	jr $ra
 
 putint:
-	li $v0,1
+	li $v0, 1
 	syscall
 	jr $ra
 
 putstr:
-	li $v0,4
+	li $v0, 4
 	syscall
 	jr $ra
 )";

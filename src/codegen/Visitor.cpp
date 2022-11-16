@@ -1014,7 +1014,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         node->nextChild(2); // jump PRINTTK & '('
         auto leafNode = std::dynamic_pointer_cast<VNodeLeaf>(*node->getChildIter());
         node->nextChild(); // jump STRCON
-        const std::string& formatStr = leafNode->getToken().literal;
+        std::string formatStr = leafNode->getToken().literal;
         if (formatStr == "\"\"\"\"") return;
         int lineNum = leafNode->getToken().lineNum;
         int count = 0;
@@ -1025,6 +1025,7 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         }
         std::vector<std::string> parts;
         std::vector<bool> place;
+        replaceAll(formatStr, "\"", "");
         splitFormatString(formatStr, parts, place);
         std::vector<SymbolTableItem*> items;
         while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {

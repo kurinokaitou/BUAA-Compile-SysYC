@@ -25,6 +25,10 @@ void MipsModule::toCode(std::ostream& os) {
             os << "\t.word " << 0 << "\n";
         }
     }
+    for (auto& str : m_strs) {
+        os << str->getName() << ": .ascii \"" << str->getRawStr() << "\"\n";
+    }
+    os << std::endl;
     os << ".text" << std::endl;
     MipsFunc* mainFunc = nullptr;
     for (auto& func : m_funcs) {
@@ -78,6 +82,10 @@ void MipsBasicBlock::toCode(std::ostream& os) {
 
 void MipsGlobal::toCode(std::ostream& os) {
     os << "la " << m_dst << ", " << m_sym->getName() << std::endl;
+}
+
+void MipsString::toCode(std::ostream& os) {
+    os << "la " << m_dst << ", " << m_strVar->getName() << std::endl;
 }
 
 void MipsMove::toCode(std::ostream& os) {
@@ -164,6 +172,8 @@ std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst
         //def.push_back(MipsOperand::R(MipsReg::ip));
     } else if (auto x = dynamic_cast<MipsGlobal*>(inst)) {
         def = {x->m_dst};
+    } else if (auto x = dynamic_cast<MipsString*>(inst)) {
+        def = {x->m_dst};
     } else if (dynamic_cast<MipsReturn*>(inst)) {
         // ret
         use.push_back(MipsOperand::R(MipsReg::v0));
@@ -194,6 +204,8 @@ std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst) 
     } else if (dynamic_cast<MipsCall*>(inst)) {
         // intentionally blank
     } else if (auto x = dynamic_cast<MipsGlobal*>(inst)) {
+        def = {&x->m_dst};
+    } else if (auto x = dynamic_cast<MipsString*>(inst)) {
         def = {&x->m_dst};
     }
     return {def, use};

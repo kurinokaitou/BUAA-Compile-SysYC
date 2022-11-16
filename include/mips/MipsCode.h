@@ -123,11 +123,16 @@ public:
         m_globs.push_back(glob);
         return m_globs.back();
     }
+    StringVariable* addStr(StringVariable* str) {
+        m_strs.push_back(str);
+        return m_strs.back();
+    }
     void toCode(std::ostream& os);
 
 private:
     std::vector<std::unique_ptr<MipsFunc>> m_funcs;
     std::vector<GlobalVariable*> m_globs;
+    std::vector<StringVariable*> m_strs;
 };
 
 class MipsFunc {
@@ -531,6 +536,20 @@ public:
 private:
     MipsOperand m_dst;
     SymbolTableItem* m_sym;
+};
+
+class MipsString : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
+public:
+    MipsString(MipsOperand dst, StringVariable* strVar) :
+        MipsInst(MipsCodeType::Global), m_strVar(strVar), m_dst(dst) {}
+    virtual void toCode(std::ostream& os) override;
+
+private:
+    MipsOperand m_dst;
+    StringVariable* m_strVar;
 };
 
 std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);

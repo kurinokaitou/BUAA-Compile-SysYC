@@ -191,6 +191,7 @@ public:
     explicit IrFunc(const std::string& funcName, const std::string& builtinArgType, ValueTypeEnum retType) :
         m_isBuiltin(true), m_builtinArgType(builtinArgType) {
         m_funcItem = new FuncItem(funcName, retType);
+        s_builtinFuncItemsMap[funcName] = m_funcItem;
     }
     BasicBlock* firstBasicBlock() {
         return m_basicBlocks.front().get();
@@ -231,6 +232,7 @@ private:
 public:
     std::set<IrFunc*> callee;
     std::set<IrFunc*> caller;
+    static std::map<std::string, FuncItem*> s_builtinFuncItemsMap;
 };
 
 class GlobalVariable : public Value {
@@ -256,7 +258,6 @@ class StringVariable : public Value {
 public:
     explicit StringVariable(std::string name, std::string str) :
         Value(IRType::Global), m_name(name), m_str(str) {
-        replaceAll(m_str, "\"", "");
         int num = replaceAll(m_str, "\\n", "\\0a");
         m_len = m_str.size() - num * 2 + 1;
         m_str += "\\00";
@@ -267,6 +268,11 @@ public:
     }
     void printStrType(std::ostream& os);
     void printString(std::ostream& os);
+    const std::string& getName() { return m_name; }
+    const std::string& getRawStr() {
+        replaceAll(m_str, "\\0a", "\\n");
+        return m_str;
+    }
 
 private:
     std::string m_name;
@@ -618,6 +624,8 @@ private:
 };
 
 class PrintInst : public Inst {
+    friend class MipsContext;
+
 public:
     explicit PrintInst(const std::vector<StringVariable*>& strParts, std::vector<Value*> args) :
         Inst(IRType::Print) {
