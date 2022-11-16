@@ -139,6 +139,9 @@ std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst
     } else if (auto x = dynamic_cast<MipsStore*>(inst)) {
         use = {x->m_data, x->m_addr};
     } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
+        def = {x->m_dst};
+        use = {x->m_lhs, x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsBranch*>(inst)) {
         use = {x->m_lhs, x->m_rhs};
     } else if (auto x = dynamic_cast<MipsCall*>(inst)) {
         // args (also caller save)
@@ -175,6 +178,9 @@ std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst) 
     } else if (auto x = dynamic_cast<MipsStore*>(inst)) {
         use = {&x->m_data, &x->m_addr};
     } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
+        def = {&x->m_dst};
+        use = {&x->m_lhs, &x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsBranch*>(inst)) {
         use = {&x->m_lhs, &x->m_rhs};
     } else if (dynamic_cast<MipsCall*>(inst)) {
         // intentionally blank

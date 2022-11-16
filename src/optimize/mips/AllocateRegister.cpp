@@ -97,7 +97,7 @@ void allocateRegister(MipsModule& module) {
             // for heuristic
             std::map<MipsOperand, int> loopCnt;
             auto& basicBlocks = f->getMipsBasicBlocks();
-            // allocatable registers: r0 to r11, r12(ip), lr
+            // allocatable registers: t0 to t9
             constexpr int k = (int)MipsReg::t9 - (int)MipsReg::t0 + 1; //+ 1;
             // init degree for pre colored nodes
             for (int i = (int)MipsReg::zero; i <= (int)MipsReg::ra; i++) {
@@ -403,11 +403,9 @@ void allocateRegister(MipsModule& module) {
                     auto n = selectStack.back();
                     selectStack.pop_back();
                     std::set<int> okColors;
-                    for (int i = 0; i < k - 1; i++) {
+                    for (int i = (int)MipsReg::t0; i <= (int)MipsReg::t9; i++) {
                         okColors.insert(i);
                     }
-                    // ir -> ra
-                    okColors.insert((int)MipsReg::ra);
 
                     for (auto w : adjList[n]) {
                         auto a = getAlias(w);
