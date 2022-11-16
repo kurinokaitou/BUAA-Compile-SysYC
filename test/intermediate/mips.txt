@@ -1,0 +1,376 @@
+.data
+aaa:
+	.word 1
+bbb:
+	.word 2
+ccc:
+	.word 3
+ggg:
+	.word 3
+hhh:
+	.word -1
+iii:
+	.word 2
+arr1:
+	.word 0
+	.word 1
+arr2:
+	.word 0
+arr3:
+	.word 1
+	.word 2
+	.word 3
+	.word 4
+.str1: .ascii "19231240\n\00"
+.str2: .ascii "\n\00"
+.str3: .ascii "\n\00"
+.str4: .ascii "\n\00"
+.str5: .ascii "\n\00"
+.str6: .ascii "\n\00"
+.str7: .ascii "\n\00"
+
+.text
+main:
+_b0:
+	addu $t7, $sp, 0
+	addu $s0, $sp, 4
+	li $t0, 0
+	sw $t0, 0($s0)
+	li $t0, 1
+	sw $t0, 4($s0)
+	li $t0, 2
+	sw $t0, 8($s0)
+	addu $t6, $sp, 16
+	li $t0, 1
+	sw $t0, 0($t6)
+	li $t0, 2
+	sw $t0, 4($t6)
+	li $t0, 3
+	sw $t0, 8($t6)
+	li $t0, 4
+	sw $t0, 12($t6)
+	addu $t5, $sp, 32
+	li $t0, 2
+	sw $t0, 0($t5)
+	addu $t4, $sp, 36
+	li $t0, 3
+	sw $t0, 0($t4)
+	lw $t1, 0($t5)
+	lw $t0, 0($t4)
+	addu $t0, $t1, $t0
+	addu $t3, $sp, 40
+	sw $t0, 0($t3)
+	addu $t2, $sp, 44
+	li $t0, 0
+	sw $t0, 0($t2)
+	j _b1
+
+_b1:
+	li $t0, 0
+	sne $t0, $t0, 0
+	beq $t0, 0, _b6
+
+_b2:
+	lw $t0, 0($t2)
+	move $t1, $s0
+	mulu $t0, $t0, 4
+	addu $t1, $t0, $t1
+	lw $t0, 0($t1)
+	seq $t0, $t0, 3
+	beq $t0, 0, _b4
+
+_b3:
+	j _b6
+
+_b4:
+	j _b1
+
+_b5:
+	lw $t0, 0($t2)
+	move $t1, $s0
+	mulu $t0, $t0, 4
+	addu $t1, $t0, $t1
+	li $t0, 1
+	sw $t0, 0($t1)
+	lw $t0, 0($t2)
+	addu $t0, $t0, 1
+	sw $t0, 0($t2)
+	j _b1
+
+_b6:
+	addu $t0, $t6, 8
+	addu $t1, $t0, 4
+	addu $t0, $s0, 4
+	lw $t0, 0($t0)
+	sw $t0, 0($t1)
+	addu $t0, $t6, 8
+	addu $t0, $t0, 4
+	lw $t0, 0($t0)
+	seq $t0, $t0, 1
+	beq $t0, 0, _b8
+
+_b7:
+	addu $t0, $t6, 8
+	addu $t1, $t0, 4
+	li $t0, 1
+	sw $t0, 0($t1)
+	j _b9
+
+_b8:
+	addu $t0, $t6, 8
+	addu $t1, $t0, 4
+	li $t0, 0
+	sw $t0, 0($t1)
+	j _b9
+
+_b9:
+	jal getint
+	move $t0, $v0
+	sw $t0, 0($t7)
+	lw $t1, 0($t4)
+	lw $t0, 0($t3)
+	addu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	lw $t1, 0($t4)
+	lw $t0, 0($t3)
+	mulu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	lw $t1, 0($t4)
+	lw $t0, 0($t3)
+	subu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	lw $t1, 0($t4)
+	lw $t0, 0($t3)
+	addu $t1, $t1, $t0
+	lw $t0, 0($t3)
+	addu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	lw $t1, 0($t4)
+	li $t0, 1
+	divu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	li $t0, 1
+	sw $t0, 0($t3)
+	lw $t1, 0($t4)
+	li $t0, 1
+	divu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	lw $t1, 0($t4)
+	li $t0, 1
+	remu $t0, $t1, $t0
+	sw $t0, 0($t5)
+	addu $t3, $sp, 48
+	li $t0, 1
+	sw $t0, 0($t3)
+	addu $t2, $sp, 52
+	li $t0, 0
+	sw $t0, 0($t2)
+	addu $t0, $sp, 56
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	addu $t0, $t1, $t0
+	sne $t0, $t0, 0
+	beq $t0, 0, _b11
+
+_b10:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b12
+
+_b11:
+	j _b12
+
+_b12:
+	lw $t0, 0($t2)
+	seq $t0, $t0, 0
+	beq $t0, 0, _b14
+
+_b13:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b15
+
+_b14:
+	j _b15
+
+_b15:
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	subu $t0, $t1, $t0
+	sne $t0, $t0, 0
+	beq $t0, 0, _b17
+
+_b16:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b18
+
+_b17:
+	j _b18
+
+_b18:
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	slt $t0, $t1, $t0
+	beq $t0, 0, _b20
+
+_b19:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b21
+
+_b20:
+	j _b21
+
+_b21:
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	sle $t0, $t1, $t0
+	beq $t0, 0, _b23
+
+_b22:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b24
+
+_b23:
+	j _b24
+
+_b24:
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	sge $t0, $t1, $t0
+	beq $t0, 0, _b26
+
+_b25:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b27
+
+_b26:
+	j _b27
+
+_b27:
+	lw $t1, 0($t3)
+	lw $t0, 0($t2)
+	sne $t0, $t1, $t0
+	beq $t0, 0, _b29
+
+_b28:
+	li $t0, 1
+	sw $t0, 0($t3)
+	j _b30
+
+_b29:
+	j _b30
+
+_b30:
+	la $a0, .str1
+	jal putstr
+	lw $a0, 0($t7)
+	move $a0, $a0
+	jal putint
+	la $a0, .str2
+	jal putstr
+	move $t0, $s0
+	lw $a0, 0($t0)
+	move $a0, $a0
+	jal putint
+	la $a0, .str3
+	jal putstr
+	move $t0, $s0
+	lw $a0, 0($t0)
+	move $a0, $a0
+	jal putint
+	la $a0, .str4
+	jal putstr
+	move $t0, $s0
+	lw $t0, 0($t0)
+	move $a0, $t0
+	jal putint
+	la $a0, .str5
+	jal putstr
+	move $t0, $s0
+	lw $a0, 0($t0)
+	move $a0, $a0
+	jal putint
+	la $a0, .str6
+	jal putstr
+	move $t0, $s0
+	lw $t0, 0($t0)
+	move $a0, $t0
+	jal putint
+	la $a0, .str7
+	jal putstr
+	li $v0, 0
+	li $v0, 10
+	syscall
+
+
+nothing:
+	subu $sp, $sp, 4
+	sw $ra, 0($sp)
+_b31:
+
+
+nothing1:
+	subu $sp, $sp, 8
+	sw $t0, 4($sp)
+	sw $ra, 0($sp)
+	subu $sp, $sp, 4
+_b32:
+	move $a0, $a0
+	addu $t0, $sp, 0
+	sw $a0, 0($t0)
+
+
+nothing2:
+	subu $sp, $sp, 12
+	sw $t0, 8($sp)
+	sw $t1, 4($sp)
+	sw $ra, 0($sp)
+	subu $sp, $sp, 12
+_b33:
+	move $a2, $a2
+	move $t0, $a1
+	move $a0, $a0
+	addu $t1, $sp, 0
+	sw $a0, 0($t1)
+	addu $t1, $sp, 4
+	sw $t0, 0($t1)
+	addu $t0, $sp, 8
+	sw $a2, 0($t0)
+
+
+nothing3:
+	subu $sp, $sp, 4
+	sw $ra, 0($sp)
+_b34:
+
+
+zero:
+	subu $sp, $sp, 4
+	sw $ra, 0($sp)
+_b35:
+	li $v0, 0
+		lw $ra, 0($sp)
+	addu $sp, $sp, 4
+	jr $ra
+
+
+
+getint:
+	li $v0, 5
+	syscall
+	jr $ra
+
+putint:
+	li $v0, 1
+	syscall
+	jr $ra
+
+putstr:
+	li $v0, 4
+	syscall
+	jr $ra
+

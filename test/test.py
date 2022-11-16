@@ -7,8 +7,8 @@ TESTCASE_DIR = "./testfile/"
 TEST_INPUT_DIR = "./input/"
 TEST_OUTPUT_DIR = "./output/"
 TEST_INPUT = True # 【修改】是否提供输入
-RUN_MARS = False #【修改】是否运行mars
-RUN_LLVM = True #【修改】是否运行lli
+RUN_MARS = True #【修改】是否运行mars
+RUN_LLVM = False #【修改】是否运行lli
 
 recorder = Recorder()
 

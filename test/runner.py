@@ -58,7 +58,7 @@ class Runner:
         return self.stdInput    
 
     def runMars(self):
-        cmd = ['java','-jar','mars.jar','mips.txt', 'nc']
+        cmd = ['java','-jar','mars.jar',INTERMEDIATE_DIR+'mips.txt', 'nc']
         cwd = './'
         process = subprocess.Popen(args=cmd,
                                     cwd=cwd,
@@ -93,7 +93,7 @@ class Runner:
         self.writeToTestFile()
         self.writeToOutputFile()
         self.writeToInputFile()
-        cmd = ['../../dist/sysyc', '--dump-ir', 'llvm_ir.txt', 'testfile.txt']   
+        cmd = ['../../dist/sysyc', '--dump-ir', 'llvm_ir.txt', '--dump-mips', 'mips.txt' 'testfile.txt']   
         cwd = INTERMEDIATE_DIR
         process = subprocess.run(args=cmd,
                                     cwd=cwd,

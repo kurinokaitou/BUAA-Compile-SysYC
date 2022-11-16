@@ -3,6 +3,7 @@
 
 void computeStackInfo(MipsModule& module) {
     for (auto& f : module.m_funcs) {
+        f->usedCalleeSavedRegs.insert(MipsReg::ra);
         for (auto& bb : f->getMipsBasicBlocks()) {
             auto& insts = bb->getMipsInsts();
             for (auto& inst : insts) {
