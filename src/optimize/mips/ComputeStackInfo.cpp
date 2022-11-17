@@ -17,16 +17,13 @@ void computeStackInfo(MipsModule& module) {
             }
         }
 
-        // // fixup arg access
-        // // r4-r11, lr
-        // int savedRegs = f->usedCalleeSavedRegs.size();
+        // fixup arg access
+        int savedRegs = f->usedCalleeSavedRegs.size();
 
-        // for (auto& spArgInst : f->spArgFixup) {
-        //     // mv r0, imm
-        //     // ldr, [sp, r0]
-        //     if (auto x = dynamic_cast<MipsMove*>(spArgInst)) {
-        //         x->getRhs().value += f->getStackSize() + 4 * savedRegs;
-        //     }
-        // }
+        for (auto& spArgInst : f->spArgFixup) {
+            if (auto x = dynamic_cast<MipsLoad*>(spArgInst)) {
+                x->setOffset(x->getOffset() + f->getStackSize() + 4 * savedRegs);
+            }
+        }
     }
 }

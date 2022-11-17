@@ -463,6 +463,8 @@ public:
     MipsAccess(MipsCodeType type, MipsOperand addr, int offset) :
         MipsInst(type), m_addr(addr), m_offset(offset) {}
     virtual void toCode(std::ostream& os) override{};
+    void setOffset(int offset) { m_offset = offset; }
+    int getOffset() { return m_offset; }
 
 protected:
     MipsOperand m_addr;
