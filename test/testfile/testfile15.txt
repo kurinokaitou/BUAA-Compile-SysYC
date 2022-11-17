@@ -1,52 +1,25 @@
-void f0() {
-	
-} 
-
-int main()
-{
-	// printf("  "{, Exp}) 
-	printf("20373361\n");
-	printf("");
-	const int c_tool = 20;
-	const int ci_a = c_tool%3, ca_a[3/*hhh*/] = {c_tool+1, -2, c_tool-1};
-	const int ca_b[2][(1+1)] = {{1, c_tool*2}, {c_tool/3, 5}};
-	printf("%d ia-%d aa-%d-%d-%d ab-%d-%d-%d-%d\n", 1+0, ci_a, ca_a[0], ca_a[1], ca_a[1+1], ca_b[c_tool - 20][0], ca_b[0][1], ca_b[1][0], ca_b[1][1]); 
-
-
-	int tool_;
-	tool_ = +-+10; 
-	int i_a;
-	int a_a[3];
-	
-	int t1 = 13, t2;
-	t2 = getint(); // 28
-	a_a[0] = (t1 + (t2 % 3)) / 2;
-	a_a[1] = ((((97))));
-	a_a[t1 - 11] = a_a[0] * (9 - a_a[1]);
-	int i_b = c_tool/19, a_b[1] = {10}, a_c[2][1] = {{tool_},{-9}};
-	i_a = getint();
-	a_c[1][0] = a_c[1][0] - +1; 
-	printf("%d %d %d %d %d %d %d %d %d\n",i_a, i_b, a_a[0], a_a[1], a_a[2], a_b[0], a_b[0], a_c[0][0], a_c[1][0]);
-	{
-		int i_a = 100;
-		{
-			100;
-			int i_a = 200;
-			printf("in in block i_a = %d\n", i_a);
-		}
-		f0(); 
-		i_a;
-		printf("in block i_a = %d\n", i_a);
-	}
-	; 
-	printf("out block i_a = %d\n", i_a);
-	;
-
-	printf("t\n");
-	printf("t\n");
-	printf("t\n");
-	printf("t");
-	
-	return 0;
+//32_while_if_test2.sy
+int ifWhile() {
+  int a;
+  a = 0;
+  int b;
+  b = 3;
+  if (a == 5) {
+    while(b == 2){
+      b = b + 2;
+    }
+    b = b + 25;
+  }
+  else 
+    while (a < 5) {
+      b = b * 2;
+      a = a + 1;
+    }
+  return (b);
 }
 
+
+int main(){
+	printf("%d", (ifWhile()));
+  return (ifWhile());
+}
