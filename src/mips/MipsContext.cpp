@@ -333,7 +333,7 @@ void MipsContext::convertCallInst(CallInst* inst) {
         // has return
         // move v0 to dst
         auto dst = resolveValue(inst);
-        m_mipsBasicBlock->pushBackInst(new MipsMove(dst, MipsOperand::R(MipsReg::v0)));
+        m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Add, dst, MipsOperand::R(MipsReg::v0), MipsOperand::I(0))); // use add dst, v0, 0 instead of move to avoid coalease
     }
 }
 

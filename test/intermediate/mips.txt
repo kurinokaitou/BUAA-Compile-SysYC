@@ -2042,7 +2042,7 @@ main:
 .b2:
 	add $t4, $sp, 4
 	jal getint
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t4)
 	add $t3, $sp, 8
 	li $t0, 0
@@ -2061,7 +2061,7 @@ main:
 	mul $t0, $t0, 4
 	add $t2, $t0, $t2
 	jal getint
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t2)
 	lw $t0, 0($t3)
 	add $t0, $t0, 1
@@ -2080,7 +2080,7 @@ main:
 	move $a0, $a0
 	move $a1, $t0
 	jal hash
-	move $t0, $v0
+	add $t0, $v0, 0
 	la $a0, .str2
 	jal putstr
 	move $a0, $t0
@@ -2099,29 +2099,29 @@ main:
 	li $a1, 89
 	li $a2, 10089
 	jal quick_pow
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t1)
 	add $t1, $t4, 4
 	li $a0, 59
 	li $a1, 122
 	li $a2, 10089
 	jal quick_pow
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t1)
 	add $t1, $t4, 8
 	li $a0, 13
 	li $a1, 3444
 	li $a2, 10089
 	jal quick_pow
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t1)
-	add $t0, $t4, 12
+	add $t1, $t4, 12
 	li $a0, 11
 	li $a1, 987
 	li $a2, 10089
 	jal quick_pow
-	move $v0, $v0
-	sw $v0, 0($t0)
+	add $t0, $v0, 0
+	sw $t0, 0($t1)
 	move $t0, $t4
 	lw $t3, 0($t0)
 	add $t0, $t4, 4
@@ -2150,15 +2150,15 @@ main:
 	jal putstr
 	add $t1, $sp, 28
 	jal getint
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t1)
 	add $t4, $sp, 32
 	jal getint
-	move $v0, $v0
-	sw $v0, 0($t4)
+	add $t0, $v0, 0
+	sw $t0, 0($t4)
 	add $t3, $sp, 36
 	jal getint
-	move $t0, $v0
+	add $t0, $v0, 0
 	sw $t0, 0($t3)
 	lw $t1, 0($t1)
 	lw $t0, 0($t4)
@@ -2180,8 +2180,8 @@ main:
 .b9:
 	add $t2, $sp, 40
 	jal getint
-	move $v0, $v0
-	sw $v0, 0($t2)
+	add $t0, $v0, 0
+	sw $t0, 0($t2)
 	lw $t1, 0($t2)
 	li $t0, 8
 	mul $t1, $t1, $t0
