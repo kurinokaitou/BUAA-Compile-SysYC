@@ -357,24 +357,43 @@ void MipsContext::convertBinaryInst(BinaryInst* inst) {
     auto rhsIsConst = inst->getRhsValue()->getIrType() == IRType::Const;
     auto lhs = resolveNoImm(inst->getLhsValue());
     // try to use imm
-    if (inst->rhsCanBeImm() && rhsIsConst) {
+    if (rhsIsConst) {
         int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
-        rhs = MipsOperand::I(imm); // might be imm or register
-    } else {
-        rhs = resolveNoImm(inst->getRhsValue());
-    }
-    if (inst->getIrType() >= IRType::Lt && inst->getIrType() <= IRType::Ne) {
-        auto compareRes = resolveValue(inst);
-        MipsCond cond = transferCond(inst->getIrType());
-        auto uses = inst->getUses();
-        auto nextInst = m_basicBlock->nextInst(inst);
-        auto cmpInst = m_mipsBasicBlock->pushBackInst(new MipsCompare(cond, compareRes, lhs, rhs));
-        if (!uses.empty() && dynamic_cast<BranchInst*>(uses[0]->user) && nextInst == uses[0]->user) { // 存在使用compareRes 的BranchInst
-            m_condMap.insert({inst, {cmpInst, compareRes}});
+        if (inst->getIrType() == IRType::Div && imm > 0) {
+            auto dst = resolveValue(inst);
+            int log = __builtin_ctz(imm);
+            if (imm == (1 << log) && log > 0) {
+                m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Srl), dst, lhs, log));
+                return;
+            }
+        } else if (inst->getIrType() == IRType::Mul) {
+            int log = 31 - __builtin_clz(imm);
+            if (imm == (1 << log) && log > 0) {
+                auto dst = resolveValue(inst);
+                m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Sll), dst, lhs, log));
+                return;
+            }
         }
     } else {
-        auto mipsCodeType = static_cast<MipsCodeType>(inst->getIrType()); // op.inc部分相同
-        m_mipsBasicBlock->pushBackInst(new MipsBinary(mipsCodeType, resolveValue(inst), lhs, rhs));
+        if (inst->rhsCanBeImm() && rhsIsConst) {
+            int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
+            rhs = MipsOperand::I(imm); // might be imm or register
+        } else {
+            rhs = resolveNoImm(inst->getRhsValue());
+        }
+        if (inst->getIrType() >= IRType::Lt && inst->getIrType() <= IRType::Ne) {
+            auto compareRes = resolveValue(inst);
+            MipsCond cond = transferCond(inst->getIrType());
+            auto uses = inst->getUses();
+            auto nextInst = m_basicBlock->nextInst(inst);
+            auto cmpInst = m_mipsBasicBlock->pushBackInst(new MipsCompare(cond, compareRes, lhs, rhs));
+            if (!uses.empty() && dynamic_cast<BranchInst*>(uses[0]->user) && nextInst == uses[0]->user) { // 存在使用compareRes 的BranchInst
+                m_condMap.insert({inst, {cmpInst, compareRes}});
+            }
+        } else {
+            auto mipsCodeType = static_cast<MipsCodeType>(inst->getIrType()); // op.inc部分相同
+            m_mipsBasicBlock->pushBackInst(new MipsBinary(mipsCodeType, resolveValue(inst), lhs, rhs));
+        }
     }
 }
 

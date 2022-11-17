@@ -17,7 +17,7 @@ void get_next(int str[], int next[])
 
 int KMP(int dst[], int src[])
 {
-    int next[4096];
+    int next[100];
     get_next(dst, next);
 
     int i = 0, j = 0;
@@ -54,7 +54,7 @@ int read_str(int buf[])
 
 int main()
 {
-    int dst[4096], src[4096];
+    int dst[100], src[100];
     read_str(dst);
     read_str(src);
     printf("%d", KMP(dst, src));

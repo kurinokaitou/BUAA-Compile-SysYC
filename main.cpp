@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
     std::filebuf in;
     int ret = 0;
 
-    parseArgs(argc, argv);
+    // parseArgs(argc, argv);
     if (!in.open(s_sourcePath, std::ios::in)) {
         std::cerr << "Fail to open the source file!" << std::endl;
         ret = 1;

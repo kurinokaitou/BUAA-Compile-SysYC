@@ -1,5 +1,5 @@
 //70_dijkstra.sy
-const int INF = 65535;
+const int INF = 10000;
 int e[16][16];
 int book[16];
 int dis[16];

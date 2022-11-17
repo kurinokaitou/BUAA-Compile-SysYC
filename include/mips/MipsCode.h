@@ -51,41 +51,38 @@ inline MipsCond oppositeCond(MipsCond c) {
     return OPPOSITE[static_cast<int>(c)];
 }
 
-struct MipsShift {
-    enum {
-        None, // no shifting
-        Sra,  // arithmetic right
-        Sll,  // logic left
-        Srl,  // logic right
+struct Shift {
+    enum class Type {
+        Sra, // arithmetic right
+        Sll, // logic left
+        Srl, // logic right
     } type;
     int shift;
 
-    MipsShift() {
+    Shift(Shift::Type t) :
+        type(t) {
         shift = 0;
-        type = None;
     }
 
-    bool isNone() const { return type == None; }
-
     explicit operator std::string() const {
-        const char* name = "";
+        std::string name = "";
         switch (type) {
-        case MipsShift::Sra:
+        case Shift::Type::Sra:
             name = "sra";
             break;
-        case MipsShift::Sll:
+        case Shift::Type::Sll:
             name = "sll";
             break;
-        case MipsShift::Srl:
+        case Shift::Type::Srl:
             name = "srl";
             break;
         default: break;
         }
-        return std::string(name) + std::to_string(shift);
+        return name;
     }
 };
 
-inline std::ostream& operator<<(std::ostream& os, const MipsShift& shift) {
+inline std::ostream& operator<<(std::ostream& os, const Shift& shift) {
     os << std::string(shift);
     return os;
 }
@@ -412,6 +409,22 @@ struct MipsMoveCompare {
         if (lhs->m_rhs != rhs->m_rhs) return lhs->m_rhs < rhs->m_rhs;
         return false;
     }
+};
+
+class MipsShift : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
+public:
+    MipsShift(Shift shiftKind, MipsOperand dst, MipsOperand lhs, int shift) :
+        MipsInst(MipsCodeType::Shift), m_shiftKind(shiftKind), m_dst(dst), m_lhs(lhs), m_shift(shift) {}
+    virtual void toCode(std::ostream& os) override;
+
+private:
+    Shift m_shiftKind;
+    MipsOperand m_dst;
+    MipsOperand m_lhs;
+    int m_shift{0};
 };
 
 class MipsBranch : public MipsInst {
