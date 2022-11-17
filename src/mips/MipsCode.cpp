@@ -17,12 +17,13 @@ void MipsModule::toCode(std::ostream& os) {
         os << globItem->getName() << ":" << std::endl;
         bool hasInit = globItem->hasInit();
         int i = 0;
-        for (auto& value : values) {
-            os << "\t.word " << (hasInit ? value : 0) << "\n";
-            i++;
-        }
-        for (; i < dimsSize; i++) {
-            os << "\t.word " << 0 << "\n";
+        if (hasInit) {
+            for (auto& value : values) {
+                os << "\t.word " << (hasInit ? value : 0) << "\n";
+                i++;
+            }
+        } else {
+            os << "\t.word " << 0 << ":" << (dimsSize == 0 ? 1 : dimsSize) << "\n";
         }
     }
     for (auto& str : m_strs) {

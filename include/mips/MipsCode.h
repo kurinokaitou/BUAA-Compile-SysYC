@@ -338,7 +338,7 @@ template <>
 struct hash<MipsOperand> {
     std::size_t operator()(MipsOperand const& m) const noexcept {
         // state (2), value (14)
-        return ((((size_t)m.state) << 14u) | (int)m.value) & 0xFFFFu;
+        return ((((size_t)m.state) << 14u) | (int)m.value) & 65534u;
     }
 };
 
