@@ -262,7 +262,13 @@ void MipsContext::convertGetElementPtrInst(GetElementPtrInst* inst) {
         auto moveInst = m_mipsBasicBlock->pushBackInst(new MipsMove(dst, arr));
         // dst <- index * mult + dst
         auto vreg = genNewVirtualReg();
-        m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Mul, vreg, index, MipsOperand::I(mult)));
+        int log = 31 - __builtin_clz(mult);
+        if (mult == (1 << log) && log > 0) {
+            m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Sll), vreg, index, log));
+
+        } else {
+            m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Mul, vreg, index, MipsOperand::I(mult)));
+        }
         m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Add, dst, vreg, dst));
     }
 }
@@ -357,6 +363,24 @@ void MipsContext::convertBinaryInst(BinaryInst* inst) {
     auto rhsIsConst = inst->getRhsValue()->getIrType() == IRType::Const;
     auto lhs = resolveNoImm(inst->getLhsValue());
     // try to use imm
+    if (rhsIsConst) {
+        int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
+        if (inst->getIrType() == IRType::Div && imm > 0) {
+            auto dst = resolveValue(inst);
+            int log = __builtin_ctz(imm);
+            if (imm == (1 << log) && log > 0) {
+                m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Srl), dst, lhs, log));
+                return;
+            }
+        } else if (inst->getIrType() == IRType::Mul) {
+            int log = 31 - __builtin_clz(imm);
+            if (imm == (1 << log) && log > 0) {
+                auto dst = resolveValue(inst);
+                m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Sll), dst, lhs, log));
+                return;
+            }
+        }
+    }
     if (inst->rhsCanBeImm() && rhsIsConst) {
         int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
         rhs = MipsOperand::I(imm); // might be imm or register

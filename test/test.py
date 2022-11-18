@@ -2,7 +2,7 @@ from runner import Runner
 from recorder import Recorder
 import time
 # CONFIG
-TEST_ID_RANGE = [1,30] #【修改】测试样例id范围
+TEST_ID_RANGE = [1,91] #【修改】测试样例id范围
 TESTCASE_DIR = "./testfile/"
 TEST_INPUT_DIR = "./input/"
 TEST_OUTPUT_DIR = "./output/"
@@ -23,8 +23,8 @@ for id in range(TEST_ID_RANGE[0], TEST_ID_RANGE[1]+1):
     runner.run()
     result = runner.check()
     recorder.addResult(id, result)
-    if not result:
-        break
+    # if not result:
+    #     break
     print("testing "+str(id) + '/' + str(TEST_ID_RANGE[1]),end='\r')
 
 end = time.time();

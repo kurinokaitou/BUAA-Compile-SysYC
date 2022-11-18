@@ -622,8 +622,10 @@ void Visitor::constDef(std::shared_ptr<VNodeBase> node) {
             m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(0)));
         } else {
             int k = 0;
+            int dimsSize = calArrayDimsSize(dims);
             for (auto& var : varArray.getValues()) {
                 m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, ConstValue::get(var), ConstValue::get(k++)));
+                if (k >= dimsSize) break;
             }
         }
         res.first->setIrValue(inst);
@@ -710,8 +712,10 @@ void Visitor::varDef(std::shared_ptr<VNodeBase> node) {
                 m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(0)));
             } else {
                 int k = 0;
+                int dimsSize = calArrayDimsSize(dims);
                 for (auto& item : itemArray.getValues()) {
                     m_ctx.basicBlock->pushBackInst(new StoreInst(res.first, inst, item->getIrValue(), ConstValue::get(k++)));
+                    if (k >= dimsSize) break;
                 }
             }
         }

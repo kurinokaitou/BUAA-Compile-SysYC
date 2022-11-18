@@ -1,31 +1,17 @@
-const int N = 123;
-const int ARR[3] = {1, 2, 3}, BRR[2][2] = {{1, 2}, {3, 4}};
-int uninit;
-int global = 123;
-int arr[3] = {4, 5, 6}, brr[2][2] = {{1, 2}, {3, 4}};
-
-int add(int a, int b){
-   return 0;
-}
-
-int getArr(int arr[][2]){
-   return 0;
-}
-
-int printArr(int arr[]){
-   return 0;
-}
-
-void print(){
-
-}
-
-int main ( ) {
-   {}
-   int a = 123;
-   a = 114514;
-   arr[0] = 1919810;
-   brr[0][0] = 114514;
-   printf("20373389");
-   return 0;
+//39_op_priority5.sy
+int a = 1;
+int b = 0;
+int c = 1;
+int d = 2;
+int e = 4;
+int main()
+{
+	int flag=0;
+	if(a * b / c == e + d && a * (a + b) + c <= d + e || a - (b * c) == d - a / c)
+	{
+		flag=1;
+	}
+	printf("%d", flag);
+	printf("%d", flag);
+	return flag;
 }

@@ -17,12 +17,13 @@ void MipsModule::toCode(std::ostream& os) {
         os << globItem->getName() << ":" << std::endl;
         bool hasInit = globItem->hasInit();
         int i = 0;
-        for (auto& value : values) {
-            os << "\t.word " << (hasInit ? value : 0) << "\n";
-            i++;
-        }
-        for (; i < dimsSize; i++) {
-            os << "\t.word " << 0 << "\n";
+        if (hasInit) {
+            for (auto& value : values) {
+                os << "\t.word " << (hasInit ? value : 0) << "\n";
+                i++;
+            }
+        } else {
+            os << "\t.word " << 0 << ":" << (dimsSize == 0 ? 1 : dimsSize) << "\n";
         }
     }
     for (auto& str : m_strs) {
@@ -95,6 +96,10 @@ void MipsMove::toCode(std::ostream& os) {
         os << "move " << m_dst << ", " << m_rhs << std::endl;
     }
 }
+void MipsShift::toCode(std::ostream& os) {
+    os << m_shiftKind << " " << m_dst << ", " << m_lhs << ", " << m_shift << std::endl;
+}
+
 void MipsBranch::toCode(std::ostream& os) {
     os << "beq " << m_lhs << ", " << m_rhs << ", "
        << ".b" << MipsBasicBlock::s_bbMapper.get(m_target) << std::endl;
@@ -162,6 +167,9 @@ std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst
     } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
         def = {x->m_dst};
         use = {x->m_lhs, x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsShift*>(inst)) {
+        def = {x->m_dst};
+        use = {x->m_lhs};
     } else if (auto x = dynamic_cast<MipsBranch*>(inst)) {
         use = {x->m_lhs, x->m_rhs};
     } else if (auto x = dynamic_cast<MipsCall*>(inst)) {
@@ -203,6 +211,9 @@ std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst) 
     } else if (auto x = dynamic_cast<MipsCompare*>(inst)) {
         def = {&x->m_dst};
         use = {&x->m_lhs, &x->m_rhs};
+    } else if (auto x = dynamic_cast<MipsShift*>(inst)) {
+        def = {&x->m_dst};
+        use = {&x->m_lhs};
     } else if (auto x = dynamic_cast<MipsBranch*>(inst)) {
         use = {&x->m_lhs, &x->m_rhs};
     } else if (dynamic_cast<MipsCall*>(inst)) {

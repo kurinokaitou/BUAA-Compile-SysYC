@@ -5,6 +5,7 @@ enum class MipsCodeType {
     // Binary
     Move,
     Branch,
+    Shift,
     Jump,
     Return, // Control flow
     Load,

@@ -1,26 +1,106 @@
-i32 1432008579
+i32 
+i32 32767
+i32 
+i32 32767
+i32 0
+i32 1
+i32 1
+i32 
+i32 
 
-int writeElement(i32 , i32 0, i32 0)
-int findElement(i32 , i32 0)
-void element(i32 , i32 0)
-int f(i32 , i32 0)
+int isdigit(i32 0)
+int power(i32 0, i32 0)
+int getstr(i32 )
+void intpush(i32 0)
+void chapush(i32 0)
+int intpop()
+int chapop()
+void intadd(i32 0)
+int find()
 int main()
-i32 
-i32 0
 i32 0
 
-i32 
-i32 0
 
-i32 
 i32 0
-
-i32 
+i32 0
 i32 0
 
 
 
-
-
 i32 
+i32 0
+i32 0
+
+
+
+i32 0
+
+i32 0
+
+
+
+i32 0
+
+
+
+i32 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+i32 0
+
+
+
+
+i32 0
+i32 0
+i32 0
+
+
+
+
+
+
+
+
+
+
+
+
 
