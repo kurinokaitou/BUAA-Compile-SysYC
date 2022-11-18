@@ -262,7 +262,13 @@ void MipsContext::convertGetElementPtrInst(GetElementPtrInst* inst) {
         auto moveInst = m_mipsBasicBlock->pushBackInst(new MipsMove(dst, arr));
         // dst <- index * mult + dst
         auto vreg = genNewVirtualReg();
-        m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Mul, vreg, index, MipsOperand::I(mult)));
+        int log = 31 - __builtin_clz(mult);
+        if (mult == (1 << log) && log > 0) {
+            m_mipsBasicBlock->pushBackInst(new MipsShift(Shift(Shift::Type::Sll), vreg, index, log));
+
+        } else {
+            m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Mul, vreg, index, MipsOperand::I(mult)));
+        }
         m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Add, dst, vreg, dst));
     }
 }
@@ -374,26 +380,25 @@ void MipsContext::convertBinaryInst(BinaryInst* inst) {
                 return;
             }
         }
+    }
+    if (inst->rhsCanBeImm() && rhsIsConst) {
+        int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
+        rhs = MipsOperand::I(imm); // might be imm or register
     } else {
-        if (inst->rhsCanBeImm() && rhsIsConst) {
-            int imm = dynamic_cast<ConstValue*>(inst->getRhsValue())->getImm();
-            rhs = MipsOperand::I(imm); // might be imm or register
-        } else {
-            rhs = resolveNoImm(inst->getRhsValue());
+        rhs = resolveNoImm(inst->getRhsValue());
+    }
+    if (inst->getIrType() >= IRType::Lt && inst->getIrType() <= IRType::Ne) {
+        auto compareRes = resolveValue(inst);
+        MipsCond cond = transferCond(inst->getIrType());
+        auto uses = inst->getUses();
+        auto nextInst = m_basicBlock->nextInst(inst);
+        auto cmpInst = m_mipsBasicBlock->pushBackInst(new MipsCompare(cond, compareRes, lhs, rhs));
+        if (!uses.empty() && dynamic_cast<BranchInst*>(uses[0]->user) && nextInst == uses[0]->user) { // 存在使用compareRes 的BranchInst
+            m_condMap.insert({inst, {cmpInst, compareRes}});
         }
-        if (inst->getIrType() >= IRType::Lt && inst->getIrType() <= IRType::Ne) {
-            auto compareRes = resolveValue(inst);
-            MipsCond cond = transferCond(inst->getIrType());
-            auto uses = inst->getUses();
-            auto nextInst = m_basicBlock->nextInst(inst);
-            auto cmpInst = m_mipsBasicBlock->pushBackInst(new MipsCompare(cond, compareRes, lhs, rhs));
-            if (!uses.empty() && dynamic_cast<BranchInst*>(uses[0]->user) && nextInst == uses[0]->user) { // 存在使用compareRes 的BranchInst
-                m_condMap.insert({inst, {cmpInst, compareRes}});
-            }
-        } else {
-            auto mipsCodeType = static_cast<MipsCodeType>(inst->getIrType()); // op.inc部分相同
-            m_mipsBasicBlock->pushBackInst(new MipsBinary(mipsCodeType, resolveValue(inst), lhs, rhs));
-        }
+    } else {
+        auto mipsCodeType = static_cast<MipsCodeType>(inst->getIrType()); // op.inc部分相同
+        m_mipsBasicBlock->pushBackInst(new MipsBinary(mipsCodeType, resolveValue(inst), lhs, rhs));
     }
 }
 

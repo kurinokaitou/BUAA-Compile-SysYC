@@ -1,4 +1,4 @@
-#include <ir/CallFuncGraph.h>
+#include <ir/ControlFlowGraph.h>
 #include <cassert>
 
 // 计算dom_level
