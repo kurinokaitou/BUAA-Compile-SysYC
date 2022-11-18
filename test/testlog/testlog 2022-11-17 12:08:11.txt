@@ -1,7 +1,0 @@
-test time: 2022-11-17 12:08:11
-test result: Wrong Answer
-details:
-testfile1   Accepted
-testfile2   Wrong Answer
-
-total test time: 1288.353681564331ms
