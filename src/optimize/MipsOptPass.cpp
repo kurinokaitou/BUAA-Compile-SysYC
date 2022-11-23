@@ -4,6 +4,7 @@
 #include <cmath>
 #include <map>
 #include <set>
+#include <limits>
 
 #include <mips/MipsCode.h>
 #include <ir/ControlFlowGraph.h>
@@ -99,14 +100,13 @@ void allocateRegister(MipsModule& module) {
             auto& basicBlocks = f->getMipsBasicBlocks();
             // allocatable registers: t0 to t9
             constexpr int k = (int)MipsReg::t9 - (int)MipsReg::t0 + 1; //+ 1;
-            // init degree for pre colored nodes
+            // init degree for precolored nodes
             for (int i = (int)MipsReg::v0; i <= (int)MipsReg::a3; i++) {
                 auto op = MipsOperand::R((MipsReg)i);
-                // very large
-                degree[op] = 0x40000000;
+                degree[op] = std::numeric_limits<int>::max();
             }
-            degree[MipsOperand::R(MipsReg::sp)] = 0x40000000;
-            degree[MipsOperand::R(MipsReg::ra)] = 0x40000000;
+            degree[MipsOperand::R(MipsReg::sp)] = std::numeric_limits<int>::max();
+            degree[MipsOperand::R(MipsReg::ra)] = std::numeric_limits<int>::max();
 
             // procedure AddEdge(u, v)
             auto addEdge = [&](MipsOperand u, MipsOperand v) {

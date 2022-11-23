@@ -11,15 +11,17 @@ static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
-static std::string s_dumpIrPath = "intermediate/llvm_ir.txt";
+static std::string s_dumpIrPath = "llvm_ir.txt";
 static std::string s_dumpMipsPath = "mips.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
-static bool s_dumpIr = false;
+static bool s_dumpIr = true;
 static bool s_dumpMips = true;
-static bool s_isTest = false;
+static bool s_isTest = true;
+
+static int s_optLevel = 0;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table", "--dump-error", "--dump-ir", "--dump-mips"};

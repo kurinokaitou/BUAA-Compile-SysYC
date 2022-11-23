@@ -7,6 +7,7 @@
 #include <set>
 #include <unordered_set>
 #include <map>
+#include <functional>
 
 #include "IRTypeEnum.h"
 #include <symbol/SymbolTableItem.h>
@@ -99,6 +100,7 @@ public:
         }
     };
     std::vector<Use*>& getUses() { return m_uses; }
+    void replaceAllUse(Value* value);
     IRType getIrType() const { return m_type; }
     virtual void printValue(std::ostream& os) {
         os << "%_x" << s_valueMapper.get(this);
@@ -137,6 +139,7 @@ public:
     BasicBlock() = default;
     std::vector<BasicBlock*>& getPreds() { return m_pred; }
     std::array<BasicBlock*, 2> getSuccs();
+    std::array<BasicBlock**, 2> getSuccsRef();
     Inst* pushBackInst(Inst* inst) {
         inst->m_atBlock = this;
         m_insts.push_back(std::unique_ptr<Inst>(inst));
@@ -163,6 +166,7 @@ public:
             return inst;
         }
     }
+    std::list<std::unique_ptr<Inst>>& getInsts() { return m_insts; }
     bool valid();
 
 private:
@@ -171,7 +175,7 @@ private:
     std::list<std::unique_ptr<Inst>> m_insts;
 
 public:
-    BasicBlock* idom;
+    BasicBlock* idom;                      // 直接支配节点
     std::unordered_set<BasicBlock*> domBy; // 支配它的节点集
     std::vector<BasicBlock*> doms;         // 它支配的节点集
     int domLevel;                          // dom树中的深度，根深度为0
@@ -211,7 +215,12 @@ public:
             return block;
         }
     }
-    std::vector<std::unique_ptr<BasicBlock>>& getBasicBlocks() { return m_basicBlocks; }
+    void removeBasicBlock(BasicBlock* block){
+        m_basicBlocks.remove_if([block](std::unique_ptr<BasicBlock>& bb) {
+            return block == bb.get();
+        });
+    }
+    std::list<std::unique_ptr<BasicBlock>>& getBasicBlocks() { return m_basicBlocks; }
     FuncItem* getFuncItem() { return m_funcItem; }
     bool hasReturn() { return m_funcItem->getReturnValueType() != ValueTypeEnum::VOID_TYPE; }
     void toCode(std::ostream& os);
@@ -225,7 +234,7 @@ public:
 private:
     FuncItem* m_funcItem{nullptr};
     IrModule* m_fromModule{nullptr};
-    std::vector<std::unique_ptr<BasicBlock>> m_basicBlocks;
+    std::list<std::unique_ptr<BasicBlock>> m_basicBlocks;
     bool m_isBuiltin{false};
     std::string m_builtinArgType;
 
@@ -297,6 +306,7 @@ private:
 class IrModule {
     friend class MipsModule;
     friend class MipsContext;
+    friend void memToReg(IrModule& module);
 
 public:
     IrModule() {
@@ -323,6 +333,7 @@ public:
 
     void calPredSucc();
     void addImplicitReturn();
+    void optimizeIrCode(int level);
 
     IrFunc* getFunc(FuncItem* funcItem);
     static IrFunc* getBuiltinFunc(const std::string& funcName);
@@ -493,6 +504,7 @@ public:
     virtual void printValue(std::ostream& os) override { Inst::printValue(os); };
     SymbolTableItem* getLhsSym() { return m_lhsSym; }
     Value* getArrValue() { return m_arr.value; }
+    void setArrValue(Value* v) { m_arr.value = v; }
     Value* getIndexValue() { return m_index.value; }
 
 protected:
@@ -661,6 +673,7 @@ struct IrContext {
     IrFunc* function;
     BasicBlock* basicBlock;
     std::vector<std::pair<BasicBlock*, BasicBlock*>> loopStk; // <continue, break>
+    static std::vector<std::function<void(IrModule&)>> s_irPasses;
 };
 
 #endif

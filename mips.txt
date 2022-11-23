@@ -1,0 +1,232 @@
+.data
+n:
+	.word 0:1
+
+.text
+main:
+.b0:
+	la $t4, n
+	li $t0, 10
+	sw $t0, 0($t4)
+	add $t3, $sp, 0
+	move $t1, $t3
+	li $t0, 4
+	sw $t0, 0($t1)
+	add $t1, $t3, 4
+	li $t0, 3
+	sw $t0, 0($t1)
+	add $t1, $t3, 8
+	li $t0, 9
+	sw $t0, 0($t1)
+	add $t1, $t3, 12
+	li $t0, 2
+	sw $t0, 0($t1)
+	add $t1, $t3, 16
+	li $t0, 0
+	sw $t0, 0($t1)
+	add $t1, $t3, 20
+	li $t0, 1
+	sw $t0, 0($t1)
+	add $t1, $t3, 24
+	li $t0, 6
+	sw $t0, 0($t1)
+	add $t1, $t3, 28
+	li $t0, 5
+	sw $t0, 0($t1)
+	add $t1, $t3, 32
+	li $t0, 7
+	sw $t0, 0($t1)
+	add $t1, $t3, 36
+	li $t0, 8
+	sw $t0, 0($t1)
+	move $a0, $t3
+	move $a0, $a0
+	li $a1, 0
+	li $a2, 9
+	jal QuickSort
+	add $t2, $v0, 0
+	j .b1
+
+.b1:
+	lw $t0, 0($t4)
+	slt $t0, $t2, $t0
+	beq $t0, 0, .b3
+
+.b2:
+	move $t1, $t3
+	sll $t0, $t2, 2
+	add $t1, $t0, $t1
+	lw $a0, 0($t1)
+	move $a0, $a0
+	jal putint
+	li $a0, 10
+	jal putint
+	add $t0, $t2, 1
+	j .b1
+
+.b3:
+	li $a0, 0
+	jal putint
+	li $v0, 0
+	li $v0, 10
+	syscall
+
+
+QuickSort:
+	subu $sp, $sp, 32
+	sw $t0, 28($sp)
+	sw $t1, 24($sp)
+	sw $t2, 20($sp)
+	sw $t3, 16($sp)
+	sw $t4, 12($sp)
+	sw $t5, 8($sp)
+	sw $t6, 4($sp)
+	sw $ra, 0($sp)
+.b4:
+	move $t4, $a0
+	move $t6, $a2
+	move $t5, $a1
+	slt $t0, $t5, $t6
+	beq $t0, 0, .b20
+
+.b5:
+	move $t1, $t4
+	sll $t0, $t5, 2
+	add $t1, $t0, $t1
+	lw $t3, 0($t1)
+	j .b6
+
+.b6:
+	slt $t0, $t5, $t6
+	beq $t0, 0, .b19
+
+.b7:
+	slt $t0, $t5, $t6
+	move $t0, $t0
+	beq $t0, 0, .b9
+
+.b8:
+	move $t1, $t4
+	sll $t0, $t6, 2
+	add $t1, $t0, $t1
+	lw $t1, 0($t1)
+	sub $t0, $t3, 1
+	sgt $t0, $t1, $t0
+	move $t0, $t0
+	j .b9
+
+.b9:
+	move $t0, $t0
+	sne $t0, $t0, 0
+	beq $t0, 0, .b11
+
+.b10:
+	sub $t0, $t6, 1
+	j .b7
+
+.b11:
+	slt $t0, $t5, $t6
+	beq $t0, 0, .b13
+
+.b12:
+	move $t2, $t4
+	sll $t0, $t5, 2
+	add $t2, $t0, $t2
+	move $t1, $t4
+	sll $t0, $t6, 2
+	add $t1, $t0, $t1
+	lw $t0, 0($t1)
+	sw $t0, 0($t2)
+	add $t0, $t5, 1
+	j .b13
+
+.b13:
+	slt $t0, $t5, $t6
+	move $t0, $t0
+	beq $t0, 0, .b15
+
+.b14:
+	move $t1, $t4
+	sll $t0, $t5, 2
+	add $t1, $t0, $t1
+	lw $t0, 0($t1)
+	slt $t0, $t0, $t3
+	move $t0, $t0
+	j .b15
+
+.b15:
+	move $t0, $t0
+	sne $t0, $t0, 0
+	beq $t0, 0, .b17
+
+.b16:
+	add $t0, $t5, 1
+	j .b13
+
+.b17:
+	slt $t0, $t5, $t6
+	beq $t0, 0, .b6
+
+.b18:
+	move $t2, $t4
+	sll $t0, $t6, 2
+	add $t2, $t0, $t2
+	move $t1, $t4
+	sll $t0, $t5, 2
+	add $t1, $t0, $t1
+	lw $t0, 0($t1)
+	sw $t0, 0($t2)
+	sub $t0, $t6, 1
+	j .b6
+
+.b19:
+	move $t1, $t4
+	sll $t0, $t5, 2
+	add $t1, $t0, $t1
+	sw $t3, 0($t1)
+	sub $a2, $t5, 1
+	move $a0, $t4
+	move $a0, $a0
+	move $a1, $t5
+	move $a2, $a2
+	jal QuickSort
+	add $t0, $v0, 0
+	add $a1, $t5, 1
+	move $a0, $t4
+	move $a0, $a0
+	move $a1, $a1
+	move $a2, $t6
+	jal QuickSort
+	add $t0, $v0, 0
+	j .b20
+
+.b20:
+	li $v0, 0
+		lw $ra, 0($sp)
+	lw $t6, 4($sp)
+	lw $t5, 8($sp)
+	lw $t4, 12($sp)
+	lw $t3, 16($sp)
+	lw $t2, 20($sp)
+	lw $t1, 24($sp)
+	lw $t0, 28($sp)
+	addu $sp, $sp, 32
+	jr $ra
+
+
+
+getint:
+	li $v0, 5
+	syscall
+	jr $ra
+
+putint:
+	li $v0, 1
+	syscall
+	jr $ra
+
+putstr:
+	li $v0, 4
+	syscall
+	jr $ra
+

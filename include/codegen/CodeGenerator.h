@@ -6,7 +6,7 @@
 class CodeGenerator {
 public:
     CodeGenerator(std::shared_ptr<VNodeBase> astRoot);
-    void generate();
+    void generate(int optLevel);
     void dumpTable(std::filebuf& file);
     void dumpIr(std::filebuf& file, bool isTest);
     void dumpMips(std::filebuf& file);

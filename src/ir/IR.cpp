@@ -1,6 +1,8 @@
 #include <ir/IR.h>
 #include <ir/Printf.h>
+#include <optimize/IrOptPass.h>
 
+std::vector<std::function<void(IrModule&)>> IrContext::s_irPasses{memToReg};
 IndexMapper<Value> Value::s_valueMapper;
 IndexMapper<BasicBlock> BasicBlock::s_bbMapper;
 std::map<int, ConstValue*> ConstValue::POOL;
@@ -20,6 +22,26 @@ std::array<BasicBlock*, 2> BasicBlock::getSuccs() {
         }
     }
     return {nullptr, nullptr};
+}
+
+std::array<BasicBlock**, 2> BasicBlock::getSuccsRef() {
+    if (!m_insts.empty()) {
+        auto& lastInst = m_insts.back();
+        if (auto branchInst = dynamic_cast<BranchInst*>(lastInst.get())) {
+            return {&branchInst->m_left, &branchInst->m_right};
+        } else if (auto jumpInst = dynamic_cast<JumpInst*>(lastInst.get())) {
+            return {&jumpInst->m_next, nullptr};
+        } else if (auto returnInst = dynamic_cast<ReturnInst*>(lastInst.get())) {
+            return {nullptr, nullptr};
+        }
+    }
+    return {nullptr, nullptr};
+}
+
+void Value::replaceAllUse(Value* value) {
+    for (auto use : m_uses) {
+        use->set(value);
+    }
 }
 
 bool BasicBlock::valid() {
@@ -122,6 +144,12 @@ void IrModule::addImplicitReturn() {
                 lastBlock->pushBackInst(new ReturnInst(ConstValue::get(0)));
             }
         }
+    }
+}
+
+void IrModule::optimizeIrCode(int level) {
+    for (auto& pass : IrContext::s_irPasses) {
+        pass(*this);
     }
 }
 
