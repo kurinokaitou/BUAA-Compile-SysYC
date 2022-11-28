@@ -22,7 +22,7 @@ bool Compiler::firstPass(std::filebuf& file) {
         }
 
         m_generator = std::unique_ptr<CodeGenerator>(new CodeGenerator(m_parser->getASTRoot()));
-        m_generator->generate(s_optLevel);
+        m_generator->generate(s_optLevel, s_dumpMips);
         if (s_dumpIr) {
             dumpIr(ir, s_isTest);
             ir.close();

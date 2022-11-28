@@ -406,17 +406,19 @@ void MipsContext::convertPhiInst(PhiInst* inst) {
     // 1. create vreg for each inst
     // 2. add parallel mv (lhs1, ...) = (vreg1, ...)
     // 3. add parallel mv in each bb: (vreg1, ...) = (r1, ...)
-    auto vreg = genNewVirtualReg();
-    m_lhs.emplace_back(resolveValue(inst), vreg);
     auto incomingValues = inst->getIncomingValues();
-    auto predBBs = inst->getAtBlock()->getPreds();
-    for (int i = 0; i < incomingValues.size(); i++) {
-        auto predBB = predBBs[i];
-        auto currBB = m_mipsBasicBlock;
-        m_mipsBasicBlock = m_bbMap.at(predBB);
-        auto val = resolveValue(incomingValues[i].value);
-        m_mipsBasicBlock = currBB;
-        m_mv[predBB].emplace_back(vreg, val);
+    if (!std::any_of(incomingValues.begin(), incomingValues.end(), [](Use& use) { return use.value == nullptr; })) {
+        auto vreg = genNewVirtualReg();
+        m_lhs.emplace_back(resolveValue(inst), vreg);
+        auto predBBs = inst->getAtBlock()->getPreds();
+        for (int i = 0; i < incomingValues.size(); i++) {
+            auto predBB = predBBs[i];
+            auto currBB = m_mipsBasicBlock;
+            m_mipsBasicBlock = m_bbMap.at(predBB);
+            auto val = resolveValue(incomingValues[i].value);
+            m_mipsBasicBlock = currBB;
+            m_mv[predBB].emplace_back(vreg, val);
+        }
     }
 }
 

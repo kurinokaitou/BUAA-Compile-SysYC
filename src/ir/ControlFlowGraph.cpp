@@ -19,12 +19,13 @@ void computeDomInfo(IrFunc* f) {
         all.insert(bb.get());
         bb->doms.clear(); // 顺便清空doms，与计算domBy无关
     }
-    for (auto& bb : basicBlocks) {
-        bb->domBy = all;
+    for (auto bb = std::next(basicBlocks.begin()); bb != basicBlocks.end(); bb++) {
+        (*bb)->domBy = all;
     }
     while (true) {
         bool changed = false;
-        for (auto& bb : basicBlocks) {
+        for (auto it = std::next(basicBlocks.begin()); it != basicBlocks.end(); it++) {
+            auto& bb = *it;
             for (auto it = bb->domBy.begin(); it != bb->domBy.end();) {
                 BasicBlock* x = *it;
                 // 如果bb的任何一个pred的dom不包含x，那么bb的dom也不应该包含x
@@ -40,7 +41,8 @@ void computeDomInfo(IrFunc* f) {
     }
     // 计算idom，顺便填充doms
     entry->idom = nullptr;
-    for (auto& bb : basicBlocks) {
+    for (auto it = std::next(basicBlocks.begin()); it != basicBlocks.end(); it++) {
+        auto& bb = *it;
         for (BasicBlock* d : bb->domBy) {
             // 已知d dom bb，若d != bb，则d strictly dom bb
             // 若还有：d不strictly dom任何strictly dom bb的节点，则d idom bb

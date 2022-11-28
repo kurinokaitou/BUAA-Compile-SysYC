@@ -4,13 +4,15 @@ CodeGenerator::CodeGenerator(std::shared_ptr<VNodeBase> astRoot) {
     m_visitor = std::unique_ptr<Visitor>(new Visitor(std::move(astRoot), m_table, m_irCtx));
 }
 
-void CodeGenerator::generate(int optLevel) {
+void CodeGenerator::generate(int optLevel, bool genMips) {
     m_visitor->visit();
     m_irCtx.module.calPredSucc();
     m_irCtx.module.addImplicitReturn();
     m_irCtx.module.optimizeIrCode(optLevel);
-    m_mipsCtx.convertMipsCode(m_irCtx.module);
-    m_mipsCtx.optimizeMipsCode(optLevel);
+    if (genMips) {
+        m_mipsCtx.convertMipsCode(m_irCtx.module);
+        m_mipsCtx.optimizeMipsCode(optLevel);
+    }
 }
 
 void CodeGenerator::dumpTable(std::filebuf& file) {

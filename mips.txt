@@ -44,10 +44,12 @@ main:
 	li $a1, 0
 	li $a2, 9
 	jal QuickSort
-	add $t2, $v0, 0
+	add $t0, $v0, 0
+	move $t2, $t0
 	j .b1
 
 .b1:
+	move $t2, $t2
 	lw $t0, 0($t4)
 	slt $t0, $t2, $t0
 	beq $t0, 0, .b3
@@ -62,6 +64,7 @@ main:
 	li $a0, 10
 	jal putint
 	add $t0, $t2, 1
+	move $t2, $t0
 	j .b1
 
 .b3:
@@ -73,45 +76,53 @@ main:
 
 
 QuickSort:
-	subu $sp, $sp, 32
-	sw $t0, 28($sp)
-	sw $t1, 24($sp)
-	sw $t2, 20($sp)
-	sw $t3, 16($sp)
-	sw $t4, 12($sp)
-	sw $t5, 8($sp)
-	sw $t6, 4($sp)
+	subu $sp, $sp, 40
+	sw $t0, 36($sp)
+	sw $t1, 32($sp)
+	sw $t2, 28($sp)
+	sw $t3, 24($sp)
+	sw $t4, 20($sp)
+	sw $t5, 16($sp)
+	sw $t6, 12($sp)
+	sw $t7, 8($sp)
+	sw $s0, 4($sp)
 	sw $ra, 0($sp)
 .b4:
-	move $t4, $a0
-	move $t6, $a2
-	move $t5, $a1
-	slt $t0, $t5, $t6
+	move $t6, $a0
+	move $s0, $a2
+	move $t7, $a1
+	slt $t0, $t7, $s0
 	beq $t0, 0, .b20
 
 .b5:
-	move $t1, $t4
-	sll $t0, $t5, 2
+	move $t1, $t6
+	sll $t0, $t7, 2
 	add $t1, $t0, $t1
-	lw $t3, 0($t1)
+	lw $t5, 0($t1)
+	move $t1, $s0
+	move $t4, $t7
 	j .b6
 
 .b6:
-	slt $t0, $t5, $t6
+	move $t1, $t1
+	move $t4, $t4
+	slt $t0, $t4, $t1
+	move $t1, $t1
 	beq $t0, 0, .b19
 
 .b7:
-	slt $t0, $t5, $t6
+	move $t1, $t1
+	slt $t0, $t4, $t1
 	move $t0, $t0
 	beq $t0, 0, .b9
 
 .b8:
-	move $t1, $t4
-	sll $t0, $t6, 2
-	add $t1, $t0, $t1
-	lw $t1, 0($t1)
-	sub $t0, $t3, 1
-	sgt $t0, $t1, $t0
+	move $t2, $t6
+	sll $t0, $t1, 2
+	add $t2, $t0, $t2
+	lw $t2, 0($t2)
+	sub $t0, $t5, 1
+	sgt $t0, $t2, $t0
 	move $t0, $t0
 	j .b9
 
@@ -121,36 +132,40 @@ QuickSort:
 	beq $t0, 0, .b11
 
 .b10:
-	sub $t0, $t6, 1
+	sub $t0, $t1, 1
+	move $t1, $t0
 	j .b7
 
 .b11:
-	slt $t0, $t5, $t6
-	beq $t0, 0, .b13
+	slt $t2, $t4, $t1
+	move $t0, $t4
+	beq $t2, 0, .b13
 
 .b12:
-	move $t2, $t4
-	sll $t0, $t5, 2
+	move $t3, $t6
+	sll $t0, $t4, 2
+	add $t3, $t0, $t3
+	move $t2, $t6
+	sll $t0, $t1, 2
 	add $t2, $t0, $t2
-	move $t1, $t4
-	sll $t0, $t6, 2
-	add $t1, $t0, $t1
-	lw $t0, 0($t1)
-	sw $t0, 0($t2)
-	add $t0, $t5, 1
+	lw $t0, 0($t2)
+	sw $t0, 0($t3)
+	add $t0, $t4, 1
+	move $t0, $t0
 	j .b13
 
 .b13:
-	slt $t0, $t5, $t6
+	move $t4, $t0
+	slt $t0, $t4, $t1
 	move $t0, $t0
 	beq $t0, 0, .b15
 
 .b14:
-	move $t1, $t4
-	sll $t0, $t5, 2
-	add $t1, $t0, $t1
-	lw $t0, 0($t1)
-	slt $t0, $t0, $t3
+	move $t2, $t6
+	sll $t0, $t4, 2
+	add $t2, $t0, $t2
+	lw $t0, 0($t2)
+	slt $t0, $t0, $t5
 	move $t0, $t0
 	j .b15
 
@@ -160,42 +175,47 @@ QuickSort:
 	beq $t0, 0, .b17
 
 .b16:
-	add $t0, $t5, 1
+	add $t0, $t4, 1
+	move $t0, $t0
 	j .b13
 
 .b17:
-	slt $t0, $t5, $t6
+	slt $t0, $t4, $t1
+	move $t1, $t1
+	move $t4, $t4
 	beq $t0, 0, .b6
 
 .b18:
-	move $t2, $t4
-	sll $t0, $t6, 2
+	move $t3, $t6
+	sll $t0, $t1, 2
+	add $t3, $t0, $t3
+	move $t2, $t6
+	sll $t0, $t4, 2
 	add $t2, $t0, $t2
-	move $t1, $t4
-	sll $t0, $t5, 2
-	add $t1, $t0, $t1
-	lw $t0, 0($t1)
-	sw $t0, 0($t2)
-	sub $t0, $t6, 1
+	lw $t0, 0($t2)
+	sw $t0, 0($t3)
+	sub $t0, $t1, 1
+	move $t1, $t0
+	move $t4, $t4
 	j .b6
 
 .b19:
-	move $t1, $t4
-	sll $t0, $t5, 2
+	move $t1, $t6
+	sll $t0, $t4, 2
 	add $t1, $t0, $t1
-	sw $t3, 0($t1)
-	sub $a2, $t5, 1
-	move $a0, $t4
+	sw $t5, 0($t1)
+	sub $a2, $t4, 1
+	move $a0, $t6
 	move $a0, $a0
-	move $a1, $t5
+	move $a1, $t7
 	move $a2, $a2
 	jal QuickSort
 	add $t0, $v0, 0
-	add $a1, $t5, 1
-	move $a0, $t4
+	add $a1, $t4, 1
+	move $a0, $t6
 	move $a0, $a0
 	move $a1, $a1
-	move $a2, $t6
+	move $a2, $s0
 	jal QuickSort
 	add $t0, $v0, 0
 	j .b20
@@ -203,14 +223,16 @@ QuickSort:
 .b20:
 	li $v0, 0
 		lw $ra, 0($sp)
-	lw $t6, 4($sp)
-	lw $t5, 8($sp)
-	lw $t4, 12($sp)
-	lw $t3, 16($sp)
-	lw $t2, 20($sp)
-	lw $t1, 24($sp)
-	lw $t0, 28($sp)
-	addu $sp, $sp, 32
+	lw $s0, 4($sp)
+	lw $t7, 8($sp)
+	lw $t6, 12($sp)
+	lw $t5, 16($sp)
+	lw $t4, 20($sp)
+	lw $t3, 24($sp)
+	lw $t2, 28($sp)
+	lw $t1, 32($sp)
+	lw $t0, 36($sp)
+	addu $sp, $sp, 40
 	jr $ra
 
 

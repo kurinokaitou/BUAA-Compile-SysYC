@@ -50,7 +50,7 @@ void memToReg(IrModule& module) {
                     if (!y->vis) {
                         y->vis = true;
                         auto phiInst = new PhiInst(y);
-                        y->pushBackInst(phiInst);
+                        y->insertFrontInst(phiInst);
                         phis.insert({phiInst, id});
                         worklist.push_back(y);
                     }

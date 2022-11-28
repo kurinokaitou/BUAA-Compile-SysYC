@@ -265,14 +265,24 @@ void GetElementPtrInst::toCode(std::ostream& os) {
         os << ", i32 " << res << std::endl;
     } else {
         int temp = Value::s_valueMapper.alloc();
-        os << "%_t" << temp << " = mul i32 ";
-        m_index.value->printValue(os);
-        os << ", " << m_multiplier << std::endl;
-        os << "\t";
-        printValue(os);
-        os << " = getelementptr inbounds i32, i32* ";
-        m_arr.value->printValue(os);
-        os << ", i32 %_t" << temp << std::endl;
+        if (m_multiplier == 1) {
+            os << "\t";
+            printValue(os);
+            os << " = getelementptr inbounds i32, i32* ";
+            m_arr.value->printValue(os);
+            os << ", i32 ";
+            m_index.value->printValue(os);
+            os << std::endl;
+        } else {
+            os << "%_t" << temp << " = mul i32 ";
+            m_index.value->printValue(os);
+            os << ", " << m_multiplier << std::endl;
+            os << "\t";
+            printValue(os);
+            os << " = getelementptr inbounds i32, i32* ";
+            m_arr.value->printValue(os);
+            os << ", i32 %_t" << temp << std::endl;
+        }
     }
 }
 
@@ -428,7 +438,11 @@ void PhiInst::toCode(std::ostream& os) {
     for (int i = 0; i < m_incomingValues.size(); ++i) {
         if (i != 0) os << ", ";
         os << "[";
-        m_incomingValues[i].value->printValue(os);
+        if (m_incomingValues[i].value) {
+            m_incomingValues[i].value->printValue(os);
+        } else {
+            os << "undef";
+        }
         os << ", %_b" << BasicBlock::s_bbMapper.get(m_atBlock->getPreds()[i]) << "]";
     }
     os << std::endl;

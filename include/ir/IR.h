@@ -86,6 +86,8 @@ private:
 };
 
 class Value {
+    friend class Use;
+
 public:
     explicit Value(IRType type) :
         m_type(type){};
@@ -215,7 +217,7 @@ public:
             return block;
         }
     }
-    void removeBasicBlock(BasicBlock* block){
+    void removeBasicBlock(BasicBlock* block) {
         m_basicBlocks.remove_if([block](std::unique_ptr<BasicBlock>& bb) {
             return block == bb.get();
         });
@@ -374,6 +376,7 @@ struct Use {
         value = v;
         if (v) v->addUse(this);
     }
+
     ~Use() {
         if (value) value->removeUse(this);
     }
