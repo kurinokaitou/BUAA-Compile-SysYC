@@ -44,7 +44,6 @@ void MipsModule::toCode(std::ostream& os) {
             func->toCode(os);
         }
     }
-    os << s_rawMipsPrint << std::endl;
 }
 
 void MipsFunc::toCode(std::ostream& os) {
@@ -144,6 +143,9 @@ void MipsCompare::toCode(std::ostream& os) {
 }
 void MipsCall::toCode(std::ostream& os) {
     os << "jal " << m_func->getName() << std::endl;
+}
+void MipsSysCall::toCode(std::ostream& os) {
+    os << "syscall" << std::endl;
 }
 void MipsBinary::toCode(std::ostream& os) {
     os << instString() << " " << m_dst << ", " << m_lhs << ", " << m_rhs << std::endl;

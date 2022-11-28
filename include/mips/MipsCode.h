@@ -539,6 +539,16 @@ private:
     FuncItem* m_func;
 };
 
+class MipsSysCall : public MipsInst {
+    friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
+    friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);
+
+public:
+    explicit MipsSysCall() :
+        MipsInst(MipsCodeType::Call) {}
+    virtual void toCode(std::ostream& os) override;
+};
+
 class MipsGlobal : public MipsInst {
     friend std::pair<std::vector<MipsOperand>, std::vector<MipsOperand>> getDefUse(MipsInst* inst);
     friend std::pair<MipsOperand*, std::vector<MipsOperand*>> getDefUsePtr(MipsInst* inst);

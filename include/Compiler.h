@@ -17,9 +17,9 @@ static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
-static bool s_dumpIr = true;
+static bool s_dumpIr = false;
 static bool s_dumpMips = true;
-static bool s_isTest = true;
+static bool s_isTest = false;
 
 static int s_optLevel = 0;
 

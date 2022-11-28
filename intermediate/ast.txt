@@ -1,56 +1,6 @@
 <CompUnit>
 INTTK int
-IDENFR ints
-LBRACK [
-INTCON 10000
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR intt
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR chas
-LBRACK [
-INTCON 10000
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<ConstExp>
-RBRACK ]
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR chat
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR i
-ASSIGN =
-INTCON 0
-<Number>
-<PrimaryExp>
-<UnaryExp>
-<MulExp>
-<AddExp>
-<Exp>
-<InitVal>
-<VarDef>
-COMMA ,
-IDENFR ii
+IDENFR a1
 ASSIGN =
 INTCON 1
 <Number>
@@ -64,207 +14,469 @@ INTCON 1
 SEMICN ;
 <VarDecl>
 INTTK int
-IDENFR c
-<VarDef>
-SEMICN ;
-<VarDecl>
-INTTK int
-IDENFR get
-LBRACK [
-INTCON 10000
+IDENFR a2
+ASSIGN =
+INTCON 2
 <Number>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
-<ConstExp>
-RBRACK ]
+<Exp>
+<InitVal>
 <VarDef>
 SEMICN ;
 <VarDecl>
 INTTK int
-IDENFR get2
-LBRACK [
-INTCON 10000
+IDENFR a3
+ASSIGN =
+INTCON 3
 <Number>
 <PrimaryExp>
 <UnaryExp>
 <MulExp>
 <AddExp>
-<ConstExp>
-RBRACK ]
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a4
+ASSIGN =
+INTCON 4
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a5
+ASSIGN =
+INTCON 5
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a6
+ASSIGN =
+INTCON 6
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a7
+ASSIGN =
+INTCON 7
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a8
+ASSIGN =
+INTCON 8
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a9
+ASSIGN =
+INTCON 9
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a10
+ASSIGN =
+INTCON 10
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a11
+ASSIGN =
+INTCON 11
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a12
+ASSIGN =
+INTCON 12
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a13
+ASSIGN =
+INTCON 13
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a14
+ASSIGN =
+INTCON 14
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a15
+ASSIGN =
+INTCON 15
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a16
+ASSIGN =
+INTCON 16
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a17
+ASSIGN =
+INTCON 1
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a18
+ASSIGN =
+INTCON 2
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a19
+ASSIGN =
+INTCON 3
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a20
+ASSIGN =
+INTCON 4
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a21
+ASSIGN =
+INTCON 5
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a22
+ASSIGN =
+INTCON 6
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a23
+ASSIGN =
+INTCON 7
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a24
+ASSIGN =
+INTCON 8
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a25
+ASSIGN =
+INTCON 9
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a26
+ASSIGN =
+INTCON 10
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a27
+ASSIGN =
+INTCON 11
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a28
+ASSIGN =
+INTCON 12
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a29
+ASSIGN =
+INTCON 13
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a30
+ASSIGN =
+INTCON 14
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a31
+ASSIGN =
+INTCON 15
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
+<VarDef>
+SEMICN ;
+<VarDecl>
+INTTK int
+IDENFR a32
+ASSIGN =
+INTCON 16
+<Number>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
+<InitVal>
 <VarDef>
 SEMICN ;
 <VarDecl>
 INTTK int
 <FuncType>
-IDENFR isdigit
+IDENFR func
 LPARENT (
 INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    IFTK if
-    LPARENT (
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    GEQ >=
-    INTCON 48
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    AND &&
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    LEQ <=
-    INTCON 57
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-    RETURNTK return
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    <Stmt>
-    RETURNTK return
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-<FuncType>
-IDENFR power
-LPARENT (
-INTTK int
-IDENFR b
+IDENFR a
 <FuncFParam>
 COMMA ,
 INTTK int
-IDENFR a
+IDENFR b
 <FuncFParam>
 <FuncFParams>
 RPARENT )
   LBRACE {
     INTTK int
-    IDENFR result
-    ASSIGN =
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
+    IDENFR i
     <VarDef>
     SEMICN ;
     <VarDecl>
-    WHILETK while
-    LPARENT (
+    IDENFR i
+    <LVal>
+    ASSIGN =
     IDENFR a
     <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <RelExp>
-    <EqExp>
-    NEQ !=
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-      LBRACE {
-        IDENFR result
-        <LVal>
-        ASSIGN =
-        IDENFR result
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        MULT *
-        IDENFR b
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR a
-        <LVal>
-        ASSIGN =
-        IDENFR a
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        MINU -
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-    <Stmt>
-    RETURNTK return
-    IDENFR result
+    PLUS +
+    IDENFR b
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -273,27 +485,187 @@ RPARENT )
     <Exp>
     SEMICN ;
     <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-<FuncType>
-IDENFR getstr
-LPARENT (
-INTTK int
-IDENFR get
-LBRACK [
-RBRACK ]
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
     INTTK int
-    IDENFR x
+    IDENFR c1
     <VarDef>
     SEMICN ;
     <VarDecl>
-    IDENFR x
+    INTTK int
+    IDENFR c2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR c3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR c4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR d1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR d2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR d3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR d4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR e1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR e2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR e3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR e4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR f1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR f2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR f3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR f4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR g1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR g2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR g3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR g4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR h1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR h2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR h3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR h4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR i1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR i2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR i3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR i4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR j1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR j2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR j3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR j4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR k1
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR k2
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR k3
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR k4
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    IDENFR c1
     <LVal>
     ASSIGN =
     GETINTTK getint
@@ -301,487 +673,48 @@ RPARENT )
     RPARENT )
     SEMICN ;
     <Stmt>
-    INTTK int
-    IDENFR length
-    ASSIGN =
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    <InitVal>
-    <VarDef>
-    SEMICN ;
-    <VarDecl>
-    WHILETK while
-    LPARENT (
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    NEQ !=
-    INTCON 13
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    AND &&
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    NEQ !=
-    INTCON 10
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-      LBRACE {
-        IDENFR get
-        LBRACK [
-        IDENFR length
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        IDENFR x
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR length
-        <LVal>
-        ASSIGN =
-        IDENFR length
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR x
-        <LVal>
-        ASSIGN =
-        GETINTTK getint
-        LPARENT (
-        RPARENT )
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-    <Stmt>
-    RETURNTK return
-    IDENFR length
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-VOIDTK void
-<FuncType>
-IDENFR intpush
-LPARENT (
-INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    IDENFR intt
+    IDENFR c2
     <LVal>
     ASSIGN =
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    ASSIGN =
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-VOIDTK void
-<FuncType>
-IDENFR chapush
-LPARENT (
-INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    IDENFR chat
-    <LVal>
-    ASSIGN =
-    IDENFR chat
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR chas
-    LBRACK [
-    IDENFR chat
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    ASSIGN =
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-<FuncType>
-IDENFR intpop
-LPARENT (
-RPARENT )
-  LBRACE {
-    IDENFR intt
-    <LVal>
-    ASSIGN =
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    MINU -
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    RETURNTK return
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-<FuncType>
-IDENFR chapop
-LPARENT (
-RPARENT )
-  LBRACE {
-    IDENFR chat
-    <LVal>
-    ASSIGN =
-    IDENFR chat
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    MINU -
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    RETURNTK return
-    IDENFR chas
-    LBRACK [
-    IDENFR chat
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-VOIDTK void
-<FuncType>
-IDENFR intadd
-LPARENT (
-INTTK int
-IDENFR x
-<FuncFParam>
-<FuncFParams>
-RPARENT )
-  LBRACE {
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    ASSIGN =
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    MULT *
-    INTCON 10
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    ASSIGN =
-    IDENFR ints
-    LBRACK [
-    IDENFR intt
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
-    IDENFR x
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-  RBRACE }
-  <Block>
-<FuncDef>
-INTTK int
-<FuncType>
-IDENFR find
-LPARENT (
-RPARENT )
-  LBRACE {
-    IDENFR c
-    <LVal>
-    ASSIGN =
-    IDENFR chapop
+    GETINTTK getint
     LPARENT (
     RPARENT )
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
     SEMICN ;
     <Stmt>
-    IDENFR get2
-    LBRACK [
-    IDENFR ii
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
+    IDENFR c3
     <LVal>
     ASSIGN =
-    INTCON 32
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
+    GETINTTK getint
+    LPARENT (
+    RPARENT )
     SEMICN ;
     <Stmt>
-    IDENFR get2
-    LBRACK [
-    IDENFR ii
+    IDENFR c4
     <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
+    ASSIGN =
+    GETINTTK getint
+    LPARENT (
+    RPARENT )
+    SEMICN ;
+    <Stmt>
+    IDENFR d1
+    <LVal>
+    ASSIGN =
     INTCON 1
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <Exp>
-    RBRACK ]
+    PLUS +
+    IDENFR c1
     <LVal>
-    ASSIGN =
-    IDENFR c
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a1
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -790,50 +723,830 @@ RPARENT )
     <Exp>
     SEMICN ;
     <Stmt>
-    IDENFR ii
+    IDENFR d2
     <LVal>
     ASSIGN =
-    IDENFR ii
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    PLUS +
     INTCON 2
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IFTK if
-    LPARENT (
-    IDENFR chat
+    PLUS +
+    IDENFR c2
     <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <RelExp>
-    <EqExp>
-    EQL ==
-    INTCON 0
+    PLUS +
+    IDENFR a2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d3
+    <LVal>
+    ASSIGN =
+    INTCON 3
     <Number>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
     <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-    RETURNTK return
-    INTCON 0
+    PLUS +
+    IDENFR c3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a5
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a6
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a7
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a8
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a9
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a10
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a11
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a12
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a13
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a14
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a15
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a16
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a17
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a18
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a19
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a20
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a21
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a22
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a23
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a24
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a25
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a26
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a27
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a28
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a29
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a30
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a31
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a32
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i
+    <LVal>
+    ASSIGN =
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR b
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 10
     <Number>
     <PrimaryExp>
     <UnaryExp>
@@ -842,10 +1555,1421 @@ RPARENT )
     <Exp>
     SEMICN ;
     <Stmt>
-    <Stmt>
-    RETURNTK return
+    IDENFR k1
+    <LVal>
+    ASSIGN =
     INTCON 1
     <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a29
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a30
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a31
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR k4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR j4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a32
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a25
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a26
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a27
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR j4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a28
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a21
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a22
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a23
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR i4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR h4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a24
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a17
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a18
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a19
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR h4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a20
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a13
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a14
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a15
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR g4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR f4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a16
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a9
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a10
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a11
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR f4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a12
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a5
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a6
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a7
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR e4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR d4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a8
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d1
+    <LVal>
+    ASSIGN =
+    INTCON 1
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d2
+    <LVal>
+    ASSIGN =
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d3
+    <LVal>
+    ASSIGN =
+    INTCON 3
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR d4
+    <LVal>
+    ASSIGN =
+    INTCON 4
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    RETURNTK return
+    IDENFR i
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR c4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR d1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR d2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR d3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR d4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR e4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR f1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR f2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR f3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR f4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR g4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR h1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR h2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR h3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR h4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR i4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR j1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR j2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR j3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR j4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR k1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR k2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR k3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR k4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a1
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a2
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a3
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a4
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a5
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a6
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a7
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a8
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a9
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a10
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a11
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a12
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a13
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a14
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a15
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a16
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a17
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a18
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a19
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a20
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a21
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a22
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a23
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a24
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a25
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a26
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a27
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a28
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a29
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a30
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    IDENFR a31
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    MINU -
+    IDENFR a32
+    <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -861,36 +2985,63 @@ MAINTK main
 LPARENT (
 RPARENT )
   LBRACE {
-    IDENFR intt
-    <LVal>
-    ASSIGN =
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR chat
-    <LVal>
-    ASSIGN =
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
     INTTK int
-    IDENFR lengets
+    IDENFR a
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    INTTK int
+    IDENFR b
+    <VarDef>
+    SEMICN ;
+    <VarDecl>
+    IDENFR a
+    <LVal>
     ASSIGN =
-    IDENFR getstr
+    GETINTTK getint
     LPARENT (
-    IDENFR get
+    RPARENT )
+    SEMICN ;
+    <Stmt>
+    IDENFR b
+    <LVal>
+    ASSIGN =
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    PLUS +
+    INTCON 2
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    MULT *
+    INTCON 9
+    <Number>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    SEMICN ;
+    <Stmt>
+    IDENFR a
+    <LVal>
+    ASSIGN =
+    IDENFR func
+    LPARENT (
+    IDENFR a
+    <LVal>
+    <PrimaryExp>
+    <UnaryExp>
+    <MulExp>
+    <AddExp>
+    <Exp>
+    COMMA ,
+    IDENFR b
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -903,2571 +3054,13 @@ RPARENT )
     <MulExp>
     <AddExp>
     <Exp>
-    <InitVal>
-    <VarDef>
     SEMICN ;
-    <VarDecl>
-    WHILETK while
-    LPARENT (
-    IDENFR i
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    LSS <
-    IDENFR lengets
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-      LBRACE {
-        IFTK if
-        LPARENT (
-        IDENFR isdigit
-        LPARENT (
-        IDENFR get
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        <FuncRParams>
-        RPARENT )
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        <Cond>
-        RPARENT )
-          LBRACE {
-            IDENFR get2
-            LBRACK [
-            IDENFR ii
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            ASSIGN =
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            IDENFR ii
-            <LVal>
-            ASSIGN =
-            IDENFR ii
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            PLUS +
-            INTCON 1
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-          RBRACE }
-          <Block>
-        <Stmt>
-        ELSETK else
-          LBRACE {
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 40
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR chapush
-            LPARENT (
-            INTCON 40
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <FuncRParams>
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 94
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR chapush
-            LPARENT (
-            INTCON 94
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <FuncRParams>
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 41
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                IDENFR c
-                <LVal>
-                ASSIGN =
-                IDENFR chapop
-                LPARENT (
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-                WHILETK while
-                LPARENT (
-                IDENFR c
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                NEQ !=
-                INTCON 40
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IDENFR get2
-                    LBRACK [
-                    IDENFR ii
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    RBRACK ]
-                    <LVal>
-                    ASSIGN =
-                    INTCON 32
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                    IDENFR get2
-                    LBRACK [
-                    IDENFR ii
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    PLUS +
-                    INTCON 1
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    RBRACK ]
-                    <LVal>
-                    ASSIGN =
-                    IDENFR c
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                    IDENFR ii
-                    <LVal>
-                    ASSIGN =
-                    IDENFR ii
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    PLUS +
-                    INTCON 2
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                    IDENFR c
-                    <LVal>
-                    ASSIGN =
-                    IDENFR chapop
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 43
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                WHILETK while
-                LPARENT (
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 43
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 45
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 94
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IFTK if
-                    LPARENT (
-                    IDENFR find
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    EQL ==
-                    INTCON 0
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    <LAndExp>
-                    <LOrExp>
-                    <Cond>
-                    RPARENT )
-                    BREAKTK break
-                    SEMICN ;
-                    <Stmt>
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR chapush
-                LPARENT (
-                INTCON 43
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 45
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                WHILETK while
-                LPARENT (
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 43
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 45
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 94
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IFTK if
-                    LPARENT (
-                    IDENFR find
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    EQL ==
-                    INTCON 0
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    <LAndExp>
-                    <LOrExp>
-                    <Cond>
-                    RPARENT )
-                    BREAKTK break
-                    SEMICN ;
-                    <Stmt>
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR chapush
-                LPARENT (
-                INTCON 45
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 42
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                WHILETK while
-                LPARENT (
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 94
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IFTK if
-                    LPARENT (
-                    IDENFR find
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    EQL ==
-                    INTCON 0
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    <LAndExp>
-                    <LOrExp>
-                    <Cond>
-                    RPARENT )
-                    BREAKTK break
-                    SEMICN ;
-                    <Stmt>
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR chapush
-                LPARENT (
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 47
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                WHILETK while
-                LPARENT (
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 94
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IFTK if
-                    LPARENT (
-                    IDENFR find
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    EQL ==
-                    INTCON 0
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    <LAndExp>
-                    <LOrExp>
-                    <Cond>
-                    RPARENT )
-                    BREAKTK break
-                    SEMICN ;
-                    <Stmt>
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR chapush
-                LPARENT (
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 37
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                WHILETK while
-                LPARENT (
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 42
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 47
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                OR ||
-                IDENFR chas
-                LBRACK [
-                IDENFR chat
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                EQL ==
-                INTCON 94
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IFTK if
-                    LPARENT (
-                    IDENFR find
-                    LPARENT (
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    EQL ==
-                    INTCON 0
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <RelExp>
-                    <EqExp>
-                    <LAndExp>
-                    <LOrExp>
-                    <Cond>
-                    RPARENT )
-                    BREAKTK break
-                    SEMICN ;
-                    <Stmt>
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR chapush
-                LPARENT (
-                INTCON 37
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-            IDENFR get2
-            LBRACK [
-            IDENFR ii
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            ASSIGN =
-            INTCON 32
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            IDENFR ii
-            <LVal>
-            ASSIGN =
-            IDENFR ii
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            PLUS +
-            INTCON 1
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-          RBRACE }
-          <Block>
-        <Stmt>
-        <Stmt>
-        IDENFR i
-        <LVal>
-        ASSIGN =
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-    <Stmt>
-    WHILETK while
-    LPARENT (
-    IDENFR chat
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    GRE >
-    INTCON 0
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-      LBRACE {
-        INTTK int
-        IDENFR c
-        ASSIGN =
-        IDENFR chapop
-        LPARENT (
-        RPARENT )
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        <InitVal>
-        <VarDef>
-        SEMICN ;
-        <VarDecl>
-        IDENFR get2
-        LBRACK [
-        IDENFR ii
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        INTCON 32
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR get2
-        LBRACK [
-        IDENFR ii
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        ASSIGN =
-        IDENFR c
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-        IDENFR ii
-        <LVal>
-        ASSIGN =
-        IDENFR ii
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 2
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
-    <Stmt>
-    IDENFR get2
-    LBRACK [
-    IDENFR ii
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    ASSIGN =
-    INTCON 64
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    IDENFR i
-    <LVal>
-    ASSIGN =
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    SEMICN ;
-    <Stmt>
-    WHILETK while
-    LPARENT (
-    IDENFR get2
-    LBRACK [
-    IDENFR i
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
-    <LVal>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    NEQ !=
-    INTCON 64
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <RelExp>
-    <EqExp>
-    <LAndExp>
-    <LOrExp>
-    <Cond>
-    RPARENT )
-      LBRACE {
-        IFTK if
-        LPARENT (
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 43
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        OR ||
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 45
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        OR ||
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 42
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        OR ||
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 47
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        OR ||
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 37
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        OR ||
-        IDENFR get2
-        LBRACK [
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        RBRACK ]
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        EQL ==
-        INTCON 94
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <RelExp>
-        <EqExp>
-        <LAndExp>
-        <LOrExp>
-        <Cond>
-        RPARENT )
-          LBRACE {
-            INTTK int
-            IDENFR a
-            ASSIGN =
-            IDENFR intpop
-            LPARENT (
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <InitVal>
-            <VarDef>
-            SEMICN ;
-            <VarDecl>
-            INTTK int
-            IDENFR b
-            ASSIGN =
-            IDENFR intpop
-            LPARENT (
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <InitVal>
-            <VarDef>
-            SEMICN ;
-            <VarDecl>
-            INTTK int
-            IDENFR c
-            <VarDef>
-            SEMICN ;
-            <VarDecl>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 43
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            PLUS +
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 45
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            MINU -
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 42
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            MULT *
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 47
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            DIV /
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 37
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            MOD %
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            EQL ==
-            INTCON 94
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-            IDENFR c
-            <LVal>
-            ASSIGN =
-            IDENFR power
-            LPARENT (
-            IDENFR b
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            COMMA ,
-            IDENFR a
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <FuncRParams>
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-            <Stmt>
-            IDENFR intpush
-            LPARENT (
-            IDENFR c
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            <FuncRParams>
-            RPARENT )
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            SEMICN ;
-            <Stmt>
-          RBRACE }
-          <Block>
-        <Stmt>
-        ELSETK else
-          LBRACE {
-            IFTK if
-            LPARENT (
-            IDENFR get2
-            LBRACK [
-            IDENFR i
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <Exp>
-            RBRACK ]
-            <LVal>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            NEQ !=
-            INTCON 32
-            <Number>
-            <PrimaryExp>
-            <UnaryExp>
-            <MulExp>
-            <AddExp>
-            <RelExp>
-            <EqExp>
-            <LAndExp>
-            <LOrExp>
-            <Cond>
-            RPARENT )
-              LBRACE {
-                IDENFR intpush
-                LPARENT (
-                IDENFR get2
-                LBRACK [
-                IDENFR i
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                MINU -
-                INTCON 48
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                <FuncRParams>
-                RPARENT )
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-                IDENFR ii
-                <LVal>
-                ASSIGN =
-                INTCON 1
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-                WHILETK while
-                LPARENT (
-                IDENFR get2
-                LBRACK [
-                IDENFR i
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                PLUS +
-                IDENFR ii
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                RBRACK ]
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                NEQ !=
-                INTCON 32
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <RelExp>
-                <EqExp>
-                <LAndExp>
-                <LOrExp>
-                <Cond>
-                RPARENT )
-                  LBRACE {
-                    IDENFR intadd
-                    LPARENT (
-                    IDENFR get2
-                    LBRACK [
-                    IDENFR i
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    PLUS +
-                    IDENFR ii
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    RBRACK ]
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    MINU -
-                    INTCON 48
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    <FuncRParams>
-                    RPARENT )
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                    IDENFR ii
-                    <LVal>
-                    ASSIGN =
-                    IDENFR ii
-                    <LVal>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    PLUS +
-                    INTCON 1
-                    <Number>
-                    <PrimaryExp>
-                    <UnaryExp>
-                    <MulExp>
-                    <AddExp>
-                    <Exp>
-                    SEMICN ;
-                    <Stmt>
-                  RBRACE }
-                  <Block>
-                <Stmt>
-                <Stmt>
-                IDENFR i
-                <LVal>
-                ASSIGN =
-                IDENFR i
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                PLUS +
-                IDENFR ii
-                <LVal>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                MINU -
-                INTCON 1
-                <Number>
-                <PrimaryExp>
-                <UnaryExp>
-                <MulExp>
-                <AddExp>
-                <Exp>
-                SEMICN ;
-                <Stmt>
-              RBRACE }
-              <Block>
-            <Stmt>
-            <Stmt>
-          RBRACE }
-          <Block>
-        <Stmt>
-        <Stmt>
-        IDENFR i
-        <LVal>
-        ASSIGN =
-        IDENFR i
-        <LVal>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        PLUS +
-        INTCON 1
-        <Number>
-        <PrimaryExp>
-        <UnaryExp>
-        <MulExp>
-        <AddExp>
-        <Exp>
-        SEMICN ;
-        <Stmt>
-      RBRACE }
-      <Block>
-    <Stmt>
     <Stmt>
     PRINTFTK printf
     LPARENT (
-    STRCON "%d"
+    STRCON "%d\n"
     COMMA ,
-    IDENFR ints
-    LBRACK [
-    INTCON 1
-    <Number>
-    <PrimaryExp>
-    <UnaryExp>
-    <MulExp>
-    <AddExp>
-    <Exp>
-    RBRACK ]
+    IDENFR a
     <LVal>
     <PrimaryExp>
     <UnaryExp>
@@ -3479,10 +3072,10 @@ RPARENT )
     <Stmt>
     PRINTFTK printf
     LPARENT (
-    STRCON "%d"
+    STRCON "%d\n"
     COMMA ,
-    INTCON 0
-    <Number>
+    IDENFR a
+    <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>
@@ -3492,8 +3085,8 @@ RPARENT )
     SEMICN ;
     <Stmt>
     RETURNTK return
-    INTCON 0
-    <Number>
+    IDENFR a
+    <LVal>
     <PrimaryExp>
     <UnaryExp>
     <MulExp>

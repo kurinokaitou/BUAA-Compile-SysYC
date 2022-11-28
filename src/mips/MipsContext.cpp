@@ -326,7 +326,13 @@ void MipsContext::convertCallInst(CallInst* inst) {
         // sub sp, sp, (n-4)*4
         m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Sub, MipsOperand::R(MipsReg::sp), MipsOperand::R(MipsReg::sp), MipsOperand::I(4 * (n - 4))));
     }
-    m_mipsBasicBlock->pushBackInst(new MipsCall(inst->getIrFunc()->m_funcItem));
+    if (inst->getIrFunc()->m_funcItem->getName() == "getint") {
+        m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(5)));
+        m_mipsBasicBlock->pushBackInst(new MipsSysCall());
+    } else {
+        m_mipsBasicBlock->pushBackInst(new MipsCall(inst->getIrFunc()->m_funcItem));
+    }
+
     if (n > 4) {
         // add sp, sp, (n-4)*4
         m_mipsBasicBlock->pushBackInst(new MipsBinary(MipsCodeType::Add, MipsOperand::R(MipsReg::sp), MipsOperand::R(MipsReg::sp), MipsOperand::I(4 * (n - 4))));
@@ -428,27 +434,32 @@ void MipsContext::convertPrintInst(PrintInst* inst) {
         for (auto& arg : inst->m_args) {
             auto val = resolveValue(arg.value);
             m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::a0), val));
-            m_mipsBasicBlock->pushBackInst(new MipsCall(IrFunc::s_builtinFuncItemsMap["putint"]));
+            m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(1)));
+            m_mipsBasicBlock->pushBackInst(new MipsSysCall());
         }
     } else if (partsNum == 1) { // "%d" pr "str"
         if (inst->m_strParts[0]) {
             m_mipsBasicBlock->pushBackInst(new MipsString(MipsOperand::R(MipsReg::a0), inst->m_strParts[0]));
-            m_mipsBasicBlock->pushBackInst(new MipsCall(IrFunc::s_builtinFuncItemsMap["putstr"]));
+            m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(4)));
+            m_mipsBasicBlock->pushBackInst(new MipsSysCall());
         } else {
             auto val = resolveValue(inst->m_args[0].value);
             m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::a0), val));
-            m_mipsBasicBlock->pushBackInst(new MipsCall(IrFunc::s_builtinFuncItemsMap["putint"]));
+            m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(1)));
+            m_mipsBasicBlock->pushBackInst(new MipsSysCall());
         }
     } else {
         int argCnt = 0;
         for (auto& str : inst->m_strParts) {
             if (str) {
                 m_mipsBasicBlock->pushBackInst(new MipsString(MipsOperand::R(MipsReg::a0), str));
-                m_mipsBasicBlock->pushBackInst(new MipsCall(IrFunc::s_builtinFuncItemsMap["putstr"]));
+                m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(4)));
+                m_mipsBasicBlock->pushBackInst(new MipsSysCall());
             } else {
                 auto val = resolveValue(inst->m_args[argCnt++].value);
                 m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::a0), val));
-                m_mipsBasicBlock->pushBackInst(new MipsCall(IrFunc::s_builtinFuncItemsMap["putint"]));
+                m_mipsBasicBlock->pushBackInst(new MipsMove(MipsOperand::R(MipsReg::v0), MipsOperand::I(1)));
+                m_mipsBasicBlock->pushBackInst(new MipsSysCall());
             }
         }
     }

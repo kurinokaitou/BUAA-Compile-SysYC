@@ -27,170 +27,431 @@ define dso_local void @putstr(i8* %0) #0 {
   %4 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i8* %3)
   ret void
 }
-define i32 @main() #0 {
+
+@a1 = global i32 1
+@a2 = global i32 2
+@a3 = global i32 3
+@a4 = global i32 4
+@a5 = global i32 5
+@a6 = global i32 6
+@a7 = global i32 7
+@a8 = global i32 8
+@a9 = global i32 9
+@a10 = global i32 10
+@a11 = global i32 11
+@a12 = global i32 12
+@a13 = global i32 13
+@a14 = global i32 14
+@a15 = global i32 15
+@a16 = global i32 16
+@a17 = global i32 1
+@a18 = global i32 2
+@a19 = global i32 3
+@a20 = global i32 4
+@a21 = global i32 5
+@a22 = global i32 6
+@a23 = global i32 7
+@a24 = global i32 8
+@a25 = global i32 9
+@a26 = global i32 10
+@a27 = global i32 11
+@a28 = global i32 12
+@a29 = global i32 13
+@a30 = global i32 14
+@a31 = global i32 15
+@a32 = global i32 16
+
+define i32 @func(i32 %a, i32 %b) #0 {
 _entry:
+	%g_a1 = getelementptr inbounds i32, i32* @a1, i32 0
+	%g_a2 = getelementptr inbounds i32, i32* @a2, i32 0
+	%g_a3 = getelementptr inbounds i32, i32* @a3, i32 0
+	%g_a4 = getelementptr inbounds i32, i32* @a4, i32 0
+	%g_a5 = getelementptr inbounds i32, i32* @a5, i32 0
+	%g_a6 = getelementptr inbounds i32, i32* @a6, i32 0
+	%g_a7 = getelementptr inbounds i32, i32* @a7, i32 0
+	%g_a8 = getelementptr inbounds i32, i32* @a8, i32 0
+	%g_a9 = getelementptr inbounds i32, i32* @a9, i32 0
+	%g_a10 = getelementptr inbounds i32, i32* @a10, i32 0
+	%g_a11 = getelementptr inbounds i32, i32* @a11, i32 0
+	%g_a12 = getelementptr inbounds i32, i32* @a12, i32 0
+	%g_a13 = getelementptr inbounds i32, i32* @a13, i32 0
+	%g_a14 = getelementptr inbounds i32, i32* @a14, i32 0
+	%g_a15 = getelementptr inbounds i32, i32* @a15, i32 0
+	%g_a16 = getelementptr inbounds i32, i32* @a16, i32 0
+	%g_a17 = getelementptr inbounds i32, i32* @a17, i32 0
+	%g_a18 = getelementptr inbounds i32, i32* @a18, i32 0
+	%g_a19 = getelementptr inbounds i32, i32* @a19, i32 0
+	%g_a20 = getelementptr inbounds i32, i32* @a20, i32 0
+	%g_a21 = getelementptr inbounds i32, i32* @a21, i32 0
+	%g_a22 = getelementptr inbounds i32, i32* @a22, i32 0
+	%g_a23 = getelementptr inbounds i32, i32* @a23, i32 0
+	%g_a24 = getelementptr inbounds i32, i32* @a24, i32 0
+	%g_a25 = getelementptr inbounds i32, i32* @a25, i32 0
+	%g_a26 = getelementptr inbounds i32, i32* @a26, i32 0
+	%g_a27 = getelementptr inbounds i32, i32* @a27, i32 0
+	%g_a28 = getelementptr inbounds i32, i32* @a28, i32 0
+	%g_a29 = getelementptr inbounds i32, i32* @a29, i32 0
+	%g_a30 = getelementptr inbounds i32, i32* @a30, i32 0
+	%g_a31 = getelementptr inbounds i32, i32* @a31, i32 0
+	%g_a32 = getelementptr inbounds i32, i32* @a32, i32 0
 	br label %_b0
 _b0: ; preds = 
-	%_t0 = alloca [8 x i32], align 4
-	%_x1 = getelementptr inbounds [8 x i32], [8 x i32]* %_t0, i32 0, i32 0
-	; store 2
-	store i32 1, i32* %_x1, align 4
-	; store 3
-	%_t4 = getelementptr inbounds i32, i32* %_x1, i32 1
-	store i32 2, i32* %_t4, align 4
-	; store 5
-	%_t6 = getelementptr inbounds i32, i32* %_x1, i32 2
-	store i32 3, i32* %_t6, align 4
-	; store 7
-	%_t8 = getelementptr inbounds i32, i32* %_x1, i32 3
-	store i32 4, i32* %_t8, align 4
-	; store 9
-	%_t10 = getelementptr inbounds i32, i32* %_x1, i32 4
-	store i32 0, i32* %_t10, align 4
-	; store 11
-	%_t12 = getelementptr inbounds i32, i32* %_x1, i32 5
-	store i32 0, i32* %_t12, align 4
-	; store 13
-	%_t14 = getelementptr inbounds i32, i32* %_x1, i32 6
-	store i32 7, i32* %_t14, align 4
-	%_t15 = alloca i32, align 4
-	%_x16 = getelementptr inbounds i32, i32* %_t15, i32 0
-	; store 17
-	store i32 3, i32* %_x16, align 4
-	%_t18 = alloca [8 x i32], align 4
-	%_x19 = getelementptr inbounds [8 x i32], [8 x i32]* %_t18, i32 0, i32 0
-	%_t20 = alloca [8 x i32], align 4
-	%_x21 = getelementptr inbounds [8 x i32], [8 x i32]* %_t20, i32 0, i32 0
-	; store 22
-	store i32 1, i32* %_x21, align 4
-	; store 23
-	%_t24 = getelementptr inbounds i32, i32* %_x21, i32 1
-	store i32 2, i32* %_t24, align 4
-	; store 25
-	%_t26 = getelementptr inbounds i32, i32* %_x21, i32 2
-	store i32 3, i32* %_t26, align 4
-	; store 27
-	%_t28 = getelementptr inbounds i32, i32* %_x21, i32 3
-	store i32 4, i32* %_t28, align 4
-	; store 29
-	%_t30 = getelementptr inbounds i32, i32* %_x21, i32 4
-	store i32 5, i32* %_t30, align 4
-	; store 31
-	%_t32 = getelementptr inbounds i32, i32* %_x21, i32 5
-	store i32 6, i32* %_t32, align 4
-	; store 33
-	%_t34 = getelementptr inbounds i32, i32* %_x21, i32 6
-	store i32 7, i32* %_t34, align 4
-	; store 35
-	%_t36 = getelementptr inbounds i32, i32* %_x21, i32 7
-	store i32 8, i32* %_t36, align 4
-	%_t37 = alloca [8 x i32], align 4
-	%_x38 = getelementptr inbounds [8 x i32], [8 x i32]* %_t37, i32 0, i32 0
-	; store 39
-	store i32 1, i32* %_x38, align 4
-	; store 40
-	%_t41 = getelementptr inbounds i32, i32* %_x38, i32 1
-	store i32 2, i32* %_t41, align 4
-	; store 42
-	%_t43 = getelementptr inbounds i32, i32* %_x38, i32 2
-	store i32 3, i32* %_t43, align 4
-	; store 44
-	%_t45 = getelementptr inbounds i32, i32* %_x38, i32 3
-	store i32 0, i32* %_t45, align 4
-	; store 46
-	%_t47 = getelementptr inbounds i32, i32* %_x38, i32 4
-	store i32 5, i32* %_t47, align 4
-	; store 48
-	%_t49 = getelementptr inbounds i32, i32* %_x38, i32 5
-	store i32 0, i32* %_t49, align 4
-	; store 50
-	%_t51 = getelementptr inbounds i32, i32* %_x38, i32 6
-	store i32 7, i32* %_t51, align 4
-	; store 52
-	%_t53 = getelementptr inbounds i32, i32* %_x38, i32 7
-	store i32 8, i32* %_t53, align 4
-	; getelementptr 54
-	%_x54 = getelementptr inbounds i32, i32* %_x38, i32 4
-	; getelementptr 55
-	%_x55 = getelementptr inbounds i32, i32* %_x54, i32 1
-	%_x56 = load i32, i32* %_x55, align 4
-	; getelementptr 57
-	%_x57 = getelementptr inbounds i32, i32* %_x21, i32 4
-	; getelementptr 58
-	%_x58 = getelementptr inbounds i32, i32* %_x57, i32 1
-	%_x59 = load i32, i32* %_x58, align 4
-	%_t60 = alloca [8 x i32], align 4
-	%_x61 = getelementptr inbounds [8 x i32], [8 x i32]* %_t60, i32 0, i32 0
-	; store 62
-	store i32 %_x56, i32* %_x61, align 4
-	; store 63
-	%_t64 = getelementptr inbounds i32, i32* %_x61, i32 1
-	store i32 %_x59, i32* %_t64, align 4
-	; store 65
-	%_t66 = getelementptr inbounds i32, i32* %_x61, i32 2
-	store i32 3, i32* %_t66, align 4
-	; store 67
-	%_t68 = getelementptr inbounds i32, i32* %_x61, i32 3
-	store i32 4, i32* %_t68, align 4
-	; store 69
-	%_t70 = getelementptr inbounds i32, i32* %_x61, i32 4
-	store i32 5, i32* %_t70, align 4
-	; store 71
-	%_t72 = getelementptr inbounds i32, i32* %_x61, i32 5
-	store i32 6, i32* %_t72, align 4
-	; store 73
-	%_t74 = getelementptr inbounds i32, i32* %_x61, i32 6
-	store i32 7, i32* %_t74, align 4
-	; store 75
-	%_t76 = getelementptr inbounds i32, i32* %_x61, i32 7
-	store i32 8, i32* %_t76, align 4
-	; getelementptr 77
-	%_x77 = getelementptr inbounds i32, i32* %_x61, i32 6
-	; getelementptr 78
-	%_x78 = getelementptr inbounds i32, i32* %_x77, i32 1
-	%_x79 = load i32, i32* %_x78, align 4
-	; getelementptr 80
-	%_x80 = getelementptr inbounds i32, i32* %_x61, i32 0
-	; getelementptr 81
-	%_x81 = getelementptr inbounds i32, i32* %_x80, i32 0
-	%_x82 = load i32, i32* %_x81, align 4
-	%_x83 = add i32 %_x79, %_x82
-	; getelementptr 84
-	%_x84 = getelementptr inbounds i32, i32* %_x61, i32 0
-	; getelementptr 85
-	%_x85 = getelementptr inbounds i32, i32* %_x84, i32 1
-	%_x86 = load i32, i32* %_x85, align 4
-	%_x87 = add i32 %_x83, %_x86
-	; getelementptr 88
-	%_x88 = getelementptr inbounds i32, i32* %_x38, i32 6
-	; getelementptr 89
-	%_x89 = getelementptr inbounds i32, i32* %_x88, i32 0
-	%_x90 = load i32, i32* %_x89, align 4
-	%_x91 = add i32 %_x87, %_x90
-	call void @putint(i32 %_x91)
-	; getelementptr 92
-	%_x92 = getelementptr inbounds i32, i32* %_x61, i32 6
-	; getelementptr 93
-	%_x93 = getelementptr inbounds i32, i32* %_x92, i32 1
-	%_x94 = load i32, i32* %_x93, align 4
-	; getelementptr 95
-	%_x95 = getelementptr inbounds i32, i32* %_x61, i32 0
-	; getelementptr 96
-	%_x96 = getelementptr inbounds i32, i32* %_x95, i32 0
-	%_x97 = load i32, i32* %_x96, align 4
-	%_x98 = add i32 %_x94, %_x97
-	; getelementptr 99
-	%_x99 = getelementptr inbounds i32, i32* %_x61, i32 0
-	; getelementptr 100
-	%_x100 = getelementptr inbounds i32, i32* %_x99, i32 1
-	%_x101 = load i32, i32* %_x100, align 4
-	%_x102 = add i32 %_x98, %_x101
-	; getelementptr 103
-	%_x103 = getelementptr inbounds i32, i32* %_x38, i32 6
-	; getelementptr 104
-	%_x104 = getelementptr inbounds i32, i32* %_x103, i32 0
-	%_x105 = load i32, i32* %_x104, align 4
-	%_x106 = add i32 %_x102, %_x105
-	ret i32 %_x106
+	%_x0 = add i32 %a, %b
+	%_x1 = call i32 @getint()
+	%_x2 = call i32 @getint()
+	%_x3 = call i32 @getint()
+	%_x4 = call i32 @getint()
+	%_x5 = add i32 1, %_x1
+	%_x6 = load i32, i32* %g_a1, align 4
+	%_x7 = add i32 %_x5, %_x6
+	%_x8 = add i32 2, %_x2
+	%_x9 = load i32, i32* %g_a2, align 4
+	%_x10 = add i32 %_x8, %_x9
+	%_x11 = add i32 3, %_x3
+	%_x12 = load i32, i32* %g_a3, align 4
+	%_x13 = add i32 %_x11, %_x12
+	%_x14 = add i32 4, %_x4
+	%_x15 = load i32, i32* %g_a4, align 4
+	%_x16 = add i32 %_x14, %_x15
+	%_x17 = add i32 1, %_x7
+	%_x18 = load i32, i32* %g_a5, align 4
+	%_x19 = add i32 %_x17, %_x18
+	%_x20 = add i32 2, %_x10
+	%_x21 = load i32, i32* %g_a6, align 4
+	%_x22 = add i32 %_x20, %_x21
+	%_x23 = add i32 3, %_x13
+	%_x24 = load i32, i32* %g_a7, align 4
+	%_x25 = add i32 %_x23, %_x24
+	%_x26 = add i32 4, %_x16
+	%_x27 = load i32, i32* %g_a8, align 4
+	%_x28 = add i32 %_x26, %_x27
+	%_x29 = add i32 1, %_x19
+	%_x30 = load i32, i32* %g_a9, align 4
+	%_x31 = add i32 %_x29, %_x30
+	%_x32 = add i32 2, %_x22
+	%_x33 = load i32, i32* %g_a10, align 4
+	%_x34 = add i32 %_x32, %_x33
+	%_x35 = add i32 3, %_x25
+	%_x36 = load i32, i32* %g_a11, align 4
+	%_x37 = add i32 %_x35, %_x36
+	%_x38 = add i32 4, %_x28
+	%_x39 = load i32, i32* %g_a12, align 4
+	%_x40 = add i32 %_x38, %_x39
+	%_x41 = add i32 1, %_x31
+	%_x42 = load i32, i32* %g_a13, align 4
+	%_x43 = add i32 %_x41, %_x42
+	%_x44 = add i32 2, %_x34
+	%_x45 = load i32, i32* %g_a14, align 4
+	%_x46 = add i32 %_x44, %_x45
+	%_x47 = add i32 3, %_x37
+	%_x48 = load i32, i32* %g_a15, align 4
+	%_x49 = add i32 %_x47, %_x48
+	%_x50 = add i32 4, %_x40
+	%_x51 = load i32, i32* %g_a16, align 4
+	%_x52 = add i32 %_x50, %_x51
+	%_x53 = add i32 1, %_x43
+	%_x54 = load i32, i32* %g_a17, align 4
+	%_x55 = add i32 %_x53, %_x54
+	%_x56 = add i32 2, %_x46
+	%_x57 = load i32, i32* %g_a18, align 4
+	%_x58 = add i32 %_x56, %_x57
+	%_x59 = add i32 3, %_x49
+	%_x60 = load i32, i32* %g_a19, align 4
+	%_x61 = add i32 %_x59, %_x60
+	%_x62 = add i32 4, %_x52
+	%_x63 = load i32, i32* %g_a20, align 4
+	%_x64 = add i32 %_x62, %_x63
+	%_x65 = add i32 1, %_x55
+	%_x66 = load i32, i32* %g_a21, align 4
+	%_x67 = add i32 %_x65, %_x66
+	%_x68 = add i32 2, %_x58
+	%_x69 = load i32, i32* %g_a22, align 4
+	%_x70 = add i32 %_x68, %_x69
+	%_x71 = add i32 3, %_x61
+	%_x72 = load i32, i32* %g_a23, align 4
+	%_x73 = add i32 %_x71, %_x72
+	%_x74 = add i32 4, %_x64
+	%_x75 = load i32, i32* %g_a24, align 4
+	%_x76 = add i32 %_x74, %_x75
+	%_x77 = add i32 1, %_x67
+	%_x78 = load i32, i32* %g_a25, align 4
+	%_x79 = add i32 %_x77, %_x78
+	%_x80 = add i32 2, %_x70
+	%_x81 = load i32, i32* %g_a26, align 4
+	%_x82 = add i32 %_x80, %_x81
+	%_x83 = add i32 3, %_x73
+	%_x84 = load i32, i32* %g_a27, align 4
+	%_x85 = add i32 %_x83, %_x84
+	%_x86 = add i32 4, %_x76
+	%_x87 = load i32, i32* %g_a28, align 4
+	%_x88 = add i32 %_x86, %_x87
+	%_x89 = add i32 1, %_x79
+	%_x90 = load i32, i32* %g_a29, align 4
+	%_x91 = add i32 %_x89, %_x90
+	%_x92 = add i32 2, %_x82
+	%_x93 = load i32, i32* %g_a30, align 4
+	%_x94 = add i32 %_x92, %_x93
+	%_x95 = add i32 3, %_x85
+	%_x96 = load i32, i32* %g_a31, align 4
+	%_x97 = add i32 %_x95, %_x96
+	%_x98 = add i32 4, %_x88
+	%_x99 = load i32, i32* %g_a32, align 4
+	%_x100 = add i32 %_x98, %_x99
+	%_x101 = sub i32 %a, %b
+	%_x102 = add i32 %_x101, 10
+	%_x103 = add i32 1, %_x79
+	%_x104 = load i32, i32* %g_a29, align 4
+	%_x105 = add i32 %_x103, %_x104
+	%_x106 = add i32 2, %_x82
+	%_x107 = load i32, i32* %g_a30, align 4
+	%_x108 = add i32 %_x106, %_x107
+	%_x109 = add i32 3, %_x85
+	%_x110 = load i32, i32* %g_a31, align 4
+	%_x111 = add i32 %_x109, %_x110
+	%_x112 = add i32 4, %_x88
+	%_x113 = load i32, i32* %g_a32, align 4
+	%_x114 = add i32 %_x112, %_x113
+	%_x115 = add i32 1, %_x67
+	%_x116 = load i32, i32* %g_a25, align 4
+	%_x117 = add i32 %_x115, %_x116
+	%_x118 = add i32 2, %_x70
+	%_x119 = load i32, i32* %g_a26, align 4
+	%_x120 = add i32 %_x118, %_x119
+	%_x121 = add i32 3, %_x73
+	%_x122 = load i32, i32* %g_a27, align 4
+	%_x123 = add i32 %_x121, %_x122
+	%_x124 = add i32 4, %_x76
+	%_x125 = load i32, i32* %g_a28, align 4
+	%_x126 = add i32 %_x124, %_x125
+	%_x127 = add i32 1, %_x55
+	%_x128 = load i32, i32* %g_a21, align 4
+	%_x129 = add i32 %_x127, %_x128
+	%_x130 = add i32 2, %_x58
+	%_x131 = load i32, i32* %g_a22, align 4
+	%_x132 = add i32 %_x130, %_x131
+	%_x133 = add i32 3, %_x61
+	%_x134 = load i32, i32* %g_a23, align 4
+	%_x135 = add i32 %_x133, %_x134
+	%_x136 = add i32 4, %_x64
+	%_x137 = load i32, i32* %g_a24, align 4
+	%_x138 = add i32 %_x136, %_x137
+	%_x139 = add i32 1, %_x43
+	%_x140 = load i32, i32* %g_a17, align 4
+	%_x141 = add i32 %_x139, %_x140
+	%_x142 = add i32 2, %_x46
+	%_x143 = load i32, i32* %g_a18, align 4
+	%_x144 = add i32 %_x142, %_x143
+	%_x145 = add i32 3, %_x49
+	%_x146 = load i32, i32* %g_a19, align 4
+	%_x147 = add i32 %_x145, %_x146
+	%_x148 = add i32 4, %_x52
+	%_x149 = load i32, i32* %g_a20, align 4
+	%_x150 = add i32 %_x148, %_x149
+	%_x151 = add i32 1, %_x31
+	%_x152 = load i32, i32* %g_a13, align 4
+	%_x153 = add i32 %_x151, %_x152
+	%_x154 = add i32 2, %_x34
+	%_x155 = load i32, i32* %g_a14, align 4
+	%_x156 = add i32 %_x154, %_x155
+	%_x157 = add i32 3, %_x37
+	%_x158 = load i32, i32* %g_a15, align 4
+	%_x159 = add i32 %_x157, %_x158
+	%_x160 = add i32 4, %_x40
+	%_x161 = load i32, i32* %g_a16, align 4
+	%_x162 = add i32 %_x160, %_x161
+	%_x163 = add i32 1, %_x19
+	%_x164 = load i32, i32* %g_a9, align 4
+	%_x165 = add i32 %_x163, %_x164
+	%_x166 = add i32 2, %_x22
+	%_x167 = load i32, i32* %g_a10, align 4
+	%_x168 = add i32 %_x166, %_x167
+	%_x169 = add i32 3, %_x25
+	%_x170 = load i32, i32* %g_a11, align 4
+	%_x171 = add i32 %_x169, %_x170
+	%_x172 = add i32 4, %_x28
+	%_x173 = load i32, i32* %g_a12, align 4
+	%_x174 = add i32 %_x172, %_x173
+	%_x175 = add i32 1, %_x7
+	%_x176 = load i32, i32* %g_a5, align 4
+	%_x177 = add i32 %_x175, %_x176
+	%_x178 = add i32 2, %_x10
+	%_x179 = load i32, i32* %g_a6, align 4
+	%_x180 = add i32 %_x178, %_x179
+	%_x181 = add i32 3, %_x13
+	%_x182 = load i32, i32* %g_a7, align 4
+	%_x183 = add i32 %_x181, %_x182
+	%_x184 = add i32 4, %_x16
+	%_x185 = load i32, i32* %g_a8, align 4
+	%_x186 = add i32 %_x184, %_x185
+	%_x187 = add i32 1, %_x1
+	%_x188 = load i32, i32* %g_a1, align 4
+	%_x189 = add i32 %_x187, %_x188
+	%_x190 = add i32 2, %_x2
+	%_x191 = load i32, i32* %g_a2, align 4
+	%_x192 = add i32 %_x190, %_x191
+	%_x193 = add i32 3, %_x3
+	%_x194 = load i32, i32* %g_a3, align 4
+	%_x195 = add i32 %_x193, %_x194
+	%_x196 = add i32 4, %_x4
+	%_x197 = load i32, i32* %g_a4, align 4
+	%_x198 = add i32 %_x196, %_x197
+	%_x199 = add i32 1, %_x1
+	%_x200 = load i32, i32* %g_a1, align 4
+	%_x201 = add i32 %_x199, %_x200
+	%_x202 = add i32 2, %_x2
+	%_x203 = load i32, i32* %g_a2, align 4
+	%_x204 = add i32 %_x202, %_x203
+	%_x205 = add i32 3, %_x3
+	%_x206 = load i32, i32* %g_a3, align 4
+	%_x207 = add i32 %_x205, %_x206
+	%_x208 = add i32 4, %_x4
+	%_x209 = load i32, i32* %g_a4, align 4
+	%_x210 = add i32 %_x208, %_x209
+	%_x211 = add i32 %_x102, %_x1
+	%_x212 = add i32 %_x211, %_x2
+	%_x213 = add i32 %_x212, %_x3
+	%_x214 = add i32 %_x213, %_x4
+	%_x215 = sub i32 %_x214, %_x201
+	%_x216 = sub i32 %_x215, %_x204
+	%_x217 = sub i32 %_x216, %_x207
+	%_x218 = sub i32 %_x217, %_x210
+	%_x219 = add i32 %_x218, %_x177
+	%_x220 = add i32 %_x219, %_x180
+	%_x221 = add i32 %_x220, %_x183
+	%_x222 = add i32 %_x221, %_x186
+	%_x223 = sub i32 %_x222, %_x165
+	%_x224 = sub i32 %_x223, %_x168
+	%_x225 = sub i32 %_x224, %_x171
+	%_x226 = sub i32 %_x225, %_x174
+	%_x227 = add i32 %_x226, %_x153
+	%_x228 = add i32 %_x227, %_x156
+	%_x229 = add i32 %_x228, %_x159
+	%_x230 = add i32 %_x229, %_x162
+	%_x231 = sub i32 %_x230, %_x141
+	%_x232 = sub i32 %_x231, %_x144
+	%_x233 = sub i32 %_x232, %_x147
+	%_x234 = sub i32 %_x233, %_x150
+	%_x235 = add i32 %_x234, %_x129
+	%_x236 = add i32 %_x235, %_x132
+	%_x237 = add i32 %_x236, %_x135
+	%_x238 = add i32 %_x237, %_x138
+	%_x239 = sub i32 %_x238, %_x117
+	%_x240 = sub i32 %_x239, %_x120
+	%_x241 = sub i32 %_x240, %_x123
+	%_x242 = sub i32 %_x241, %_x126
+	%_x243 = add i32 %_x242, %_x105
+	%_x244 = add i32 %_x243, %_x108
+	%_x245 = add i32 %_x244, %_x111
+	%_x246 = add i32 %_x245, %_x114
+	%_x247 = load i32, i32* %g_a1, align 4
+	%_x248 = add i32 %_x246, %_x247
+	%_x249 = load i32, i32* %g_a2, align 4
+	%_x250 = sub i32 %_x248, %_x249
+	%_x251 = load i32, i32* %g_a3, align 4
+	%_x252 = add i32 %_x250, %_x251
+	%_x253 = load i32, i32* %g_a4, align 4
+	%_x254 = sub i32 %_x252, %_x253
+	%_x255 = load i32, i32* %g_a5, align 4
+	%_x256 = add i32 %_x254, %_x255
+	%_x257 = load i32, i32* %g_a6, align 4
+	%_x258 = sub i32 %_x256, %_x257
+	%_x259 = load i32, i32* %g_a7, align 4
+	%_x260 = add i32 %_x258, %_x259
+	%_x261 = load i32, i32* %g_a8, align 4
+	%_x262 = sub i32 %_x260, %_x261
+	%_x263 = load i32, i32* %g_a9, align 4
+	%_x264 = add i32 %_x262, %_x263
+	%_x265 = load i32, i32* %g_a10, align 4
+	%_x266 = sub i32 %_x264, %_x265
+	%_x267 = load i32, i32* %g_a11, align 4
+	%_x268 = add i32 %_x266, %_x267
+	%_x269 = load i32, i32* %g_a12, align 4
+	%_x270 = sub i32 %_x268, %_x269
+	%_x271 = load i32, i32* %g_a13, align 4
+	%_x272 = add i32 %_x270, %_x271
+	%_x273 = load i32, i32* %g_a14, align 4
+	%_x274 = sub i32 %_x272, %_x273
+	%_x275 = load i32, i32* %g_a15, align 4
+	%_x276 = add i32 %_x274, %_x275
+	%_x277 = load i32, i32* %g_a16, align 4
+	%_x278 = sub i32 %_x276, %_x277
+	%_x279 = load i32, i32* %g_a17, align 4
+	%_x280 = add i32 %_x278, %_x279
+	%_x281 = load i32, i32* %g_a18, align 4
+	%_x282 = sub i32 %_x280, %_x281
+	%_x283 = load i32, i32* %g_a19, align 4
+	%_x284 = add i32 %_x282, %_x283
+	%_x285 = load i32, i32* %g_a20, align 4
+	%_x286 = sub i32 %_x284, %_x285
+	%_x287 = load i32, i32* %g_a21, align 4
+	%_x288 = add i32 %_x286, %_x287
+	%_x289 = load i32, i32* %g_a22, align 4
+	%_x290 = sub i32 %_x288, %_x289
+	%_x291 = load i32, i32* %g_a23, align 4
+	%_x292 = add i32 %_x290, %_x291
+	%_x293 = load i32, i32* %g_a24, align 4
+	%_x294 = sub i32 %_x292, %_x293
+	%_x295 = load i32, i32* %g_a25, align 4
+	%_x296 = add i32 %_x294, %_x295
+	%_x297 = load i32, i32* %g_a26, align 4
+	%_x298 = sub i32 %_x296, %_x297
+	%_x299 = load i32, i32* %g_a27, align 4
+	%_x300 = add i32 %_x298, %_x299
+	%_x301 = load i32, i32* %g_a28, align 4
+	%_x302 = sub i32 %_x300, %_x301
+	%_x303 = load i32, i32* %g_a29, align 4
+	%_x304 = add i32 %_x302, %_x303
+	%_x305 = load i32, i32* %g_a30, align 4
+	%_x306 = sub i32 %_x304, %_x305
+	%_x307 = load i32, i32* %g_a31, align 4
+	%_x308 = add i32 %_x306, %_x307
+	%_x309 = load i32, i32* %g_a32, align 4
+	%_x310 = sub i32 %_x308, %_x309
+	ret i32 %_x310
+}
+
+define i32 @main() #0 {
+_entry:
+	%g_a1 = getelementptr inbounds i32, i32* @a1, i32 0
+	%g_a2 = getelementptr inbounds i32, i32* @a2, i32 0
+	%g_a3 = getelementptr inbounds i32, i32* @a3, i32 0
+	%g_a4 = getelementptr inbounds i32, i32* @a4, i32 0
+	%g_a5 = getelementptr inbounds i32, i32* @a5, i32 0
+	%g_a6 = getelementptr inbounds i32, i32* @a6, i32 0
+	%g_a7 = getelementptr inbounds i32, i32* @a7, i32 0
+	%g_a8 = getelementptr inbounds i32, i32* @a8, i32 0
+	%g_a9 = getelementptr inbounds i32, i32* @a9, i32 0
+	%g_a10 = getelementptr inbounds i32, i32* @a10, i32 0
+	%g_a11 = getelementptr inbounds i32, i32* @a11, i32 0
+	%g_a12 = getelementptr inbounds i32, i32* @a12, i32 0
+	%g_a13 = getelementptr inbounds i32, i32* @a13, i32 0
+	%g_a14 = getelementptr inbounds i32, i32* @a14, i32 0
+	%g_a15 = getelementptr inbounds i32, i32* @a15, i32 0
+	%g_a16 = getelementptr inbounds i32, i32* @a16, i32 0
+	%g_a17 = getelementptr inbounds i32, i32* @a17, i32 0
+	%g_a18 = getelementptr inbounds i32, i32* @a18, i32 0
+	%g_a19 = getelementptr inbounds i32, i32* @a19, i32 0
+	%g_a20 = getelementptr inbounds i32, i32* @a20, i32 0
+	%g_a21 = getelementptr inbounds i32, i32* @a21, i32 0
+	%g_a22 = getelementptr inbounds i32, i32* @a22, i32 0
+	%g_a23 = getelementptr inbounds i32, i32* @a23, i32 0
+	%g_a24 = getelementptr inbounds i32, i32* @a24, i32 0
+	%g_a25 = getelementptr inbounds i32, i32* @a25, i32 0
+	%g_a26 = getelementptr inbounds i32, i32* @a26, i32 0
+	%g_a27 = getelementptr inbounds i32, i32* @a27, i32 0
+	%g_a28 = getelementptr inbounds i32, i32* @a28, i32 0
+	%g_a29 = getelementptr inbounds i32, i32* @a29, i32 0
+	%g_a30 = getelementptr inbounds i32, i32* @a30, i32 0
+	%g_a31 = getelementptr inbounds i32, i32* @a31, i32 0
+	%g_a32 = getelementptr inbounds i32, i32* @a32, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_x0 = call i32 @getint()
+	%_x1 = add i32 %_x0, 18
+	%_x2 = call i32 @func(i32 %_x0, i32 %_x1)
+	call void @putint(i32 %_x2)
+	call void @putint(i32 %_x2)
+	ret i32 %_x2
 }
 

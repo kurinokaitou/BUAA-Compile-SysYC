@@ -23,8 +23,8 @@ for id in range(TEST_ID_RANGE[0], TEST_ID_RANGE[1]+1):
     runner.run()
     result = runner.check()
     recorder.addResult(id, result)
-    # if not result:
-    #     break
+    if not result:
+        break
     print("testing "+str(id) + '/' + str(TEST_ID_RANGE[1]),end='\r')
 
 end = time.time();
