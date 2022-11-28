@@ -110,6 +110,7 @@ class MipsModule {
     friend class IrModule;
     friend void allocateRegister(MipsModule& module);
     friend void computeStackInfo(MipsModule& module);
+    friend void peepholeOpt(MipsModule& module);
 
 public:
     MipsFunc* addFunc(MipsFunc* func) {
@@ -177,10 +178,15 @@ public:
         m_type(type) {}
     MipsBasicBlock* getAtBlock() { return m_atBlock; }
     virtual void toCode(std::ostream& os) = 0;
+    void markUseless(bool useless) {
+        m_useless = useless;
+    }
+    bool isUseless() { return m_useless; }
 
 protected:
     MipsBasicBlock* m_atBlock;
     MipsCodeType m_type;
+    bool m_useless{false};
 };
 
 class MipsBasicBlock {
@@ -450,6 +456,7 @@ public:
     MipsJump(MipsBasicBlock* target) :
         MipsInst(MipsCodeType::Jump), m_target(target) {}
     virtual void toCode(std::ostream& os) override;
+    MipsBasicBlock* getTarget() { return m_target; }
 
 private:
     MipsBasicBlock* m_target;
@@ -478,6 +485,7 @@ public:
     virtual void toCode(std::ostream& os) override{};
     void setOffset(int offset) { m_offset = offset; }
     int getOffset() { return m_offset; }
+    MipsOperand getAddr() { return m_addr; }
 
 protected:
     MipsOperand m_addr;
@@ -492,6 +500,7 @@ public:
     MipsLoad(MipsOperand dst, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Load, addr, offset), m_dst(dst) {}
     virtual void toCode(std::ostream& os) override;
+    MipsOperand getDst() { return m_dst; }
 
 private:
     MipsOperand m_dst;
@@ -505,6 +514,7 @@ public:
     explicit MipsStore(MipsOperand data, MipsOperand addr, int offset) :
         MipsAccess(MipsCodeType::Store, addr, offset), m_data(data) {}
     virtual void toCode(std::ostream& os) override;
+    MipsOperand getData() { return m_data; }
 
 private:
     MipsOperand m_data;

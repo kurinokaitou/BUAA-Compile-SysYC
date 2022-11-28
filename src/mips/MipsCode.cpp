@@ -74,8 +74,10 @@ void MipsFunc::toCode(std::ostream& os) {
 void MipsBasicBlock::toCode(std::ostream& os) {
     os << ".b" << MipsBasicBlock::s_bbMapper.get(this) << ":" << std::endl;
     for (auto& inst : m_insts) {
-        os << "\t";
-        inst->toCode(os);
+        if (!inst->isUseless()) {
+            os << "\t";
+            inst->toCode(os);
+        }
     }
     os << std::endl;
 }

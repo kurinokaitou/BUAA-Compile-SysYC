@@ -1,7 +1,7 @@
 #include <mips/MipsContext.h>
 #include <Log.h>
 #include <optimize/MipsOptPass.h>
-std::vector<std::function<void(MipsModule&)>> MipsContext::s_mipsPasses{allocateRegister, computeStackInfo};
+std::vector<std::function<void(MipsModule&)>> MipsContext::s_mipsPasses{allocateRegister, computeStackInfo, peepholeOpt};
 
 static inline void insertParallelMv(std::vector<std::pair<MipsOperand, MipsOperand>>& movs, MipsInst* insertBefore) {
     // serialization in any order is okay

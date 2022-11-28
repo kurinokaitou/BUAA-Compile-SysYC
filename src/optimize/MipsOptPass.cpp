@@ -578,3 +578,54 @@ void computeStackInfo(MipsModule& module) {
         }
     }
 }
+
+void peepholeOpt(MipsModule& module) {
+    for (auto& func : module.m_funcs) {
+        auto& bbs = func->getMipsBasicBlocks();
+        for (auto bbIter = bbs.begin(); bbIter != bbs.end(); bbIter++) {
+            auto bb = (*bbIter).get();
+            MipsBasicBlock* nextbb = nullptr;
+            if (std::next(bbIter) != bbs.end()) {
+                nextbb = std::next(bbIter)->get();
+            }
+            auto& insts = bb->getMipsInsts();
+            for (auto iter = insts.begin(); iter != insts.end(); iter++) {
+                auto inst = iter->get();
+                if (auto x = dynamic_cast<MipsMove*>(inst)) {
+                    MipsInst* next = nullptr;
+                    if (std::next(iter) != insts.end()) {
+                        next = std::next(iter)->get();
+                    }
+                    if (x->getDst().isEquiv(x->getRhs())) {
+                        x->markUseless(true);
+                    } else if (next && dynamic_cast<MipsMove*>(next)) {
+                        auto y = dynamic_cast<MipsMove*>(next);
+                        if (y->getDst().isEquiv(x->getDst()) && !y->getRhs().isEquiv(x->getDst())) {
+                            x->markUseless(true);
+                        }
+                    }
+                } else if (auto x = dynamic_cast<MipsBinary*>(inst)) {
+                    if (x->isIdentity()) {
+                        x->markUseless(true);
+                    }
+                } else if (auto x = dynamic_cast<MipsJump*>(inst)) {
+                    if (nextbb && x->getTarget() == nextbb) {
+                        x->markUseless(true);
+                    }
+                } else if (auto x = dynamic_cast<MipsLoad*>(inst)) {
+                    MipsInst* prev = nullptr;
+                    if (std::prev(iter) != insts.begin()) {
+                        prev = std::prev(iter)->get();
+                    }
+                    if (prev && dynamic_cast<MipsStore*>(inst)) {
+                        auto y = dynamic_cast<MipsStore*>(prev);
+                        if (x->getAddr().isEquiv(y->getAddr()) && x->getOffset() == y->getOffset()) {
+                            bb->insertAfterInst(x, new MipsMove(x->getDst(), y->getData()));
+                            x->markUseless(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
