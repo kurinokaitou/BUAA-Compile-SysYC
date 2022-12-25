@@ -6,19 +6,19 @@
 #include <symbol/SymbolTable.h>
 #include <codegen/CodeGenerator.h>
 
-static std::string s_sourcePath = "testfile.txt";
+static std::string s_sourcePath = "intermediate/testfile.txt";
 static std::string s_dumpTokenPath = "intermediate/token.txt";
 static std::string s_dumpASTPath = "intermediate/ast.txt";
 static std::string s_dumpTablePath = "intermediate/table.txt";
 static std::string s_dumpErrorPath = "intermediate/error.txt";
-static std::string s_dumpIrPath = "llvm_ir.txt";
-static std::string s_dumpMipsPath = "mips.txt";
+static std::string s_dumpIrPath = "intermediate/llvm_ir.txt";
+static std::string s_dumpMipsPath = "intermediate/mips.txt";
 static bool s_dumpToken = false;
 static bool s_dumpAST = false;
 static bool s_dumpTable = false;
 static bool s_dumpError = false;
 static bool s_dumpIr = false;
-static bool s_dumpMips = true;
+static bool s_dumpMips = false;
 static bool s_isTest = false;
 
 static int s_optLevel = 0;
@@ -82,6 +82,9 @@ static void parseArgs(int argc, char** argv) {
             s_dumpIr = true;
             s_dumpMips = true;
             break;
+        }
+        if (argv[i][0] == '-' && argv[i][1] == 'O') {
+            s_optLevel = std::atoi(&argv[i][2]);
         }
         s_sourcePath = std::string(argv[i]);
     }

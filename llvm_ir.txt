@@ -1,0 +1,203 @@
+declare i32 @getint( ) #0
+declare void @putch(i32 ) #0
+declare void @putint(i32 ) #0
+declare void @putstr(i8* ) #0
+
+@N = constant i32 10
+@a = global [10 x i32] [i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 8, i32 9]
+
+@.str1 = constant [3 x i8] c", \00"
+@.str2 = constant [2 x i8] c"\0a\00"
+@.str3 = constant [3 x i8] c", \00"
+@.str4 = constant [3 x i8] c", \00"
+@.str5 = constant [2 x i8] c"\0a\00"
+
+define i32 @fib(i32 %i) #0 {
+_entry:
+	%g_N = getelementptr inbounds i32, i32* @N, i32 0
+	%g_a = getelementptr inbounds [10 x i32], [10 x i32]* @a, i32 0, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_t0 = icmp eq i32 %i, 1
+	%_x1 = zext i1 %_t0 to i32
+	; if %_x1 then _b1 else _b2
+	%_t2 = icmp ne i32 %_x1, 0
+	br i1 %_t2, label %_b1, label %_b2
+_b1: ; preds = %_b0
+	ret i32 1
+_b2: ; preds = %_b0
+	%_t3 = icmp eq i32 %i, 2
+	%_x4 = zext i1 %_t3 to i32
+	; if %_x4 then _b3 else _b4
+	%_t5 = icmp ne i32 %_x4, 0
+	br i1 %_t5, label %_b3, label %_b4
+_b3: ; preds = %_b2
+	ret i32 2
+_b4: ; preds = %_b2
+	%_x6 = sub i32 %i, 1
+	%_x7 = call i32 @fib(i32 %_x6)
+	%_x8 = sub i32 %i, 2
+	%_x9 = call i32 @fib(i32 %_x8)
+	%_x10 = add i32 %_x7, %_x9
+	ret i32 %_x10
+}
+
+define i32 @main() #0 {
+_entry:
+	%g_N = getelementptr inbounds i32, i32* @N, i32 0
+	%g_a = getelementptr inbounds [10 x i32], [10 x i32]* @a, i32 0, i32 0
+	br label %_b0
+_b0: ; preds = 
+	%_x0 = call i32 @getint()
+	%_x1 = call i32 @getint()
+	%_x2 = mul i32 %_x0, %_x1
+	%_x3 = sub i32 0, %_x2
+	%_x4 = call i32 @fib(i32 4)
+	%_x5 = mul i32 %_x3, %_x4
+	%_x6 = add i32 %_x5, 0
+	; getelementptr 7
+	%_x7 = getelementptr inbounds i32, i32* %g_a, i32 1
+	%_x8 = load i32, i32* %_x7, align 4
+	%_x9 = mul i32 %_x8, 1
+	%_x10 = add i32 %_x6, %_x9
+	%_x11 = sub i32 %_x10, 0
+	%_x12 = mul i32 %_x11, 5
+	%_x13 = call i32 @fib(i32 5)
+	%_x14 = add i32 %_x13, 2
+	%_x15 = call i32 @fib(i32 %_x14)
+	%_x16 = sub i32 1197, %_x15
+	%_x17 = add i32 %_x16, -10091
+	br label %_b1
+_b1: ; preds = %_b0, %_b2
+	%_x18 = phi i32 [%_x12, %_b0], [%_x19, %_b2]
+	%_t20 = icmp sle i32 %_x18, 100
+	%_x21 = zext i1 %_t20 to i32
+	; if %_x21 then _b2 else _b3
+	%_t22 = icmp ne i32 %_x21, 0
+	br i1 %_t22, label %_b2, label %_b3
+_b2: ; preds = %_b1
+	; getelementptr 23
+	%_x23 = getelementptr inbounds i32, i32* %g_a, i32 0
+	; getelementptr 24
+	%_x24 = getelementptr inbounds i32, i32* %g_a, i32 0
+	%_x25 = load i32, i32* %_x24, align 4
+	%_x26 = mul i32 -6, -6
+	%_x27 = add i32 %_x25, %_x26
+	; store 28
+	store i32 %_x27, i32* %_x23, align 4
+	; getelementptr 29
+	%_x29 = getelementptr inbounds i32, i32* %g_a, i32 1
+	; getelementptr 30
+	%_x30 = getelementptr inbounds i32, i32* %g_a, i32 1
+	%_x31 = load i32, i32* %_x30, align 4
+	%_x32 = mul i32 -6, -6
+	%_x33 = add i32 %_x31, %_x32
+	; store 34
+	store i32 %_x33, i32* %_x29, align 4
+	; getelementptr 35
+	%_x35 = getelementptr inbounds i32, i32* %g_a, i32 2
+	; getelementptr 36
+	%_x36 = getelementptr inbounds i32, i32* %g_a, i32 2
+	%_x37 = load i32, i32* %_x36, align 4
+	%_x38 = mul i32 -6, -6
+	%_x39 = add i32 %_x37, %_x38
+	; store 40
+	store i32 %_x39, i32* %_x35, align 4
+	; getelementptr 41
+	%_x41 = getelementptr inbounds i32, i32* %g_a, i32 3
+	; getelementptr 42
+	%_x42 = getelementptr inbounds i32, i32* %g_a, i32 3
+	%_x43 = load i32, i32* %_x42, align 4
+	%_x44 = mul i32 -6, -6
+	%_x45 = add i32 %_x43, %_x44
+	; store 46
+	store i32 %_x45, i32* %_x41, align 4
+	; getelementptr 47
+	%_x47 = getelementptr inbounds i32, i32* %g_a, i32 4
+	; getelementptr 48
+	%_x48 = getelementptr inbounds i32, i32* %g_a, i32 4
+	%_x49 = load i32, i32* %_x48, align 4
+	%_x50 = mul i32 -6, -6
+	%_x51 = add i32 %_x49, %_x50
+	; store 52
+	store i32 %_x51, i32* %_x47, align 4
+	; getelementptr 53
+	%_x53 = getelementptr inbounds i32, i32* %g_a, i32 5
+	; getelementptr 54
+	%_x54 = getelementptr inbounds i32, i32* %g_a, i32 5
+	%_x55 = load i32, i32* %_x54, align 4
+	%_x56 = mul i32 -6, -6
+	%_x57 = add i32 %_x55, %_x56
+	; store 58
+	store i32 %_x57, i32* %_x53, align 4
+	; getelementptr 59
+	%_x59 = getelementptr inbounds i32, i32* %g_a, i32 6
+	; getelementptr 60
+	%_x60 = getelementptr inbounds i32, i32* %g_a, i32 6
+	%_x61 = load i32, i32* %_x60, align 4
+	%_x62 = mul i32 -6, -6
+	%_x63 = add i32 %_x61, %_x62
+	; store 64
+	store i32 %_x63, i32* %_x59, align 4
+	; getelementptr 65
+	%_x65 = getelementptr inbounds i32, i32* %g_a, i32 7
+	; getelementptr 66
+	%_x66 = getelementptr inbounds i32, i32* %g_a, i32 7
+	%_x67 = load i32, i32* %_x66, align 4
+	%_x68 = mul i32 -6, -6
+	%_x69 = add i32 %_x67, %_x68
+	; store 70
+	store i32 %_x69, i32* %_x65, align 4
+	; getelementptr 71
+	%_x71 = getelementptr inbounds i32, i32* %g_a, i32 8
+	; getelementptr 72
+	%_x72 = getelementptr inbounds i32, i32* %g_a, i32 8
+	%_x73 = load i32, i32* %_x72, align 4
+	%_x74 = mul i32 -6, -6
+	%_x75 = add i32 %_x73, %_x74
+	; store 76
+	store i32 %_x75, i32* %_x71, align 4
+	; getelementptr 77
+	%_x77 = getelementptr inbounds i32, i32* %g_a, i32 9
+	; getelementptr 78
+	%_x78 = getelementptr inbounds i32, i32* %g_a, i32 9
+	%_x79 = load i32, i32* %_x78, align 4
+	%_x80 = mul i32 -6, -6
+	%_x81 = add i32 %_x79, %_x80
+	; store 82
+	store i32 %_x81, i32* %_x77, align 4
+	%_x19 = add i32 %_x18, 1
+	br label %_b1
+_b3: ; preds = %_b1
+	br label %_b4
+_b4: ; preds = %_b3, %_b5
+	%_x83 = phi i32 [0, %_b3], [%_x84, %_b5]
+	%_t85 = icmp slt i32 %_x83, 10
+	%_x86 = zext i1 %_t85 to i32
+	; if %_x86 then _b5 else _b6
+	%_t87 = icmp ne i32 %_x86, 0
+	br i1 %_t87, label %_b5, label %_b6
+_b5: ; preds = %_b4
+	; getelementptr 88
+		%_x88 = getelementptr inbounds i32, i32* %g_a, i32 %_x83
+	%_x90 = load i32, i32* %_x88, align 4
+	call void @putint(i32 %_x90)
+	%_t91 = getelementptr inbounds [3 x i8], [3 x i8]* @.str1, i32 0, i32 0
+	call void @putstr(i8* %_t91)
+	%_x84 = add i32 %_x83, 1
+	br label %_b4
+_b6: ; preds = %_b4
+	%_t92 = getelementptr inbounds [2 x i8], [2 x i8]* @.str2, i32 0, i32 0
+	call void @putstr(i8* %_t92)
+	call void @putint(i32 %_x83)
+	%_t93 = getelementptr inbounds [3 x i8], [3 x i8]* @.str3, i32 0, i32 0
+	call void @putstr(i8* %_t93)
+	call void @putint(i32 %_x17)
+	%_t94 = getelementptr inbounds [3 x i8], [3 x i8]* @.str4, i32 0, i32 0
+	call void @putstr(i8* %_t94)
+	call void @putint(i32 -6)
+	%_t95 = getelementptr inbounds [2 x i8], [2 x i8]* @.str5, i32 0, i32 0
+	call void @putstr(i8* %_t95)
+	ret i32 0
+}
+

@@ -8,10 +8,15 @@ void CodeGenerator::generate(int optLevel, bool genMips) {
     m_visitor->visit();
     m_irCtx.module.calPredSucc();
     m_irCtx.module.addImplicitReturn();
-    m_irCtx.module.optimizeIrCode(optLevel);
+    if (optLevel) {
+        m_irCtx.module.optimizeIrCode(optLevel);
+    }
+    // Logger::logInfo("optLevel=" + std::to_string(optLevel) + "\n");
     if (genMips) {
         m_mipsCtx.convertMipsCode(m_irCtx.module);
-        m_mipsCtx.optimizeMipsCode(optLevel);
+        if (optLevel) {
+            m_mipsCtx.optimizeMipsCode(optLevel);
+        }
     }
 }
 
