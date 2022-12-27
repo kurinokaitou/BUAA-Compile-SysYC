@@ -373,7 +373,7 @@ std::shared_ptr<VNodeBase> Parser::blockItem(int level) {
                 | block 
                 | 'if' '(' cond ')' stmt [ 'else' stmt ] 
                 | 'while' '(' cond ')' stmt 
-                | 'for' '(' exp | decl ';' exp ';' exp')' stmt
+                | 'for' '(' exp | decl ';' cond ';' exp')' stmt
                 | 'break' ';' 
                 | 'continue' ';' 
                 | 'return' [exp] ';'
@@ -398,6 +398,20 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
         children.push_back(expect(SymbolEnum::WHILETK, level));
         children.push_back(expect(SymbolEnum::LPARENT, level));
         children.push_back(cond(level));
+        children.push_back(expect(SymbolEnum::RPARENT, level));
+        children.push_back(stmt(level));
+    } else if ((m_currToken + 1)->symbol == SymbolEnum::FORTK) { // 'for' '(' exp | decl ';' cond ';' exp')' stmt
+        children.push_back(expect(SymbolEnum::FORTK, level));
+        children.push_back(expect(SymbolEnum::LPARENT, level));
+        if (expectPureExp()) {
+            children.push_back(exp(level));
+        } else {
+            children.push_back(decl(level));
+        }
+        children.push_back(expect(SymbolEnum::SEMICN, level));
+        children.push_back(cond(level));
+        children.push_back(expect(SymbolEnum::SEMICN, level));
+        children.push_back(exp(level));
         children.push_back(expect(SymbolEnum::RPARENT, level));
         children.push_back(stmt(level));
     } else if ((m_currToken + 1)->symbol == SymbolEnum::BREAKTK || (m_currToken + 1)->symbol == SymbolEnum::CONTINUETK) {
