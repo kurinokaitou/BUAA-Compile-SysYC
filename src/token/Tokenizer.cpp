@@ -202,6 +202,7 @@ SymbolEnum Tokenizer::getReservedWordSymbol(std::string& word) {
         "break",
         "continue",
         "while",
+        "for",
         "getint",
         "printf",
     };

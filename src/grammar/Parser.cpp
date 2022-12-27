@@ -373,6 +373,7 @@ std::shared_ptr<VNodeBase> Parser::blockItem(int level) {
                 | block 
                 | 'if' '(' cond ')' stmt [ 'else' stmt ] 
                 | 'while' '(' cond ')' stmt 
+                | 'for' '(' exp | decl ';' exp ';' exp')' stmt
                 | 'break' ';' 
                 | 'continue' ';' 
                 | 'return' [exp] ';'

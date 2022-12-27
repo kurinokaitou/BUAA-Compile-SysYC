@@ -47,6 +47,7 @@ enum class SymbolEnum : int {
     BREAKTK,    // break
     CONTINUETK, // continue
     WHILETK,    // while
+    FORTK,      // for
     GETINTTK,   // getint
     PRINTFTK,   // printf
 };
@@ -92,6 +93,7 @@ static const std::vector<std::string> s_symbolText{
     "BREAKTK",
     "CONTINUETK",
     "WHILETK",
+    "FORTK",
     "GETINTTK",
     "PRINTFTK",
 };
