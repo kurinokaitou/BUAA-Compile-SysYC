@@ -1,0 +1,10 @@
+int main(){
+    int n = 10;
+    int cnt = 0;
+    for(int i = 1; i < n; i = i + 1){
+        if(i == 6) continue;
+        cnt = cnt + i;
+    }
+    printf("%d\n", cnt);
+    return 0;
+}

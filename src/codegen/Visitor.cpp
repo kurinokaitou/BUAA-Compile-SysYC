@@ -87,7 +87,7 @@ void Visitor::varDecl(std::shared_ptr<VNodeBase> node) {
     if (bType(*node->getChildIter()) == ValueTypeEnum::INT_TYPE) {
         node->nextChild(); // jump 'int'
         varDef<IntType>(*node->getChildIter());
-        node->nextChild(); // jump <VarDef>
+        node->nextChild(1, false); // jump <VarDef>
         while (expect(*node->getChildIter(), SymbolEnum::COMMA)) {
             node->nextChild(); // jump ','
             varDef<IntType>(*node->getChildIter());
@@ -966,6 +966,37 @@ void Visitor::stmt(std::shared_ptr<VNodeBase> node) {
         m_table.popScope();
         node->nextChild(1, false); // jump STMT
         m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB));
+        // end
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(end);
+        /*----------------------------------------------------------------------------*/
+    } else if (expect(*node->getChildIter(), SymbolEnum::FORTK)) { // 'for' '(' blockItem ';' cond ';' stmt')' stmt
+        node->nextChild(2);                                        // jump FOR & '('
+        blockItem(*node->getChildIter());
+        node->nextChild(2); // jump blockItem & ';'
+        /*---------------------------------codegen------------------------------------*/
+        auto cndBB = new BasicBlock();
+        auto loop = new BasicBlock();
+        auto increment = new BasicBlock();
+        auto end = new BasicBlock();
+        m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB)); // 跳转控制块
+        // cndBB
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(cndBB);
+        auto cnd = cond(*node->getChildIter());
+        m_ctx.basicBlock->pushBackInst(new BranchInst(cnd, loop, end)); // 跳转循环块
+        // loop
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(loop);
+        m_ctx.loopStk.emplace_back(increment, end); // continue, break
+        node->nextChild(2);                         // jump COND & ';'
+        auto incrementStmtNode = *node->getChildIter();
+        m_table.pushScope(BlockScopeType::LOOP);
+        stmt(*node->getChildIter(2)); // stmt outside
+        m_ctx.loopStk.pop_back();
+        m_table.popScope();
+        node->nextChild(2, false);                               // jump STMT
+        m_ctx.basicBlock->pushBackInst(new JumpInst(increment)); // 跳转自增块
+        m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(increment);
+        stmt(incrementStmtNode);
+        m_ctx.basicBlock->pushBackInst(new JumpInst(cndBB)); // 跳转控制块
         // end
         m_ctx.basicBlock = m_ctx.function->pushBackBasicBlock(end);
         /*----------------------------------------------------------------------------*/

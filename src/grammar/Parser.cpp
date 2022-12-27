@@ -180,21 +180,21 @@ std::shared_ptr<VNodeBase> Parser::compUnit(int level) {
     return compUnitNode;
 }
 // 声明decl -> constDef | varDef
-std::shared_ptr<VNodeBase> Parser::decl(int level) {
+std::shared_ptr<VNodeBase> Parser::decl(int level, bool needSemicn) {
     auto declNode = std::make_shared<VNodeBranch>(VNodeEnum::DECL);
     declNode->setLevel(level);
     std::shared_ptr<VNodeBase> child;
     if ((m_currToken + 1)->symbol == SymbolEnum::CONSTTK) {
-        child = constDecl(level);
+        child = constDecl(level, needSemicn);
     } else {
-        child = varDecl(level);
+        child = varDecl(level, needSemicn);
     }
     declNode->addChild(std::move(child));
     return declNode;
 }
 // TODO: 完成所有的编译项
 // 常量声明constDecl -> 'const' bType constDef {',' constDef}';'
-std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
+std::shared_ptr<VNodeBase> Parser::constDecl(int level, bool needSemicn) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto constDeclNode = std::make_shared<VNodeBranch>(VNodeEnum::CONSTDECL);
     constDeclNode->setLevel(level);
@@ -205,7 +205,9 @@ std::shared_ptr<VNodeBase> Parser::constDecl(int level) {
         children.push_back(expect(SymbolEnum::COMMA, level));
         children.push_back(constDef(level));
     }
-    children.push_back(expect(SymbolEnum::SEMICN, level));
+    if (needSemicn) {
+        children.push_back(expect(SymbolEnum::SEMICN, level));
+    }
     for (auto& child : children) {
         constDeclNode->addChild(std::move(child));
     }
@@ -275,7 +277,7 @@ std::shared_ptr<VNodeBase> Parser::constExp(int level) {
 }
 
 // 变量声明 varDecl -> bType varDef { ',' varDef } ';'
-std::shared_ptr<VNodeBase> Parser::varDecl(int level) {
+std::shared_ptr<VNodeBase> Parser::varDecl(int level, bool needSemicn) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto varDeclNode = std::make_shared<VNodeBranch>(VNodeEnum::VARDECL);
     varDeclNode->setLevel(level);
@@ -285,7 +287,9 @@ std::shared_ptr<VNodeBase> Parser::varDecl(int level) {
         children.push_back(expect(SymbolEnum::COMMA, level));
         children.push_back(varDef(level));
     }
-    children.push_back(expect(SymbolEnum::SEMICN, level));
+    if (needSemicn) {
+        children.push_back(expect(SymbolEnum::SEMICN, level));
+    }
     for (auto& child : children) {
         varDeclNode->addChild(std::move(child));
     }
@@ -353,15 +357,15 @@ std::shared_ptr<VNodeBase> Parser::block(int level) {
 }
 
 // 语句块项 blockItem -> decl | stmt
-std::shared_ptr<VNodeBase> Parser::blockItem(int level) {
+std::shared_ptr<VNodeBase> Parser::blockItem(int level, bool needSemicn) {
     auto blockItemNode = std::make_shared<VNodeBranch>(VNodeEnum::BLOCKITEM);
     blockItemNode->setLevel(level);
     if ((m_currToken + 1)->symbol == SymbolEnum::CONSTTK
         || (m_currToken + 1)->symbol == SymbolEnum::INTTK
         || (m_currToken + 1)->symbol == SymbolEnum::CHARTK) {
-        blockItemNode->addChild(decl(level));
+        blockItemNode->addChild(decl(level, needSemicn));
     } else {
-        blockItemNode->addChild(stmt(level));
+        blockItemNode->addChild(stmt(level, needSemicn));
     }
     return blockItemNode;
 }
@@ -373,13 +377,13 @@ std::shared_ptr<VNodeBase> Parser::blockItem(int level) {
                 | block 
                 | 'if' '(' cond ')' stmt [ 'else' stmt ] 
                 | 'while' '(' cond ')' stmt 
-                | 'for' '(' exp | decl ';' cond ';' exp')' stmt
+                | 'for' '(' blockItem ';' cond ';' stmt')' stmt
                 | 'break' ';' 
                 | 'continue' ';' 
                 | 'return' [exp] ';'
                 | 'printf''('formatString{','exp}')'';'
  */
-std::shared_ptr<VNodeBase> Parser::stmt(int level) {
+std::shared_ptr<VNodeBase> Parser::stmt(int level, bool needSemicn) {
     std::vector<std::shared_ptr<VNodeBase>> children;
     auto stmtNode = std::make_shared<VNodeBranch>(VNodeEnum::STMT);
     stmtNode->setLevel(level);
@@ -400,30 +404,30 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
         children.push_back(cond(level));
         children.push_back(expect(SymbolEnum::RPARENT, level));
         children.push_back(stmt(level));
-    } else if ((m_currToken + 1)->symbol == SymbolEnum::FORTK) { // 'for' '(' exp | decl ';' cond ';' exp')' stmt
+    } else if ((m_currToken + 1)->symbol == SymbolEnum::FORTK) { // 'for' '(' blockItem ';' cond ';' stmt')' stmt
         children.push_back(expect(SymbolEnum::FORTK, level));
         children.push_back(expect(SymbolEnum::LPARENT, level));
-        if (expectPureExp()) {
-            children.push_back(exp(level));
-        } else {
-            children.push_back(decl(level));
-        }
+        children.push_back(blockItem(level, false));
         children.push_back(expect(SymbolEnum::SEMICN, level));
         children.push_back(cond(level));
         children.push_back(expect(SymbolEnum::SEMICN, level));
-        children.push_back(exp(level));
+        children.push_back(stmt(level, false));
         children.push_back(expect(SymbolEnum::RPARENT, level));
         children.push_back(stmt(level));
     } else if ((m_currToken + 1)->symbol == SymbolEnum::BREAKTK || (m_currToken + 1)->symbol == SymbolEnum::CONTINUETK) {
         children.push_back(expect({SymbolEnum::BREAKTK, SymbolEnum::CONTINUETK}, level));
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     } else if ((m_currToken + 1)->symbol == SymbolEnum::RETURNTK) {
         children.push_back(expect(SymbolEnum::RETURNTK, level));
         if ((m_currToken + 1)->symbol != SymbolEnum::SEMICN
             && (m_currToken + 1)->symbol != SymbolEnum::RBRACE) {
             children.push_back(exp(level));
         }
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     } else if ((m_currToken + 1)->symbol == SymbolEnum::PRINTFTK) {
         children.push_back(expect(SymbolEnum::PRINTFTK, level));
         children.push_back(expect(SymbolEnum::LPARENT, level));
@@ -433,7 +437,9 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
             children.push_back(exp(level));
         }
         children.push_back(expect(SymbolEnum::RPARENT, level));
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     }
     // block 的首符 '{'
     else if ((m_currToken + 1)->symbol == SymbolEnum::LBRACE) {
@@ -450,16 +456,22 @@ std::shared_ptr<VNodeBase> Parser::stmt(int level) {
         } else {
             children.push_back(exp(level));
         }
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     }
     // 处理单一表达式的情况
     else if (expectPureExp()) {
         children.push_back(exp(level));
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     }
     // 只有分号
     else if ((m_currToken + 1)->symbol == SymbolEnum::SEMICN) {
-        children.push_back(expect(SymbolEnum::SEMICN, level));
+        if (needSemicn) {
+            children.push_back(expect(SymbolEnum::SEMICN, level));
+        }
     }
 
     for (auto& child : children) {

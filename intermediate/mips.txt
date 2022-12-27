@@ -1,0 +1,60 @@
+.data
+.str1: .ascii "\n\00"
+
+.text
+main:
+.b0:
+	add v0, $sp, 0
+	li v1, 10
+	sw v1, 0(v0)
+	add v2, $sp, 4
+	li v3, 0
+	sw v3, 0(v2)
+	add v4, $sp, 8
+	li v5, 1
+	sw v5, 0(v4)
+	j .b1
+
+.b1:
+	lw v6, 0(v4)
+	lw v7, 0(v0)
+	slt v8, v6, v7
+	beq v8, 0, .b7
+
+.b2:
+	lw v9, 0(v4)
+	seq v10, v9, 6
+	beq v10, 0, .b4
+
+.b3:
+	j .b6
+
+.b4:
+	j .b5
+
+.b5:
+	lw v11, 0(v2)
+	lw v12, 0(v4)
+	add v13, v11, v12
+	sw v13, 0(v2)
+	j .b6
+
+.b6:
+	lw v14, 0(v4)
+	add v15, v14, 1
+	sw v15, 0(v4)
+	j .b1
+
+.b7:
+	lw v16, 0(v2)
+	move $a0, v16
+	li $v0, 1
+	syscall
+	la $a0, .str1
+	li $v0, 4
+	syscall
+	li $v0, 0
+	li $v0, 10
+	syscall
+
+
