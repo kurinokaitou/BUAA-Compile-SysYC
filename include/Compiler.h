@@ -21,7 +21,7 @@ static bool s_dumpIr = false;
 static bool s_dumpMips = false;
 static bool s_isTest = false;
 
-static int s_optLevel = 0;
+static int s_optLevel = 1;
 
 static bool takeArg(char* arg) {
     static const std::set<std::string> x{"-o", "--dump-token", "--dump-ast", "--dump-table", "--dump-error", "--dump-ir", "--dump-mips"};

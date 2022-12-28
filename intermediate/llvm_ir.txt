@@ -33,56 +33,32 @@ define i32 @main() #0 {
 _entry:
 	br label %_b0
 _b0: ; preds = 
-	%_t0 = alloca i32, align 4
-	%_x1 = getelementptr inbounds i32, i32* %_t0, i32 0
-	; store 2
-	store i32 10, i32* %_x1, align 4
-	%_t3 = alloca i32, align 4
-	%_x4 = getelementptr inbounds i32, i32* %_t3, i32 0
-	; store 5
-	store i32 0, i32* %_x4, align 4
-	%_t6 = alloca i32, align 4
-	%_x7 = getelementptr inbounds i32, i32* %_t6, i32 0
-	; store 8
-	store i32 1, i32* %_x7, align 4
 	br label %_b1
-_b1: ; preds = %_b0, %_b6
-	%_x9 = load i32, i32* %_x7, align 4
-	%_x10 = load i32, i32* %_x1, align 4
-	%_t11 = icmp slt i32 %_x9, %_x10
-	%_x12 = zext i1 %_t11 to i32
-	; if %_x12 then _b2 else _b7
-	%_t13 = icmp ne i32 %_x12, 0
-	br i1 %_t13, label %_b2, label %_b7
+_b1: ; preds = %_b0, %_b4
+	%_x0 = phi i32 [1, %_b0], [%_x1, %_b4]
+	%_x2 = phi i32 [0, %_b0], [%_x3, %_b4]
+	%_t4 = icmp slt i32 %_x0, 10
+	%_x5 = zext i1 %_t4 to i32
+	; if %_x5 then _b2 else _b5
+	%_t6 = icmp ne i32 %_x5, 0
+	br i1 %_t6, label %_b2, label %_b5
 _b2: ; preds = %_b1
-	%_x14 = load i32, i32* %_x7, align 4
-	%_t15 = icmp eq i32 %_x14, 6
-	%_x16 = zext i1 %_t15 to i32
-	; if %_x16 then _b3 else _b4
-	%_t17 = icmp ne i32 %_x16, 0
-	br i1 %_t17, label %_b3, label %_b4
+	%_t7 = icmp eq i32 %_x0, 6
+	%_x8 = zext i1 %_t7 to i32
+	; if %_x8 then _b4 else _b3
+	%_t9 = icmp ne i32 %_x8, 0
+	br i1 %_t9, label %_b4, label %_b3
 _b3: ; preds = %_b2
-	br label %_b6
-_b4: ; preds = %_b2
-	br label %_b5
-_b5: ; preds = %_b4
-	%_x18 = load i32, i32* %_x4, align 4
-	%_x19 = load i32, i32* %_x7, align 4
-	%_x20 = add i32 %_x18, %_x19
-	; store 21
-	store i32 %_x20, i32* %_x4, align 4
-	br label %_b6
-_b6: ; preds = %_b3, %_b5
-	%_x22 = load i32, i32* %_x7, align 4
-	%_x23 = add i32 %_x22, 1
-	; store 24
-	store i32 %_x23, i32* %_x7, align 4
+	%_x10 = add i32 %_x2, %_x0
+	br label %_b4
+_b4: ; preds = %_b3, %_b2
+	%_x3 = phi i32 [%_x10, %_b3], [%_x2, %_b2]
+	%_x1 = add i32 %_x0, 1
 	br label %_b1
-_b7: ; preds = %_b1
-	%_x25 = load i32, i32* %_x4, align 4
-	call void @putint(i32 %_x25)
-	%_t26 = getelementptr inbounds [2 x i8], [2 x i8]* @.str1, i32 0, i32 0
-	call void @putstr(i8* %_t26)
+_b5: ; preds = %_b1
+	call void @putint(i32 %_x2)
+	%_t11 = getelementptr inbounds [2 x i8], [2 x i8]* @.str1, i32 0, i32 0
+	call void @putstr(i8* %_t11)
 	ret i32 0
 }
 
